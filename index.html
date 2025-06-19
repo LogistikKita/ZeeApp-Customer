@@ -1,29 +1,35 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Logistik Kita</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Logistik Kita - Dashboard Utama</title>
+  <!-- Tailwind & DaisyUI -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#dc3545',
+            secondary: '#ffffff',
+            dark: '#000000'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body>
-
-<header>
-  <h1>🚚 Logistik Kita</h1>
-  <p class="tagline">Dashboard Utama</p>
-</header>
-
-<main class="menu-container">
-  <a href="customer.html" class="menu-card">🧾 Form Customer</a>
-  <a href="admin.html" class="menu-card">🛠️ Admin</a>
-  <a href="owner.html" class="menu-card">📊 Owner</a>
-  <a href="rekap.html" class="menu-card">📦 Rekap & Laporan</a>
-  <a href="cek-tarif.html" class="menu-card">💰 Cek Tarif</a>
-</main>
-
-<footer>
-  &copy; 2025 Logistik Kita Mojokerto — Powered by ZeeApp 🚀
-</footer>
-
+<body class="bg-secondary text-dark min-h-screen flex flex-col items-center justify-start p-6">
+  <img src="https://drive.google.com/uc?export=view&id=1-3OO6d_fTpd9Mzdne-E0UO5oX9TKL4XJ" alt="Logo Logistik Kita" class="w-32 mb-4" />
+  <h1 class="text-3xl font-bold text-primary text-center mb-6">Dashboard Logistik Kita</h1>  <div class="grid grid-cols-1 gap-4 w-full max-w-sm">
+    <a href="customer.html" class="btn btn-primary w-full">📦 Form Customer</a>
+    <a href="admin.html" class="btn btn-outline btn-primary w-full">⚙️ Admin</a>
+    <a href="owner.html" class="btn btn-outline btn-primary w-full">📊 Owner</a>
+    <a href="laporan.html" class="btn btn-outline btn-primary w-full">📝 Rekap & Laporan</a>
+    <a href="cek-tarif.html" class="btn btn-outline btn-primary w-full">💸 Cek Tarif</a>
+  </div>  <footer class="mt-10 text-center text-sm text-gray-500">
+    &copy; 2025 Logistik Kita. All rights reserved.
+  </footer>
 </body>
 </html>
