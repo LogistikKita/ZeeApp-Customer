@@ -27,6 +27,34 @@ header .tagline {
   font-size: 14px;
   opacity: 0.85;
 }
+/* Tambahan untuk form */
+form.form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 20px;
+}
+
+form.form-box input,
+form.form-box select {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+form.form-box input:focus,
+form.form-box select:focus {
+  outline: none;
+  border-color: crimson;
+  background: #fffdfd;
+}
 
 /* FOOTER */
 footer {
