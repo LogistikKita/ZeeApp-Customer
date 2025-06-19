@@ -3,56 +3,64 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Customer - Logistik Kita</title>
+  <title>Form Pengiriman - Logistik Kita</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
   <script src="config.js"></script>
-  <script src="customer.js" defer></script>
+  <script defer src="customer.js"></script>
 </head>
-<body class="bg-white text-gray-800">
-
-  <div class="max-w-3xl mx-auto py-12 px-6">
-    <h1 class="text-2xl font-bold text-red-600 mb-6 text-center">Form Pengiriman Barang</h1>
-    <form id="formPengiriman" class="grid grid-cols-1 gap-4">
-      <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-      <div class="grid grid-cols-3 gap-2">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered border border-gray-300 px-2 py-2 rounded" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered border border-gray-300 px-2 py-2 rounded" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered border border-gray-300 px-2 py-2 rounded" />
+<body class="bg-white text-gray-900 font-sans">
+  <header class="bg-white shadow w-full fixed top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <img src="/assets/logo.png" alt="Logo Logistik Kita" class="h-8">
+        <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
-      <input type="text" name="jenis_armada" value="Pickup Granmax" readonly class="input input-bordered border border-gray-300 px-4 py-2 rounded bg-gray-100" />
-      <select name="layanan" required class="select select-bordered border border-gray-300 px-4 py-2 rounded">
+    </div>
+  </header>
+
+  <main class="pt-24 px-4 max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold text-red-600 mb-4 text-center">Form Pengiriman Barang</h2>
+    <form id="formPengiriman" class="space-y-4">
+      <input type="text" name="nama_customer" placeholder="Nama Customer" class="input input-bordered w-full" required />
+      <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" class="input input-bordered w-full" required />
+      <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" class="input input-bordered w-full" required />
+      <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" class="input input-bordered w-full" required />
+      <input type="text" name="nama_barang" placeholder="Nama Barang" class="input input-bordered w-full" required />
+      <input type="number" name="berat_kg" placeholder="Berat (kg)" class="input input-bordered w-full" required />
+      <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" class="input input-bordered w-full" required />
+      <div class="grid grid-cols-3 gap-2">
+        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" class="input input-bordered w-full" required />
+        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" class="input input-bordered w-full" required />
+        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" class="input input-bordered w-full" required />
+      </div>
+      <input type="text" name="jenis_armada" value="Pickup Granmax" class="input input-bordered w-full" required />
+      <select name="layanan" class="select select-bordered w-full" required>
         <option value="Reguler">Reguler</option>
         <option value="Prioritas">Prioritas</option>
       </select>
-      <select name="referral" required class="select select-bordered border border-gray-300 px-4 py-2 rounded">
+      <select name="referral" class="select select-bordered w-full" required>
         <option value="Tidak">Tidak</option>
         <option value="Ya">Ya</option>
       </select>
-      <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered border border-gray-300 px-4 py-2 rounded" />
-
-      <button type="button" onclick="cekTarif()" class="bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600">🔍 Cek Tarif</button>
-      <button id="submitBtn" type="button" onclick="submitForm()" class="bg-green-600 text-white py-2 rounded hidden">✅ Customer Setuju & Kirim</button>
+      <input type="text" name="nama_petugas" placeholder="Nama Petugas" class="input input-bordered w-full" required />
+      <div class="flex justify-between">
+        <button type="button" onclick="cekTarif()" class="btn btn-primary">🔍 Cek Tarif</button>
+        <button id="submitBtn" type="button" onclick="submitForm()" class="btn btn-success hidden">✅ Setuju & Kirim</button>
+      </div>
     </form>
-  </div>
+  </main>
 
-  <!-- POPUP -->
-  <div id="popup" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg shadow max-w-md w-full text-sm">
-      <h2 class="text-lg font-bold mb-3 text-red-600">Konfirmasi Pengiriman</h2>
-      <div id="popupContent" class="space-y-1 text-gray-700"></div>
-      <div class="mt-4 flex justify-end space-x-2">
-        <button onclick="tutupPopup()" class="bg-gray-300 px-4 py-2 rounded">Tutup</button>
-        <button onclick="lanjutKirim()" class="bg-green-600 text-white px-4 py-2 rounded">Setuju & Kirim</button>
+  <!-- Modal -->
+  <div id="popupTarif" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-xl p-6 shadow-md max-w-md w-full">
+      <h3 class="text-xl font-bold mb-4 text-red-600">Konfirmasi Data Pengiriman</h3>
+      <div id="popupContent" class="text-sm space-y-2"></div>
+      <div class="flex justify-end mt-4">
+        <button onclick="tutupPopup()" class="btn btn-outline mr-2">Batal</button>
+        <button onclick="lanjutKirim()" class="btn btn-primary">✅ Setuju</button>
       </div>
     </div>
   </div>
-
 </body>
 </html>
