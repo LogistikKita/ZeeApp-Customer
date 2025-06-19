@@ -4,57 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form Pengiriman Customer</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/+esm"></script>
-  <style>
-    body { font-family: Arial, sans-serif; background: #fff; padding: 20px; max-width: 600px; margin: auto; color: #111; }
-    h2 { color: crimson; }
-    label { display: block; margin-top: 10px; }
-    input, select { width: 100%; padding: 8px; margin-top: 5px; }
-    button { margin-top: 20px; padding: 10px 15px; background: crimson; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background: darkred; }
-    .popup { background: #fff7f7; border: 1px solid crimson; padding: 15px; margin-top: 20px; border-radius: 6px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-  </style>
-</head>
-<body>
-  <h2>Form Pengiriman Barang</h2>
-  <form id="formPengiriman">
-    <label>Nama Customer: <input type="text" id="nama_customer" required></label>
-    <label>Nomor HP: <input type="text" id="nomor_hp_customer" required></label>
-    <label>Asal Kirim: <input type="text" id="asal_kirim" value="Logistik Kita, Mojokerto" required></label>
-    <label>Tujuan Kirim: <input type="text" id="tujuan_kirim" required></label>
-    <label>Nama Barang: <input type="text" id="nama_barang" required></label>
-    <label>Berat (kg): <input type="number" id="berat_kg" required></label>
-    <label>Jumlah Koli: <input type="number" id="jumlah_koli" required></label>
-    <label>Panjang (cm): <input type="number" id="panjang_cm" required></label>
-    <label>Lebar (cm): <input type="number" id="lebar_cm" required></label>
-    <label>Tinggi (cm): <input type="number" id="tinggi_cm" required></label>
-    <label>Layanan:
-      <select id="layanan">
-        <option value="reguler">Reguler</option>
-        <option value="prioritas">Prioritas</option>
-      </select>
-    </label>
-    <label>Referral:
-      <select id="referral">
-        <option value="tidak">Tidak</option>
-        <option value="ya">Ya</option>
-      </select>
-    </label>
-    <label>Petugas: <input type="text" id="nama_petugas" required></label>
-    <button type="button" onclick="cekTarif()">Cek Tarif</button>
-  </form>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-  <div class="popup" id="popup"></div>
-
-  <script>
     const supabase = createClient(
       "https://mrghlcedtafomwnznywf.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
     );
 
-    let globalData = {}; // untuk simpan data sebelum kirim
+    let globalData = {};
 
-    function cekTarif() {
+    window.cekTarif = () => {
       const berat = parseFloat(document.getElementById("berat_kg").value);
       const panjang = parseFloat(document.getElementById("panjang_cm").value);
       const lebar = parseFloat(document.getElementById("lebar_cm").value);
@@ -107,18 +67,58 @@
         <button onclick="kirimKeSupabase()">Customer Setuju</button>
       `;
       popup.style.display = "block";
-    }
+    };
 
-    async function kirimKeSupabase() {
+    window.kirimKeSupabase = async () => {
       const { error } = await supabase.from("Data_Barang").insert([globalData]);
       if (error) {
         alert("❌ Gagal kirim data: " + error.message);
       } else {
         alert("✅ Data berhasil dikirim ke Supabase!");
         document.getElementById("formPengiriman").reset();
-        document.getElementById("popup").innerHTML = "<p>✅ Terima kasih, data berhasil disimpan!</p>";
+        document.getElementById("popup").innerHTML = "<p>✅ Data berhasil dikirim!</p>";
       }
-    }
+    };
   </script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fff; padding: 20px; max-width: 600px; margin: auto; color: #111; }
+    h2 { color: crimson; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 15px; background: crimson; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background: darkred; }
+    .popup { background: #fff7f7; border: 1px solid crimson; padding: 15px; margin-top: 20px; border-radius: 6px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h2>Form Pengiriman Barang</h2>
+  <form id="formPengiriman">
+    <label>Nama Customer: <input type="text" id="nama_customer" required></label>
+    <label>Nomor HP: <input type="text" id="nomor_hp_customer" required></label>
+    <label>Asal Kirim: <input type="text" id="asal_kirim" value="Logistik Kita, Mojokerto" required></label>
+    <label>Tujuan Kirim: <input type="text" id="tujuan_kirim" required></label>
+    <label>Nama Barang: <input type="text" id="nama_barang" required></label>
+    <label>Berat (kg): <input type="number" id="berat_kg" required></label>
+    <label>Jumlah Koli: <input type="number" id="jumlah_koli" required></label>
+    <label>Panjang (cm): <input type="number" id="panjang_cm" required></label>
+    <label>Lebar (cm): <input type="number" id="lebar_cm" required></label>
+    <label>Tinggi (cm): <input type="number" id="tinggi_cm" required></label>
+    <label>Layanan:
+      <select id="layanan">
+        <option value="reguler">Reguler</option>
+        <option value="prioritas">Prioritas</option>
+      </select>
+    </label>
+    <label>Referral:
+      <select id="referral">
+        <option value="tidak">Tidak</option>
+        <option value="ya">Ya</option>
+      </select>
+    </label>
+    <label>Petugas: <input type="text" id="nama_petugas" required></label>
+    <button type="button" onclick="cekTarif()">Cek Tarif</button>
+  </form>
+
+  <div class="popup" id="popup"></div>
 </body>
 </html>
