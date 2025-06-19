@@ -38,32 +38,40 @@
   <section class="pt-24 pb-16 max-w-2xl mx-auto px-4">
     <h2 class="text-3xl font-bold text-red-600 mb-6 text-center">Form Pengiriman Barang</h2>
     <form id="formPengiriman" class="grid gap-4 bg-white p-6 rounded-xl shadow">
-      <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered" />
-      <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered" />
-      <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered" />
-      <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered" />
-      <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered" />
-      <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered" />
-      <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered" />
-      <div class="grid grid-cols-3 gap-2">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered" />
-      </div>
-      <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered" />
-      <select name="layanan" required class="select select-bordered">
-        <option value="Reguler">Reguler</option>
-        <option value="Prioritas">Prioritas</option>
-      </select>
-      <select name="referral" required class="select select-bordered">
-        <option value="Tidak">Tidak</option>
-        <option value="Ya">Ya</option>
-      </select>
-      <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered" />
+    <!-- ... bagian head tetap sama ... -->
 
-      <button type="button" onclick="cekTarif()" class="btn bg-red-600 text-white hover:bg-red-700">🔍 Cek Tarif</button>
-      <button id="submitBtn" type="button" onclick="submitForm()" class="btn bg-green-600 text-white hover:bg-green-700 hidden">✅ Kirim Data</button>
-    </form>
+<form id="formPengiriman" class="grid gap-4 bg-white p-6 rounded-xl shadow">
+  <input type="text" name="nama_customer" placeholder="Nama Customer" required class="px-4 py-2 border border-gray-400 rounded" />
+  <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="px-4 py-2 border border-gray-400 rounded" />
+  <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="px-4 py-2 border border-gray-400 rounded" />
+  <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="px-4 py-2 border border-gray-400 rounded" />
+  <input type="text" name="nama_barang" placeholder="Nama Barang" required class="px-4 py-2 border border-gray-400 rounded" />
+  <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="px-4 py-2 border border-gray-400 rounded" />
+  <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="px-4 py-2 border border-gray-400 rounded" />
+
+  <div class="grid grid-cols-3 gap-2">
+    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="px-4 py-2 border border-gray-400 rounded" />
+    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="px-4 py-2 border border-gray-400 rounded" />
+    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="px-4 py-2 border border-gray-400 rounded" />
+  </div>
+
+  <input type="text" name="jenis_armada" value="Pickup Granmax" required class="px-4 py-2 border border-gray-400 rounded" />
+
+  <select name="layanan" required class="px-4 py-2 border border-gray-400 rounded bg-white">
+    <option value="Reguler">Reguler</option>
+    <option value="Prioritas">Prioritas</option>
+  </select>
+
+  <select name="referral" required class="px-4 py-2 border border-gray-400 rounded bg-white">
+    <option value="Tidak">Tidak</option>
+    <option value="Ya">Ya</option>
+  </select>
+
+  <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="px-4 py-2 border border-gray-400 rounded" />
+
+  <button type="button" onclick="cekTarif()" class="btn bg-red-600 text-white hover:bg-red-700">🔍 Cek Tarif</button>
+  <button id="submitBtn" type="button" onclick="submitForm()" class="btn bg-green-600 text-white hover:bg-green-700 hidden">✅ Kirim Data</button>
+</form>
   </section>
 
   <!-- FOOTER -->
