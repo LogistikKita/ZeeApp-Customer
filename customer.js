@@ -1,85 +1,134 @@
-// customer.js FINAL VERSI DENGAN POPUP KONFIRMASI
+// customer.js
 
-// Ambil config Supabase
-const supabaseUrl = SUPABASE_URL;
-const supabaseKey = SUPABASE_KEY;
-const table = "Data_Barang";
-const db = supabase.createClient(supabaseUrl, supabaseKey);
+// Supabase Config
+const supabaseUrl = 'https://mrghlcedtafomwnznywf.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Disingkat demi keamanan
+const tableName = 'Data_Barang';
 
-let globalData = {}; // Untuk menyimpan sementara data form
+// Generate Nomor Surat Jalan
+async function generateSuratJalan() {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('id-ID').split('/').join('-');
 
-function cekTarif() {
-  const form = document.getElementById("formPengiriman");
+  const { data, error } = await fetch(`${supabaseUrl}/rest/v1/${tableName}?select=nomor_surat_jalan`, {
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`
+    }
+  }).then(res => res.json());
+
+  const nextNum = data ? data.length + 1 : 1;
+  const padded = String(nextNum).padStart(4, '0');
+  return `SJ-${dateStr}-${padded}`;
+}
+
+// Hitung Tarif
+function hitungTarif(berat, layanan) {
+  berat = parseFloat(berat);
+  if (layanan === 'Prioritas') return 450000;
+
+  if (berat <= 50) return 125000;
+  else if (berat <= 70) return 125000 + (berat - 50) * 2200;
+  else if (berat < 100) return 125000 + (berat - 50) * 2500;
+  else if (berat <= 264) return berat * 1700;
+  else return 450000; // carter
+}
+
+// Tombol Cek Tarif
+async function cekTarif() {
+  const form = document.getElementById('formPengiriman');
   const formData = new FormData(form);
+  
+  const berat = formData.get('berat_kg');
+  const panjang = parseFloat(formData.get('panjang_cm'));
+  const lebar = parseFloat(formData.get('lebar_cm'));
+  const tinggi = parseFloat(formData.get('tinggi_cm'));
+  const volume = panjang * lebar * tinggi;
+  const layanan = formData.get('layanan');
 
-  // Ambil nilai
-  const berat = parseFloat(formData.get("berat_kg")) || 0;
-  const panjang = parseFloat(formData.get("panjang_cm")) || 0;
-  const lebar = parseFloat(formData.get("lebar_cm")) || 0;
-  const tinggi = parseFloat(formData.get("tinggi_cm")) || 0;
-  const layanan = formData.get("layanan");
+  const tarif = hitungTarif(berat, layanan);
 
-  const volume = (panjang * lebar * tinggi);
-
-  let tarif = 0;
-  if (layanan === "Prioritas") {
-    tarif = 450000;
-  } else {
-    if (berat <= 50) tarif = 125000;
-    else if (berat <= 70) tarif = 125000 + (berat - 50) * 2200;
-    else if (berat <= 99) tarif = 125000 + (berat - 50) * 2500;
-    else if (berat <= 264) tarif = berat * 1700;
-    else tarif = 450000; // Carter
-  }
-
-  const popup = document.getElementById("popup");
-  const popupContent = document.getElementById("popupContent");
-  popupContent.innerHTML = `
-    <p><strong>Nama:</strong> ${formData.get("nama_customer")}</p>
-    <p><strong>Nomor HP:</strong> ${formData.get("nomor_hp_customer")}</p>
-    <p><strong>Asal:</strong> ${formData.get("asal_kirim")}</p>
-    <p><strong>Tujuan:</strong> ${formData.get("tujuan_kirim")}</p>
-    <p><strong>Barang:</strong> ${formData.get("nama_barang")}</p>
-    <p><strong>Berat:</strong> ${berat} kg</p>
-    <p><strong>Volume:</strong> ${volume.toLocaleString()} cm³</p>
-    <p><strong>Layanan:</strong> ${layanan}</p>
-    <p><strong>Estimasi Tarif:</strong> Rp ${tarif.toLocaleString()}</p>
+  const popup = `
+    <div class="text-left">
+      <strong>Data Kiriman</strong><br>
+      Nama: ${formData.get('nama_customer')}<br>
+      No. HP: ${formData.get('nomor_hp_customer')}<br>
+      Asal: ${formData.get('asal_kirim')}<br>
+      Tujuan: ${formData.get('tujuan_kirim')}<br>
+      Barang: ${formData.get('nama_barang')}<br>
+      Berat: ${berat} kg<br>
+      Volume: ${volume} cm³<br>
+      Layanan: ${layanan}<br>
+      <hr class='my-2'>
+      <strong>Total Tarif: Rp ${tarif.toLocaleString('id-ID')}</strong>
+    </div>
   `;
 
-  popup.classList.remove("hidden");
-
-  globalData = Object.fromEntries(formData);
-  globalData.volume_cm3 = volume;
-  globalData.tarif_pengiriman = Math.round(tarif);
+  // Tampilkan Popup
+  const dialog = document.createElement('dialog');
+  dialog.classList.add('modal');
+  dialog.innerHTML = `
+    <form method="dialog" class="modal-box">
+      ${popup}
+      <div class="modal-action">
+        <button class="btn btn-success" onclick="submitForm()">Setuju & Kirim</button>
+        <button class="btn" onclick="this.closest('dialog').remove()">Batal</button>
+      </div>
+    </form>
+  `;
+  document.body.appendChild(dialog);
+  dialog.showModal();
 }
 
-function tutupPopup() {
-  document.getElementById("popup").classList.add("hidden");
-}
-
-function lanjutKirim() {
-  document.getElementById("popup").classList.add("hidden");
-  document.getElementById("submitBtn").classList.remove("hidden");
-}
-
+// Submit ke Supabase
 async function submitForm() {
-  // Tambah nomor_surat_jalan
-  const now = new Date();
-  const tanggalSurat = now.toLocaleDateString("id-ID").replaceAll("/", "-");
-  const waktu = now.toLocaleTimeString("id-ID");
-  const { count } = await db.from(table).select("*", { count: "exact" });
-  const nomorUrut = String(count + 1).padStart(4, "0");
-  globalData.nomor_surat_jalan = `SJ-${tanggalSurat}-${nomorUrut}`;
-  globalData.tanggal_masuk = now.toISOString().split("T")[0];
-  globalData.status_kirim = "pending";
+  const form = document.getElementById('formPengiriman');
+  const formData = new FormData(form);
 
-  const { error } = await db.from(table).insert([globalData]);
+  const nomorSurat = await generateSuratJalan();
+  const today = new Date().toISOString();
 
-  if (error) {
-    alert("Gagal kirim data: " + error.message);
-  } else {
-    alert("Data berhasil dikirim!");
-    document.getElementById("formPengiriman").reset();
-    document.getElementById("submitBtn").classList.add("hidden");
-  }
+  const volume = parseFloat(formData.get('panjang_cm')) * parseFloat(formData.get('lebar_cm')) * parseFloat(formData.get('tinggi_cm'));
+  const berat = parseFloat(formData.get('berat_kg'));
+  const layanan = formData.get('layanan');
+  const tarif = hitungTarif(berat, layanan);
+
+  const dataToSend = {
+    nomor_surat_jalan: nomorSurat,
+    tanggal_masuk: today,
+    nama_customer: formData.get('nama_customer'),
+    nomor_hp_customer: formData.get('nomor_hp_customer'),
+    asal_kirim: formData.get('asal_kirim'),
+    tujuan_kirim: formData.get('tujuan_kirim'),
+    nama_barang: formData.get('nama_barang'),
+    berat_kg: berat,
+    jumlah_koli: parseInt(formData.get('jumlah_koli')),
+    panjang_cm: parseInt(formData.get('panjang_cm')),
+    lebar_cm: parseInt(formData.get('lebar_cm')),
+    tinggi_cm: parseInt(formData.get('tinggi_cm')),
+    volume_cm3: volume,
+    jenis_armada: formData.get('jenis_armada'),
+    layanan: layanan,
+    referral: formData.get('referral'),
+    nama_petugas: formData.get('nama_petugas'),
+    tarif_pengiriman: tarif,
+    biaya_bbm: 0,
+    biaya_driver: 0,
+    biaya_sewa_armada: 0,
+    profit_kotor: tarif,
+    status_kirim: 'pending'
+  };
+
+  const { data, error } = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`
+    },
+    body: JSON.stringify(dataToSend)
+  }).then(res => res.json());
+
+  alert('✅ Data berhasil dikirim! Terima kasih.');
+  window.location.reload();
 }
