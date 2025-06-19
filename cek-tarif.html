@@ -1,84 +1,91 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logistik Kita | Ekspedisi Mojokerto</title>
+  <title>Cek Tarif - Logistik Kita</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #fff, #fef2f2);
-    }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(to bottom, #fff, #fef2f2); }
   </style>
 </head>
-<body class="text-gray-800">
-
-  <!-- NAVBAR -->
-  <header class="bg-white shadow fixed w-full z-10">
+<body class="text-gray-800">  <!-- NAVBAR -->  <header class="bg-white shadow fixed w-full z-10">
     <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center gap-2">
         <img src="/assets/logo.png" alt="Logo Logistik Kita" class="h-8">
         <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
       <nav class="space-x-4 hidden md:flex">
-        <a href="index.html" class="text-red-600 font-semibold">Beranda</a>
-        <a href="cek-tarif.html">Cek Tarif</a>
+        <a href="index.html">Beranda</a>
+        <a href="cek-tarif.html" class="text-red-600 font-semibold">Cek Tarif</a>
         <a href="carter.html">Carter</a>
         <a href="customer.html">Form Kirim</a>
         <a href="kontak.html">Kontak</a>
       </nav>
     </div>
-  </header>
-
-  <!-- HERO SECTION -->
-  <section class="pt-24 pb-16 bg-gradient-to-r from-red-600 to-black text-white">
-    <div class="max-w-5xl mx-auto text-center px-4">
-      <h2 class="text-4xl font-extrabold mb-4">Ekspedisi Lokal Mojokerto</h2>
-      <p class="text-lg">Harga terjangkau, layanan profesional, kirim barang ke seluruh Nusantara 🚛📦</p>
-      <a href="customer.html" class="inline-block mt-6 px-6 py-3 bg-white text-red-600 font-semibold rounded-xl shadow hover:scale-105 transition">Kirim Barang Sekarang</a>
+  </header>  <!-- FORM CEK TARIF -->  <section class="pt-24 pb-16 bg-white">
+    <div class="max-w-xl mx-auto px-4">
+      <h2 class="text-2xl font-bold text-center mb-6">Cek Tarif Pengiriman</h2>
+      <form id="formTarif" class="space-y-4">
+        <div>
+          <label class="block font-semibold">Tujuan Kirim</label>
+          <input type="text" id="tujuan" class="w-full px-4 py-2 rounded border" required>
+        </div>
+        <div>
+          <label class="block font-semibold">Berat Barang (kg)</label>
+          <input type="number" id="berat" class="w-full px-4 py-2 rounded border" required>
+        </div>
+        <div>
+          <label class="block font-semibold">Layanan</label>
+          <select id="layanan" class="w-full px-4 py-2 rounded border">
+            <option>Reguler</option>
+            <option>Prioritas</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="referral">
+          <label for="referral">Gunakan Referral</label>
+        </div>
+        <button type="submit" class="w-full bg-red-600 text-white py-3 rounded-xl font-semibold shadow">Cek Tarif</button>
+      </form>
     </div>
-  </section>
-
-  <!-- KEUNGGULAN -->
-  <section class="py-12 bg-white">
-    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-center">
-      <div>
-        <i class="ph ph-truck text-4xl text-red-600"></i>
-        <h3 class="mt-2 font-bold text-lg">Gratis Jemput Mojokerto</h3>
-        <p class="text-sm">Barang dijemput langsung ke lokasi kamu, tanpa biaya tambahan*</p>
-      </div>
-      <div>
-        <i class="ph ph-wallet text-4xl text-red-600"></i>
-        <h3 class="mt-2 font-bold text-lg">Tarif Mulai Rp1.700/kg</h3>
-        <p class="text-sm">Harga murah tanpa mengorbankan kualitas</p>
-      </div>
-      <div>
-        <i class="ph ph-shield-check text-4xl text-red-600"></i>
-        <h3 class="mt-2 font-bold text-lg">Aman & Terpercaya</h3>
-        <p class="text-sm">Driver resmi Logistik Kita & tracking mudah</p>
-      </div>
+  </section>  <!-- POPUP -->  <div id="popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl max-w-sm text-center">
+      <h3 class="text-lg font-bold mb-2">Estimasi Tarif</h3>
+      <p id="ringkasanTarif" class="text-sm mb-4"></p>
+      <button onclick="document.getElementById('popup').classList.add('hidden')" class="bg-red-600 text-white px-4 py-2 rounded-xl">Tutup</button>
     </div>
-  </section>
-
-  <!-- CTA SECTION -->
-  <section class="py-12 bg-red-600 text-white text-center">
-    <h2 class="text-2xl font-bold">Cek Tarif & Kirim Sekarang</h2>
-    <p class="text-sm mt-1">Cuma 1 menit untuk kirim barang pertama kamu!</p>
-    <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
-      <a href="cek-tarif.html" class="bg-white text-red-600 px-6 py-3 rounded-xl font-semibold shadow">Cek Tarif</a>
-      <a href="customer.html" class="bg-black px-6 py-3 rounded-xl font-semibold shadow">Form Pengiriman</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="bg-black text-white py-6 text-center text-sm">
+  </div>  <!-- FOOTER -->  <footer class="bg-black text-white py-6 text-center text-sm">
     <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
     <div class="mt-2">
       <p>WA: 0858-1348-7753 • IG: @logistikkita.official • Email: logistikkita.assist@gmail.com</p>
     </div>
-  </footer>
+  </footer>  <script>
+    document.getElementById('formTarif').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const berat = parseFloat(document.getElementById('berat').value);
+      const layanan = document.getElementById('layanan').value;
+      const referral = document.getElementById('referral').checked;
 
-</body>
+      let tarif = 0;
+      if (layanan === 'Reguler') {
+        if (berat <= 50) tarif = 125000;
+        else if (berat <= 70) tarif = 125000 + (berat - 50) * 2200;
+        else if (berat <= 99) tarif = 125000 + (berat - 50) * 2500;
+        else if (berat <= 264) tarif = berat * 1700;
+        else tarif = 450000;
+      } else {
+        tarif = 450000; // Prioritas = Carter
+      }
+
+      if (referral) {
+        let potong = tarif * 0.05;
+        if (potong > 50000) potong = 50000;
+        tarif -= potong;
+      }
+
+      document.getElementById('ringkasanTarif').innerText = `Estimasi Tarif: Rp ${tarif.toLocaleString('id-ID')}`;
+      document.getElementById('popup').classList.remove('hidden');
+    });
+  </script></body>
 </html>
