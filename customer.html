@@ -3,174 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Pengiriman - Logistik Kita</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-    const supabase = createClient(
-      "https://mrghlcedtafomwnznywf.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
-    );
-
-    const form = document.getElementById("formPengiriman");
-    const popup = document.getElementById("popup");
-    let dataPreview = {};
-
-    function cekTarif() {
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((v, k) => data[k] = v);
-
-      const berat = parseFloat(data.berat_kg);
-      const panjang = parseFloat(data.panjang_cm);
-      const lebar = parseFloat(data.lebar_cm);
-      const tinggi = parseFloat(data.tinggi_cm);
-      const volume = panjang * lebar * tinggi;
-
-      let tarif = 0;
-      if (data.layanan === "reguler") {
-        if (berat <= 50) tarif = 125000;
-        else if (berat <= 70) tarif = 125000 + (berat - 50) * 2200;
-        else if (berat <= 264) tarif = berat * 1700;
-        else tarif = 450000;
-      } else {
-        tarif = 450000;
-      }
-
-      dataPreview = {
-        nomor_surat_jalan: "LK/SJ/" + new Date().getTime(),
-        tanggal_masuk: new Date().toISOString(),
-        nama_customer: data.nama_customer,
-        nomor_hp_customer: data.nomor_hp_customer,
-        asal_kirim: data.asal_kirim,
-        tujuan_kirim: data.tujuan_kirim,
-        nama_barang: data.nama_barang,
-        berat_kg: berat,
-        jumlah_koli: parseInt(data.jumlah_koli),
-        panjang_cm: panjang,
-        lebar_cm: lebar,
-        tinggi_cm: tinggi,
-        volume_cm3: volume,
-        jenis_armada: data.jenis_armada,
-        layanan: data.layanan,
-        referral: data.referral,
-        nama_petugas: data.nama_petugas,
-        tarif_pengiriman: tarif,
-        biaya_bbm: 0,
-        biaya_driver: 0,
-        biaya_sewa_armada: 0,
-        profit_kotor: 0,
-        status_kirim: "Pending"
-      };
-
-      popup.innerHTML = `
-        <div class="popup-box">
-          <h3>Konfirmasi Pengiriman</h3>
-          <p><strong>Nama:</strong> ${dataPreview.nama_customer}</p>
-          <p><strong>Tujuan:</strong> ${dataPreview.tujuan_kirim}</p>
-          <p><strong>Berat:</strong> ${dataPreview.berat_kg} kg</p>
-          <p><strong>Volume:</strong> ${dataPreview.volume_cm3} cm³</p>
-          <p><strong>Layanan:</strong> ${dataPreview.layanan}</p>
-          <p><strong>Tarif:</strong> Rp ${tarif.toLocaleString("id-ID")}</p>
-          <div class="popup-btns">
-            <button id="cancelBtn">Batal</button>
-            <button id="confirmBtn">Customer Setuju</button>
-          </div>
-        </div>
-      `;
-      popup.style.display = "flex";
-
-      document.getElementById("cancelBtn").addEventListener("click", () => {
-        popup.style.display = "none";
-      });
-      document.getElementById("confirmBtn").addEventListener("click", submitData);
-    }
-
-    async function submitData() {
-      const { error } = await supabase.from("Data_Barang").insert([dataPreview]);
-      if (error) {
-        alert("❌ Gagal kirim data:\n" + error.message);
-      } else {
-        alert("✅ Data berhasil dikirim!");
-        form.reset();
-        popup.style.display = "none";
-      }
-    }
-
-    document.getElementById("btnCekTarif").addEventListener("click", cekTarif);
-  </script>
-  <style>
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    .popup-box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 0 20px #00000030;
-    }
-    .popup-box h3 {
-      color: crimson;
-    }
-    .popup-btns {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .popup-btns button {
-      padding: 8px 14px;
-      background: crimson;
-      border: none;
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .popup-btns button:hover {
-      background: #900;
-    }
-  </style>
+  <title>Form Customer - Logistik Kita</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+  <script src="scripts/config.js"></script>
+  <script src="scripts/customer.js" defer></script>
 </head>
-<body>
-  <header class="navbar">
-    <h1>🧾 Form Customer</h1>
-  </header>
+<body class="bg-white text-dark p-6 max-w-2xl mx-auto">
+  <h2 class="text-2xl font-bold text-primary text-center mb-4">Form Pengiriman Barang</h2>
+  <form id="formPengiriman" class="grid gap-4">
+    <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered" />
+    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered" />
+    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered" />
+    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered" />
+    <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered" />
+    <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered" />
+    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered" />
+    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered" />
+    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered" />
+    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered" />
+    <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered" />
+    <select name="layanan" required class="select select-bordered">
+      <option value="Reguler">Reguler</option>
+      <option value="Prioritas">Prioritas</option>
+    </select>
+    <select name="referral" required class="select select-bordered">
+      <option value="Tidak">Tidak</option>
+      <option value="Ya">Ya</option>
+    </select>
+    <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered" />
 
-  <main class="container">
-    <form id="formPengiriman" class="form-layout">
-      <input type="text" name="nama_customer" placeholder="Nama Customer" required />
-      <input type="text" name="nomor_hp_customer" placeholder="Nomor HP" required />
-      <input type="text" name="asal_kirim" placeholder="Asal Kirim" value="Logistik Kita, Mojokerto" required />
-      <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required />
-      <input type="text" name="nama_barang" placeholder="Nama Barang" required />
-      <input type="number" name="berat_kg" placeholder="Berat (kg)" required />
-      <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required />
-      <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required />
-      <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required />
-      <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required />
-      <input type="text" name="jenis_armada" placeholder="Jenis Armada" value="Pickup Granmax" required />
-      <select name="layanan" required>
-        <option value="reguler">Reguler</option>
-        <option value="prioritas">Prioritas</option>
-      </select>
-      <select name="referral" required>
-        <option value="tidak">Tidak</option>
-        <option value="ya">Ya</option>
-      </select>
-      <input type="text" name="nama_petugas" placeholder="Nama Petugas" required />
-      <button type="button" id="btnCekTarif">Cek Tarif</button>
-    </form>
-    <div id="popup" class="popup"></div>
-  </main>
+    <button type="button" onclick="cekTarif()" class="btn btn-primary">🔍 Cek Tarif</button>
+    <button id="submitBtn" type="button" onclick="submitForm()" class="btn btn-success hidden">✅ Customer Setuju & Kirim</button>
+  </form>
 </body>
 </html>
