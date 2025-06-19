@@ -4,44 +4,47 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Logistik Kita</title>
-    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="logo.png" />
   </head>
   <body class="bg-gradient-to-b from-red-700 via-white to-black text-white font-sans">
 
     <!-- Navbar -->
-    <header class="flex justify-between items-center p-4 bg-black bg-opacity-80 shadow-md">
-      <h1 class="text-2xl font-bold text-red-500">Logistik Kita</h1>
-      <nav class="space-x-4 text-sm md:text-base">
+    <header class="flex justify-between items-center px-6 py-4 bg-black bg-opacity-90 shadow-md">
+      <h1 class="text-2xl font-bold text-red-500">🚚 Logistik Kita</h1>
+      <nav class="flex gap-4 text-sm md:text-base text-white">
         <a href="index.html" class="hover:text-red-400">Beranda</a>
         <a href="customer.html" class="hover:text-red-400">Form Customer</a>
         <a href="admin.html" class="hover:text-red-400">Admin</a>
         <a href="owner.html" class="hover:text-red-400">Owner</a>
-        <a href="laporan.html" class="hover:text-red-400">Rekap & Laporan</a>
+        <a href="laporan.html" class="hover:text-red-400">Rekap</a>
         <a href="cek-tarif.html" class="hover:text-red-400">Cek Tarif</a>
-        <a href="mitra.html" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Daftar Mitra Driver</a>
+        <a href="mitra.html" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Daftar Mitra</a>
       </nav>
     </header>
 
     <!-- Hero Section -->
-    <section class="text-center py-16 px-4">
-      <h2 class="text-3xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiran Tenang</h2>
-      <p class="text-lg mb-6 text-white/80">Ekspedisi lokal Mojokerto - Surabaya. Layanan Reguler & Prioritas mulai Rp1.700/kg!</p>
-      <a href="customer.html" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded shadow-lg transition-all duration-300">
-        Mulai Kirim Sekarang
+    <section class="text-center py-20 px-4">
+      <h2 class="text-4xl md:text-5xl font-bold mb-6">Kirim Barang Aman, Pikiran Tenang</h2>
+      <p class="text-lg text-white/90 mb-8">Ekspedisi lokal Mojokerto - Surabaya. Layanan Reguler & Prioritas mulai <span class="font-bold text-yellow-300">Rp1.700/kg</span></p>
+      <a href="customer.html" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300">
+        🚀 Mulai Kirim Sekarang
       </a>
     </section>
 
-    <!-- CTA Tambahan: Daftar Mitra -->
-    <section class="text-center py-10 bg-black bg-opacity-50">
-      <h3 class="text-2xl font-semibold mb-2">Punya Kendaraan? Gabung jadi Mitra Driver Logistik Kita!</h3>
-      <a href="mitra.html" class="inline-block mt-4 bg-white text-red-700 font-bold px-6 py-2 rounded hover:bg-red-100">
-        Daftar Sekarang
+    <!-- CTA Daftar Mitra -->
+    <section class="bg-black bg-opacity-70 py-12 px-6 text-center">
+      <h3 class="text-2xl md:text-3xl font-bold mb-4">Punya Kendaraan? 🛻</h3>
+      <p class="text-white/80 mb-6">Gabung jadi Mitra Driver Logistik Kita. Pickup / Truk / Cointainer? Bisa!</p>
+      <a href="mitra.html" class="inline-block bg-white text-red-700 font-bold px-6 py-3 rounded-full hover:bg-red-100">
+        Daftar Mitra Sekarang
       </a>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-black text-center py-6 text-white/70 text-sm">
+    <footer class="bg-black text-center py-6 text-white/70 text-sm mt-10">
       &copy; 2025 Logistik Kita. All rights reserved.
     </footer>
+
   </body>
 </html>
