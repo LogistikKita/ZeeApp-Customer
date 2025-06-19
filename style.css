@@ -1,4 +1,4 @@
-/* Global Reset */
+/* Reset dan Font Dasar */
 * {
   margin: 0;
   padding: 0;
@@ -9,73 +9,112 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #fff;
   color: #111;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  line-height: 1.6;
 }
 
 /* Header */
 header {
-  background-color: #dc3545;
+  background: linear-gradient(to right, #dc3545, #9b1c2e);
   color: white;
-  padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.5s ease-in-out;
 }
 
-/* Navigation */
+header h1 {
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+}
+
+/* Navigation Menu */
 .nav-menu {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   background-color: #111;
-  gap: 20px;
-  padding: 15px;
-  flex-wrap: wrap;
+  padding: 10px 0;
+  gap: 15px;
 }
 
 .menu-item {
   color: white;
   text-decoration: none;
-  font-size: 18px;
-  background: linear-gradient(to right, #dc3545, #9c0b1c);
-  padding: 10px 20px;
-  border-radius: 8px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  background: #dc3545;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(220, 53, 69, 0.3);
 }
 
 .menu-item:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.6);
+  background: #a71d2a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(220, 53, 69, 0.5);
 }
 
 /* Main Content */
 main {
   flex: 1;
-  padding: 30px;
+  padding: 30px 20px;
+  animation: fadeIn 0.4s ease-in;
   text-align: center;
-  animation: fadeIn 0.5s ease-in-out;
 }
 
 .welcome h2 {
   color: #dc3545;
+  font-size: 1.4rem;
   margin-bottom: 10px;
 }
 
 .welcome p {
-  font-size: 16px;
+  font-size: 1rem;
   color: #444;
 }
 
 /* Footer */
 footer {
-  text-align: center;
-  padding: 15px;
   background-color: #111;
   color: white;
+  text-align: center;
+  padding: 15px 10px;
+  font-size: 0.9rem;
 }
 
-/* Animation */
+/* Animations */
+@keyframes slideDown {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 600px) {
+  header h1 {
+    font-size: 1.4rem;
+  }
+
+  .menu-item {
+    width: 90%;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  main {
+    padding: 20px 10px;
+  }
+
+  .welcome h2 {
+    font-size: 1.2rem;
+  }
 }
