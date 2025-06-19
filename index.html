@@ -2,84 +2,30 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Logistik Kita - Menu Utama</title>
-  <style>
-    :root {
-      --merah: #D32F2F;
-      --putih: #ffffff;
-      --abu: #f4f4f4;
-      --abu-tua: #c7c7c7;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--abu);
-      color: #333;
-    }
-
-    header {
-      background-color: var(--merah);
-      color: var(--putih);
-      padding: 20px;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 26px;
-    }
-
-    .container {
-      padding: 30px 20px;
-      text-align: center;
-    }
-
-    .menu-button {
-      display: block;
-      width: 80%;
-      max-width: 300px;
-      margin: 15px auto;
-      padding: 15px;
-      background-color: var(--merah);
-      color: var(--putih);
-      font-size: 18px;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    .menu-button:hover {
-      background-color: #b71c1c;
-    }
-
-    footer {
-      text-align: center;
-      color: #777;
-      margin-top: 40px;
-      padding: 10px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard - Logistik Kita</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <header>
-    <h1>Logistik Kita</h1>
-    <p>Menu Utama</p>
+    <h1>🚚 Logistik Kita Dashboard</h1>
   </header>
 
-  <div class="container">
-    <button class="menu-button" onclick="location.href='customer.html'">📦 Form Customer</button>
-    <button class="menu-button" onclick="location.href='admin.html'">🧾 Halaman Admin</button>
-    <button class="menu-button" onclick="location.href='owner.html'">💼 Halaman Owner</button>
-  </div>
+  <nav class="nav-menu">
+    <a href="customer.html" class="menu-item">Form Customer</a>
+    <a href="#" class="menu-item">Admin Panel</a>
+    <a href="#" class="menu-item">Owner Area</a>
+  </nav>
+
+  <main>
+    <section class="welcome">
+      <h2>Selamat Datang di Sistem Logistik Kita</h2>
+      <p>Pilih menu di atas untuk mulai mengakses fitur.</p>
+    </section>
+  </main>
 
   <footer>
-    <p>© 2025 Logistik Kita Mojokerto.</p>
+    <p>&copy; 2025 Logistik Kita. Semua hak dilindungi.</p>
   </footer>
-
 </body>
 </html>
