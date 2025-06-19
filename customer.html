@@ -2,218 +2,108 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Form Pengiriman - Logistik Kita</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Pengiriman Customer - Supabase</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/+esm"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff;
-      color: #222;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-    }
-    h2 {
-      color: #dc3545;
-      text-align: center;
-    }
-    label {
-      margin-top: 10px;
-      display: block;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background-color: #dc3545;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    button:hover {
-      background-color: #a71d2a;
-    }
-    #submitBtn {
-      display: none;
-    }
-
-    /* Modal Styling */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 999;
-      padding-top: 100px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(3px);
-    }
-    .modal-content {
-      background-color: #fff;
-      margin: auto;
-      padding: 20px;
-      border: 1px solid #888;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      animation: fadeIn 0.3s ease;
-    }
-    .modal-header {
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #dc3545;
-    }
-    .modal-buttons {
-      text-align: right;
-      margin-top: 20px;
-    }
-    .modal-buttons button {
-      width: auto;
-      margin-left: 10px;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0}
-      to {opacity: 1}
-    }
+    body { font-family: Arial, sans-serif; padding: 20px; background: #fff; color: #111; max-width: 600px; margin: auto; }
+    h2 { color: crimson; }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 15px; background: crimson; color: white; border: none; cursor: pointer; }
+    .popup { background: #f0f0f0; border: 1px solid #ccc; padding: 15px; margin-top: 20px; display: none; }
   </style>
 </head>
 <body>
   <h2>Form Pengiriman Barang</h2>
   <form id="formPengiriman">
-    <!-- Input fields... -->
-    <label>Nama Customer: <input type="text" name="Nama_Customer" required /></label>
-    <label>Nomor HP Customer: <input type="text" name="Nomor_HP_Customer" required /></label>
-    <label>Asal Kirim: <input type="text" name="Asal_Kirim" value="Logistik Kita, Mojokerto" required /></label>
-    <label>Tujuan Kirim: <input type="text" name="Tujuan_Kirim" required /></label>
-    <label>Nama Barang: <input type="text" name="Nama_Barang" required /></label>
-    <label>Berat (kg): <input type="number" name="Berat_(kg)" required /></label>
-    <label>Jumlah Koli: <input type="number" name="Jumlah_Koli" required /></label>
-    <label>Panjang (cm): <input type="number" name="Panjang_(cm)" required /></label>
-    <label>Lebar (cm): <input type="number" name="Lebar_(cm)" required /></label>
-    <label>Tinggi (cm): <input type="number" name="Tinggi_(cm)" required /></label>
-    <label>Jenis Armada: <input type="text" name="Jenis_Armada" value="Pickup Granmax" required /></label>
+    <label>Nama Customer: <input type="text" id="nama_customer" required></label>
+    <label>Nomor HP: <input type="text" id="nomor_hp_customer" required></label>
+    <label>Asal Kirim: <input type="text" id="asal_kirim" value="Logistik Kita, Mojokerto" required></label>
+    <label>Tujuan Kirim: <input type="text" id="tujuan_kirim" required></label>
+    <label>Nama Barang: <input type="text" id="nama_barang" required></label>
+    <label>Berat (kg): <input type="number" id="berat_kg" required></label>
+    <label>Jumlah Koli: <input type="number" id="jumlah_koli" required></label>
+    <label>Panjang (cm): <input type="number" id="panjang_cm" required></label>
+    <label>Lebar (cm): <input type="number" id="lebar_cm" required></label>
+    <label>Tinggi (cm): <input type="number" id="tinggi_cm" required></label>
     <label>Layanan:
-      <select name="Layanan" required>
-        <option value="Reguler">Reguler</option>
-        <option value="Prioritas">Prioritas</option>
+      <select id="layanan">
+        <option value="reguler">Reguler</option>
+        <option value="prioritas">Prioritas</option>
       </select>
     </label>
     <label>Referral:
-      <select name="Referral" required>
-        <option value="Tidak">Tidak</option>
-        <option value="Ya">Ya</option>
+      <select id="referral">
+        <option value="tidak">Tidak</option>
+        <option value="ya">Ya</option>
       </select>
     </label>
-    <label>Nama Petugas: <input type="text" name="Nama_Petugas" required /></label>
-
-    <button type="button" onclick="cekTarif()">Cek Tarif</button>
-    <button id="submitBtn" type="button" onclick="submitForm()">Customer Setuju</button>
+    <label>Petugas: <input type="text" id="nama_petugas" required></label>
+    <button type="button" onclick="prosesForm()">Cek Tarif & Kirim</button>
   </form>
 
-  <!-- Modal Popup -->
-  <div id="tarifModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">Konfirmasi Tarif</div>
-      <div id="modalBody"></div>
-      <div class="modal-buttons">
-        <button onclick="closeModal()">Batal</button>
-        <button onclick="confirmSubmit()">Setuju</button>
-      </div>
-    </div>
-  </div>
+  <div class="popup" id="popup"></div>
 
   <script>
-    let globalData = {};
+    const supabase = createClient(
+      "https://mrghlcedtafomwnznywf.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+    );
 
-    function cekTarif() {
-      const form = document.getElementById('formPengiriman');
-      const formData = new FormData(form);
-      const data = {};
-      formData.forEach((value, key) => {
-        data[key] = value;
-      });
-
-      const p = parseFloat(data["Panjang_(cm)"]);
-      const l = parseFloat(data["Lebar_(cm)"]);
-      const t = parseFloat(data["Tinggi_(cm)"]);
-      const berat = parseFloat(data["Berat_(kg)"]);
-      const volume = p * l * t;
-      data["Volume_(cm³)"] = volume;
-
+    async function prosesForm() {
+      const berat = parseFloat(document.getElementById("berat_kg").value);
       let tarif = 0;
-      if (data.Layanan === "Reguler") {
-        if (berat <= 50) {
-          tarif = 125000;
-        } else if (berat <= 70) {
-          tarif = 125000 + (berat - 50) * 2200;
-        } else if (berat <= 264) {
-          tarif = berat * 1700;
-        } else {
-          tarif = 450000;
-        }
-      } else {
-        tarif = 450000;
-      }
+      if (berat <= 50) tarif = 125000;
+      else if (berat <= 70) tarif = 125000 + (berat - 50) * 2200;
+      else if (berat < 100) tarif = 125000 + (berat - 50) * 2500;
+      else if (berat >= 100 && berat <= 264) tarif = berat * 1700;
+      else tarif = 450000;
 
-      data["Tarif_Pengiriman"] = tarif;
-      data["Nomor_Surat_Jalan"] = "";
-      data["Tanggal_Masuk"] = "";
-      data["Biaya_BBM"] = "";
-      data["Biaya_Driver"] = "";
-      data["Biaya_Sewa_Armada"] = "";
-      data["Profit_Kotor"] = "";
-      data["Status_Kirim"] = "pending";
+      const panjang = parseFloat(document.getElementById("panjang_cm").value);
+      const lebar = parseFloat(document.getElementById("lebar_cm").value);
+      const tinggi = parseFloat(document.getElementById("tinggi_cm").value);
+      const volume = (panjang * lebar * tinggi);
 
-      globalData = data;
+      const data = {
+        nomor_surat: "LK-SJ-" + Date.now(),
+        tanggal_masuk: new Date().toISOString(),
+        nama_customer: document.getElementById("nama_customer").value,
+        nomor_hp_customer: document.getElementById("nomor_hp_customer").value,
+        asal_kirim: document.getElementById("asal_kirim").value,
+        tujuan_kirim: document.getElementById("tujuan_kirim").value,
+        nama_barang: document.getElementById("nama_barang").value,
+        berat_kg: berat,
+        jumlah_koli: parseInt(document.getElementById("jumlah_koli").value),
+        panjang_cm: panjang,
+        lebar_cm: lebar,
+        tinggi_cm: tinggi,
+        volume_cm3: volume,
+        jenis_armada: "Pickup Granmax",
+        layanan: document.getElementById("layanan").value,
+        referral: document.getElementById("referral").value,
+        nama_petugas: document.getElementById("nama_petugas").value,
+        tarif_pengiriman: tarif,
+        biaya_bbm: 0,
+        biaya_driver: 0,
+        biaya_sewa_armada: 0,
+        profit_kotor: 0,
+        status_kirim: "pending"
+      };
 
-      const modalContent = `
-        <p><strong>Nama:</strong> ${data.Nama_Customer}</p>
-        <p><strong>Tujuan:</strong> ${data.Tujuan_Kirim}</p>
-        <p><strong>Berat:</strong> ${berat} kg</p>
-        <p><strong>Volume:</strong> ${volume} cm³</p>
-        <p><strong>Layanan:</strong> ${data.Layanan}</p>
-        <p><strong>Tarif:</strong> Rp ${tarif.toLocaleString("id-ID")}</p>
+      document.getElementById("popup").style.display = "block";
+      document.getElementById("popup").innerHTML = `
+        <h3>Konfirmasi Data</h3>
+        <p>Nama: ${data.nama_customer}<br>Tujuan: ${data.tujuan_kirim}<br>Berat: ${data.berat_kg} kg<br>Tarif: Rp ${tarif.toLocaleString()}</p>
+        <button onclick='submitKeSupabase(${JSON.stringify(JSON.stringify(data))})'>Customer Setuju</button>
       `;
-      document.getElementById("modalBody").innerHTML = modalContent;
-      document.getElementById("tarifModal").style.display = "block";
     }
 
-    function closeModal() {
-      document.getElementById("tarifModal").style.display = "none";
-    }
-
-    function confirmSubmit() {
-      closeModal();
-      document.getElementById("submitBtn").style.display = "block";
-    }
-
-    async function submitForm() {
-      try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbxzZyEu2eCb7zf_JoAIDSht20b5NpWDoINfeBNGMAb4fMZtwtjKnmS0N6i3h0eBmwD6/exec", {
-          method: "POST",
-          body: JSON.stringify(globalData),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        });
-
-        const result = await response.text();
-        alert("✅ Data berhasil dikirim ke Google Sheet!\n" + result);
-        document.getElementById("formPengiriman").reset();
-        document.getElementById('submitBtn').style.display = 'none';
-      } catch (error) {
-        alert("❌ Gagal mengirim data:\n" + error.message);
-      }
+    async function submitKeSupabase(dataStr) {
+      const data = JSON.parse(dataStr);
+      const { error } = await supabase.from("Data_Barang").insert([data]);
+      if (error) alert("❌ Gagal kirim data: " + error.message);
+      else alert("✅ Data berhasil dikirim ke Supabase!");
     }
   </script>
 </body>
