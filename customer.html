@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Pengiriman Customer - Supabase</title>
+  <title>Form Pengiriman Customer</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/+esm"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #fff; color: #111; max-width: 600px; margin: auto; }
+    body { font-family: Arial, sans-serif; background: #fff; padding: 20px; max-width: 600px; margin: auto; color: #111; }
     h2 { color: crimson; }
     label { display: block; margin-top: 10px; }
     input, select { width: 100%; padding: 8px; margin-top: 5px; }
-    button { margin-top: 20px; padding: 10px 15px; background: crimson; color: white; border: none; cursor: pointer; border-radius: 4px; }
+    button { margin-top: 20px; padding: 10px 15px; background: crimson; color: white; border: none; border-radius: 4px; cursor: pointer; }
     button:hover { background: darkred; }
-    .popup { background: #fdfdfd; border: 1px solid #ccc; padding: 20px; margin-top: 20px; display: none; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .popup { background: #fff7f7; border: 1px solid crimson; padding: 15px; margin-top: 20px; border-radius: 6px; display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
   </style>
 </head>
 <body>
@@ -41,7 +41,7 @@
       </select>
     </label>
     <label>Petugas: <input type="text" id="nama_petugas" required></label>
-    <button type="button" onclick="prosesForm()">Cek Tarif</button>
+    <button type="button" onclick="cekTarif()">Cek Tarif</button>
   </form>
 
   <div class="popup" id="popup"></div>
@@ -52,10 +52,15 @@
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
     );
 
-    let dataPengiriman = {};
+    let globalData = {}; // untuk simpan data sebelum kirim
 
-    async function prosesForm() {
+    function cekTarif() {
       const berat = parseFloat(document.getElementById("berat_kg").value);
+      const panjang = parseFloat(document.getElementById("panjang_cm").value);
+      const lebar = parseFloat(document.getElementById("lebar_cm").value);
+      const tinggi = parseFloat(document.getElementById("tinggi_cm").value);
+      const volume = panjang * lebar * tinggi;
+
       let tarif = 0;
       if (berat <= 50) tarif = 125000;
       else if (berat <= 70) tarif = 125000 + (berat - 50) * 2200;
@@ -63,12 +68,7 @@
       else if (berat <= 264) tarif = berat * 1700;
       else tarif = 450000;
 
-      const panjang = parseFloat(document.getElementById("panjang_cm").value);
-      const lebar = parseFloat(document.getElementById("lebar_cm").value);
-      const tinggi = parseFloat(document.getElementById("tinggi_cm").value);
-      const volume = panjang * lebar * tinggi;
-
-      dataPengiriman = {
+      globalData = {
         nomor_surat: "LK-SJ-" + Date.now(),
         tanggal_masuk: new Date().toISOString(),
         nama_customer: document.getElementById("nama_customer").value,
@@ -94,27 +94,29 @@
         status_kirim: "pending"
       };
 
-      document.getElementById("popup").style.display = "block";
-      document.getElementById("popup").innerHTML = `
+      const popup = document.getElementById("popup");
+      popup.innerHTML = `
         <h3>Konfirmasi Pengiriman</h3>
-        <p><strong>Nama:</strong> ${dataPengiriman.nama_customer}<br>
-        <strong>HP:</strong> ${dataPengiriman.nomor_hp_customer}<br>
-        <strong>Tujuan:</strong> ${dataPengiriman.tujuan_kirim}<br>
-        <strong>Barang:</strong> ${dataPengiriman.nama_barang}<br>
-        <strong>Berat:</strong> ${dataPengiriman.berat_kg} kg<br>
-        <strong>Tarif:</strong> Rp ${dataPengiriman.tarif_pengiriman.toLocaleString()}</p>
-        <button onclick='submitKeSupabase()'>Customer Setuju</button>
+        <p><strong>Nama:</strong> ${globalData.nama_customer}<br>
+        <strong>HP:</strong> ${globalData.nomor_hp_customer}<br>
+        <strong>Tujuan:</strong> ${globalData.tujuan_kirim}<br>
+        <strong>Barang:</strong> ${globalData.nama_barang}<br>
+        <strong>Berat:</strong> ${globalData.berat_kg} kg<br>
+        <strong>Volume:</strong> ${volume} cm³<br>
+        <strong>Tarif:</strong> Rp ${tarif.toLocaleString()}</p>
+        <button onclick="kirimKeSupabase()">Customer Setuju</button>
       `;
+      popup.style.display = "block";
     }
 
-    async function submitKeSupabase() {
-      const { error } = await supabase.from("Data_Barang").insert([dataPengiriman]);
+    async function kirimKeSupabase() {
+      const { error } = await supabase.from("Data_Barang").insert([globalData]);
       if (error) {
         alert("❌ Gagal kirim data: " + error.message);
       } else {
         alert("✅ Data berhasil dikirim ke Supabase!");
         document.getElementById("formPengiriman").reset();
-        document.getElementById("popup").innerHTML = "<p>✅ Data berhasil disimpan!</p>";
+        document.getElementById("popup").innerHTML = "<p>✅ Terima kasih, data berhasil disimpan!</p>";
       }
     }
   </script>
