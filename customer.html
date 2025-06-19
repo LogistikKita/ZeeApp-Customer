@@ -12,26 +12,26 @@
 <body class="bg-white text-dark p-6 max-w-2xl mx-auto">
   <h2 class="text-2xl font-bold text-primary text-center mb-4">Form Pengiriman Barang</h2>
   <form id="formPengiriman" class="grid gap-4">
-    <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered" />
-    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered" />
-    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered" />
-    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered" />
-    <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered" />
-    <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered" />
-    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered" />
-    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered" />
-    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered" />
-    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered" />
-    <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered" />
-    <select name="layanan" required class="select select-bordered">
+    <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered bg-white" />
+    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered bg-white" />
+    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered bg-white" />
+    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered bg-white" />
+    <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered bg-white" />
+    <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered bg-white" />
+    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered bg-white" />
+    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered bg-white" />
+    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered bg-white" />
+    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered bg-white" />
+    <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered bg-white" />
+    <select name="layanan" required class="select select-bordered bg-white">
       <option value="Reguler">Reguler</option>
       <option value="Prioritas">Prioritas</option>
     </select>
-    <select name="referral" required class="select select-bordered">
+    <select name="referral" required class="select select-bordered bg-white">
       <option value="Tidak">Tidak</option>
       <option value="Ya">Ya</option>
     </select>
-    <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered" />
+    <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered bg-white" />
 
     <button type="button" onclick="cekTarif()" class="btn btn-primary">🔍 Cek Tarif</button>
     <button id="submitBtn" type="button" onclick="submitForm()" class="btn btn-success hidden">✅ Customer Setuju & Kirim</button>
