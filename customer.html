@@ -12,30 +12,31 @@
 
   <main>
     <form id="formPengiriman" class="form-box">
-      <input type="text" id="nama_customer" placeholder="Nama Customer" required />
-      <input type="text" id="nomor_hp_customer" placeholder="Nomor HP" required />
-      <input type="text" id="asal_kirim" placeholder="Asal Kirim" value="Logistik Kita, Mojokerto" required />
-      <input type="text" id="tujuan_kirim" placeholder="Tujuan Kirim" required />
-      <input type="text" id="nama_barang" placeholder="Nama Barang" required />
-      <input type="number" id="berat_kg" placeholder="Berat Barang (kg)" required />
-      <input type="number" id="jumlah_koli" placeholder="Jumlah Koli" required />
-      <input type="number" id="panjang_cm" placeholder="Panjang Barang (cm)" required />
-      <input type="number" id="lebar_cm" placeholder="Lebar Barang (cm)" required />
-      <input type="number" id="tinggi_cm" placeholder="Tinggi Barang (cm)" required />
-      
-      <select id="layanan" required>
-        <option value="">Pilih Layanan</option>
-        <option value="reguler">Reguler</option>
-        <option value="prioritas">Prioritas</option>
-      </select>
-      <select id="referral" required>
-        <option value="">Gunakan Referral?</option>
-        <option value="ya">Ya</option>
-        <option value="tidak">Tidak</option>
-      </select>
-      <input type="text" id="nama_petugas" placeholder="Nama Petugas" required />
+  <input type="text" id="nama_customer" placeholder="Nama Customer" required />
+  <input type="text" id="nomor_hp_customer" placeholder="Nomor HP Customer" required />
+  <input type="text" id="asal_kirim" placeholder="Asal Kirim" value="Logistik Kita, Mojokerto" required />
+  <input type="text" id="tujuan_kirim" placeholder="Tujuan Kirim" required />
+  <input type="text" id="nama_barang" placeholder="Nama Barang" required />
+  <input type="number" id="berat_kg" placeholder="Berat (kg)" required />
+  <input type="number" id="jumlah_koli" placeholder="Jumlah Koli" required />
+  <input type="number" id="panjang_cm" placeholder="Panjang (cm)" required />
+  <input type="number" id="lebar_cm" placeholder="Lebar (cm)" required />
+  <input type="number" id="tinggi_cm" placeholder="Tinggi (cm)" required />
 
-      <button type="button" onclick="cekTarif()">Cek Tarif</button>
+  <select id="layanan" required>
+    <option value="">Pilih Layanan</option>
+    <option value="reguler">Reguler</option>
+    <option value="prioritas">Prioritas</option>
+  </select>
+
+  <select id="referral" required>
+    <option value="">Gunakan Referral?</option>
+    <option value="ya">Ya</option>
+    <option value="tidak">Tidak</option>
+  </select>
+
+  <input type="text" id="nama_petugas" placeholder="Nama Petugas" required />
+  <button type="button" onclick="cekTarif()">Cek Tarif</button>
     </form>
 
     <div id="popup" class="popup-box hidden"></div>
