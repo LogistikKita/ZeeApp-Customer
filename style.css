@@ -1,4 +1,4 @@
-/* Reset dan Font Dasar */
+/* Reset dan Dasar */
 * {
   margin: 0;
   padding: 0;
@@ -6,59 +6,59 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fff;
-  color: #111;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fefefe;
+  color: #222;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  line-height: 1.6;
 }
 
 /* Header */
 header {
-  background: linear-gradient(to right, #dc3545, #9b1c2e);
-  color: white;
+  background: linear-gradient(to right, #8B0000, #B22222);
+  color: #fff;
   text-align: center;
-  padding: 20px 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  animation: slideDown 0.5s ease-in-out;
+  padding: 24px 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  animation: fadeInDown 0.6s ease-out;
 }
 
 header h1 {
   font-size: 1.8rem;
-  letter-spacing: 1px;
+  font-weight: 600;
 }
 
-/* Navigation Menu */
+/* Navigation */
 .nav-menu {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background-color: #111;
-  padding: 10px 0;
-  gap: 15px;
+  background-color: #fafafa;
+  padding: 16px;
+  gap: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .menu-item {
-  color: white;
+  padding: 12px 24px;
   text-decoration: none;
-  background: #dc3545;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 1rem;
+  background-color: #8B0000;
+  color: #fff;
+  border-radius: 8px;
+  transition: 0.3s ease;
   font-weight: 500;
-  transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(220, 53, 69, 0.3);
+  box-shadow: 0 4px 10px rgba(139, 0, 0, 0.2);
 }
 
 .menu-item:hover {
-  background: #a71d2a;
+  background-color: #600000;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(220, 53, 69, 0.5);
 }
 
-/* Main Content */
+/* Konten */
 main {
   flex: 1;
   padding: 30px 20px;
@@ -66,55 +66,49 @@ main {
   text-align: center;
 }
 
-.welcome h2 {
-  color: #dc3545;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
+main h2 {
+  color: #8B0000;
+  margin-bottom: 8px;
 }
 
-.welcome p {
+main p {
+  color: #555;
   font-size: 1rem;
-  color: #444;
+  line-height: 1.6;
 }
 
 /* Footer */
 footer {
-  background-color: #111;
-  color: white;
+  background-color: #222;
+  color: #fff;
+  padding: 16px;
   text-align: center;
-  padding: 15px 10px;
   font-size: 0.9rem;
 }
 
-/* Animations */
-@keyframes slideDown {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
+/* Animasi */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Media Queries */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsif */
 @media (max-width: 600px) {
   header h1 {
     font-size: 1.4rem;
   }
 
   .menu-item {
-    width: 90%;
+    width: 100%;
     text-align: center;
-    padding: 10px;
-    font-size: 0.95rem;
   }
 
   main {
-    padding: 20px 10px;
-  }
-
-  .welcome h2 {
-    font-size: 1.2rem;
+    padding: 20px 12px;
   }
 }
