@@ -3,64 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Pengiriman - Logistik Kita</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <title>Form Customer - Logistik Kita</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
-  <script src="config.js"></script>
-  <script defer src="customer.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.0.3/dist/phosphor.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .input, .select {
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
-<body class="bg-white text-gray-900 font-sans">
-  <header class="bg-white shadow w-full fixed top-0 z-10">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <img src="/assets/logo.png" alt="Logo Logistik Kita" class="h-8">
-        <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
-      </div>
-    </div>
-  </header>
+<body class="bg-white text-gray-800 px-4 py-6 max-w-2xl mx-auto">
+  <h2 class="text-2xl font-bold text-red-600 text-center mb-6">Form Pengiriman Barang</h2>
+  <form id="formPengiriman" class="grid grid-cols-1 gap-4">
+    <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered w-full" />
+    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered w-full" />
+    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered w-full" />
+    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered w-full" />
+    <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered w-full" />
+    <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered w-full" />
+    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered w-full" />
+    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered w-full" />
+    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered w-full" />
+    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered w-full" />
+    <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered w-full" />
+    <select name="layanan" required class="select select-bordered w-full">
+      <option value="Reguler">Reguler</option>
+      <option value="Prioritas">Prioritas</option>
+    </select>
+    <select name="referral" required class="select select-bordered w-full">
+      <option value="Tidak">Tidak</option>
+      <option value="Ya">Ya</option>
+    </select>
+    <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered w-full" />
 
-  <main class="pt-24 px-4 max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold text-red-600 mb-4 text-center">Form Pengiriman Barang</h2>
-    <form id="formPengiriman" class="space-y-4">
-      <input type="text" name="nama_customer" placeholder="Nama Customer" class="input input-bordered w-full" required />
-      <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" class="input input-bordered w-full" required />
-      <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" class="input input-bordered w-full" required />
-      <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" class="input input-bordered w-full" required />
-      <input type="text" name="nama_barang" placeholder="Nama Barang" class="input input-bordered w-full" required />
-      <input type="number" name="berat_kg" placeholder="Berat (kg)" class="input input-bordered w-full" required />
-      <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" class="input input-bordered w-full" required />
-      <div class="grid grid-cols-3 gap-2">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" class="input input-bordered w-full" required />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" class="input input-bordered w-full" required />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" class="input input-bordered w-full" required />
-      </div>
-      <input type="text" name="jenis_armada" value="Pickup Granmax" class="input input-bordered w-full" required />
-      <select name="layanan" class="select select-bordered w-full" required>
-        <option value="Reguler">Reguler</option>
-        <option value="Prioritas">Prioritas</option>
-      </select>
-      <select name="referral" class="select select-bordered w-full" required>
-        <option value="Tidak">Tidak</option>
-        <option value="Ya">Ya</option>
-      </select>
-      <input type="text" name="nama_petugas" placeholder="Nama Petugas" class="input input-bordered w-full" required />
-      <div class="flex justify-between">
-        <button type="button" onclick="cekTarif()" class="btn btn-primary">🔍 Cek Tarif</button>
-        <button id="submitBtn" type="button" onclick="submitForm()" class="btn btn-success hidden">✅ Setuju & Kirim</button>
-      </div>
-    </form>
-  </main>
-
-  <!-- Modal -->
-  <div id="popupTarif" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-    <div class="bg-white rounded-xl p-6 shadow-md max-w-md w-full">
-      <h3 class="text-xl font-bold mb-4 text-red-600">Konfirmasi Data Pengiriman</h3>
-      <div id="popupContent" class="text-sm space-y-2"></div>
-      <div class="flex justify-end mt-4">
-        <button onclick="tutupPopup()" class="btn btn-outline mr-2">Batal</button>
-        <button onclick="lanjutKirim()" class="btn btn-primary">✅ Setuju</button>
-      </div>
+    <div class="flex gap-4 mt-2">
+      <button type="button" onclick="cekTarif()" class="btn btn-outline btn-error w-full">🔍 Cek Tarif</button>
+      <button id="submitBtn" type="button" onclick="submitForm()" class="btn btn-success w-full hidden">✅ Kirim Data</button>
     </div>
-  </div>
+  </form>
+
+  <dialog id="popupDialog" class="modal"></dialog>
+
+  <script src="config.js"></script>
+  <script src="customer.js"></script>
 </body>
 </html>
