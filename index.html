@@ -1,50 +1,84 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Logistik Kita</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="logo.png" />
-  </head>
-  <body class="bg-gradient-to-b from-red-700 via-white to-black text-white font-sans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logistik Kita | Ekspedisi Mojokerto</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #fff, #fef2f2);
+    }
+  </style>
+</head>
+<body class="text-gray-800">
 
-    <!-- Navbar -->
-    <header class="flex justify-between items-center px-6 py-4 bg-black bg-opacity-90 shadow-md">
-      <h1 class="text-2xl font-bold text-red-500">🚚 Logistik Kita</h1>
-      <nav class="flex gap-4 text-sm md:text-base text-white">
-        <a href="index.html" class="hover:text-red-400">Beranda</a>
-        <a href="customer.html" class="hover:text-red-400">Form Customer</a>
-        <a href="admin.html" class="hover:text-red-400">Admin</a>
-        <a href="owner.html" class="hover:text-red-400">Owner</a>
-        <a href="laporan.html" class="hover:text-red-400">Rekap</a>
-        <a href="cek-tarif.html" class="hover:text-red-400">Cek Tarif</a>
-        <a href="mitra.html" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Daftar Mitra</a>
+  <!-- NAVBAR -->
+  <header class="bg-white shadow fixed w-full z-10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <img src="/assets/logo.png" alt="Logo Logistik Kita" class="h-8">
+        <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
+      </div>
+      <nav class="space-x-4 hidden md:flex">
+        <a href="index.html" class="text-red-600 font-semibold">Beranda</a>
+        <a href="cek-tarif.html">Cek Tarif</a>
+        <a href="carter.html">Carter</a>
+        <a href="customer.html">Form Kirim</a>
+        <a href="kontak.html">Kontak</a>
       </nav>
-    </header>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="text-center py-20 px-4">
-      <h2 class="text-4xl md:text-5xl font-bold mb-6">Kirim Barang Aman, Pikiran Tenang</h2>
-      <p class="text-lg text-white/90 mb-8">Ekspedisi lokal Mojokerto - Surabaya. Layanan Reguler & Prioritas mulai <span class="font-bold text-yellow-300">Rp1.700/kg</span></p>
-      <a href="customer.html" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-300">
-        🚀 Mulai Kirim Sekarang
-      </a>
-    </section>
+  <!-- HERO SECTION -->
+  <section class="pt-24 pb-16 bg-gradient-to-r from-red-600 to-black text-white">
+    <div class="max-w-5xl mx-auto text-center px-4">
+      <h2 class="text-4xl font-extrabold mb-4">Ekspedisi Lokal Mojokerto</h2>
+      <p class="text-lg">Harga terjangkau, layanan profesional, kirim barang ke seluruh Nusantara 🚛📦</p>
+      <a href="customer.html" class="inline-block mt-6 px-6 py-3 bg-white text-red-600 font-semibold rounded-xl shadow hover:scale-105 transition">Kirim Barang Sekarang</a>
+    </div>
+  </section>
 
-    <!-- CTA Daftar Mitra -->
-    <section class="bg-black bg-opacity-70 py-12 px-6 text-center">
-      <h3 class="text-2xl md:text-3xl font-bold mb-4">Punya Kendaraan? 🛻</h3>
-      <p class="text-white/80 mb-6">Gabung jadi Mitra Driver Logistik Kita. Pickup / Truk / Cointainer? Bisa!</p>
-      <a href="mitra.html" class="inline-block bg-white text-red-700 font-bold px-6 py-3 rounded-full hover:bg-red-100">
-        Daftar Mitra Sekarang
-      </a>
-    </section>
+  <!-- KEUNGGULAN -->
+  <section class="py-12 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6 text-center">
+      <div>
+        <i class="ph ph-truck text-4xl text-red-600"></i>
+        <h3 class="mt-2 font-bold text-lg">Gratis Jemput Mojokerto</h3>
+        <p class="text-sm">Barang dijemput langsung ke lokasi kamu, tanpa biaya tambahan*</p>
+      </div>
+      <div>
+        <i class="ph ph-wallet text-4xl text-red-600"></i>
+        <h3 class="mt-2 font-bold text-lg">Tarif Mulai Rp1.700/kg</h3>
+        <p class="text-sm">Harga murah tanpa mengorbankan kualitas</p>
+      </div>
+      <div>
+        <i class="ph ph-shield-check text-4xl text-red-600"></i>
+        <h3 class="mt-2 font-bold text-lg">Aman & Terpercaya</h3>
+        <p class="text-sm">Driver resmi Logistik Kita & tracking mudah</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-black text-center py-6 text-white/70 text-sm mt-10">
-      &copy; 2025 Logistik Kita. All rights reserved.
-    </footer>
+  <!-- CTA SECTION -->
+  <section class="py-12 bg-red-600 text-white text-center">
+    <h2 class="text-2xl font-bold">Cek Tarif & Kirim Sekarang</h2>
+    <p class="text-sm mt-1">Cuma 1 menit untuk kirim barang pertama kamu!</p>
+    <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4">
+      <a href="cek-tarif.html" class="bg-white text-red-600 px-6 py-3 rounded-xl font-semibold shadow">Cek Tarif</a>
+      <a href="customer.html" class="bg-black px-6 py-3 rounded-xl font-semibold shadow">Form Pengiriman</a>
+    </div>
+  </section>
 
-  </body>
+  <!-- FOOTER -->
+  <footer class="bg-black text-white py-6 text-center text-sm">
+    <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
+    <div class="mt-2">
+      <p>WA: 0858-1348-7753 • IG: @logistikkita.official • Email: logistikkita.assist@gmail.com</p>
+    </div>
+  </footer>
+
+</body>
 </html>
