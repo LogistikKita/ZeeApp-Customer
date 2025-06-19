@@ -1,4 +1,4 @@
-<!-- customer.html --><!DOCTYPE html><html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,32 +7,49 @@
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
   <script src="config.js"></script>
   <script src="customer.js" defer></script>
+  <style>
+    input, select {
+      border: 1px solid #c4c4c4;
+    }
+  </style>
 </head>
-<body class="bg-white text-dark p-6 max-w-2xl mx-auto">
+<body class="bg-white text-gray-800 p-6 max-w-2xl mx-auto">
   <h2 class="text-2xl font-bold text-red-600 text-center mb-4">Form Pengiriman Barang</h2>
   <form id="formPengiriman" class="grid gap-4">
-    <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered border border-gray-400" />
-    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered border border-gray-400" />
-    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered border border-gray-400" />
-    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered border border-gray-400" />
-    <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered border border-gray-400" />
-    <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered border border-gray-400" />
-    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered border border-gray-400" />
-    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered border border-gray-400" />
-    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered border border-gray-400" />
-    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered border border-gray-400" />
-    <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered border border-gray-400" />
-    <select name="layanan" required class="select select-bordered border border-gray-400">
-      <option value="Reguler">Reguler</option>
-      <option value="Prioritas">Prioritas</option>
-    </select>
-    <select name="referral" required class="select select-bordered border border-gray-400">
-      <option value="Tidak">Tidak</option>
-      <option value="Ya">Ya</option>
-    </select>
-    <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered border border-gray-400" /><button type="button" onclick="cekTarif()" class="btn btn-primary">🔍 Cek Tarif</button>
+    <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered" />
+    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered" />
+    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered" />
+    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered" />
+    <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered" />
+    <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered" />
+    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered" />
+    <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered" />
+    <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered" />
+    <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered" />
+    <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered" /><select name="layanan" required class="select select-bordered">
+  <option value="Reguler">Reguler</option>
+  <option value="Prioritas">Prioritas</option>
+</select>
+
+<select name="referral" required class="select select-bordered">
+  <option value="Tidak">Tidak</option>
+  <option value="Ya">Ya</option>
+</select>
+
+<input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered" />
+
+<button type="button" onclick="cekTarif()" class="btn btn-outline btn-error">🔍 Cek Tarif</button>
 <button id="submitBtn" type="button" onclick="submitForm()" class="btn btn-success hidden">✅ Customer Setuju & Kirim</button>
 
-  </form>
+  </form>  <!-- Modal Popup -->  <dialog id="popupHasil" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Rincian Pengiriman</h3>
+      <p id="hasilCekTarif" class="py-4 text-sm whitespace-pre-line"></p>
+      <div class="modal-action">
+        <button class="btn" onclick="tutupPopup()">Tutup</button>
+        <button class="btn btn-success" onclick="lanjutKirim()">Customer Setuju ✅</button>
+      </div>
+    </div>
+  </dialog>
 </body>
 </html>
