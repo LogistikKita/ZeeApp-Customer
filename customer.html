@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Form Customer - Logistik Kita</title>
+  <title>Form Pengiriman - Logistik Kita</title>
   <link rel="stylesheet" href="style.css" />
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
@@ -17,7 +17,6 @@
     const popup = document.getElementById("popup");
     let dataPreview = {};
 
-    // CEK TARIF
     function cekTarif() {
       const formData = new FormData(form);
       const data = {};
@@ -67,7 +66,7 @@
 
       popup.innerHTML = `
         <div class="popup-box">
-          <h3>Konfirmasi Data</h3>
+          <h3>Konfirmasi Pengiriman</h3>
           <p><strong>Nama:</strong> ${dataPreview.nama_customer}</p>
           <p><strong>Tujuan:</strong> ${dataPreview.tujuan_kirim}</p>
           <p><strong>Berat:</strong> ${dataPreview.berat_kg} kg</p>
@@ -80,9 +79,8 @@
           </div>
         </div>
       `;
-      popup.style.display = "block";
+      popup.style.display = "flex";
 
-      // tombol di dalam popup
       document.getElementById("cancelBtn").addEventListener("click", () => {
         popup.style.display = "none";
       });
@@ -94,76 +92,82 @@
       if (error) {
         alert("❌ Gagal kirim data:\n" + error.message);
       } else {
-        alert("✅ Data berhasil dikirim ke Supabase!");
+        alert("✅ Data berhasil dikirim!");
         form.reset();
         popup.style.display = "none";
       }
     }
 
-    // Event listener tombol
     document.getElementById("btnCekTarif").addEventListener("click", cekTarif);
   </script>
   <style>
     .popup {
-      display: none;
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
       justify-content: center;
       align-items: center;
+      z-index: 999;
     }
     .popup-box {
       background: white;
       padding: 20px;
       border-radius: 10px;
       max-width: 400px;
-      box-shadow: 0 0 10px #0003;
-      text-align: left;
+      width: 90%;
+      box-shadow: 0 0 20px #00000030;
+    }
+    .popup-box h3 {
+      color: crimson;
     }
     .popup-btns {
-      text-align: right;
-      margin-top: 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
     }
     .popup-btns button {
-      margin-left: 10px;
-      background: crimson;
-      color: white;
-      border: none;
       padding: 8px 14px;
+      background: crimson;
+      border: none;
+      color: white;
       border-radius: 5px;
       cursor: pointer;
     }
     .popup-btns button:hover {
-      background: #a00;
+      background: #900;
     }
   </style>
 </head>
 <body>
-  <main>
-    <h2>Form Pengiriman Barang</h2>
+  <header class="navbar">
+    <h1>🧾 Form Customer</h1>
+  </header>
+
+  <main class="container">
     <form id="formPengiriman" class="form-layout">
-      <input type="text" id="nama_customer" name="nama_customer" placeholder="Nama Customer" required>
-      <input type="text" id="nomor_hp_customer" name="nomor_hp_customer" placeholder="Nomor HP" required>
-      <input type="text" id="asal_kirim" name="asal_kirim" placeholder="Asal Kirim" value="Logistik Kita, Mojokerto" required>
-      <input type="text" id="tujuan_kirim" name="tujuan_kirim" placeholder="Tujuan Kirim" required>
-      <input type="text" id="nama_barang" name="nama_barang" placeholder="Nama Barang" required>
-      <input type="number" id="berat_kg" name="berat_kg" placeholder="Berat (kg)" required>
-      <input type="number" id="jumlah_koli" name="jumlah_koli" placeholder="Jumlah Koli" required>
-      <input type="number" id="panjang_cm" name="panjang_cm" placeholder="Panjang (cm)" required>
-      <input type="number" id="lebar_cm" name="lebar_cm" placeholder="Lebar (cm)" required>
-      <input type="number" id="tinggi_cm" name="tinggi_cm" placeholder="Tinggi (cm)" required>
-      <select name="layanan" id="layanan" required>
+      <input type="text" name="nama_customer" placeholder="Nama Customer" required />
+      <input type="text" name="nomor_hp_customer" placeholder="Nomor HP" required />
+      <input type="text" name="asal_kirim" placeholder="Asal Kirim" value="Logistik Kita, Mojokerto" required />
+      <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required />
+      <input type="text" name="nama_barang" placeholder="Nama Barang" required />
+      <input type="number" name="berat_kg" placeholder="Berat (kg)" required />
+      <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required />
+      <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required />
+      <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required />
+      <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required />
+      <input type="text" name="jenis_armada" placeholder="Jenis Armada" value="Pickup Granmax" required />
+      <select name="layanan" required>
         <option value="reguler">Reguler</option>
         <option value="prioritas">Prioritas</option>
       </select>
-      <select name="referral" id="referral" required>
+      <select name="referral" required>
         <option value="tidak">Tidak</option>
         <option value="ya">Ya</option>
       </select>
-      <input type="text" id="jenis_armada" name="jenis_armada" value="Pickup Granmax" required>
-      <input type="text" id="nama_petugas" name="nama_petugas" placeholder="Nama Petugas" required>
+      <input type="text" name="nama_petugas" placeholder="Nama Petugas" required />
       <button type="button" id="btnCekTarif">Cek Tarif</button>
     </form>
     <div id="popup" class="popup"></div>
