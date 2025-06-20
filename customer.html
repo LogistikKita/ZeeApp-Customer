@@ -8,6 +8,14 @@
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
   <script src="config.js"></script>
   <script src="customer.js" defer></script>
+  <style>
+    input::placeholder, select {
+      color: #9ca3af;
+    }
+    .input-red {
+      @apply border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 px-4 py-2 bg-white;
+    }
+  </style>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -15,7 +23,7 @@
   <header class="bg-white shadow-md p-4 sticky top-0 z-50">
     <div class="flex items-center justify-between max-w-5xl mx-auto">
       <div class="flex items-center gap-2">
-        <img src="logo_logistikkita.png" alt="Logo" class="h-8">
+        <img src="logo.png" alt="Logo" class="h-8" />
         <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
       <a href="index.html" class="text-sm text-red-500 hover:underline">← Kembali ke Beranda</a>
@@ -28,49 +36,48 @@
 
     <form id="formPengiriman" class="space-y-6">
 
-      <!-- DATA CUSTOMER -->
-      <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+      <!-- Data Customer -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input-red" />
+        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input-red" />
+        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input-red" />
+        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input-red" />
       </div>
 
-      <!-- DATA BARANG -->
-      <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+      <!-- Data Barang -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input-red" />
+        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input-red" />
+        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input-red" />
+        <div class="grid grid-cols-3 gap-2">
+          <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input-red" />
+          <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input-red" />
+          <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input-red" />
+        </div>
       </div>
 
-      <!-- DIMENSI -->
-      <div class="grid grid-cols-3 gap-4">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-      </div>
-
-      <!-- INFO TAMBAHAN -->
-      <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
-        <select name="layanan" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm">
+      <!-- Info Tambahan -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input-red" />
+        <select name="layanan" required class="input-red">
+          <option value="" disabled selected hidden>Pilih Layanan</option>
           <option value="Reguler">Reguler</option>
           <option value="Prioritas">Prioritas</option>
         </select>
-        <select name="referral" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm">
+        <select name="referral" required class="input-red">
+          <option value="" disabled selected hidden>Referral?</option>
           <option value="Tidak">Tidak</option>
           <option value="Ya">Ya</option>
         </select>
-        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-red" />
       </div>
 
-      <!-- Tombol Cek Tarif -->
-<div class="text-center mt-8">
-  <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg px-10 py-3 shadow-lg">
-    🔍 Cek Tarif
-  </button>
-</div>
-
+      <!-- Tombol -->
+      <div class="text-center mt-8">
+        <button type="button" onclick="cekTarif()" class="bg-red-600 hover:bg-red-700 text-white text-lg font-semibold rounded-xl px-10 py-3 shadow-lg transition">
+          🔍 Cek Tarif
+        </button>
+      </div>
     </form>
   </main>
 </body>
