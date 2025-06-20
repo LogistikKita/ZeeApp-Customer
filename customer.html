@@ -6,6 +6,20 @@
   <title>Form Kirim Barang | Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+  <style>
+    .input-red {
+      @apply w-full px-4 py-3 border-2 border-red-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm transition;
+    }
+    .btn-primary-red {
+      @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-md hover:scale-105 transition;
+    }
+    .btn-outline-red {
+      @apply border-2 border-red-500 text-red-600 font-semibold py-2 px-6 rounded-full hover:bg-red-50 hover:border-red-600 transition;
+    }
+    .btn-success-green {
+      @apply bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md;
+    }
+  </style>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -13,7 +27,7 @@
   <header class="bg-white shadow-md p-4 sticky top-0 z-50">
     <div class="flex items-center justify-between max-w-5xl mx-auto">
       <div class="flex items-center gap-2">
-        <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
+        <img src="logo_logistikkita.png" alt="Logo" class="h-8">
         <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
       <a href="index.html" class="text-sm text-red-500 hover:underline">← Kembali ke Beranda</a>
@@ -28,181 +42,168 @@
 
       <!-- DATA CUSTOMER -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input-style" />
-        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input-style" />
-        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input-style" />
-        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input-style" />
+        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input-red" />
+        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input-red" />
+        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input-red" />
+        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input-red" />
       </div>
 
       <!-- DATA BARANG -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input-style" />
-        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input-style" />
-        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input-style" />
+        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input-red" />
+        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input-red" />
+        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input-red" />
       </div>
 
       <!-- DIMENSI -->
       <div class="grid grid-cols-3 gap-4">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input-style" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input-style" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input-style" />
+        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input-red" />
+        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input-red" />
+        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input-red" />
       </div>
 
       <!-- INFO TAMBAHAN -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input-style" />
-        <select name="layanan" required class="input-style">
+        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input-red" />
+        <select name="layanan" required class="input-red">
           <option value="Reguler">Reguler</option>
           <option value="Prioritas">Prioritas</option>
         </select>
-        <select name="referral" required class="input-style">
+        <select name="referral" required class="input-red">
           <option value="Tidak">Tidak</option>
           <option value="Ya">Ya</option>
         </select>
-        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-style" />
+        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-red" />
       </div>
 
       <!-- TOMBOL -->
-      <div class="text-center pt-6">
-        <button type="button" onclick="cekTarif()" class="btn-red">🔍 Cek Tarif</button>
-        <button id="btnSetuju" onclick="submitForm()" class="hidden mt-4 btn-green">✅ Customer Setuju</button>
+      <div class="text-center pt-6 space-x-4">
+        <button type="button" onclick="cekTarif()" class="btn-primary-red">🔍 Cek Tarif</button>
+        <button id="btnSetuju" onclick="submitForm()" class="hidden btn-success-green">✅ Customer Setuju</button>
       </div>
-
     </form>
   </main>
 
-  <!-- POPUP MODAL -->
+  <!-- POPUP -->
   <dialog id="popupTarif" class="modal">
     <form method="dialog" class="modal-box text-left">
       <h3 class="font-bold text-lg mb-2">📦 Detail Pengiriman</h3>
       <div id="popupContent" class="text-sm leading-relaxed"></div>
       <div class="modal-action">
-        <button class="btn btn-primary" onclick="tutupPopup()">OK</button>
+        <button class="btn-outline-red" onclick="tutupPopup()">OK</button>
       </div>
     </form>
   </dialog>
 
-  <!-- STYLE -->
-  <style>
-    .input-style {
-      @apply w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm;
-    }
-    .btn-red {
-      @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105;
-    }
-    .btn-green {
-      @apply bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105;
-    }
-  </style>
-
-  <!-- SCRIPT (config.js + customer.js digabung) -->
+  <!-- SCRIPT -->
   <script>
-    const supabaseUrl = 'https://mrghlcedtafomwnznywf.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs';
-    const tableName = 'Data_Barang';
+    const supabaseUrl = "https://mrghlcedtafomwnznywf.supabase.co";
+    const supabaseKey = "eyJhbGciOi..."; // Singkat demi keamanan
+    const tableName = "Data_Barang";
 
     async function generateSuratJalan() {
-      const now = new Date();
-      const tgl = now.toLocaleDateString('id-ID').split('/').join('-');
+      const today = new Date();
+      const dateStr = today.toLocaleDateString("id-ID").split("/").join("-");
       const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}?select=nomor_surat_jalan`, {
-        headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` }
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
       });
       const data = await res.json();
-      const urut = String((data?.length || 0) + 1).padStart(4, '0');
-      return `SJ-${tgl}-${urut}`;
+      const nextNum = data.length + 1;
+      const padded = String(nextNum).padStart(4, "0");
+      return `SJ-${dateStr}-${padded}`;
     }
 
     function hitungTarif(berat, layanan) {
       berat = parseFloat(berat);
-      if (layanan === 'Prioritas') return 450000;
+      if (layanan === "Prioritas") return 450000;
       if (berat <= 50) return 125000;
       else if (berat <= 70) return 125000 + (berat - 50) * 2200;
       else if (berat < 100) return 125000 + (berat - 50) * 2500;
       else if (berat <= 264) return berat * 1700;
-      else return 450000;
-    }
-
-    function cekTarif() {
-      const form = document.getElementById('formPengiriman');
-      const data = new FormData(form);
-
-      const berat = parseFloat(data.get('berat_kg'));
-      const volume = parseFloat(data.get('panjang_cm')) * parseFloat(data.get('lebar_cm')) * parseFloat(data.get('tinggi_cm'));
-      const layanan = data.get('layanan');
-      const tarif = hitungTarif(berat, layanan);
-
-      const html = `
-        Nama: ${data.get('nama_customer')}<br>
-        No. HP: ${data.get('nomor_hp_customer')}<br>
-        Asal: ${data.get('asal_kirim')} → Tujuan: ${data.get('tujuan_kirim')}<br>
-        Barang: ${data.get('nama_barang')} - ${berat} kg<br>
-        Volume: ${volume} cm³<br>
-        Layanan: ${layanan}<br><br>
-        <strong>Total Tarif: Rp ${tarif.toLocaleString('id-ID')}</strong>
-      `;
-      document.getElementById('popupContent').innerHTML = html;
-      document.getElementById('popupTarif').showModal();
-      console.log('Popup ditampilkan');
+      else return 450000; // Carter
     }
 
     function tutupPopup() {
-      document.getElementById('popupTarif').close();
-      document.getElementById('btnSetuju').classList.remove('hidden');
-      console.log('Popup ditutup, tombol Setuju ditampilkan');
+      document.getElementById("popupTarif").close();
+      document.getElementById("btnSetuju").classList.remove("hidden");
+    }
+
+    async function cekTarif() {
+      const form = document.getElementById("formPengiriman");
+      const formData = new FormData(form);
+      const panjang = parseFloat(formData.get("panjang_cm"));
+      const lebar = parseFloat(formData.get("lebar_cm"));
+      const tinggi = parseFloat(formData.get("tinggi_cm"));
+      const volume = panjang * lebar * tinggi;
+      const berat = parseFloat(formData.get("berat_kg"));
+      const layanan = formData.get("layanan");
+      const tarif = hitungTarif(berat, layanan);
+
+      const popup = `
+        Nama: ${formData.get("nama_customer")}<br>
+        No. HP: ${formData.get("nomor_hp_customer")}<br>
+        Asal: ${formData.get("asal_kirim")} → Tujuan: ${formData.get("tujuan_kirim")}<br>
+        Barang: ${formData.get("nama_barang")} (${berat}kg)<br>
+        Volume: ${volume.toLocaleString()} cm³<br>
+        Layanan: ${layanan}<br>
+        <hr class="my-2">
+        <b>Total Tarif: Rp ${tarif.toLocaleString("id-ID")}</b>
+      `;
+
+      document.getElementById("popupContent").innerHTML = popup;
+      document.getElementById("popupTarif").showModal();
     }
 
     async function submitForm() {
-      const form = document.getElementById('formPengiriman');
-      const data = new FormData(form);
+      const form = document.getElementById("formPengiriman");
+      const formData = new FormData(form);
+      const nomorSurat = await generateSuratJalan();
+      const tanggalMasuk = new Date().toISOString();
+      const volume = parseFloat(formData.get("panjang_cm")) * parseFloat(formData.get("lebar_cm")) * parseFloat(formData.get("tinggi_cm"));
+      const berat = parseFloat(formData.get("berat_kg"));
+      const layanan = formData.get("layanan");
+      const tarif = hitungTarif(berat, layanan);
 
-      const berat = parseFloat(data.get('berat_kg'));
-      const volume = parseFloat(data.get('panjang_cm')) * parseFloat(data.get('lebar_cm')) * parseFloat(data.get('tinggi_cm'));
-      const tarif = hitungTarif(berat, data.get('layanan'));
-      const suratJalan = await generateSuratJalan();
-      const now = new Date().toISOString();
-
-      const payload = {
-        nomor_surat_jalan: suratJalan,
-        tanggal_masuk: now,
-        nama_customer: data.get('nama_customer'),
-        nomor_hp_customer: data.get('nomor_hp_customer'),
-        asal_kirim: data.get('asal_kirim'),
-        tujuan_kirim: data.get('tujuan_kirim'),
-        nama_barang: data.get('nama_barang'),
+      const dataToSend = {
+        nomor_surat_jalan: nomorSurat,
+        tanggal_masuk: tanggalMasuk,
+        nama_customer: formData.get("nama_customer"),
+        nomor_hp_customer: formData.get("nomor_hp_customer"),
+        asal_kirim: formData.get("asal_kirim"),
+        tujuan_kirim: formData.get("tujuan_kirim"),
+        nama_barang: formData.get("nama_barang"),
         berat_kg: berat,
-        jumlah_koli: parseInt(data.get('jumlah_koli')),
-        panjang_cm: parseFloat(data.get('panjang_cm')),
-        lebar_cm: parseFloat(data.get('lebar_cm')),
-        tinggi_cm: parseFloat(data.get('tinggi_cm')),
+        jumlah_koli: parseInt(formData.get("jumlah_koli")),
+        panjang_cm: parseInt(formData.get("panjang_cm")),
+        lebar_cm: parseInt(formData.get("lebar_cm")),
+        tinggi_cm: parseInt(formData.get("tinggi_cm")),
         volume_cm3: volume,
-        jenis_armada: data.get('jenis_armada'),
-        layanan: data.get('layanan'),
-        referral: data.get('referral'),
-        nama_petugas: data.get('nama_petugas'),
+        jenis_armada: formData.get("jenis_armada"),
+        layanan: layanan,
+        referral: formData.get("referral"),
+        nama_petugas: formData.get("nama_petugas"),
         tarif_pengiriman: tarif,
         biaya_bbm: 0,
         biaya_driver: 0,
         biaya_sewa_armada: 0,
         profit_kotor: tarif,
-        status_kirim: 'pending'
+        status_kirim: "pending",
       };
 
-      console.log('Mengirim data ke Supabase...', payload);
-
       const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
-        method: 'POST',
+        method: "POST",
         headers: {
+          "Content-Type": "application/json",
           apikey: supabaseKey,
           Authorization: `Bearer ${supabaseKey}`,
-          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(dataToSend),
       });
 
-      const result = await res.json();
-      console.log('Response dari Supabase:', result);
-
-      alert('✅ Data berhasil dikirim!');
+      alert("✅ Data berhasil dikirim!");
       window.location.reload();
     }
   </script>
