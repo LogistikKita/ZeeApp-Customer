@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form Kirim Barang | Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
@@ -28,122 +28,152 @@
 
       <!-- DATA CUSTOMER -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input-red" />
-        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input-red" />
-        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input-red" />
-        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input-red" />
+        <input type="text" name="nama_customer" placeholder="Nama Customer" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
       </div>
 
       <!-- DATA BARANG -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input-red" />
-        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input-red" />
-        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input-red" />
+        <input type="text" name="nama_barang" placeholder="Nama Barang" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="number" name="berat_kg" placeholder="Berat (kg)" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
       </div>
 
       <!-- DIMENSI -->
       <div class="grid grid-cols-3 gap-4">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input-red" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input-red" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input-red" />
+        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
       </div>
 
       <!-- INFO TAMBAHAN -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input-red" />
-        <select name="layanan" required class="input-red">
+        <input type="text" name="jenis_armada" value="Pickup Granmax" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
+        <select name="layanan" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm">
           <option value="Reguler">Reguler</option>
           <option value="Prioritas">Prioritas</option>
         </select>
-        <select name="referral" required class="input-red">
+        <select name="referral" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm">
           <option value="Tidak">Tidak</option>
           <option value="Ya">Ya</option>
         </select>
-        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-red" />
+        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required
+          class="w-full px-4 py-3 border-2 border-red-500 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm" />
       </div>
 
       <!-- TOMBOL AKSI -->
-      <div class="text-center pt-6 space-y-4">
-        <button type="button" onclick="cekTarif()" class="btn-red">🔍 Cek Tarif</button>
-        <button id="btnSetuju" onclick="submitForm()" class="btn-green hidden">✅ Customer Setuju</button>
+      <div class="text-center pt-6">
+        <button type="button" onclick="cekTarif()"
+          class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-md transition hover:scale-105">
+          🔍 Cek Tarif
+        </button>
+        <button id="btnSetuju" onclick="submitForm()" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-md transition hover:scale-105">
+          ✅ Customer Setuju
+        </button>
       </div>
+
     </form>
   </main>
 
-  <!-- DIALOG POPUP -->
+  <!-- POPUP -->
   <dialog id="popupTarif" class="modal">
-    <form method="dialog" class="modal-box rounded-2xl shadow-2xl">
-      <h3 class="font-bold text-lg mb-2">📦 Detail Pengiriman</h3>
-      <div id="popupContent" class="text-sm leading-relaxed whitespace-pre-line"></div>
-      <div class="modal-action">
-        <button class="btn btn-outline btn-primary" onclick="tutupPopup()">OK</button>
+    <form method="dialog" class="modal-box bg-white border border-gray-300 rounded-xl shadow-lg">
+      <h3 class="font-bold text-lg text-red-600 mb-3">📦 Detail Pengiriman</h3>
+      <div id="popupContent" class="text-sm leading-relaxed text-gray-700 whitespace-pre-line"></div>
+      <div class="modal-action mt-4">
+        <button type="button" onclick="tutupPopup()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full shadow-md font-semibold">
+          ✅ OK
+        </button>
       </div>
     </form>
   </dialog>
 
-  <!-- STYLE CUSTOM -->
-  <style>
-    .input-red {
-      @apply w-full px-4 py-3 border-2 border-red-400 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-500 transition;
-    }
-    .btn-red {
-      @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition hover:scale-105;
-    }
-    .btn-green {
-      @apply bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition hover:scale-105;
-    }
-  </style>
-
-  <!-- JS LANGSUNG -->
+  <!-- SCRIPT -->
   <script>
-    const supabaseUrl = "https://mrghlcedtafomwnznywf.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";
-    const database = supabase.createClient(supabaseUrl, supabaseKey);
+    const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
+    const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";
+
+    const form = document.getElementById("formPengiriman");
+    const btnSetuju = document.getElementById("btnSetuju");
+
+    function hitungVolume(p, l, t) {
+      return Math.round(p * l * t);
+    }
+
+    function hitungTarif(volume, layanan) {
+      const tarifDasar = layanan === "Prioritas" ? 550000 : 450000;
+      return tarifDasar;
+    }
 
     function cekTarif() {
-      const form = document.getElementById('formPengiriman');
       const data = Object.fromEntries(new FormData(form).entries());
 
-      const volume = (parseFloat(data.panjang_cm) || 0) * (parseFloat(data.lebar_cm) || 0) * (parseFloat(data.tinggi_cm) || 0);
-      const tarif = data.layanan === 'Prioritas' ? 500000 : 450000;
+      const volume = hitungVolume(Number(data.panjang_cm), Number(data.lebar_cm), Number(data.tinggi_cm));
+      const tarif = hitungTarif(volume, data.layanan);
 
-      const content = `
+      document.getElementById("popupContent").innerText = `
 Nama: ${data.nama_customer}
 No. HP: ${data.nomor_hp_customer}
 Asal: ${data.asal_kirim} → Tujuan: ${data.tujuan_kirim}
-Barang: ${data.nama_barang} (${data.jumlah_koli} koli)
-Volume: ${volume.toLocaleString()} cm³
+Barang: ${data.nama_barang} (${data.jumlah_koli} koli, ${data.berat_kg} kg)
+Volume: ${volume} cm³
 Layanan: ${data.layanan}
 
-Total Tarif: Rp ${tarif.toLocaleString()}
-      `;
+Total Tarif: Rp ${tarif.toLocaleString("id-ID")}`.trim();
 
-      document.getElementById('popupContent').textContent = content;
-      document.getElementById('popupTarif').showModal();
-      window.calculatedData = { ...data, volume_cm3: volume, tarif_pengiriman: tarif };
+      document.getElementById("popupTarif").showModal();
+      btnSetuju.classList.remove("hidden");
     }
 
     function tutupPopup() {
-      document.getElementById('btnSetuju').classList.remove('hidden');
+      document.getElementById("popupTarif").close();
     }
 
     async function submitForm() {
-      const data = window.calculatedData;
-      const { error } = await database.from("Data_Barang").insert([data]);
+      const formData = Object.fromEntries(new FormData(form).entries());
 
-      if (error) {
-        alert("Gagal menyimpan data.");
-        console.error(error);
-      } else {
+      formData.volume_cm3 = hitungVolume(Number(formData.panjang_cm), Number(formData.lebar_cm), Number(formData.tinggi_cm));
+      formData.tarif_pengiriman = hitungTarif(formData.volume_cm3, formData.layanan);
+      formData.status_kirim = "Menunggu Pickup";
+      formData.tanggal_masuk = new Date().toISOString().split("T")[0];
+      formData.nomor_surat_jalan = "LK-" + Date.now();
+
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_API_KEY,
+          "Authorization": `Bearer ${SUPABASE_API_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=representation"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.ok) {
         alert("✅ Data berhasil dikirim!");
-        document.getElementById("formPengiriman").reset();
-        document.getElementById('btnSetuju').classList.add('hidden');
+        form.reset();
+        btnSetuju.classList.add("hidden");
+        tutupPopup();
+      } else {
+        alert("❌ Gagal mengirim data!");
+        console.error(await res.text());
       }
     }
   </script>
-
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 </body>
 </html>
