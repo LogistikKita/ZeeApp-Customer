@@ -8,6 +8,14 @@
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
   <script src="config.js"></script>
   <script src="customer.js" defer></script>
+  <style>
+    .input-bordered-red {
+      @apply border-2 border-red-500 focus:border-red-700 focus:ring-0;
+    }
+    .select-bordered-red {
+      @apply border-2 border-red-500 focus:border-red-700 focus:ring-0;
+    }
+  </style>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -27,85 +35,85 @@
     <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Form Pengiriman Barang</h2>
 
     <form id="formPengiriman" class="space-y-6">
-      <!-- Group: Data Customer -->
+      <!-- Data Customer -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="label font-semibold">Nama Customer</label>
-          <input type="text" name="nama_customer" class="input input-bordered w-full" required />
+          <input type="text" name="nama_customer" class="input input-bordered-red w-full" required />
         </div>
         <div>
           <label class="label font-semibold">Nomor HP Customer</label>
-          <input type="text" name="nomor_hp_customer" class="input input-bordered w-full" required />
+          <input type="text" name="nomor_hp_customer" class="input input-bordered-red w-full" required />
         </div>
         <div>
           <label class="label font-semibold">Asal Kirim</label>
-          <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" class="input input-bordered w-full" required />
+          <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" class="input input-bordered-red w-full" required />
         </div>
         <div>
           <label class="label font-semibold">Tujuan Kirim</label>
-          <input type="text" name="tujuan_kirim" class="input input-bordered w-full" required />
+          <input type="text" name="tujuan_kirim" class="input input-bordered-red w-full" required />
         </div>
       </div>
 
-      <!-- Group: Data Barang -->
+      <!-- Data Barang -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="label font-semibold">Nama Barang</label>
-          <input type="text" name="nama_barang" class="input input-bordered w-full" required />
+          <input type="text" name="nama_barang" class="input input-bordered-red w-full" required />
         </div>
         <div>
           <label class="label font-semibold">Berat (kg)</label>
-          <input type="number" name="berat_kg" class="input input-bordered w-full" required />
+          <input type="number" name="berat_kg" class="input input-bordered-red w-full" required />
         </div>
         <div>
           <label class="label font-semibold">Jumlah Koli</label>
-          <input type="number" name="jumlah_koli" class="input input-bordered w-full" required />
+          <input type="number" name="jumlah_koli" class="input input-bordered-red w-full" required />
         </div>
         <div class="grid grid-cols-3 gap-2">
           <div>
             <label class="label font-semibold">Panjang</label>
-            <input type="number" name="panjang_cm" placeholder="cm" class="input input-bordered w-full" required />
+            <input type="number" name="panjang_cm" placeholder="cm" class="input input-bordered-red w-full" required />
           </div>
           <div>
             <label class="label font-semibold">Lebar</label>
-            <input type="number" name="lebar_cm" placeholder="cm" class="input input-bordered w-full" required />
+            <input type="number" name="lebar_cm" placeholder="cm" class="input input-bordered-red w-full" required />
           </div>
           <div>
             <label class="label font-semibold">Tinggi</label>
-            <input type="number" name="tinggi_cm" placeholder="cm" class="input input-bordered w-full" required />
+            <input type="number" name="tinggi_cm" placeholder="cm" class="input input-bordered-red w-full" required />
           </div>
         </div>
       </div>
 
-      <!-- Group: Layanan & Petugas -->
+      <!-- Info Tambahan -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label class="label font-semibold">Jenis Armada</label>
-          <input type="text" name="jenis_armada" value="Pickup Granmax" class="input input-bordered w-full" required />
+          <input type="text" name="jenis_armada" value="Pickup Granmax" class="input input-bordered-red w-full" required />
         </div>
         <div>
           <label class="label font-semibold">Layanan</label>
-          <select name="layanan" class="select select-bordered w-full" required>
+          <select name="layanan" class="select select-bordered-red w-full" required>
             <option value="Reguler">Reguler</option>
             <option value="Prioritas">Prioritas</option>
           </select>
         </div>
         <div>
           <label class="label font-semibold">Referral</label>
-          <select name="referral" class="select select-bordered w-full" required>
+          <select name="referral" class="select select-bordered-red w-full" required>
             <option value="Tidak">Tidak</option>
             <option value="Ya">Ya</option>
           </select>
         </div>
         <div>
           <label class="label font-semibold">Nama Petugas</label>
-          <input type="text" name="nama_petugas" class="input input-bordered w-full" required />
+          <input type="text" name="nama_petugas" class="input input-bordered-red w-full" required />
         </div>
       </div>
 
-      <!-- TOMBOL AKSI -->
+      <!-- Aksi -->
       <div class="text-center mt-8">
-        <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg shadow-lg px-8 py-3">
+        <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg px-10 py-3 shadow-lg">
           🔍 Cek Tarif
         </button>
       </div>
