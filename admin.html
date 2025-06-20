@@ -14,41 +14,51 @@
 <body class="bg-gray-100">
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside class="w-64 bg-black text-white flex flex-col p-6 space-y-6">
-      <div class="flex items-center gap-2">
-        <img src="/assets/logo.png" alt="Logo" class="h-8" />
-        <h1 class="text-xl font-bold text-red-500">Logistik Kita</h1>
+    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-6 space-y-6 transition-all duration-300 ease-in-out">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img src="/assets/logo.png" alt="Logo" class="h-8" />
+          <h1 class="text-xl font-bold text-red-500">Logistik Kita</h1>
+        </div>
+        <button onclick="toggleSidebar()" class="text-white md:hidden">
+          <i class="ph ph-x"></i>
+        </button>
       </div>
-      <nav class="flex flex-col gap-2">
+      <nav class="flex flex-col gap-2 mt-4">
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gauge"></i> Dashboard
+          <i class="ph ph-gauge"></i> <span class="sidebar-text">Dashboard</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-truck"></i> Data Pengiriman
+          <i class="ph ph-truck"></i> <span class="sidebar-text">Data Pengiriman</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-pencil"></i> CRUD Tarif per Kg
+          <i class="ph ph-pencil"></i> <span class="sidebar-text">CRUD Tarif per Kg</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-map-pin"></i> Carter & Tarif Khusus
+          <i class="ph ph-map-pin"></i> <span class="sidebar-text">Carter & Tarif Khusus</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-users"></i> Mitra Driver
+          <i class="ph ph-users"></i> <span class="sidebar-text">Mitra Driver</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-globe"></i> Monitoring Armada
+          <i class="ph ph-globe"></i> <span class="sidebar-text">Monitoring Armada</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-handshake"></i> Referral
+          <i class="ph ph-handshake"></i> <span class="sidebar-text">Referral</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-chart-bar"></i> Laporan & Rekap
+          <i class="ph ph-chart-bar"></i> <span class="sidebar-text">Laporan & Rekap</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gear"></i> Pengaturan
+          <i class="ph ph-gear"></i> <span class="sidebar-text">Pengaturan</span>
         </a>
       </nav>
-    </aside><!-- Main Content -->
+    </aside><!-- Toggle Button (only on mobile view) -->
+<button id="toggleBtn" onclick="toggleSidebar()" class="fixed top-4 left-4 z-50 md:hidden bg-black text-white p-2 rounded">
+  <i class="ph ph-list"></i>
+</button>
+
+<!-- Main Content -->
 <main class="flex-1 p-8">
   <header class="mb-6">
     <h2 class="text-2xl font-bold text-red-600">Dashboard Admin</h2>
@@ -72,6 +82,20 @@
   </section>
 </main>
 
-  </div>
-</body>
+  </div>  <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    function toggleSidebar() {
+      if (sidebar.classList.contains('w-64')) {
+        sidebar.classList.remove('w-64');
+        sidebar.classList.add('w-16');
+        document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
+      } else {
+        sidebar.classList.remove('w-16');
+        sidebar.classList.add('w-64');
+        document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
+      }
+    }
+  </script></body>
 </html>
