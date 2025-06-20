@@ -2,24 +2,10 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Form Kirim Barang | Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
-  <style>
-    .input-red {
-      @apply w-full px-4 py-3 border-2 border-red-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm transition;
-    }
-    .btn-primary-red {
-      @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-md hover:scale-105 transition;
-    }
-    .btn-outline-red {
-      @apply border-2 border-red-500 text-red-600 font-semibold py-2 px-6 rounded-full hover:bg-red-50 hover:border-red-600 transition;
-    }
-    .btn-success-green {
-      @apply bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md;
-    }
-  </style>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -27,7 +13,7 @@
   <header class="bg-white shadow-md p-4 sticky top-0 z-50">
     <div class="flex items-center justify-between max-w-5xl mx-auto">
       <div class="flex items-center gap-2">
-        <img src="logo_logistikkita.png" alt="Logo" class="h-8">
+        <img src="logo.png" alt="Logo" class="h-8">
         <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
       <a href="index.html" class="text-sm text-red-500 hover:underline">← Kembali ke Beranda</a>
@@ -76,136 +62,88 @@
         <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-red" />
       </div>
 
-      <!-- TOMBOL -->
-      <div class="text-center pt-6 space-x-4">
-        <button type="button" onclick="cekTarif()" class="btn-primary-red">🔍 Cek Tarif</button>
-        <button id="btnSetuju" onclick="submitForm()" class="hidden btn-success-green">✅ Customer Setuju</button>
+      <!-- TOMBOL AKSI -->
+      <div class="text-center pt-6 space-y-4">
+        <button type="button" onclick="cekTarif()" class="btn-red">🔍 Cek Tarif</button>
+        <button id="btnSetuju" onclick="submitForm()" class="btn-green hidden">✅ Customer Setuju</button>
       </div>
     </form>
   </main>
 
-  <!-- POPUP -->
+  <!-- DIALOG POPUP -->
   <dialog id="popupTarif" class="modal">
-    <form method="dialog" class="modal-box text-left">
+    <form method="dialog" class="modal-box rounded-2xl shadow-2xl">
       <h3 class="font-bold text-lg mb-2">📦 Detail Pengiriman</h3>
-      <div id="popupContent" class="text-sm leading-relaxed"></div>
+      <div id="popupContent" class="text-sm leading-relaxed whitespace-pre-line"></div>
       <div class="modal-action">
-        <button class="btn-outline-red" onclick="tutupPopup()">OK</button>
+        <button class="btn btn-outline btn-primary" onclick="tutupPopup()">OK</button>
       </div>
     </form>
   </dialog>
 
-  <!-- SCRIPT -->
+  <!-- STYLE CUSTOM -->
+  <style>
+    .input-red {
+      @apply w-full px-4 py-3 border-2 border-red-400 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-500 transition;
+    }
+    .btn-red {
+      @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition hover:scale-105;
+    }
+    .btn-green {
+      @apply bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md transition hover:scale-105;
+    }
+  </style>
+
+  <!-- JS LANGSUNG -->
   <script>
     const supabaseUrl = "https://mrghlcedtafomwnznywf.supabase.co";
-    const supabaseKey = "eyJhbGciOi..."; // Singkat demi keamanan
-    const tableName = "Data_Barang";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";
+    const database = supabase.createClient(supabaseUrl, supabaseKey);
 
-    async function generateSuratJalan() {
-      const today = new Date();
-      const dateStr = today.toLocaleDateString("id-ID").split("/").join("-");
-      const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}?select=nomor_surat_jalan`, {
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-      });
-      const data = await res.json();
-      const nextNum = data.length + 1;
-      const padded = String(nextNum).padStart(4, "0");
-      return `SJ-${dateStr}-${padded}`;
-    }
+    function cekTarif() {
+      const form = document.getElementById('formPengiriman');
+      const data = Object.fromEntries(new FormData(form).entries());
 
-    function hitungTarif(berat, layanan) {
-      berat = parseFloat(berat);
-      if (layanan === "Prioritas") return 450000;
-      if (berat <= 50) return 125000;
-      else if (berat <= 70) return 125000 + (berat - 50) * 2200;
-      else if (berat < 100) return 125000 + (berat - 50) * 2500;
-      else if (berat <= 264) return berat * 1700;
-      else return 450000; // Carter
+      const volume = (parseFloat(data.panjang_cm) || 0) * (parseFloat(data.lebar_cm) || 0) * (parseFloat(data.tinggi_cm) || 0);
+      const tarif = data.layanan === 'Prioritas' ? 500000 : 450000;
+
+      const content = `
+Nama: ${data.nama_customer}
+No. HP: ${data.nomor_hp_customer}
+Asal: ${data.asal_kirim} → Tujuan: ${data.tujuan_kirim}
+Barang: ${data.nama_barang} (${data.jumlah_koli} koli)
+Volume: ${volume.toLocaleString()} cm³
+Layanan: ${data.layanan}
+
+Total Tarif: Rp ${tarif.toLocaleString()}
+      `;
+
+      document.getElementById('popupContent').textContent = content;
+      document.getElementById('popupTarif').showModal();
+      window.calculatedData = { ...data, volume_cm3: volume, tarif_pengiriman: tarif };
     }
 
     function tutupPopup() {
-      document.getElementById("popupTarif").close();
-      document.getElementById("btnSetuju").classList.remove("hidden");
-    }
-
-    async function cekTarif() {
-      const form = document.getElementById("formPengiriman");
-      const formData = new FormData(form);
-      const panjang = parseFloat(formData.get("panjang_cm"));
-      const lebar = parseFloat(formData.get("lebar_cm"));
-      const tinggi = parseFloat(formData.get("tinggi_cm"));
-      const volume = panjang * lebar * tinggi;
-      const berat = parseFloat(formData.get("berat_kg"));
-      const layanan = formData.get("layanan");
-      const tarif = hitungTarif(berat, layanan);
-
-      const popup = `
-        Nama: ${formData.get("nama_customer")}<br>
-        No. HP: ${formData.get("nomor_hp_customer")}<br>
-        Asal: ${formData.get("asal_kirim")} → Tujuan: ${formData.get("tujuan_kirim")}<br>
-        Barang: ${formData.get("nama_barang")} (${berat}kg)<br>
-        Volume: ${volume.toLocaleString()} cm³<br>
-        Layanan: ${layanan}<br>
-        <hr class="my-2">
-        <b>Total Tarif: Rp ${tarif.toLocaleString("id-ID")}</b>
-      `;
-
-      document.getElementById("popupContent").innerHTML = popup;
-      document.getElementById("popupTarif").showModal();
+      document.getElementById('btnSetuju').classList.remove('hidden');
     }
 
     async function submitForm() {
-      const form = document.getElementById("formPengiriman");
-      const formData = new FormData(form);
-      const nomorSurat = await generateSuratJalan();
-      const tanggalMasuk = new Date().toISOString();
-      const volume = parseFloat(formData.get("panjang_cm")) * parseFloat(formData.get("lebar_cm")) * parseFloat(formData.get("tinggi_cm"));
-      const berat = parseFloat(formData.get("berat_kg"));
-      const layanan = formData.get("layanan");
-      const tarif = hitungTarif(berat, layanan);
+      const data = window.calculatedData;
+      const { error } = await database.from("Data_Barang").insert([data]);
 
-      const dataToSend = {
-        nomor_surat_jalan: nomorSurat,
-        tanggal_masuk: tanggalMasuk,
-        nama_customer: formData.get("nama_customer"),
-        nomor_hp_customer: formData.get("nomor_hp_customer"),
-        asal_kirim: formData.get("asal_kirim"),
-        tujuan_kirim: formData.get("tujuan_kirim"),
-        nama_barang: formData.get("nama_barang"),
-        berat_kg: berat,
-        jumlah_koli: parseInt(formData.get("jumlah_koli")),
-        panjang_cm: parseInt(formData.get("panjang_cm")),
-        lebar_cm: parseInt(formData.get("lebar_cm")),
-        tinggi_cm: parseInt(formData.get("tinggi_cm")),
-        volume_cm3: volume,
-        jenis_armada: formData.get("jenis_armada"),
-        layanan: layanan,
-        referral: formData.get("referral"),
-        nama_petugas: formData.get("nama_petugas"),
-        tarif_pengiriman: tarif,
-        biaya_bbm: 0,
-        biaya_driver: 0,
-        biaya_sewa_armada: 0,
-        profit_kotor: tarif,
-        status_kirim: "pending",
-      };
-
-      const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      alert("✅ Data berhasil dikirim!");
-      window.location.reload();
+      if (error) {
+        alert("Gagal menyimpan data.");
+        console.error(error);
+      } else {
+        alert("✅ Data berhasil dikirim!");
+        document.getElementById("formPengiriman").reset();
+        document.getElementById('btnSetuju').classList.add('hidden');
+      }
     }
   </script>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </body>
 </html>
