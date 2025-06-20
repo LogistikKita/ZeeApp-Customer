@@ -29,78 +29,38 @@
     <form id="formPengiriman" class="space-y-6">
       <!-- Data Customer -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block font-semibold mb-1">Nama Customer</label>
-          <input type="text" name="nama_customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Nomor HP Customer</label>
-          <input type="text" name="nomor_hp_customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Asal Kirim</label>
-          <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Tujuan Kirim</label>
-          <input type="text" name="tujuan_kirim" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
+        <input type="text" name="nama_customer" placeholder="Nama Customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" placeholder="Asal Kirim" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
       </div>
 
       <!-- Data Barang -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block font-semibold mb-1">Nama Barang</label>
-          <input type="text" name="nama_barang" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Berat (kg)</label>
-          <input type="number" name="berat_kg" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Jumlah Koli</label>
-          <input type="number" name="jumlah_koli" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
+        <input type="text" name="nama_barang" placeholder="Nama Barang" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+        <input type="number" name="berat_kg" placeholder="Berat (kg)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         <div class="grid grid-cols-3 gap-2">
-          <div>
-            <label class="block font-semibold mb-1">Panjang (cm)</label>
-            <input type="number" name="panjang_cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Lebar (cm)</label>
-            <input type="number" name="lebar_cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-          </div>
-          <div>
-            <label class="block font-semibold mb-1">Tinggi (cm)</label>
-            <input type="number" name="tinggi_cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-          </div>
+          <input type="number" name="panjang_cm" placeholder="Panjang (cm)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+          <input type="number" name="lebar_cm" placeholder="Lebar (cm)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+          <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
       </div>
 
       <!-- Info Tambahan -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block font-semibold mb-1">Jenis Armada</label>
-          <input type="text" name="jenis_armada" value="Pickup Granmax" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Layanan</label>
-          <select name="layanan" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
-            <option value="Reguler">Reguler</option>
-            <option value="Prioritas">Prioritas</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Referral</label>
-          <select name="referral" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
-            <option value="Tidak">Tidak</option>
-            <option value="Ya">Ya</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-semibold mb-1">Nama Petugas</label>
-          <input type="text" name="nama_petugas" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
+        <input type="text" name="jenis_armada" placeholder="Jenis Armada (ex: Pickup Granmax)" value="Pickup Granmax" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+        <select name="layanan" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
+          <option value="" disabled selected>Layanan</option>
+          <option value="Reguler">Reguler</option>
+          <option value="Prioritas">Prioritas</option>
+        </select>
+        <select name="referral" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
+          <option value="" disabled selected>Referral</option>
+          <option value="Tidak">Tidak</option>
+          <option value="Ya">Ya</option>
+        </select>
+        <input type="text" name="nama_petugas" placeholder="Nama Petugas" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
       </div>
 
       <!-- Tombol Cek Tarif -->
