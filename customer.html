@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form Kirim Barang | Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
@@ -13,7 +13,7 @@
   <header class="bg-white shadow-md p-4 sticky top-0 z-50">
     <div class="flex items-center justify-between max-w-5xl mx-auto">
       <div class="flex items-center gap-2">
-        <img src="logo.png" alt="Logo" class="h-8">
+        <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
         <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
       <a href="index.html" class="text-sm text-red-500 hover:underline">← Kembali ke Beranda</a>
@@ -25,22 +25,30 @@
     <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Form Pengiriman Barang</h2>
 
     <form id="formPengiriman" class="space-y-6">
+
+      <!-- DATA CUSTOMER -->
       <div class="grid sm:grid-cols-2 gap-4">
         <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input-style" />
         <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input-style" />
         <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input-style" />
         <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input-style" />
       </div>
+
+      <!-- DATA BARANG -->
       <div class="grid sm:grid-cols-2 gap-4">
         <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input-style" />
         <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input-style" />
         <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input-style" />
       </div>
+
+      <!-- DIMENSI -->
       <div class="grid grid-cols-3 gap-4">
         <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input-style" />
         <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input-style" />
         <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input-style" />
       </div>
+
+      <!-- INFO TAMBAHAN -->
       <div class="grid sm:grid-cols-2 gap-4">
         <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input-style" />
         <select name="layanan" required class="input-style">
@@ -54,17 +62,18 @@
         <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-style" />
       </div>
 
-      <!-- Tombol -->
+      <!-- TOMBOL -->
       <div class="text-center pt-6">
         <button type="button" onclick="cekTarif()" class="btn-red">🔍 Cek Tarif</button>
         <button id="btnSetuju" onclick="submitForm()" class="hidden mt-4 btn-green">✅ Customer Setuju</button>
       </div>
+
     </form>
   </main>
 
-  <!-- POPUP -->
+  <!-- POPUP MODAL -->
   <dialog id="popupTarif" class="modal">
-    <form method="dialog" class="modal-box">
+    <form method="dialog" class="modal-box text-left">
       <h3 class="font-bold text-lg mb-2">📦 Detail Pengiriman</h3>
       <div id="popupContent" class="text-sm leading-relaxed"></div>
       <div class="modal-action">
@@ -76,7 +85,7 @@
   <!-- STYLE -->
   <style>
     .input-style {
-      @apply w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600;
+      @apply w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600 transition shadow-sm;
     }
     .btn-red {
       @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105;
@@ -86,10 +95,10 @@
     }
   </style>
 
-  <!-- SCRIPT -->
+  <!-- SCRIPT (config.js + customer.js digabung) -->
   <script>
     const supabaseUrl = 'https://mrghlcedtafomwnznywf.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Ganti dengan key kamu
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs';
     const tableName = 'Data_Barang';
 
     async function generateSuratJalan() {
@@ -122,7 +131,6 @@
       const layanan = data.get('layanan');
       const tarif = hitungTarif(berat, layanan);
 
-      console.log('Cek Tarif diklik');
       const html = `
         Nama: ${data.get('nama_customer')}<br>
         No. HP: ${data.get('nomor_hp_customer')}<br>
@@ -134,11 +142,13 @@
       `;
       document.getElementById('popupContent').innerHTML = html;
       document.getElementById('popupTarif').showModal();
+      console.log('Popup ditampilkan');
     }
 
     function tutupPopup() {
       document.getElementById('popupTarif').close();
       document.getElementById('btnSetuju').classList.remove('hidden');
+      console.log('Popup ditutup, tombol Setuju ditampilkan');
     }
 
     async function submitForm() {
@@ -190,7 +200,7 @@
       });
 
       const result = await res.json();
-      console.log('Response:', result);
+      console.log('Response dari Supabase:', result);
 
       alert('✅ Data berhasil dikirim!');
       window.location.reload();
