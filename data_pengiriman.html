@@ -1,155 +1,117 @@
 <!DOCTYPE html><html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Pengiriman | Admin - Logistik Kita</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Pengiriman | Logistik Kita</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .month-scroll::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
 </head>
-<body class="bg-gray-100">
-<div class="flex min-h-screen">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-black text-white flex flex-col p-6 space-y-6">
-    <div class="flex items-center gap-2">
-      <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
+<body class="flex h-screen bg-gray-100 text-gray-800">
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="w-64 bg-black text-white p-4 space-y-4 hidden md:block">
+    <div class="flex flex-col items-start">
+      <img src="logo_logistikkita.png" alt="Logo" class="h-10 mb-2">
       <h1 class="text-xl font-bold text-red-500">Logistik Kita</h1>
     </div>
-    <nav class="flex flex-col gap-2">
-      <a href="admin.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-gauge"></i> Dashboard
-      </a>
-      <a href="data_pengiriman.html" class="flex items-center gap-2 text-sm bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-truck"></i> Data Pengiriman
-      </a>
-      <a href="crud_tarif.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-pencil"></i> CRUD Tarif per Kg
-      </a>
-      <a href="carter_tarif.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-map-pin"></i> Carter & Tarif Khusus
-      </a>
-      <a href="mitra_driver.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-users"></i> Mitra Driver
-      </a>
-      <a href="monitoring.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-globe"></i> Monitoring Armada
-      </a>
-      <a href="referral.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-handshake"></i> Referral
-      </a>
-      <a href="laporan.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-chart-bar"></i> Laporan & Rekap
-      </a>
-      <a href="pengaturan.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-gear"></i> Pengaturan
-      </a>
+    <nav class="mt-6 flex flex-col space-y-2">
+      <a href="admin.html" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-gauge"></i> Dashboard</a>
+      <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded bg-red-600"><i class="ph ph-truck"></i> Data Pengiriman</a>
+      <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-pencil"></i> Tarif</a>
     </nav>
-  </aside>  <!-- Main Content -->  <main class="flex-1 p-6">
-    <header class="mb-6">
-      <h2 class="text-2xl font-bold text-red-600">Data Pengiriman</h2>
-      <p class="text-sm text-gray-600">Silakan pilih bulan untuk menampilkan data pengiriman.</p>
-    </header><!-- Pilih Bulan -->
-<div class="overflow-x-auto month-scroll whitespace-nowrap mb-4">
-  <div class="flex gap-2">
-    <button onclick="filterBulan('01')" class="btn-month">Januari</button>
-    <button onclick="filterBulan('02')" class="btn-month">Februari</button>
-    <button onclick="filterBulan('03')" class="btn-month">Maret</button>
-    <button onclick="filterBulan('04')" class="btn-month">April</button>
-    <button onclick="filterBulan('05')" class="btn-month">Mei</button>
-    <button onclick="filterBulan('06')" class="btn-month">Juni</button>
-    <button onclick="filterBulan('07')" class="btn-month">Juli</button>
-    <button onclick="filterBulan('08')" class="btn-month">Agustus</button>
-    <button onclick="filterBulan('09')" class="btn-month">September</button>
-    <button onclick="filterBulan('10')" class="btn-month">Oktober</button>
-    <button onclick="filterBulan('11')" class="btn-month">November</button>
-    <button onclick="filterBulan('12')" class="btn-month">Desember</button>
-  </div>
+  </aside>  <!-- MAIN CONTENT -->  <div class="flex-1 overflow-auto p-6">
+    <!-- TOGGLE SIDEBAR -->
+    <div class="mb-4 md:hidden flex items-center justify-between">
+      <button onclick="toggleSidebar()" class="bg-black text-white px-4 py-2 rounded-full">☰</button>
+      <div class="flex items-center gap-2">
+        <img src="logo_logistikkita.png" class="h-6">
+        <span class="font-bold text-red-600">Logistik Kita</span>
+      </div>
+    </div><h2 class="text-2xl font-bold text-red-600 mb-4">Data Pengiriman</h2>
+
+<!-- FILTER BULAN & TAHUN -->
+<div class="flex items-center gap-4 mb-6">
+  <input type="text" id="monthPicker" class="px-4 py-2 border rounded-xl" placeholder="Pilih Bulan & Tahun">
+  <button onclick="tampilkanData()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl">Tampilkan Data</button>
+  <button onclick="openManualInput()" class="ml-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl">+ Input Data Manual</button>
 </div>
 
-<!-- Tabel Data -->
-<div class="overflow-x-auto bg-white rounded-xl shadow">
-  <table class="min-w-full text-sm">
-    <thead class="bg-gray-200 text-gray-600">
+<!-- TABEL DATA -->
+<div class="overflow-x-auto">
+  <table class="w-full table-auto border border-gray-300 rounded-xl overflow-hidden">
+    <thead class="bg-red-100">
       <tr>
-        <th class="px-4 py-3 text-left">Tanggal</th>
-        <th class="px-4 py-3 text-left">No. Surat Jalan</th>
-        <th class="px-4 py-3 text-left">Customer</th>
-        <th class="px-4 py-3 text-left">Tujuan</th>
-        <th class="px-4 py-3 text-left">Layanan</th>
-        <th class="px-4 py-3 text-left">Tarif</th>
-        <th class="px-4 py-3 text-left">Status</th>
-        <th class="px-4 py-3 text-left">Aksi</th>
+        <th class="px-3 py-2">Tanggal</th>
+        <th class="px-3 py-2">Nama Customer</th>
+        <th class="px-3 py-2">Tujuan</th>
+        <th class="px-3 py-2">Barang</th>
+        <th class="px-3 py-2">Tarif</th>
+        <th class="px-3 py-2">Status</th>
+        <th class="px-3 py-2">Aksi</th>
       </tr>
     </thead>
-    <tbody id="tabelData" class="text-gray-800"></tbody>
+    <tbody id="tabelData" class="bg-white text-sm">
+      <!-- Data akan ditampilkan di sini -->
+    </tbody>
   </table>
 </div>
 
-  </main>
-</div><!-- Modal Detail --><dialog id="popupDetail" class="modal">
-  <form method="dialog" class="modal-box bg-white rounded-xl max-w-2xl">
-    <h3 class="font-bold text-lg text-red-600 mb-2">📦 Detail Pengiriman</h3>
-    <div id="detailContent" class="text-sm whitespace-pre-line text-gray-700"></div>
-    <div class="modal-action">
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full shadow">Tutup</button>
-    </div>
-  </form>
-</dialog><script>
-const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
-const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // dipersingkat
-
-function filterBulan(bulan) {
-  fetch(`${SUPABASE_URL}/rest/v1/Data_Barang?select=*`, {
-    headers: {
-      apikey: SUPABASE_API_KEY,
-      Authorization: `Bearer ${SUPABASE_API_KEY}`
+  </div>  <!-- MODAL DETAIL -->  <dialog id="modalDetail" class="modal">
+    <form method="dialog" class="modal-box w-11/12 max-w-2xl">
+      <h3 class="font-bold text-lg text-red-600">Detail Pengiriman</h3>
+      <div id="detailContent" class="mt-4 text-sm text-gray-700 space-y-1">
+        <!-- Isi data ditampilkan di sini -->
+      </div>
+      <div class="modal-action mt-4">
+        <button type="button" onclick="editData()" class="bg-yellow-500 text-white px-4 py-2 rounded-full">✏️ Edit</button>
+        <button type="button" onclick="confirmDelete()" class="bg-red-500 text-white px-4 py-2 rounded-full">🗑️ Hapus</button>
+        <button type="button" onclick="closeModal()" class="bg-gray-400 text-white px-4 py-2 rounded-full">❌ Close</button>
+      </div>
+    </form>
+  </dialog>  <!-- SCRIPT -->  <script>
+    const sidebar = document.getElementById('sidebar');
+    function toggleSidebar() {
+      sidebar.classList.toggle('hidden');
     }
-  })
-  .then(res => res.json())
-  .then(data => {
-    const hasil = data.filter(item => item.tanggal_masuk?.slice(5, 7) === bulan);
-    const tbody = document.getElementById('tabelData');
-    tbody.innerHTML = hasil.map(row => `
-      <tr>
-        <td class="px-4 py-2">${row.tanggal_masuk}</td>
-        <td class="px-4 py-2">${row.nomor_surat_jalan}</td>
-        <td class="px-4 py-2">${row.nama_customer}</td>
-        <td class="px-4 py-2">${row.tujuan_kirim}</td>
-        <td class="px-4 py-2">${row.layanan}</td>
-        <td class="px-4 py-2">Rp ${Number(row.tarif_pengiriman).toLocaleString('id-ID')}</td>
-        <td class="px-4 py-2">${row.status_kirim}</td>
-        <td class="px-4 py-2">
-          <button onclick='lihatDetail(${JSON.stringify(row)})' class="text-blue-600 hover:underline text-sm">Lihat</button>
-        </td>
-      </tr>`).join('');
-  });
-}
 
-function lihatDetail(data) {
-  const isi = Object.entries(data).map(([k, v]) => `• ${k.replace(/_/g,' ')}: ${v}`).join("\n");
-  document.getElementById('detailContent').innerText = isi;
-  document.getElementById('popupDetail').showModal();
-}
-</script><style>
-  .btn-month {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 9999px;
-    padding: 6px 16px;
-    font-size: 14px;
-    white-space: nowrap;
-    transition: all 0.2s;
-  }
-  .btn-month:hover {
-    background: #f87171;
-    color: white;
-  }
-</style></body>
+    const picker = new Litepicker({
+      element: document.getElementById('monthPicker'),
+      format: 'MMMM YYYY',
+      singleMode: true,
+      dropdowns: { minYear: 2024, maxYear: 2030, months: true, years: true }
+    });
+
+    function tampilkanData() {
+      const selectedDate = document.getElementById('monthPicker').value;
+      if (!selectedDate) return alert("Pilih bulan terlebih dahulu");
+      // Ambil data dari database berdasarkan bulan
+      // Kemudian tampilkan di tabelData
+    }
+
+    function lihatDetail(dataId) {
+      // Ambil detail dari database dan tampilkan di detailContent
+      document.getElementById('modalDetail').showModal();
+    }
+
+    function closeModal() {
+      document.getElementById('modalDetail').close();
+    }
+
+    function editData() {
+      if (confirm("Yakin ingin mengedit data ini?")) {
+        // Lakukan proses update
+      }
+    }
+
+    function confirmDelete() {
+      if (confirm("Yakin ingin menghapus data ini?")) {
+        // Lakukan proses delete
+      }
+    }
+
+    function openManualInput() {
+      // Buka halaman atau form input data manual
+    }
+  </script></body>
 </html>
