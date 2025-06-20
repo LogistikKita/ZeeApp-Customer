@@ -9,56 +9,55 @@
     body {
       font-family: 'Inter', sans-serif;
     }
+    .sidebar-collapsed nav span {
+      display: none;
+    }
+    .sidebar-collapsed .sidebar-text {
+      display: none;
+    }
   </style>
 </head>
 <body class="bg-gray-100">
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-6 space-y-6 transition-all duration-300 ease-in-out">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
-          <h1 class="text-xl font-bold text-red-500">Logistik Kita</h1>
-        </div>
-        <button onclick="toggleSidebar()" class="text-white md:hidden">
-          <i class="ph ph-x"></i>
+    <aside id="sidebar" class="w-64 transition-all duration-300 bg-black text-white flex flex-col p-6 space-y-6">
+      <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="focus:outline-none">
+          <i class="ph ph-list text-2xl"></i>
         </button>
+        <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
+        <h1 class="sidebar-text text-xl font-bold text-red-500">Logistik Kita</h1>
       </div>
-      <nav class="flex flex-col gap-2 mt-4">
+      <nav class="flex flex-col gap-2">
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gauge"></i> <span class="sidebar-text">Dashboard</span>
+          <i class="ph ph-gauge"></i> <span>Dashboard</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-truck"></i> <span class="sidebar-text">Data Pengiriman</span>
+          <i class="ph ph-truck"></i> <span>Data Pengiriman</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-pencil"></i> <span class="sidebar-text">CRUD Tarif per Kg</span>
+          <i class="ph ph-pencil"></i> <span>CRUD Tarif per Kg</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-map-pin"></i> <span class="sidebar-text">Carter & Tarif Khusus</span>
+          <i class="ph ph-map-pin"></i> <span>Carter & Tarif Khusus</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-users"></i> <span class="sidebar-text">Mitra Driver</span>
+          <i class="ph ph-users"></i> <span>Mitra Driver</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-globe"></i> <span class="sidebar-text">Monitoring Armada</span>
+          <i class="ph ph-globe"></i> <span>Monitoring Armada</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-handshake"></i> <span class="sidebar-text">Referral</span>
+          <i class="ph ph-handshake"></i> <span>Referral</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-chart-bar"></i> <span class="sidebar-text">Laporan & Rekap</span>
+          <i class="ph ph-chart-bar"></i> <span>Laporan & Rekap</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gear"></i> <span class="sidebar-text">Pengaturan</span>
+          <i class="ph ph-gear"></i> <span>Pengaturan</span>
         </a>
       </nav>
-    </aside><!-- Toggle Button (only on mobile view) -->
-<button id="toggleBtn" onclick="toggleSidebar()" class="fixed top-4 left-4 z-50 md:hidden bg-black text-white p-2 rounded">
-  <i class="ph ph-list"></i>
-</button>
-
-<!-- Main Content -->
+    </aside><!-- Main Content -->
 <main class="flex-1 p-8">
   <header class="mb-6">
     <h2 class="text-2xl font-bold text-red-600">Dashboard Admin</h2>
@@ -83,19 +82,11 @@
 </main>
 
   </div>  <script>
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggleBtn');
-
     function toggleSidebar() {
-      if (sidebar.classList.contains('w-64')) {
-        sidebar.classList.remove('w-64');
-        sidebar.classList.add('w-16');
-        document.querySelectorAll('.sidebar-text').forEach(el => el.classList.add('hidden'));
-      } else {
-        sidebar.classList.remove('w-16');
-        sidebar.classList.add('w-64');
-        document.querySelectorAll('.sidebar-text').forEach(el => el.classList.remove('hidden'));
-      }
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("w-64");
+      sidebar.classList.toggle("w-20");
+      sidebar.classList.toggle("sidebar-collapsed");
     }
   </script></body>
 </html>
