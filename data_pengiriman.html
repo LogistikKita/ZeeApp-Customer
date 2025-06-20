@@ -1,142 +1,137 @@
-<!DOCTYPE html><html lang="id"><head>
+<!DOCTYPE html><html lang="id">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data Pengiriman | Logistik Kita</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-</head><body class="bg-gray-100">
-  <div class="flex min-h-screen">
-    <!-- SIDEBAR -->
-    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-4 space-y-4 transition-all duration-300">
-      <div class="flex items-center gap-2 mb-4">
-        <img src="logo_logistikkita.png" alt="Logo" class="h-10 mx-auto">
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .sidebar-collapsed .sidebar-label {
+      display: none;
+    }
+    .sidebar {
+      transition: width 0.3s ease;
+    }
+    .sidebar-expanded {
+      width: 260px;
+    }
+    .sidebar-collapsed {
+      width: 80px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar sidebar-expanded bg-black text-white flex flex-col p-4 space-y-6">
+    <div class="flex items-center justify-between">
+      <div class="flex flex-col items-start">
+        <img src="logo_logistikkita.png" alt="Logo" class="h-10 mb-2" />
+        <h1 class="sidebar-label text-xl font-bold text-red-500">Logistik Kita</h1>
       </div>
-      <button onclick="toggleSidebar()" class="bg-red-600 text-white px-3 py-1 rounded mb-4">☰ Menu</button>
-      <nav id="menuList" class="flex flex-col gap-2">
-        <a href="admin.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-gauge"></i> Dashboard</a>
-        <a href="#" class="flex items-center gap-2 text-sm bg-red-600 px-3 py-2 rounded"><i class="ph ph-truck"></i> Data Pengiriman</a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-pencil"></i> CRUD Tarif per Kg</a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-map-pin"></i> Carter & Tarif Khusus</a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-users"></i> Mitra Driver</a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-globe"></i> Monitoring Armada</a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-handshake"></i> Referral</a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-chart-bar"></i> Laporan & Rekap</a>
-      </nav>
-    </aside><!-- MAIN -->
-<main class="flex-1 p-6">
-  <header class="mb-6">
-    <h2 class="text-2xl font-bold text-red-600">Data Pengiriman Bulanan</h2>
-    <p class="text-sm text-gray-600">Lihat semua pengiriman berdasarkan bulan dan kelola datanya.</p>
-  </header>
-
-  <!-- FILTER BULAN -->
-  <div class="mb-4 flex flex-wrap items-center gap-2">
-    <label class="font-medium">Pilih Bulan:</label>
-    <select id="bulanFilter" class="border border-gray-300 rounded px-3 py-1">
-      <option value="01">Januari</option>
-      <option value="02">Februari</option>
-      <option value="03">Maret</option>
-      <option value="04">April</option>
-      <option value="05">Mei</option>
-      <option value="06">Juni</option>
-      <option value="07">Juli</option>
-      <option value="08">Agustus</option>
-      <option value="09">September</option>
-      <option value="10">Oktober</option>
-      <option value="11">November</option>
-      <option value="12">Desember</option>
-    </select>
-    <button onclick="filterByBulan()" class="bg-red-600 text-white px-4 py-1 rounded hover:bg-red-700">Tampilkan</button>
+      <button onclick="toggleSidebar()" class="text-white">
+        <i class="ph ph-list text-2xl"></i>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-2 mt-4">
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+        <i class="ph ph-gauge"></i> <span class="sidebar-label">Dashboard</span>
+      </a>
+      <a href="#" class="flex items-center gap-2 text-sm bg-red-600 px-3 py-2 rounded">
+        <i class="ph ph-truck"></i> <span class="sidebar-label">Data Pengiriman</span>
+      </a>
+      <!-- Menu lainnya -->
+    </nav>
+  </aside>  <!-- Main Content -->  <main class="flex-1 p-6">
+    <header class="mb-6">
+      <h2 class="text-2xl font-bold text-red-600">Data Pengiriman</h2>
+      <p class="text-sm text-gray-600">Lihat dan kelola data pengiriman barang.</p>
+    </header><!-- Filter Bulan -->
+<div class="mb-4">
+  <h3 class="font-semibold mb-2">Pilih Bulan:</h3>
+  <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(1)">Januari</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(2)">Februari</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(3)">Maret</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(4)">April</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(5)">Mei</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(6)">Juni</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(7)">Juli</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(8)">Agustus</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(9)">September</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(10)">Oktober</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(11)">November</button>
+    <button class="btn btn-sm btn-outline" onclick="filterBulan(12)">Desember</button>
   </div>
+</div>
 
-  <!-- TABEL DATA -->
-  <div class="overflow-x-auto">
-    <table class="table w-full bg-white shadow rounded-xl">
-      <thead class="bg-red-600 text-white text-sm">
-        <tr>
-          <th>No</th>
-          <th>Nomor SJ</th>
-          <th>Tanggal</th>
-          <th>Customer</th>
-          <th>Tujuan</th>
-          <th>Layanan</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody id="tabelPengiriman" class="text-sm"></tbody>
-    </table>
-  </div>
-</main>
+<!-- Tabel Data Pengiriman -->
+<div id="dataContainer" class="overflow-auto"></div>
 
-  </div>  <!-- MODAL DETAIL -->  <dialog id="modalDetail" class="modal">
-    <form method="dialog" class="modal-box bg-white rounded-xl">
-      <h3 class="font-bold text-lg text-red-600">Detail Pengiriman</h3>
-      <div id="isiDetail" class="text-sm mt-2"></div>
-      <div class="modal-action">
-        <button class="btn">Tutup</button>
-      </div>
-    </form>
-  </dialog>  <script>
+  </main>
+</div><script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('sidebar-collapsed');
+    sidebar.classList.toggle('sidebar-expanded');
+  }
+
+  async function filterBulan(bulan) {
     const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
     const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";
 
-    async function ambilDataPengiriman(bulan = new Date().toISOString().slice(5, 7)) {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang?select=*`, {
-        headers: {
-          apikey: SUPABASE_API_KEY,
-          Authorization: `Bearer ${SUPABASE_API_KEY}`,
-        }
-      });
+    const tahun = new Date().getFullYear();
+    const awal = `${tahun}-${String(bulan).padStart(2, '0')}-01`;
+    const akhir = `${tahun}-${String(bulan).padStart(2, '0')}-31`;
 
-      const data = await res.json();
-      const filterBulan = data.filter(d => d.tanggal_masuk?.slice(5, 7) === bulan);
-      const tbody = document.getElementById("tabelPengiriman");
-      tbody.innerHTML = filterBulan.map((item, i) => `
-        <tr>
-          <td>${i + 1}</td>
-          <td>${item.nomor_surat_jalan}</td>
-          <td>${item.tanggal_masuk}</td>
-          <td>${item.nama_customer}</td>
-          <td>${item.tujuan_kirim}</td>
-          <td>${item.layanan}</td>
-          <td>${item.status_kirim}</td>
-          <td>
-            <button onclick='lihatDetail(${JSON.stringify(item)})' class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1 rounded">🔍 Detail</button>
-          </td>
-        </tr>
-      `).join("");
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang?select=*&tanggal_masuk=gte.${awal}&tanggal_masuk=lte.${akhir}`, {
+      headers: {
+        apikey: SUPABASE_API_KEY,
+        Authorization: `Bearer ${SUPABASE_API_KEY}`
+      }
+    });
+
+    const data = await res.json();
+    renderTabel(data);
+  }
+
+  function renderTabel(data) {
+    const container = document.getElementById("dataContainer");
+    if (!data.length) {
+      container.innerHTML = '<p class="text-gray-500">Tidak ada data di bulan ini.</p>';
+      return;
     }
 
-    function filterByBulan() {
-      const bulan = document.getElementById("bulanFilter").value;
-      ambilDataPengiriman(bulan);
-    }
+    let html = `<div class="overflow-x-auto"><table class="min-w-full bg-white rounded-xl shadow"><thead><tr class="bg-red-600 text-white text-left text-sm">
+      <th class="py-2 px-4">Tanggal</th>
+      <th class="py-2 px-4">Customer</th>
+      <th class="py-2 px-4">Tujuan</th>
+      <th class="py-2 px-4">Barang</th>
+      <th class="py-2 px-4">Tarif</th>
+      <th class="py-2 px-4">Status</th>
+      <th class="py-2 px-4">Aksi</th>
+    </tr></thead><tbody>`;
 
-    function lihatDetail(item) {
-      const isi = `
-        <p><b>Nama Customer:</b> ${item.nama_customer}</p>
-        <p><b>HP:</b> ${item.nomor_hp_customer}</p>
-        <p><b>Barang:</b> ${item.nama_barang} (${item.jumlah_koli} koli, ${item.berat_kg} kg)</p>
-        <p><b>Ukuran:</b> ${item.panjang_cm} x ${item.lebar_cm} x ${item.tinggi_cm} cm</p>
-        <p><b>Volume:</b> ${item.volume_cm3} cm³</p>
-        <p><b>Armada:</b> ${item.jenis_armada}</p>
-        <p><b>Petugas:</b> ${item.nama_petugas}</p>
-        <p><b>Tarif:</b> Rp ${item.tarif_pengiriman?.toLocaleString('id-ID')}</p>
-        <p><b>Status:</b> ${item.status_kirim}</p>
-      `;
-      document.getElementById("isiDetail").innerHTML = isi;
-      document.getElementById("modalDetail").showModal();
-    }
+    data.forEach(item => {
+      html += `<tr class="border-b text-sm">
+        <td class="py-2 px-4">${item.tanggal_masuk}</td>
+        <td class="py-2 px-4">${item.nama_customer}</td>
+        <td class="py-2 px-4">${item.tujuan_kirim}</td>
+        <td class="py-2 px-4">${item.nama_barang}</td>
+        <td class="py-2 px-4">Rp ${item.tarif_pengiriman.toLocaleString("id-ID")}</td>
+        <td class="py-2 px-4">${item.status_kirim}</td>
+        <td class="py-2 px-4">
+          <button onclick='alert(JSON.stringify(${JSON.stringify(item)}, null, 2))' class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded">Detail</button>
+        </td>
+      </tr>`;
+    });
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      const menuList = document.getElementById("menuList");
-      sidebar.classList.toggle("w-64");
-      sidebar.classList.toggle("w-16");
-      menuList.classList.toggle("hidden");
-    }
-
-    ambilDataPengiriman();
-  </script></body></html>
+    html += `</tbody></table></div>`;
+    container.innerHTML = html;
+  }
+</script></body>
+</html>
