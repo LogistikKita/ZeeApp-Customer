@@ -6,8 +6,6 @@
   <title>Form Kirim Barang | Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
-  <script src="config.js"></script>
-  <script src="customer.js" defer></script>
 </head>
 <body class="bg-white text-gray-800">
 
@@ -27,57 +25,46 @@
     <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Form Pengiriman Barang</h2>
 
     <form id="formPengiriman" class="space-y-6">
-
-      <!-- DATA CUSTOMER -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
+        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input-style" />
+        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input-style" />
+        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input-style" />
+        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input-style" />
       </div>
-
-      <!-- DATA BARANG -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
+        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input-style" />
+        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input-style" />
+        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input-style" />
       </div>
-
-      <!-- DIMENSI -->
       <div class="grid grid-cols-3 gap-4">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
+        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input-style" />
+        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input-style" />
+        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input-style" />
       </div>
-
-      <!-- INFO TAMBAHAN -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
-        <select name="layanan" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl">
+        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input-style" />
+        <select name="layanan" required class="input-style">
           <option value="Reguler">Reguler</option>
           <option value="Prioritas">Prioritas</option>
         </select>
-        <select name="referral" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl">
+        <select name="referral" required class="input-style">
           <option value="Tidak">Tidak</option>
           <option value="Ya">Ya</option>
         </select>
-        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="w-full px-4 py-3 border-2 border-red-500 rounded-xl" />
+        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input-style" />
       </div>
 
-      <!-- TOMBOL AKSI -->
+      <!-- Tombol -->
       <div class="text-center pt-6">
-        <button type="button" onclick="cekTarif()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105">
-          🔍 Cek Tarif
-        </button>
-        <button id="btnSetuju" onclick="submitForm()" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full shadow-md">✅ Customer Setuju</button>
+        <button type="button" onclick="cekTarif()" class="btn-red">🔍 Cek Tarif</button>
+        <button id="btnSetuju" onclick="submitForm()" class="hidden mt-4 btn-green">✅ Customer Setuju</button>
       </div>
-
     </form>
   </main>
 
-  <!-- DIALOG POPUP -->
+  <!-- POPUP -->
   <dialog id="popupTarif" class="modal">
-    <form method="dialog" class="modal-box text-left">
+    <form method="dialog" class="modal-box">
       <h3 class="font-bold text-lg mb-2">📦 Detail Pengiriman</h3>
       <div id="popupContent" class="text-sm leading-relaxed"></div>
       <div class="modal-action">
@@ -86,5 +73,128 @@
     </form>
   </dialog>
 
+  <!-- STYLE -->
+  <style>
+    .input-style {
+      @apply w-full px-4 py-3 border-2 border-red-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-600;
+    }
+    .btn-red {
+      @apply bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105;
+    }
+    .btn-green {
+      @apply bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105;
+    }
+  </style>
+
+  <!-- SCRIPT -->
+  <script>
+    const supabaseUrl = 'https://mrghlcedtafomwnznywf.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Ganti dengan key kamu
+    const tableName = 'Data_Barang';
+
+    async function generateSuratJalan() {
+      const now = new Date();
+      const tgl = now.toLocaleDateString('id-ID').split('/').join('-');
+      const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}?select=nomor_surat_jalan`, {
+        headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` }
+      });
+      const data = await res.json();
+      const urut = String((data?.length || 0) + 1).padStart(4, '0');
+      return `SJ-${tgl}-${urut}`;
+    }
+
+    function hitungTarif(berat, layanan) {
+      berat = parseFloat(berat);
+      if (layanan === 'Prioritas') return 450000;
+      if (berat <= 50) return 125000;
+      else if (berat <= 70) return 125000 + (berat - 50) * 2200;
+      else if (berat < 100) return 125000 + (berat - 50) * 2500;
+      else if (berat <= 264) return berat * 1700;
+      else return 450000;
+    }
+
+    function cekTarif() {
+      const form = document.getElementById('formPengiriman');
+      const data = new FormData(form);
+
+      const berat = parseFloat(data.get('berat_kg'));
+      const volume = parseFloat(data.get('panjang_cm')) * parseFloat(data.get('lebar_cm')) * parseFloat(data.get('tinggi_cm'));
+      const layanan = data.get('layanan');
+      const tarif = hitungTarif(berat, layanan);
+
+      console.log('Cek Tarif diklik');
+      const html = `
+        Nama: ${data.get('nama_customer')}<br>
+        No. HP: ${data.get('nomor_hp_customer')}<br>
+        Asal: ${data.get('asal_kirim')} → Tujuan: ${data.get('tujuan_kirim')}<br>
+        Barang: ${data.get('nama_barang')} - ${berat} kg<br>
+        Volume: ${volume} cm³<br>
+        Layanan: ${layanan}<br><br>
+        <strong>Total Tarif: Rp ${tarif.toLocaleString('id-ID')}</strong>
+      `;
+      document.getElementById('popupContent').innerHTML = html;
+      document.getElementById('popupTarif').showModal();
+    }
+
+    function tutupPopup() {
+      document.getElementById('popupTarif').close();
+      document.getElementById('btnSetuju').classList.remove('hidden');
+    }
+
+    async function submitForm() {
+      const form = document.getElementById('formPengiriman');
+      const data = new FormData(form);
+
+      const berat = parseFloat(data.get('berat_kg'));
+      const volume = parseFloat(data.get('panjang_cm')) * parseFloat(data.get('lebar_cm')) * parseFloat(data.get('tinggi_cm'));
+      const tarif = hitungTarif(berat, data.get('layanan'));
+      const suratJalan = await generateSuratJalan();
+      const now = new Date().toISOString();
+
+      const payload = {
+        nomor_surat_jalan: suratJalan,
+        tanggal_masuk: now,
+        nama_customer: data.get('nama_customer'),
+        nomor_hp_customer: data.get('nomor_hp_customer'),
+        asal_kirim: data.get('asal_kirim'),
+        tujuan_kirim: data.get('tujuan_kirim'),
+        nama_barang: data.get('nama_barang'),
+        berat_kg: berat,
+        jumlah_koli: parseInt(data.get('jumlah_koli')),
+        panjang_cm: parseFloat(data.get('panjang_cm')),
+        lebar_cm: parseFloat(data.get('lebar_cm')),
+        tinggi_cm: parseFloat(data.get('tinggi_cm')),
+        volume_cm3: volume,
+        jenis_armada: data.get('jenis_armada'),
+        layanan: data.get('layanan'),
+        referral: data.get('referral'),
+        nama_petugas: data.get('nama_petugas'),
+        tarif_pengiriman: tarif,
+        biaya_bbm: 0,
+        biaya_driver: 0,
+        biaya_sewa_armada: 0,
+        profit_kotor: tarif,
+        status_kirim: 'pending'
+      };
+
+      console.log('Mengirim data ke Supabase...', payload);
+
+      const res = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
+        method: 'POST',
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await res.json();
+      console.log('Response:', result);
+
+      alert('✅ Data berhasil dikirim!');
+      window.location.reload();
+    }
+  </script>
 </body>
 </html>
