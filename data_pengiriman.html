@@ -2,125 +2,121 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Pengiriman | Logistik Kita</title>
+  <title>Data Pengiriman | Admin - Logistik Kita</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">  <main class="max-w-7xl mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold text-red-600 mb-6">📦 Data Pengiriman</h1><!-- Filter & Search Bar -->
-<div class="flex flex-wrap gap-4 mb-6">
-  <input type="text" id="searchInput" placeholder="🔍 Cari Nama / Tujuan" class="px-4 py-2 rounded-lg border border-gray-300 w-full sm:w-60">
-  <input type="date" id="filterTanggal" class="px-4 py-2 rounded-lg border border-gray-300 w-full sm:w-44">
-  <select id="filterStatus" class="px-4 py-2 rounded-lg border border-gray-300 w-full sm:w-44">
-    <option value="">Status</option>
-    <option value="Menunggu Pickup">Menunggu Pickup</option>
-    <option value="Dalam Pengiriman">Dalam Pengiriman</option>
-    <option value="Selesai">Selesai</option>
-  </select>
-</div>
-
-<!-- Table -->
-<div class="overflow-auto rounded-xl shadow bg-white">
-  <table class="min-w-full text-sm">
-    <thead class="bg-gray-200 text-gray-700">
-      <tr>
-        <th class="px-4 py-2 text-left">No. Surat Jalan</th>
-        <th class="px-4 py-2 text-left">Customer</th>
-        <th class="px-4 py-2 text-left">Tujuan</th>
-        <th class="px-4 py-2 text-left">Tanggal</th>
-        <th class="px-4 py-2 text-left">Status</th>
-        <th class="px-4 py-2">Aksi</th>
-      </tr>
-    </thead>
-    <tbody id="dataTable" class="text-gray-700"></tbody>
-  </table>
-</div>
-
-  </main>  <!-- Modal Detail -->  <dialog id="modalDetail" class="modal">
-    <form method="dialog" class="modal-box w-11/12 max-w-2xl">
-      <h3 class="font-bold text-xl mb-4 text-red-600">📦 Detail Pengiriman</h3>
-      <pre id="detailContent" class="text-sm text-gray-700 whitespace-pre-wrap"></pre>
-      <div class="modal-action">
-        <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Tutup</button>
+<body class="bg-gray-100">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-black text-white flex flex-col p-6 space-y-6">
+      <div class="flex flex-col items-start gap-2">
+        <img src="logo_logistikkita.png" alt="Logo" class="h-10" />
+        <h1 class="text-xl font-bold text-red-500">Logistik Kita</h1>
       </div>
-    </form>
-  </dialog>  <script>
-    const supabase = supabase.createClient(
-      'https://mrghlcedtafomwnznywf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
-    );
+      <nav class="flex flex-col gap-2">
+        <a href="admin.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-gauge"></i> Dashboard
+        </a>
+        <a href="data-pengiriman.html" class="flex items-center gap-2 text-sm hover:bg-red-600 bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-truck"></i> Data Pengiriman
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-pencil"></i> CRUD Tarif per Kg
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-map-pin"></i> Carter & Tarif Khusus
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-users"></i> Mitra Driver
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-globe"></i> Monitoring Armada
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-handshake"></i> Referral
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-chart-bar"></i> Laporan & Rekap
+        </a>
+        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
+          <i class="ph ph-gear"></i> Pengaturan
+        </a>
+      </nav>
+    </aside><!-- Main Content -->
+<main class="flex-1 p-6">
+  <header class="mb-6">
+    <h2 class="text-2xl font-bold text-red-600">Data Pengiriman</h2>
+    <p class="text-sm text-gray-600">Berisi daftar seluruh data pengiriman yang masuk ke sistem.</p>
+  </header>
 
-    async function fetchData() {
-      const { data, error } = await supabase.from('Data_Barang').select('*').order('tanggal_masuk', { ascending: false });
-      if (error) return console.error(error);
+  <!-- Filter + Search -->
+  <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+    <input type="date" class="px-4 py-2 border rounded-md" />
+    <input type="text" placeholder="Cari nama customer..." class="px-4 py-2 border rounded-md w-full md:w-64" />
+  </div>
 
-      renderTable(data);
-    }
+  <!-- Tabel Data -->
+  <div class="overflow-x-auto bg-white rounded-xl shadow">
+    <table class="min-w-full text-sm text-left">
+      <thead class="bg-red-600 text-white">
+        <tr>
+          <th class="px-4 py-2">No</th>
+          <th class="px-4 py-2">Tanggal</th>
+          <th class="px-4 py-2">Customer</th>
+          <th class="px-4 py-2">Asal → Tujuan</th>
+          <th class="px-4 py-2">Barang</th>
+          <th class="px-4 py-2">Layanan</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable">
+        <!-- Data akan ditampilkan via JS -->
+      </tbody>
+    </table>
+  </div>
+</main>
 
-    function renderTable(data) {
-      const tbody = document.getElementById('dataTable');
-      tbody.innerHTML = '';
+  </div>  <!-- SCRIPT FETCH DATA -->  <script>
+    const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
+    const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // potong demi keamanan
 
-      const keyword = document.getElementById('searchInput').value.toLowerCase();
-      const filterTanggal = document.getElementById('filterTanggal').value;
-      const filterStatus = document.getElementById('filterStatus').value;
-
-      const filtered = data.filter(item => {
-        const matchKeyword = item.nama_customer?.toLowerCase().includes(keyword) || item.tujuan_kirim?.toLowerCase().includes(keyword);
-        const matchTanggal = !filterTanggal || item.tanggal_masuk === filterTanggal;
-        const matchStatus = !filterStatus || item.status_kirim === filterStatus;
-        return matchKeyword && matchTanggal && matchStatus;
+    async function loadData() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang?select=*`, {
+        headers: {
+          apikey: SUPABASE_API_KEY,
+          Authorization: `Bearer ${SUPABASE_API_KEY}`
+        }
       });
 
-      filtered.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.classList.add('border-b');
+      const data = await res.json();
+      const tbody = document.getElementById("dataTable");
+      tbody.innerHTML = "";
 
-        tr.innerHTML = `
-          <td class="px-4 py-2">${row.nomor_surat_jalan}</td>
-          <td class="px-4 py-2">${row.nama_customer}</td>
-          <td class="px-4 py-2">${row.tujuan_kirim}</td>
-          <td class="px-4 py-2">${row.tanggal_masuk}</td>
-          <td class="px-4 py-2">
-            <span class="px-2 py-1 rounded-full text-xs font-medium ${getBadgeColor(row.status_kirim)}">${row.status_kirim}</span>
-          </td>
-          <td class="px-4 py-2 space-x-1">
-            <button onclick='viewDetail(${JSON.stringify(row)})' class="px-2 py-1 text-blue-600 hover:underline text-xs">Detail</button>
-            <button onclick='deleteData("${row.nomor_surat_jalan}")' class="px-2 py-1 text-red-600 hover:underline text-xs">Hapus</button>
-          </td>
+      data.forEach((row, index) => {
+        tbody.innerHTML += `
+          <tr class="border-b hover:bg-gray-100">
+            <td class="px-4 py-2">${index + 1}</td>
+            <td class="px-4 py-2">${row.tanggal_masuk}</td>
+            <td class="px-4 py-2">${row.nama_customer}</td>
+            <td class="px-4 py-2">${row.asal_kirim} → ${row.tujuan_kirim}</td>
+            <td class="px-4 py-2">${row.nama_barang}</td>
+            <td class="px-4 py-2">${row.layanan}</td>
+            <td class="px-4 py-2">${row.status_kirim}</td>
+            <td class="px-4 py-2">
+              <button class="text-blue-600 hover:underline text-xs">Detail</button>
+              <button class="text-yellow-600 hover:underline text-xs ml-2">Edit</button>
+              <button class="text-red-600 hover:underline text-xs ml-2">Hapus</button>
+            </td>
+          </tr>
         `;
-
-        tbody.appendChild(tr);
       });
     }
 
-    function getBadgeColor(status) {
-      switch (status) {
-        case 'Selesai': return 'bg-green-100 text-green-700';
-        case 'Menunggu Pickup': return 'bg-yellow-100 text-yellow-700';
-        case 'Dalam Pengiriman': return 'bg-blue-100 text-blue-700';
-        default: return 'bg-gray-200 text-gray-700';
-      }
-    }
-
-    function viewDetail(data) {
-      document.getElementById('detailContent').innerText = JSON.stringify(data, null, 2);
-      document.getElementById('modalDetail').showModal();
-    }
-
-    async function deleteData(nomorSuratJalan) {
-      if (!confirm('Yakin ingin menghapus data ini?')) return;
-      const { error } = await supabase.from('Data_Barang').delete().eq('nomor_surat_jalan', nomorSuratJalan);
-      if (error) return alert('❌ Gagal menghapus data!');
-      alert('✅ Data berhasil dihapus');
-      fetchData();
-    }
-
-    document.getElementById('searchInput').addEventListener('input', fetchData);
-    document.getElementById('filterTanggal').addEventListener('change', fetchData);
-    document.getElementById('filterStatus').addEventListener('change', fetchData);
-
-    fetchData();
+    loadData();
   </script></body>
 </html>
