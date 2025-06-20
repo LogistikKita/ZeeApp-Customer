@@ -5,98 +5,74 @@
   <title>Data Pengiriman | Logistik Kita</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
-  <script>
-    const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
-    const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";async function fetchDataBulanIni() {
-  const DateTime = luxon.DateTime;
-  const now = DateTime.now();
-  const start = now.startOf("month").toISODate();
-  const end = now.endOf("month").toISODate();
-
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang?select=*&tanggal_masuk=gte.${start}&tanggal_masuk=lte.${end}`, {
-    headers: {
-      apikey: SUPABASE_API_KEY,
-      Authorization: `Bearer ${SUPABASE_API_KEY}`,
-    },
-  });
-  const data = await res.json();
-  renderTable(data);
-}
-
-function renderTable(data) {
-  const tbody = document.querySelector("#tableBody");
-  tbody.innerHTML = "";
-  data.forEach((item, index) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td class="border px-3 py-2 text-sm">${index + 1}</td>
-      <td class="border px-3 py-2 text-sm">${item.nama_customer}</td>
-      <td class="border px-3 py-2 text-sm">${item.tujuan_kirim}</td>
-      <td class="border px-3 py-2 text-sm">${item.nama_barang}</td>
-      <td class="border px-3 py-2 text-sm">${item.tarif_pengiriman ? "Rp " + item.tarif_pengiriman.toLocaleString("id-ID") : "-"}</td>
-      <td class="border px-3 py-2 text-sm">${item.status_kirim}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-document.addEventListener("DOMContentLoaded", fetchDataBulanIni);
-
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
 </head>
 <body class="bg-gray-100">
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-4 space-y-4 transition-all duration-300">
-      <div class="flex items-center justify-between">
-        <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
-        <button onclick="toggleSidebar()" class="text-white">
-          <i class="ph ph-list text-xl"></i>
+    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-6 space-y-6 transition-all duration-300">
+      <div class="flex flex-col items-start gap-2">
+        <img src="logo_logistikkita.png" alt="Logo" class="h-8 mb-2" />
+        <h1 id="logoText" class="text-xl font-bold text-red-500">Logistik Kita</h1>
+        <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mt-2">
+          <i class="ph ph-list text-2xl"></i>
         </button>
       </div>
-      <nav id="menuItems" class="flex flex-col gap-2">
+      <nav class="flex flex-col gap-2 mt-4">
         <a href="admin.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gauge"></i> <span class="menu-text">Dashboard</span>
+          <i class="ph ph-gauge"></i> <span class="sidebar-text">Dashboard</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-truck"></i> <span class="menu-text">Data Pengiriman</span>
+          <i class="ph ph-truck"></i> <span class="sidebar-text">Data Pengiriman</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-pencil"></i> <span class="menu-text">CRUD Tarif per Kg</span>
+          <i class="ph ph-pencil"></i> <span class="sidebar-text">CRUD Tarif per Kg</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-map-pin"></i> <span class="menu-text">Carter & Tarif Khusus</span>
+          <i class="ph ph-map-pin"></i> <span class="sidebar-text">Carter & Tarif Khusus</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-users"></i> <span class="menu-text">Mitra Driver</span>
+          <i class="ph ph-users"></i> <span class="sidebar-text">Mitra Driver</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-globe"></i> <span class="menu-text">Monitoring Armada</span>
+          <i class="ph ph-globe"></i> <span class="sidebar-text">Monitoring Armada</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-handshake"></i> <span class="menu-text">Referral</span>
+          <i class="ph ph-handshake"></i> <span class="sidebar-text">Referral</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-chart-bar"></i> <span class="menu-text">Laporan & Rekap</span>
+          <i class="ph ph-chart-bar"></i> <span class="sidebar-text">Laporan & Rekap</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gear"></i> <span class="menu-text">Pengaturan</span>
+          <i class="ph ph-gear"></i> <span class="sidebar-text">Pengaturan</span>
         </a>
       </nav>
     </aside><!-- Main Content -->
-<main class="flex-1 p-6">
-  <h1 class="text-2xl font-bold text-red-600 mb-4">Data Pengiriman Bulan Ini</h1>
-  <div class="overflow-x-auto bg-white rounded-xl shadow">
-    <table class="w-full table-auto">
+<main class="flex-1 p-8">
+  <header class="mb-6">
+    <h2 class="text-2xl font-bold text-red-600">Data Pengiriman Bulan Ini</h2>
+    <p class="text-sm text-gray-600">Menampilkan data yang masuk selama bulan berjalan.</p>
+  </header>
+
+  <div class="flex justify-between mb-4">
+    <input type="month" id="filterBulan" class="border rounded px-3 py-2" />
+    <button onclick="loadData()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow">
+      🔍 Tampilkan
+    </button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white shadow rounded-xl overflow-hidden">
       <thead>
-        <tr class="bg-gray-200 text-sm text-left">
-          <th class="px-3 py-2 border">#</th>
-          <th class="px-3 py-2 border">Nama Customer</th>
-          <th class="px-3 py-2 border">Tujuan</th>
-          <th class="px-3 py-2 border">Barang</th>
-          <th class="px-3 py-2 border">Tarif</th>
-          <th class="px-3 py-2 border">Status</th>
+        <tr class="bg-gray-100 text-left text-sm text-gray-700">
+          <th class="p-3">No</th>
+          <th class="p-3">Tanggal</th>
+          <th class="p-3">Customer</th>
+          <th class="p-3">Tujuan</th>
+          <th class="p-3">Barang</th>
+          <th class="p-3">Tarif</th>
+          <th class="p-3">Status</th>
+          <th class="p-3">Aksi</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -104,13 +80,93 @@ document.addEventListener("DOMContentLoaded", fetchDataBulanIni);
   </div>
 </main>
 
-  </div>  <script>
+  </div>  <!-- Modal Detail Data -->  <dialog id="modalDetail" class="modal">
+    <form method="dialog" class="modal-box">
+      <h3 class="font-bold text-lg">📦 Detail Pengiriman</h3>
+      <div id="detailContent" class="text-sm mt-2 whitespace-pre-wrap"></div>
+      <div class="modal-action">
+        <button class="btn btn-outline" onclick="closeModal()">Tutup</button>
+        <button class="btn btn-info" onclick="confirmUpdate()">✏️ Update Status</button>
+        <button class="btn btn-error" onclick="confirmDelete()">🗑️ Hapus</button>
+      </div>
+    </form>
+  </dialog>  <script>
+    const sidebar = document.getElementById('sidebar');
+    const logoText = document.getElementById('logoText');
+
     function toggleSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      const menuTexts = document.querySelectorAll(".menu-text");
-      sidebar.classList.toggle("w-64");
-      sidebar.classList.toggle("w-16");
-      menuTexts.forEach(txt => txt.classList.toggle("hidden"));
+      sidebar.classList.toggle('w-20');
+      sidebar.classList.toggle('w-64');
+      document.querySelectorAll('.sidebar-text').forEach(el => el.classList.toggle('hidden'));
+      logoText.classList.toggle('hidden');
     }
+
+    const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // skrng diringkas
+
+    async function loadData() {
+      const bulanInput = document.getElementById("filterBulan").value;
+      const today = luxon.DateTime.local();
+      const selectedMonth = bulanInput ? luxon.DateTime.fromISO(bulanInput) : today;
+      const start = selectedMonth.startOf("month").toISODate();
+      const end = selectedMonth.endOf("month").toISODate();
+
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang?tanggal_masuk=gte.${start}&tanggal_masuk=lte.${end}&select=*`, {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        }
+      });
+      const data = await res.json();
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = data.map((item, i) => `
+        <tr class="border-t text-sm">
+          <td class="p-3">${i + 1}</td>
+          <td class="p-3">${item.tanggal_masuk}</td>
+          <td class="p-3">${item.nama_customer}</td>
+          <td class="p-3">${item.tujuan_kirim}</td>
+          <td class="p-3">${item.nama_barang}</td>
+          <td class="p-3">Rp ${Number(item.tarif_pengiriman).toLocaleString("id-ID")}</td>
+          <td class="p-3">${item.status_kirim}</td>
+          <td class="p-3">
+            <button onclick='showDetail(${JSON.stringify(JSON.stringify(item))})' class="text-blue-600 hover:underline text-sm">👁️ Lihat</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function showDetail(jsonItem) {
+      const item = JSON.parse(jsonItem);
+      document.getElementById("detailContent").innerText = `
+Nomor: ${item.nomor_surat_jalan}
+Tanggal Masuk: ${item.tanggal_masuk}
+Nama: ${item.nama_customer}
+No HP: ${item.nomor_hp_customer}
+Asal: ${item.asal_kirim}
+Tujuan: ${item.tujuan_kirim}
+Barang: ${item.nama_barang} (${item.jumlah_koli} koli, ${item.berat_kg} kg)
+Volume: ${item.volume_cm3} cm³
+Tarif: Rp ${Number(item.tarif_pengiriman).toLocaleString("id-ID")}
+Status: ${item.status_kirim}`;
+      document.getElementById("modalDetail").showModal();
+    }
+
+    function closeModal() {
+      document.getElementById("modalDetail").close();
+    }
+
+    function confirmUpdate() {
+      if (confirm("Yakin ingin mengubah status pengiriman?")) {
+        alert("✅ Fitur update status siap dikembangkan.");
+      }
+    }
+
+    function confirmDelete() {
+      if (confirm("Yakin ingin menghapus data ini?")) {
+        alert("🗑️ Fitur hapus data siap dikembangkan.");
+      }
+    }
+
+    loadData();
   </script></body>
 </html>
