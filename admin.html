@@ -1,92 +1,114 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Admin | Logistik Kita</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .sidebar-collapsed nav span {
-      display: none;
-    }
-    .sidebar-collapsed .sidebar-text {
-      display: none;
-    }
+    body { font-family: 'Inter', sans-serif; }
   </style>
 </head>
 <body class="bg-gray-100">
   <div class="flex min-h-screen">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 transition-all duration-300 bg-black text-white flex flex-col p-6 space-y-6">
-      <div class="flex items-center gap-2">
-        <button onclick="toggleSidebar()" class="focus:outline-none">
-          <i class="ph ph-list text-2xl"></i>
-        </button>
-        <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
-        <h1 class="sidebar-text text-xl font-bold text-red-500">Logistik Kita</h1>
+    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-4 transition-all duration-300">
+      <!-- Logo -->
+      <div class="flex flex-col items-start gap-2 mb-4">
+        <img src="logo_logistikkita.png" alt="Logo" class="h-10" />
+        <h1 id="logoText" class="text-lg font-bold text-red-500 transition-all duration-300">Logistik Kita</h1>
       </div>
-      <nav class="flex flex-col gap-2">
+
+      <!-- Toggle -->
+      <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mb-6 flex items-center gap-2">
+        <i class="ph ph-list text-xl"></i>
+        <span id="toggleLabel" class="text-sm">Tutup Menu</span>
+      </button>
+
+      <!-- Menu -->
+      <nav id="menuLinks" class="flex flex-col gap-2">
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gauge"></i> <span>Dashboard</span>
+          <i class="ph ph-gauge"></i><span class="menu-label">Dashboard</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-truck"></i> <span>Data Pengiriman</span>
+          <i class="ph ph-truck"></i><span class="menu-label">Data Pengiriman</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-pencil"></i> <span>CRUD Tarif per Kg</span>
+          <i class="ph ph-pencil"></i><span class="menu-label">CRUD Tarif per Kg</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-map-pin"></i> <span>Carter & Tarif Khusus</span>
+          <i class="ph ph-map-pin"></i><span class="menu-label">Carter & Tarif Khusus</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-users"></i> <span>Mitra Driver</span>
+          <i class="ph ph-users"></i><span class="menu-label">Mitra Driver</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-globe"></i> <span>Monitoring Armada</span>
+          <i class="ph ph-globe"></i><span class="menu-label">Monitoring Armada</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-handshake"></i> <span>Referral</span>
+          <i class="ph ph-handshake"></i><span class="menu-label">Referral</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-chart-bar"></i> <span>Laporan & Rekap</span>
+          <i class="ph ph-chart-bar"></i><span class="menu-label">Laporan & Rekap</span>
         </a>
         <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gear"></i> <span>Pengaturan</span>
+          <i class="ph ph-gear"></i><span class="menu-label">Pengaturan</span>
         </a>
       </nav>
-    </aside><!-- Main Content -->
-<main class="flex-1 p-8">
-  <header class="mb-6">
-    <h2 class="text-2xl font-bold text-red-600">Dashboard Admin</h2>
-    <p class="text-sm text-gray-600">Selamat datang kembali di sistem admin Logistik Kita.</p>
-  </header>
+    </aside>
 
-  <!-- Example Dashboard Cards -->
-  <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white p-4 rounded-xl shadow">
-      <p class="text-sm text-gray-500">Total Pengiriman Hari Ini</p>
-      <h3 class="text-2xl font-bold">12</h3>
-    </div>
-    <div class="bg-white p-4 rounded-xl shadow">
-      <p class="text-sm text-gray-500">Total Profit Hari Ini</p>
-      <h3 class="text-2xl font-bold text-green-600">Rp 850.000</h3>
-    </div>
-    <div class="bg-white p-4 rounded-xl shadow">
-      <p class="text-sm text-gray-500">Status Pending</p>
-      <h3 class="text-2xl font-bold text-yellow-600">5</h3>
-    </div>
-  </section>
-</main>
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <header class="mb-6">
+        <h2 class="text-2xl font-bold text-red-600">Dashboard Admin</h2>
+        <p class="text-sm text-gray-600">Selamat datang kembali di sistem admin Logistik Kita.</p>
+      </header>
 
-  </div>  <script>
+      <!-- Example Dashboard Cards -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-4 rounded-xl shadow">
+          <p class="text-sm text-gray-500">Total Pengiriman Hari Ini</p>
+          <h3 class="text-2xl font-bold">12</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow">
+          <p class="text-sm text-gray-500">Total Profit Hari Ini</p>
+          <h3 class="text-2xl font-bold text-green-600">Rp 850.000</h3>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow">
+          <p class="text-sm text-gray-500">Status Pending</p>
+          <h3 class="text-2xl font-bold text-yellow-600">5</h3>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Sidebar Script -->
+  <script>
+    let isSidebarOpen = true;
+
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      sidebar.classList.toggle("w-64");
-      sidebar.classList.toggle("w-20");
-      sidebar.classList.toggle("sidebar-collapsed");
+      const labels = document.querySelectorAll(".menu-label");
+      const logoText = document.getElementById("logoText");
+      const toggleLabel = document.getElementById("toggleLabel");
+
+      isSidebarOpen = !isSidebarOpen;
+
+      if (!isSidebarOpen) {
+        sidebar.classList.add("w-20");
+        sidebar.classList.remove("w-64");
+        labels.forEach(label => label.classList.add("hidden"));
+        logoText.classList.add("hidden");
+        toggleLabel.innerText = "Buka Menu";
+      } else {
+        sidebar.classList.remove("w-20");
+        sidebar.classList.add("w-64");
+        labels.forEach(label => label.classList.remove("hidden"));
+        logoText.classList.remove("hidden");
+        toggleLabel.innerText = "Tutup Menu";
+      }
     }
-  </script></body>
+  </script>
+</body>
 </html>
