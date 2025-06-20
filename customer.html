@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form Kirim Barang | Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
@@ -13,7 +13,7 @@
   <header class="bg-white shadow-md p-4 sticky top-0 z-50">
     <div class="flex items-center justify-between max-w-5xl mx-auto">
       <div class="flex items-center gap-2">
-        <img src="logo.png" alt="Logo" class="h-8" />
+        <img src="logo.png" alt="Logo" class="h-8">
         <h1 class="text-xl font-bold text-red-600">Logistik Kita</h1>
       </div>
       <a href="index.html" class="text-sm text-red-500 hover:underline">← Kembali ke Beranda</a>
@@ -28,139 +28,130 @@
 
       <!-- DATA CUSTOMER -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered border-red-500 rounded-xl w-full" />
+        <input type="text" name="nama_customer" placeholder="Nama Customer" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" required class="input input-bordered input-error w-full rounded-xl" />
       </div>
 
       <!-- DATA BARANG -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered border-red-500 rounded-xl w-full" />
+        <input type="text" name="nama_barang" placeholder="Nama Barang" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="number" name="berat_kg" placeholder="Berat (kg)" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" required class="input input-bordered input-error w-full rounded-xl" />
       </div>
 
       <!-- DIMENSI -->
       <div class="grid grid-cols-3 gap-4">
-        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered border-red-500 rounded-xl w-full" />
+        <input type="number" name="panjang_cm" placeholder="Panjang (cm)" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="number" name="lebar_cm" placeholder="Lebar (cm)" required class="input input-bordered input-error w-full rounded-xl" />
+        <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" required class="input input-bordered input-error w-full rounded-xl" />
       </div>
 
       <!-- INFO TAMBAHAN -->
       <div class="grid sm:grid-cols-2 gap-4">
-        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered border-red-500 rounded-xl w-full" />
-        <select name="layanan" required class="select select-bordered border-red-500 rounded-xl w-full">
+        <input type="text" name="jenis_armada" value="Pickup Granmax" required class="input input-bordered input-error w-full rounded-xl" />
+        <select name="layanan" required class="select select-bordered select-error w-full rounded-xl">
           <option value="Reguler">Reguler</option>
           <option value="Prioritas">Prioritas</option>
         </select>
-        <select name="referral" required class="select select-bordered border-red-500 rounded-xl w-full">
+        <select name="referral" required class="select select-bordered select-error w-full rounded-xl">
           <option value="Tidak">Tidak</option>
           <option value="Ya">Ya</option>
         </select>
-        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered border-red-500 rounded-xl w-full" />
+        <input type="text" name="nama_petugas" placeholder="Nama Petugas" required class="input input-bordered input-error w-full rounded-xl" />
       </div>
 
       <!-- TOMBOL AKSI -->
-      <div class="text-center pt-6">
-        <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg px-10 py-3 rounded-full shadow-md transition">
+      <div class="text-center pt-6 space-y-4">
+        <button type="button" onclick="cekTarif()" class="btn btn-error btn-wide text-lg">
           🔍 Cek Tarif
+        </button>
+        <button id="btnSetuju" onclick="submitForm()" class="btn btn-success btn-wide hidden text-lg">
+          ✅ Customer Setuju
         </button>
       </div>
 
-      <div id="setujuWrapper" class="text-center mt-4 hidden">
-        <button onclick="submitForm()" type="button" class="btn btn-success text-white text-md px-8 py-3 rounded-full shadow-lg">✅ Customer Setuju</button>
-      </div>
     </form>
   </main>
 
   <!-- MODAL -->
-  <dialog id="modalTarif" class="modal">
-    <div class="modal-box rounded-xl border border-red-400">
-      <h3 class="font-bold text-lg mb-2 text-red-600">📦 Detail Pengiriman</h3>
-      <div id="modalContent" class="text-sm leading-relaxed mb-4"></div>
+  <dialog id="popupTarif" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg text-red-600">📦 Detail Pengiriman</h3>
+      <p id="popupContent" class="py-4 whitespace-pre-line text-gray-700 text-sm leading-relaxed"></p>
       <div class="modal-action">
-        <button class="btn btn-outline btn-sm" onclick="tutupModal()">❌ Batal</button>
-        <button class="btn btn-primary btn-sm" onclick="showSetuju()">✅ OK</button>
+        <form method="dialog">
+          <button class="btn btn-primary">✅ OK</button>
+        </form>
       </div>
     </div>
   </dialog>
 
-  <!-- SCRIPT (gabungan customer.js + config.js) -->
+  <!-- SCRIPT -->
   <script>
     const SUPABASE_URL = "https://mrghlcedtafomwnznywf.supabase.co";
     const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";
 
+    const form = document.getElementById("formPengiriman");
+    const btnSetuju = document.getElementById("btnSetuju");
+
+    function hitungVolume(p, l, t) {
+      return Math.round(p * l * t);
+    }
+
+    function hitungTarif(volume, layanan) {
+      const tarifDasar = layanan === "Prioritas" ? 550000 : 450000;
+      return tarifDasar;
+    }
+
     function cekTarif() {
-      const form = document.getElementById('formPengiriman');
-      const data = Object.fromEntries(new FormData(form));
-      const volume = (parseFloat(data.panjang_cm) * parseFloat(data.lebar_cm) * parseFloat(data.tinggi_cm)) || 0;
-      const tarif = data.layanan === "Prioritas" ? 550000 : 450000;
+      const data = Object.fromEntries(new FormData(form).entries());
+      const volume = hitungVolume(Number(data.panjang_cm), Number(data.lebar_cm), Number(data.tinggi_cm));
+      const tarif = hitungTarif(volume, data.layanan);
 
-      const isi = `
-        <p><strong>Nama:</strong> ${data.nama_customer}</p>
-        <p><strong>HP:</strong> ${data.nomor_hp_customer}</p>
-        <p><strong>Asal:</strong> ${data.asal_kirim} → <strong>Tujuan:</strong> ${data.tujuan_kirim}</p>
-        <p><strong>Barang:</strong> ${data.nama_barang} | Berat: ${data.berat_kg} kg, ${data.jumlah_koli} koli</p>
-        <p><strong>Dimensi:</strong> ${data.panjang_cm}x${data.lebar_cm}x${data.tinggi_cm} cm</p>
-        <p><strong>Volume:</strong> ${volume.toLocaleString()} cm³</p>
-        <p><strong>Layanan:</strong> ${data.layanan}</p>
-        <p class="text-lg font-semibold text-red-600 mt-2">Tarif: Rp ${tarif.toLocaleString()}</p>
-      `;
-      document.getElementById('modalContent').innerHTML = isi;
-      document.getElementById('modalTarif').showModal();
-    }
+      document.getElementById("popupContent").innerText = `
+Nama: ${data.nama_customer}
+No. HP: ${data.nomor_hp_customer}
+Asal: ${data.asal_kirim} → Tujuan: ${data.tujuan_kirim}
+Barang: ${data.nama_barang} (${data.jumlah_koli} koli, ${data.berat_kg} kg)
+Volume: ${volume} cm³
+Layanan: ${data.layanan}
 
-    function tutupModal() {
-      document.getElementById('modalTarif').close();
-      document.getElementById('setujuWrapper').classList.add("hidden");
-    }
+Total Tarif: Rp ${tarif.toLocaleString("id-ID")}
+`.trim();
 
-    function showSetuju() {
-      document.getElementById('modalTarif').close();
-      document.getElementById('setujuWrapper').classList.remove("hidden");
+      document.getElementById("popupTarif").showModal();
+      btnSetuju.classList.remove("hidden");
     }
 
     async function submitForm() {
-      const form = document.getElementById('formPengiriman');
-      const data = Object.fromEntries(new FormData(form));
+      const formData = Object.fromEntries(new FormData(form).entries());
+      formData.volume_cm3 = hitungVolume(Number(formData.panjang_cm), Number(formData.lebar_cm), Number(formData.tinggi_cm));
+      formData.tarif_pengiriman = hitungTarif(formData.volume_cm3, formData.layanan);
+      formData.status_kirim = "Menunggu Pickup";
+      formData.tanggal_masuk = new Date().toISOString().split("T")[0];
+      formData.nomor_surat_jalan = "LK-" + Date.now();
 
-      const volume = parseFloat(data.panjang_cm) * parseFloat(data.lebar_cm) * parseFloat(data.tinggi_cm);
-      const tarif = data.layanan === "Prioritas" ? 550000 : 450000;
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_API_KEY,
+          "Authorization": `Bearer ${SUPABASE_API_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=representation"
+        },
+        body: JSON.stringify(formData)
+      });
 
-      const payload = {
-        ...data,
-        volume_cm3: volume || 0,
-        tarif_pengiriman: tarif,
-        biaya_bbm: 0,
-        biaya_driver: 0,
-        biaya_sewa_armada: 0,
-        profit_kotor: tarif,
-        status_kirim: "Menunggu"
-      };
-
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/Data_Barang`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: SUPABASE_API_KEY,
-            Authorization: `Bearer ${SUPABASE_API_KEY}`
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
-          alert("✅ Data berhasil dikirim!");
-          form.reset();
-          document.getElementById('setujuWrapper').classList.add("hidden");
-        } else {
-          alert("❌ Gagal mengirim data!");
-        }
-      } catch (err) {
-        alert("⚠️ Error saat kirim data");
-        console.error(err);
+      if (res.ok) {
+        alert("✅ Data berhasil dikirim!");
+        form.reset();
+        btnSetuju.classList.add("hidden");
+        document.getElementById("popupTarif").close();
+      } else {
+        alert("❌ Gagal mengirim data!");
+        console.error(await res.text());
       }
     }
   </script>
