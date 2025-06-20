@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,11 +7,29 @@
   <script src="https://cdn.jsdelivr.net/npm/daisyui"></script>
   <script src="config.js"></script>
   <script src="customer.js" defer></script>
+  <style>
+    input::placeholder, select::placeholder {
+      color: #9ca3af;
+    }
+    .input-bordered-red {
+      border: 2px solid #ef4444;
+    }
+    .input-bordered-red:focus {
+      border-color: #b91c1c;
+      outline: none;
+      box-shadow: none;
+    }
+    .select-bordered-red {
+      border: 2px solid #ef4444;
+    }
+    .select-bordered-red:focus {
+      border-color: #b91c1c;
+      outline: none;
+      box-shadow: none;
+    }
+  </style>
 </head>
-<body class="bg-white text-gray-800">
-
-  <!-- HEADER -->
-  <header class="bg-white shadow-md p-4 sticky top-0 z-50">
+<body class="bg-white text-gray-800">  <!-- HEADER -->  <header class="bg-white shadow-md p-4 sticky top-0 z-50">
     <div class="flex items-center justify-between max-w-5xl mx-auto">
       <div class="flex items-center gap-2">
         <img src="logo.png" alt="Logo" class="h-8">
@@ -20,56 +37,52 @@
       </div>
       <a href="index.html" class="text-sm text-red-500 hover:underline">← Kembali ke Beranda</a>
     </div>
-  </header>
+  </header>  <!-- FORM -->  <main class="max-w-3xl mx-auto px-4 py-10">
+    <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Form Pengiriman Barang</h2><form id="formPengiriman" class="space-y-6">
+  <!-- Data Customer -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <input type="text" name="nama_customer" placeholder="Nama Customer" class="input input-bordered-red w-full" required />
+    <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" class="input input-bordered-red w-full" required />
+    <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" placeholder="Asal Kirim" class="input input-bordered-red w-full" required />
+    <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" class="input input-bordered-red w-full" required />
+  </div>
 
-  <!-- FORM -->
-  <main class="max-w-3xl mx-auto px-4 py-10">
-    <h2 class="text-3xl font-bold text-center text-red-600 mb-8">Form Pengiriman Barang</h2>
+  <!-- Data Barang -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <input type="text" name="nama_barang" placeholder="Nama Barang" class="input input-bordered-red w-full" required />
+    <input type="number" name="berat_kg" placeholder="Berat (kg)" class="input input-bordered-red w-full" required />
+    <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" class="input input-bordered-red w-full" required />
+    <div class="grid grid-cols-3 gap-2">
+      <input type="number" name="panjang_cm" placeholder="Panjang (cm)" class="input input-bordered-red w-full" required />
+      <input type="number" name="lebar_cm" placeholder="Lebar (cm)" class="input input-bordered-red w-full" required />
+      <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" class="input input-bordered-red w-full" required />
+    </div>
+  </div>
 
-    <form id="formPengiriman" class="space-y-6">
-      <!-- Data Customer -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_customer" placeholder="Nama Customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <input type="text" name="nomor_hp_customer" placeholder="Nomor HP Customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" placeholder="Asal Kirim" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <input type="text" name="tujuan_kirim" placeholder="Tujuan Kirim" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-      </div>
+  <!-- Info Tambahan -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <input type="text" name="jenis_armada" value="Pickup Granmax" placeholder="Jenis Armada" class="input input-bordered-red w-full" required />
+    <select name="layanan" class="select select-bordered-red w-full" required>
+      <option value="">Pilih Layanan</option>
+      <option value="Reguler">Reguler</option>
+      <option value="Prioritas">Prioritas</option>
+    </select>
+    <select name="referral" class="select select-bordered-red w-full" required>
+      <option value="">Referral</option>
+      <option value="Tidak">Tidak</option>
+      <option value="Ya">Ya</option>
+    </select>
+    <input type="text" name="nama_petugas" placeholder="Nama Petugas" class="input input-bordered-red w-full" required />
+  </div>
 
-      <!-- Data Barang -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input type="text" name="nama_barang" placeholder="Nama Barang" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <input type="number" name="berat_kg" placeholder="Berat (kg)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <input type="number" name="jumlah_koli" placeholder="Jumlah Koli" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <div class="grid grid-cols-3 gap-2">
-          <input type="number" name="panjang_cm" placeholder="Panjang (cm)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-          <input type="number" name="lebar_cm" placeholder="Lebar (cm)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-          <input type="number" name="tinggi_cm" placeholder="Tinggi (cm)" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        </div>
-      </div>
+  <!-- Aksi -->
+  <div class="text-center mt-8">
+    <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg px-10 py-3 shadow-lg">
+      🔍 Cek Tarif
+    </button>
+  </div>
+</form>
 
-      <!-- Info Tambahan -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <input type="text" name="jenis_armada" placeholder="Jenis Armada (ex: Pickup Granmax)" value="Pickup Granmax" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-        <select name="layanan" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
-          <option value="" disabled selected>Layanan</option>
-          <option value="Reguler">Reguler</option>
-          <option value="Prioritas">Prioritas</option>
-        </select>
-        <select name="referral" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
-          <option value="" disabled selected>Referral</option>
-          <option value="Tidak">Tidak</option>
-          <option value="Ya">Ya</option>
-        </select>
-        <input type="text" name="nama_petugas" placeholder="Nama Petugas" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
-      </div>
-
-      <!-- Tombol Cek Tarif -->
-      <div class="text-center mt-8">
-        <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg px-10 py-3 shadow-lg">
-          🔍 Cek Tarif
-        </button>
-      </div>
-    </form>
   </main>
 </body>
 </html>
