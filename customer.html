@@ -30,19 +30,19 @@
       <!-- Data Customer -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="label font-semibold">Nama Customer</label>
+          <label class="block font-semibold mb-1">Nama Customer</label>
           <input type="text" name="nama_customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div>
-          <label class="label font-semibold">Nomor HP Customer</label>
+          <label class="block font-semibold mb-1">Nomor HP Customer</label>
           <input type="text" name="nomor_hp_customer" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div>
-          <label class="label font-semibold">Asal Kirim</label>
+          <label class="block font-semibold mb-1">Asal Kirim</label>
           <input type="text" name="asal_kirim" value="Logistik Kita, Mojokerto" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div>
-          <label class="label font-semibold">Tujuan Kirim</label>
+          <label class="block font-semibold mb-1">Tujuan Kirim</label>
           <input type="text" name="tujuan_kirim" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
       </div>
@@ -50,29 +50,29 @@
       <!-- Data Barang -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="label font-semibold">Nama Barang</label>
+          <label class="block font-semibold mb-1">Nama Barang</label>
           <input type="text" name="nama_barang" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div>
-          <label class="label font-semibold">Berat (kg)</label>
+          <label class="block font-semibold mb-1">Berat (kg)</label>
           <input type="number" name="berat_kg" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div>
-          <label class="label font-semibold">Jumlah Koli</label>
+          <label class="block font-semibold mb-1">Jumlah Koli</label>
           <input type="number" name="jumlah_koli" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div class="grid grid-cols-3 gap-2">
           <div>
-            <label class="label font-semibold">Panjang</label>
-            <input type="number" name="panjang_cm" placeholder="cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+            <label class="block font-semibold mb-1">Panjang (cm)</label>
+            <input type="number" name="panjang_cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
           </div>
           <div>
-            <label class="label font-semibold">Lebar</label>
-            <input type="number" name="lebar_cm" placeholder="cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+            <label class="block font-semibold mb-1">Lebar (cm)</label>
+            <input type="number" name="lebar_cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
           </div>
           <div>
-            <label class="label font-semibold">Tinggi</label>
-            <input type="number" name="tinggi_cm" placeholder="cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
+            <label class="block font-semibold mb-1">Tinggi (cm)</label>
+            <input type="number" name="tinggi_cm" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
           </div>
         </div>
       </div>
@@ -80,30 +80,30 @@
       <!-- Info Tambahan -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label class="label font-semibold">Jenis Armada</label>
+          <label class="block font-semibold mb-1">Jenis Armada</label>
           <input type="text" name="jenis_armada" value="Pickup Granmax" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
         <div>
-          <label class="label font-semibold">Layanan</label>
+          <label class="block font-semibold mb-1">Layanan</label>
           <select name="layanan" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
             <option value="Reguler">Reguler</option>
             <option value="Prioritas">Prioritas</option>
           </select>
         </div>
         <div>
-          <label class="label font-semibold">Referral</label>
+          <label class="block font-semibold mb-1">Referral</label>
           <select name="referral" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required>
             <option value="Tidak">Tidak</option>
             <option value="Ya">Ya</option>
           </select>
         </div>
         <div>
-          <label class="label font-semibold">Nama Petugas</label>
+          <label class="block font-semibold mb-1">Nama Petugas</label>
           <input type="text" name="nama_petugas" class="w-full border-2 border-red-500 p-2 rounded-md bg-white" required />
         </div>
       </div>
 
-      <!-- Aksi -->
+      <!-- Tombol Cek Tarif -->
       <div class="text-center mt-8">
         <button type="button" onclick="cekTarif()" class="btn bg-red-600 hover:bg-red-700 text-white text-lg px-10 py-3 shadow-lg">
           🔍 Cek Tarif
