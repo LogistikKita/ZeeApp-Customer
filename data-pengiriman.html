@@ -15,13 +15,13 @@
   </nav>
 
   <div class="container py-4">
-    <div class="row g-3 align-items-center mb-4">
-      <div class="col-md-3">
-        <label for="bulan" class="form-label">Pilih Bulan</label>
+    <div class="row g-3 align-items-end mb-4">
+      <div class="col-md-4">
+        <label for="bulan" class="form-label">Pilih Bulan & Tahun</label>
         <input type="month" id="bulan" class="form-control" />
       </div>
-      <div class="col-md-3 align-self-end">
-        <button class="btn btn-danger" onclick="loadData()">Tampilkan</button>
+      <div class="col-md-3">
+        <button class="btn btn-danger w-100" onclick="loadData()">Tampilkan</button>
       </div>
     </div>
 
@@ -49,23 +49,24 @@
       <div class="modal-content">
         <div class="modal-header bg-danger text-white">
           <h5 class="modal-title">Detail Pengiriman</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body" id="modalDetailContent">
-          <!-- detail di sini -->
+          <!-- isi detail -->
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const supabaseUrl = "https://mrghlcedtafomwnznywf.supabase.co";
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabase = supabase.createClient(
+      "https://mrghlcedtafomwnznywf.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs" // Ganti dengan API KEY kamu (atau config.js)
+    );
 
     async function loadData() {
       const bulanInput = document.getElementById("bulan").value;
-      if (!bulanInput) return alert("Pilih bulan terlebih dahulu!");
+      if (!bulanInput) return alert("📅 Silakan pilih bulan dan tahun terlebih dahulu!");
 
       const [tahun, bulan] = bulanInput.split("-");
       const tanggalAwal = `${tahun}-${bulan}-01`;
@@ -78,13 +79,13 @@
         .lte("tanggal_masuk", tanggalAkhir)
         .order("tanggal_masuk", { ascending: false });
 
+      if (error) {
+        console.error("Gagal ambil data:", error);
+        return alert("❌ Gagal mengambil data. Cek konsol log.");
+      }
+
       const tbody = document.querySelector("#dataTable tbody");
       tbody.innerHTML = "";
-
-      if (error) {
-        console.error(error);
-        return alert("Gagal mengambil data");
-      }
 
       data.forEach((row, i) => {
         const tr = document.createElement("tr");
@@ -93,7 +94,7 @@
           <td>${row.nomor_surat_jalan}</td>
           <td>${row.nama_customer}</td>
           <td>${row.tujuan_kirim}</td>
-          <td>Rp ${row.tarif_pengiriman?.toLocaleString("id-ID") || 0}</td>
+          <td>Rp ${row.tarif_pengiriman?.toLocaleString("id-ID")}</td>
           <td>${row.status_kirim}</td>
           <td><button class="btn btn-sm btn-outline-danger" onclick='showDetail(${JSON.stringify(row)})'>Lihat Detail</button></td>
         `;
@@ -111,7 +112,7 @@
         <p><strong>Nama Barang:</strong> ${data.nama_barang}</p>
         <p><strong>Berat:</strong> ${data.berat_kg} kg</p>
         <p><strong>Volume:</strong> ${data.volume_cm3} cm³</p>
-        <p><strong>Dimensi:</strong> ${data.panjang_cm} × ${data.lebar_cm} × ${data.tinggi_cm} cm</p>
+        <p><strong>Dimensi (cm):</strong> ${data.panjang_cm} × ${data.lebar_cm} × ${data.tinggi_cm}</p>
         <p><strong>Jumlah Koli:</strong> ${data.jumlah_koli}</p>
         <p><strong>Jenis Armada:</strong> ${data.jenis_armada}</p>
         <p><strong>Layanan:</strong> ${data.layanan}</p>
@@ -123,6 +124,7 @@
       new bootstrap.Modal(document.getElementById("detailModal")).show();
     }
   </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
