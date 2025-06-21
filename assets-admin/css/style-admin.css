@@ -5,8 +5,8 @@
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f9fafb;
+  font-family: sans-serif;
+  background-color: #f8f9fa;
 }
 
 .wrapper {
@@ -17,18 +17,13 @@ body {
 .sidebar {
   background-color: #ba1a1a;
   color: white;
-  width: 240px;
+  width: 250px;
+  transition: width 0.3s ease;
   padding: 1rem;
-  transition: transform 0.3s ease;
 }
 
 .sidebar.closed {
-  transform: translateX(-100%);
-  position: fixed;
-  z-index: 1000;
-  height: 100vh;
-  top: 0;
-  left: 0;
+  width: 60px;
 }
 
 .logo-section {
@@ -43,8 +38,13 @@ body {
 }
 
 .logo-text {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
+  transition: opacity 0.3s;
+}
+
+.sidebar.closed .logo-text {
+  display: none;
 }
 
 .menu {
@@ -58,66 +58,43 @@ body {
 .menu a {
   color: white;
   text-decoration: none;
-  font-size: 1rem;
   display: block;
-  transition: background 0.2s;
-  padding: 0.5rem;
-  border-radius: 4px;
 }
 
-.menu a:hover {
+.toggle-btn {
+  margin-top: 2rem;
+  padding: 0.5rem;
+  width: 100%;
   background-color: #931313;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
 .content {
   flex: 1;
   padding: 2rem;
-  margin-left: 240px;
-  transition: margin-left 0.3s;
-}
-
-.sidebar.closed ~ .content {
-  margin-left: 0;
 }
 
 .topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-bottom: 1rem;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 0.5rem;
-}
-
-.mobile-toggle {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #ba1a1a;
-  cursor: pointer;
+  border-bottom: 2px solid #ccc;
 }
 
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
+    z-index: 1000;
+    height: 100vh;
     left: 0;
     top: 0;
-    height: 100vh;
-    z-index: 1000;
-    transform: translateX(-100%);
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
   }
 
   .content {
-    margin-left: 0;
-    padding: 1rem;
+    margin-left: 60px;
   }
 
-  .mobile-toggle {
-    display: inline;
+  .sidebar.closed ~ .content {
+    margin-left: 60px;
   }
 }
