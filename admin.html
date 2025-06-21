@@ -2,113 +2,37 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Admin | Logistik Kita</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin - Logistik Kita</title>
+  <link rel="stylesheet" href="/assets-admin/css/style-admin.css" />
+  <script defer src="/assets-admin/js/script-admin.js"></script>
 </head>
-<body class="bg-gray-100">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-4 transition-all duration-300">
-      <!-- Logo -->
-      <div class="flex flex-col items-start gap-2 mb-4">
-        <img src="logo_logistikkita.png" alt="Logo" class="h-10" />
-        <h1 id="logoText" class="text-lg font-bold text-red-500 transition-all duration-300">Logistik Kita</h1>
+<body>
+  <div class="wrapper">
+    <aside class="sidebar closed" id="sidebar">
+      <div class="logo-section">
+        <img src="logo_logistikkita.png" alt="Logo" class="logo-img">
+        <span class="logo-text" id="logoText">Logistik Kita</span>
       </div>
-
-      <!-- Toggle -->
-      <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mb-6 flex items-center gap-2">
-        <i class="ph ph-list text-xl"></i>
-        <span id="toggleLabel" class="text-sm">Tutup Menu</span>
-      </button>
-
-      <!-- Menu -->
-      <nav id="menuLinks" class="flex flex-col gap-2">
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gauge"></i><span class="menu-label">Dashboard</span>
-        </a>
-        <a href="data_pengiriman.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-truck"></i><span class="menu-label">Data Pengiriman</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-pencil"></i><span class="menu-label">CRUD Tarif per Kg</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-map-pin"></i><span class="menu-label">Carter & Tarif Khusus</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-users"></i><span class="menu-label">Mitra Driver</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-globe"></i><span class="menu-label">Monitoring Armada</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-handshake"></i><span class="menu-label">Referral</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-chart-bar"></i><span class="menu-label">Laporan & Rekap</span>
-        </a>
-        <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-          <i class="ph ph-gear"></i><span class="menu-label">Pengaturan</span>
-        </a>
-      </nav>
+      <ul class="menu">
+        <li><a href="admin.html">🏠 Dashboard</a></li>
+        <li><a href="data_pengiriman.html">📦 Data Pengiriman</a></li>
+        <li><a href="#">🧾 Invoice</a></li>
+        <li><a href="#">📋 Surat Jalan</a></li>
+        <li><a href="#">📊 Laporan</a></li>
+        <li><a href="#">🔧 Pengaturan</a></li>
+      </ul>
+      <button class="toggle-btn" id="toggleBtn">☰</button>
     </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 p-8">
-      <header class="mb-6">
-        <h2 class="text-2xl font-bold text-red-600">Dashboard Admin</h2>
-        <p class="text-sm text-gray-600">Selamat datang kembali di sistem admin Logistik Kita.</p>
+    <main class="content">
+      <header class="topbar">
+        <h1>Selamat datang, Admin</h1>
       </header>
-
-      <!-- Example Dashboard Cards -->
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-4 rounded-xl shadow">
-          <p class="text-sm text-gray-500">Total Pengiriman Hari Ini</p>
-          <h3 class="text-2xl font-bold">12</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow">
-          <p class="text-sm text-gray-500">Total Profit Hari Ini</p>
-          <h3 class="text-2xl font-bold text-green-600">Rp 850.000</h3>
-        </div>
-        <div class="bg-white p-4 rounded-xl shadow">
-          <p class="text-sm text-gray-500">Status Pending</p>
-          <h3 class="text-2xl font-bold text-yellow-600">5</h3>
-        </div>
+      <section class="main-content">
+        <p>Ini halaman dashboard admin Logistik Kita. Gunakan menu di samping untuk navigasi.</p>
       </section>
     </main>
   </div>
-
-  <!-- Sidebar Script -->
-  <script>
-    let isSidebarOpen = true;
-
-    function toggleSidebar() {
-      const sidebar = document.getElementById("sidebar");
-      const labels = document.querySelectorAll(".menu-label");
-      const logoText = document.getElementById("logoText");
-      const toggleLabel = document.getElementById("toggleLabel");
-
-      isSidebarOpen = !isSidebarOpen;
-
-      if (!isSidebarOpen) {
-        sidebar.classList.add("w-20");
-        sidebar.classList.remove("w-64");
-        labels.forEach(label => label.classList.add("hidden"));
-        logoText.classList.add("hidden");
-        toggleLabel.innerText = "Buka Menu";
-      } else {
-        sidebar.classList.remove("w-20");
-        sidebar.classList.add("w-64");
-        labels.forEach(label => label.classList.remove("hidden"));
-        logoText.classList.remove("hidden");
-        toggleLabel.innerText = "Tutup Menu";
-      }
-    }
-  </script>
 </body>
 </html>
