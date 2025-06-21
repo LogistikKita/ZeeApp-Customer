@@ -1,56 +1,40 @@
-// /assets-admin/js/data_pengiriman.js
+// data-pengiriman.js
+document.addEventListener("DOMContentLoaded", () => {
+  const bulanPicker = new WheelPicker("bulan-picker", [...Array(12)].map((_, i) => (i + 1).toString().padStart(2, "0")));
+  const tahunPicker = new WheelPicker("tahun-picker", ["2024", "2025", "2026"]);
+  document.getElementById("filter-button").addEventListener("click", fetchData);
+  fetchData(); // load awal
+});
 
-const SUPABASE_URL = 'https://mrghlcedtafomwnznywf.supabase.co';
-const SUPABASE_API_KEY = 'eyJhbGciOi...'; // (gunakan yang sudah disimpan aman)
-const TABLE_NAME = 'Data_Barang';
+async function fetchData() {
+  const bulan = document.querySelector("#bulan-picker .selected")?.textContent;
+  const tahun = document.querySelector("#tahun-picker .selected")?.textContent;
 
-async function fetchDataPengiriman(bulan, tahun) {
-  const startDate = `${tahun}-${String(bulan).padStart(2, '0')}-01`;
-  const endDate = `${tahun}-${String(bulan).padStart(2, '0')}-31`;
+  const { data, error } = await supabase
+    .from("Data_Barang")
+    .select("*")
+    .ilike("tanggal_masuk", `${tahun}-${bulan}-%`);
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE_NAME}?tanggal_masuk=gte.${startDate}&tanggal_masuk=lte.${endDate}&order=tanggal_masuk.desc`, {
-    headers: {
-      apikey: SUPABASE_API_KEY,
-      Authorization: `Bearer ${SUPABASE_API_KEY}`,
-    }
-  });
-
-  const data = await res.json();
-  renderTable(data);
-}
-
-function renderTable(data) {
-  const container = document.getElementById('tableContainer');
-  if (data.length === 0) {
-    container.innerHTML = '<p class="text-center text-gray-500">Tidak ada data untuk bulan ini.</p>';
+  if (error) {
+    console.error("Error:", error.message);
     return;
   }
 
-  let table = `
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-        <thead class="bg-red-600 text-white">
-          <tr>
-            <th class="py-2 px-4 text-left">Tanggal</th>
-            <th class="py-2 px-4 text-left">Customer</th>
-            <th class="py-2 px-4 text-left">Tujuan</th>
-            <th class="py-2 px-4 text-left">Barang</th>
-            <th class="py-2 px-4 text-left">Tarif</th>
-          </tr>
-        </thead>
-        <tbody class="text-gray-700">`;
+  const tbody = document.querySelector("#data-table tbody");
+  tbody.innerHTML = "";
 
   data.forEach(row => {
-    table += `
-      <tr class="border-t">
-        <td class="py-2 px-4">${row.tanggal_masuk}</td>
-        <td class="py-2 px-4">${row.nama_customer}</td>
-        <td class="py-2 px-4">${row.tujuan_kirim}</td>
-        <td class="py-2 px-4">${row.nama_barang}</td>
-        <td class="py-2 px-4">Rp${parseInt(row.tarif_pengiriman || 0).toLocaleString('id-ID')}</td>
-      </tr>`;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${row.tanggal_masuk}</td>
+      <td>${row.nomor_surat_jalan}</td>
+      <td>${row.nama_customer}</td>
+      <td>${row.asal_kirim}</td>
+      <td>${row.tujuan_kirim}</td>
+      <td>${row.nama_barang}</td>
+      <td>Rp${Number(row.tarif_pengiriman).toLocaleString()}</td>
+      <td>${row.status_kirim}</td>
+    `;
+    tbody.appendChild(tr);
   });
-
-  table += `</tbody></table></div>`;
-  container.innerHTML = table;
 }
