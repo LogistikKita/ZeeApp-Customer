@@ -3,38 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Admin</title>
-  <link rel="stylesheet" href="/assets-admin/css/admin-style.css" />
+  <title>Admin - Logistik Kita</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="/assets-admin/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/phosphor-icons"></script>
 </head>
-<body class="flex">
+<body class="flex h-screen bg-white text-gray-800">
 
   <!-- Sidebar -->
-  <div id="sidebar" class="sidebar w-64 transition-all duration-300">
-    <div class="flex items-center justify-between px-4 py-3">
-      <div class="flex items-center space-x-2">
-        <img src="/assets-admin/img/logo.png" alt="Logo" class="h-8 w-8" />
-        <span id="logoText" class="text-lg font-bold">Logistik Kita</span>
-      </div>
+  <div id="sidebar" class="bg-red-700 text-white flex flex-col md:w-64 transition-all duration-300 ease-in-out">
+    <div class="flex items-center justify-center h-16 font-bold text-xl">
+      <i class="ph ph-truck"></i>
+      <span id="logo-text" class="ml-2">Logistik Kita</span>
     </div>
-    <nav class="mt-4">
-      <ul>
-        <li><a href="#" class="menu-link"><span class="icon">🏠</span> <span class="label">Dashboard</span></a></li>
-        <li><a href="#" class="menu-link"><span class="icon">➕</span> <span class="label">Input Manual</span></a></li>
-        <li><a href="#" class="menu-link"><span class="icon">📦</span> <span class="label">Data Pengiriman</span></a></li>
-        <li><a href="#" class="menu-link"><span class="icon">📊</span> <span class="label">Rekap</span></a></li>
-        <li><a href="#" class="menu-link"><span class="icon">💰</span> <span class="label">Cek Tarif</span></a></li>
-      </ul>
+    <nav class="flex-1 px-2 space-y-2">
+      <a href="#" class="menu-item"><i class="ph ph-clipboard-text icon"></i> <span class="label">Dashboard</span></a>
+      <a href="#" class="menu-item"><i class="ph ph-file icon"></i> <span class="label">Input Manual</span></a>
+      <a href="#" class="menu-item"><i class="ph ph-user icon"></i> <span class="label">Customer</span></a>
+      <a href="#" class="menu-item"><i class="ph ph-truck icon"></i> <span class="label">Pengiriman</span></a>
+      <a href="#" class="menu-item"><i class="ph ph-receipt icon"></i> <span class="label">Invoice</span></a>
+      <a href="#" class="menu-item"><i class="ph ph-chart-bar icon"></i> <span class="label">Laporan</span></a>
+      <a href="#" class="menu-item"><i class="ph ph-gear icon"></i> <span class="label">Pengaturan</span></a>
     </nav>
-    <button id="toggleSidebar" class="toggle-button">
-      <span id="toggleLabel">Tutup Menu</span>
-    </button>
+    <button id="toggleBtn" class="menu-item mt-auto border-t border-gray-500 font-semibold"><i class="ph ph-caret-left icon"></i> <span class="label">Tutup Menu</span></button>
   </div>
 
-  <!-- Main content -->
-  <main class="flex-1 p-4">
-    <h1 class="text-xl font-bold">Selamat datang di Dashboard Admin</h1>
+  <!-- Konten Utama -->
+  <main class="flex-1 p-6">
+    <h1 class="text-2xl font-bold mb-4">Selamat Datang Admin</h1>
+    <p class="text-gray-600">Gunakan menu di samping untuk navigasi.</p>
   </main>
 
-  <script src="/assets-admin/js/admin-script.js"></script>
+  <script src="/assets-admin/js/main.js"></script>
 </body>
 </html>
