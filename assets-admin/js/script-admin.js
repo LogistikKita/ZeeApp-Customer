@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.getElementById("sidebar");
-  const mobileToggle = document.getElementById("mobileToggle");
+  const toggleBtn = document.getElementById("toggleBtn");
+  const logoText = document.getElementById("logoText");
 
-  // Tutup sidebar default
+  // Default kondisi tertutup
   sidebar.classList.add("closed");
 
-  mobileToggle.addEventListener("click", () => {
-    sidebar.classList.toggle("open");
+  toggleBtn.addEventListener("click", () => {
     sidebar.classList.toggle("closed");
   });
 });
