@@ -1,36 +1,131 @@
 <!DOCTYPE html><html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - Logistik Kita</title>
-  <link rel="stylesheet" href="style.css" />
-  <script defer src="script.js"></script>
-</head>
-<body>
-  <div class="container">
-    <aside class="sidebar closed" id="sidebar">
-      <div class="sidebar-header">
-        <h1>🚚<span class="logo-text">Logistik Kita</span></h1>
-        <button id="toggleBtn" class="toggle-btn">☰</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin - Logistik Kita</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.0.3/src/css/phosphor.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets-admin/css/Style.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <div class="drawer lg:drawer-open">
+      <input id="sidebar-toggle" type="checkbox" class="drawer-toggle" />
+      <div class="drawer-content flex flex-col">
+        <div class="navbar bg-base-200 sticky top-0 z-10">
+          <div class="flex-none lg:hidden">
+            <label for="sidebar-toggle" class="btn btn-square btn-ghost">
+              <i class="ph ph-list text-xl"></i>
+            </label>
+          </div>
+          <div class="flex-1 px-2 font-bold text-lg">Dashboard Admin</div>
+        </div><!-- CONTENT -->
+    <main class="p-4 space-y-4">
+      <!-- Date Picker -->
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="font-semibold">Pilih Bulan & Tahun:</label>
+        <input
+          type="month"
+          id="filterMonth"
+          class="input input-bordered max-w-xs"
+        />
+        <button class="btn btn-primary" id="showDataBtn">
+          Tampilkan Data
+        </button>
+        <button class="btn btn-accent ml-auto" id="inputManualBtn">
+          + Input Manual
+        </button>
       </div>
-      <nav class="menu">
-        <a href="#" class="menu-item">📦 Data Pengiriman</a>
-        <a href="#" class="menu-item">📈 Laporan Bulanan</a>
-        <a href="#" class="menu-item">➕ Input Manual</a>
-        <a href="#" class="menu-item">💰 Profit & Biaya</a>
-        <a href="#" class="menu-item">📊 Grafik</a>
-        <a href="#" class="menu-item">⚙️ Pengaturan</a>
-        <a href="#" class="menu-item">🔒 Logout</a>
-      </nav>
-    </aside><main class="main-content">
-  <header class="topbar">
-    <h2>Dashboard Admin</h2>
-  </header>
-  <section class="content">
-    <p>Konten utama ditampilkan di sini...</p>
-  </section>
-</main>
 
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="table table-zebra w-full text-sm">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nomor Surat Jalan</th>
+              <th>Nama Customer</th>
+              <th>Tujuan</th>
+              <th>Layanan</th>
+              <th>Status</th>
+              <th>Lihat</th>
+            </tr>
+          </thead>
+          <tbody id="dataTable"></tbody>
+        </table>
+      </div>
+    </main>
   </div>
-</body>
+
+  <!-- Sidebar Content -->
+  <div class="drawer-side">
+    <label for="sidebar-toggle" class="drawer-overlay"></label>
+    <aside class="w-64 bg-base-100 text-base-content p-4">
+      <div class="mb-6 text-center">
+        <h1 class="font-bold text-2xl">🚚 Logistik Kita</h1>
+      </div>
+      <ul class="menu space-y-1">
+        <li><a href="index.html"><i class="ph ph-house"></i> Home</a></li>
+        <li class="active">
+          <a href="admin.html"><i class="ph ph-truck"></i> Data Pengiriman</a>
+        </li>
+        <li><a href="rekap.html"><i class="ph ph-chart-bar"></i> Rekap & Laporan</a></li>
+        <li><a href="owner.html"><i class="ph ph-user-gear"></i> Owner Panel</a></li>
+        <li><a href="cek-tarif.html"><i class="ph ph-magnifying-glass"></i> Cek Tarif</a></li>
+        <li><a href="logout.html"><i class="ph ph-sign-out"></i> Logout</a></li>
+      </ul>
+    </aside>
+  </div>
+</div>
+
+<!-- Modal Detail -->
+<dialog id="modalDetail" class="modal">
+  <form method="dialog" class="modal-box w-11/12 max-w-3xl">
+    <h3 class="font-bold text-lg mb-4">Detail Pengiriman</h3>
+    <div id="detailContainer" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+    <div class="modal-action justify-between">
+      <button class="btn btn-warning" id="editBtn">Edit</button>
+      <button class="btn btn-error" id="deleteBtn">Hapus</button>
+      <button class="btn" onclick="modalDetail.close()">Tutup</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Modal Konfirmasi Hapus -->
+<dialog id="modalConfirmDelete" class="modal">
+  <form method="dialog" class="modal-box">
+    <h3 class="font-bold text-lg">Konfirmasi</h3>
+    <p class="py-4">Yakin ingin menghapus data ini?</p>
+    <div class="modal-action">
+      <button class="btn btn-error" id="confirmDeleteBtn">Ya, Hapus</button>
+      <button class="btn">Batal</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Modal Input Manual (disiapkan) -->
+<dialog id="modalInputManual" class="modal">
+  <form method="dialog" class="modal-box">
+    <h3 class="font-bold text-lg mb-2">Input Data Manual</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="manualFormContainer">
+      <!-- Dynamic Form Elements from JS -->
+    </div>
+    <div class="modal-action">
+      <button class="btn btn-success" id="submitManualBtn">Simpan</button>
+      <button class="btn">Batal</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- JS -->
+<script src="/assets-admin/js/Script.js"></script>
+
+  </body>
 </html>
