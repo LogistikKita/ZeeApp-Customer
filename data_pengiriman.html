@@ -1,177 +1,61 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Data Pengiriman - Logistik Kita</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link rel="stylesheet" href="/assets-admin/css/style-admin.css" />
+  <script defer src="/assets-admin/js/script-admin.js"></script>
+  <script defer src="/assets-admin/js/data-pengiriman.js"></script>
 </head>
-<body class="flex h-screen">
-
-  <!-- Sidebar -->
-  <div id="sidebar" class="bg-red-700 text-white w-20 transition-all duration-300 flex flex-col">
-    <div class="p-4 flex items-center justify-between">
-      <img src="https://via.placeholder.com/40" class="w-10 h-10" alt="Logo"/>
-      <span id="logoText" class="ml-2 hidden text-lg font-bold">Logistik Kita</span>
-    </div>
-    <nav class="flex-1 overflow-y-auto">
-      <ul class="space-y-2 px-4">
-        <li><a href="admin.html" class="block py-2 hover:bg-red-800 rounded">Dashboard</a></li>
-        <li><a href="data_pengiriman.html" class="block py-2 bg-red-800 rounded">Data Pengiriman</a></li>
-        <li><a href="#" class="block py-2 hover:bg-red-800 rounded">Input Manual</a></li>
-        <li><a href="#" class="block py-2 hover:bg-red-800 rounded">Rekap Bulanan</a></li>
-        <li><a href="#" class="block py-2 hover:bg-red-800 rounded">Laporan Profit</a></li>
-        <li><a href="#" class="block py-2 hover:bg-red-800 rounded">Pengaturan</a></li>
-      </ul>
-    </nav>
-    <button onclick="toggleSidebar()" class="p-2 text-xs bg-white text-red-700 mx-4 mb-4 rounded">
-      <span id="toggleLabel">Buka Menu</span>
-    </button>
-  </div>
-
-  <!-- Content -->
-  <div class="flex-1 bg-gray-100 p-6 overflow-auto">
-    <h1 class="text-2xl font-bold mb-4">Data Pengiriman</h1>
-
-    <div class="flex flex-wrap gap-4 mb-4">
-      <select id="bulan" class="p-2 border rounded">
-        <option value="">-- Pilih Bulan --</option>
-        <script>
-          for (let i = 1; i <= 12; i++) {
-            const bulan = i.toString().padStart(2, '0');
-            document.write(`<option value="${bulan}">${bulan}</option>`);
-          }
-        </script>
-      </select>
-      <select id="tahun" class="p-2 border rounded">
-        <option value="">-- Pilih Tahun --</option>
-        <script>
-          const tahunIni = new Date().getFullYear();
-          for (let i = tahunIni; i >= tahunIni - 5; i--) {
-            document.write(`<option value="${i}">${i}</option>`);
-          }
-        </script>
-      </select>
-      <button onclick="tampilkanData()" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-800">
-        Tampilkan
-      </button>
-    </div>
-
-    <div class="overflow-auto rounded-lg shadow">
-      <table class="min-w-full text-sm">
-        <thead class="bg-red-700 text-white">
-          <tr>
-            <th class="p-2 text-left">No. SJ</th>
-            <th class="p-2 text-left">Tanggal</th>
-            <th class="p-2 text-left">Customer</th>
-            <th class="p-2 text-left">Asal</th>
-            <th class="p-2 text-left">Tujuan</th>
-            <th class="p-2 text-left">Status</th>
-            <th class="p-2 text-left">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="dataBody" class="bg-white divide-y divide-gray-200"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white w-[90%] max-w-2xl p-6 rounded-lg">
-      <h2 class="text-xl font-bold mb-4">Detail Pengiriman</h2>
-      <div id="modalContent" class="text-sm"></div>
-      <div class="mt-4 flex justify-end gap-2">
-        <button class="bg-gray-300 px-4 py-2 rounded" onclick="closeModal()">Tutup</button>
-        <button class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
-        <button class="bg-red-600 text-white px-4 py-2 rounded">Hapus</button>
+<body>
+  <div class="wrapper">
+    <aside class="sidebar closed" id="sidebar">
+      <div class="logo-section">
+        <img src="/assets-admin/img/logo.png" alt="Logo" class="logo-img">
+        <span class="logo-text" id="logoText">Logistik Kita</span>
       </div>
+      <ul class="menu">
+        <li><a href="admin.html">🏠 Dashboard</a></li>
+        <li><a href="data_pengiriman.html">📦 Data Pengiriman</a></li>
+        <li><a href="#">🧾 Invoice</a></li>
+        <li><a href="#">📋 Surat Jalan</a></li>
+        <li><a href="#">📊 Laporan</a></li>
+        <li><a href="#">🔧 Pengaturan</a></li>
+      </ul>
+      <button class="toggle-btn" id="toggleBtn">☰</button>
+    </aside><main class="content">
+  <header class="topbar">
+    <h1>Data Pengiriman</h1>
+  </header>
+  <section class="main-content">
+    <div class="filter-section">
+      <label for="bulan">Bulan:</label>
+      <select id="bulan">
+        <option value="">--Pilih Bulan--</option>
+        <option value="01">Januari</option>
+        <option value="02">Februari</option>
+        <option value="03">Maret</option>
+        <option value="04">April</option>
+        <option value="05">Mei</option>
+        <option value="06">Juni</option>
+        <option value="07">Juli</option>
+        <option value="08">Agustus</option>
+        <option value="09">September</option>
+        <option value="10">Oktober</option>
+        <option value="11">November</option>
+        <option value="12">Desember</option>
+      </select>
+      <label for="tahun">Tahun:</label>
+      <input type="number" id="tahun" placeholder="2025" min="2020" max="2100">
+      <button id="tampilkanBtn">Tampilkan</button>
     </div>
+
+    <div id="hasilPengiriman">
+      <!-- Tabel hasil data pengiriman akan muncul di sini -->
+    </div>
+  </section>
+</main>
+
   </div>
-
-  <script>
-    const sidebar = document.getElementById('sidebar');
-    const logoText = document.getElementById('logoText');
-    const toggleLabel = document.getElementById('toggleLabel');
-
-    // Sidebar default tertutup
-    window.onload = () => {
-      sidebar.classList.remove("w-64");
-      sidebar.classList.add("w-20");
-      logoText.classList.add("hidden");
-      toggleLabel.innerText = "Buka Menu";
-    };
-
-    function toggleSidebar() {
-      if (sidebar.classList.contains("w-64")) {
-        sidebar.classList.remove("w-64");
-        sidebar.classList.add("w-20");
-        logoText.classList.add("hidden");
-        toggleLabel.innerText = "Buka Menu";
-      } else {
-        sidebar.classList.remove("w-20");
-        sidebar.classList.add("w-64");
-        logoText.classList.remove("hidden");
-        toggleLabel.innerText = "Tutup Menu";
-      }
-    }
-
-    // Supabase config
-    const supabase = supabase.createClient(
-      'https://mrghlcedtafomwnznywf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-    );
-
-    async function tampilkanData() {
-      const bulan = document.getElementById("bulan").value;
-      const tahun = document.getElementById("tahun").value;
-
-      if (!bulan || !tahun) {
-        alert("Pilih bulan dan tahun terlebih dahulu.");
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("Data_Barang")
-        .select("*")
-        .ilike('tanggal_masuk', `${tahun}-${bulan}-%`);
-
-      const dataBody = document.getElementById("dataBody");
-      dataBody.innerHTML = "";
-
-      if (error) {
-        console.error(error);
-        dataBody.innerHTML = "<tr><td colspan='7'>Gagal memuat data.</td></tr>";
-        return;
-      }
-
-      data.forEach((item) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td class="p-2">${item.nomor_surat_jalan}</td>
-          <td class="p-2">${item.tanggal_masuk}</td>
-          <td class="p-2">${item.nama_customer}</td>
-          <td class="p-2">${item.asal_kirim}</td>
-          <td class="p-2">${item.tujuan_kirim}</td>
-          <td class="p-2">${item.status_kirim}</td>
-          <td class="p-2">
-            <button onclick='lihatDetail(${JSON.stringify(item)})' class="text-blue-600 underline">Lihat Detail</button>
-          </td>
-        `;
-        dataBody.appendChild(row);
-      });
-    }
-
-    function lihatDetail(data) {
-      const modal = document.getElementById("modal");
-      const content = Object.entries(data).map(([key, val]) => `<div><strong>${key}:</strong> ${val}</div>`).join("");
-      document.getElementById("modalContent").innerHTML = content;
-      modal.classList.remove("hidden");
-    }
-
-    function closeModal() {
-      document.getElementById("modal").classList.add("hidden");
-    }
-  </script>
 </body>
 </html>
