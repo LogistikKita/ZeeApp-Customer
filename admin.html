@@ -1,38 +1,65 @@
-<!DOCTYPE html>
-<html lang="id">
+<!-- data-pengiriman.html --><!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Admin - Logistik Kita</title>
-  <link rel="stylesheet" href="/assets-admin/css/style-admin.css" />
-  <script defer src="/assets-admin/js/script-admin.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Pengiriman | Logistik Kita</title>
+  <link rel="stylesheet" href="style-admin.css" />
+  <link rel="stylesheet" href="data-pengiriman.css" />
+  <link rel="stylesheet" href="wheel-picker.css" />
 </head>
 <body>
   <div class="wrapper">
-    <aside class="sidebar closed" id="sidebar">
+    <div class="sidebar closed">
       <div class="logo-section">
-        <img src="logo_logistikkita.png" alt="Logo" class="logo-img">
-        <span class="logo-text" id="logoText">Logistik Kita</span>
+        <img src="logo.png" alt="Logo" class="logo-img" />
+        <span class="logo-text">Logistik Kita</span>
       </div>
       <ul class="menu">
-        <li><a href="admin.html">🏠 Dashboard</a></li>
-        <li><a href="data_pengiriman.html">📦 Data Pengiriman</a></li>
-        <li><a href="#">🧾 Invoice</a></li>
-        <li><a href="#">📋 Surat Jalan</a></li>
-        <li><a href="#">📊 Laporan</a></li>
-        <li><a href="#">🔧 Pengaturan</a></li>
+        <li><a href="admin.html">Dashboard</a></li>
+        <li><a href="data-pengiriman.html">Data Pengiriman</a></li>
+        <li><a href="rekap.html">Rekap & Laporan</a></li>
+        <li><a href="cek-tarif.html">Cek Tarif</a></li>
       </ul>
-      <button class="toggle-btn" id="toggleBtn">☰</button>
-    </aside>
-
-    <main class="content">
-      <header class="topbar">
-        <h1>Selamat datang, Admin</h1>
-      </header>
-      <section class="main-content">
-        <p>Ini halaman dashboard admin Logistik Kita. Gunakan menu di samping untuk navigasi.</p>
-      </section>
-    </main>
+      <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    </div><div class="content">
+  <div class="topbar">
+    <h2>Data Pengiriman</h2>
   </div>
-</body>
+
+  <div class="filter-section">
+    <div class="filter-group">
+      <label for="bulan">Bulan:</label>
+      <div id="bulan-picker" class="wheel-picker"></div>
+    </div>
+    <div class="filter-group">
+      <label for="tahun">Tahun:</label>
+      <div id="tahun-picker" class="wheel-picker"></div>
+    </div>
+    <button id="filter-button">Tampilkan</button>
+  </div>
+
+  <div class="table-container">
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Nomor SJ</th>
+          <th>Customer</th>
+          <th>Asal</th>
+          <th>Tujuan</th>
+          <th>Barang</th>
+          <th>Tarif</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+  </div>  <script src="env.js"></script>  <script src="wheel-picker.js"></script>  <script src="data-pengiriman.js"></script>  <script>
+    function toggleSidebar() {
+      document.querySelector(".sidebar").classList.toggle("closed");
+    }
+  </script></body>
 </html>
