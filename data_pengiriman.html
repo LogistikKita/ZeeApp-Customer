@@ -2,184 +2,156 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Pengiriman | Logistik Kita</title>
-  <script src="https://unpkg.com/phosphor-icons"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Pengiriman - Logistik Kita</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="icon" href="logo_logistikkita.png" />
+  <style>
+    .hide-sidebar .menu-label,
+    .hide-sidebar #logoText {
+      display: none;
+    }
+    .hide-sidebar #sidebar {
+      width: 4rem;
+    }
+    .modal {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  </style>
 </head>
-<body class="flex bg-white text-sm">
+<body class="flex bg-gray-100 min-h-screen text-sm">
 
   <!-- Sidebar -->
-  <aside id="sidebar" class="w-0 overflow-hidden bg-black text-white flex flex-col p-4 transition-all duration-300">
+  <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-4 transition-all duration-300">
+    <!-- Logo -->
     <div class="flex flex-col items-start gap-2 mb-4">
       <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
-      <h1 id="logoText" class="text-md font-bold text-red-500">Logistik Kita</h1>
+      <h1 id="logoText" class="text-lg font-bold text-red-500">Logistik Kita</h1>
     </div>
-    <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mb-4 flex items-center gap-2">
-      <i class="ph ph-list text-lg"></i>
-      <span id="toggleLabel" class="text-xs">Tutup Menu</span>
+
+    <!-- Toggle -->
+    <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mb-6 flex items-center gap-2">
+      <i class="ph ph-list text-xl"></i>
+      <span id="toggleLabel" class="text-sm">Tutup Menu</span>
     </button>
+
+    <!-- Menu -->
     <nav id="menuLinks" class="flex flex-col gap-2">
-      <a href="admin.html" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-gauge"></i><span class="menu-label">Dashboard</span>
-      </a>
-      <a href="data_pengiriman.html" class="bg-red-700 flex items-center gap-2 px-3 py-2 rounded">
-        <i class="ph ph-truck"></i><span class="menu-label">Data Pengiriman</span>
-      </a>
-      <!-- menu lainnya -->
+      <a href="admin.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-gauge"></i><span class="menu-label">Dashboard</span></a>
+      <a href="data_pengiriman.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded bg-red-600"><i class="ph ph-truck"></i><span class="menu-label">Data Pengiriman</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-pencil"></i><span class="menu-label">CRUD Tarif per Kg</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-map-pin"></i><span class="menu-label">Carter & Tarif Khusus</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-users"></i><span class="menu-label">Mitra Driver</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-globe"></i><span class="menu-label">Monitoring Armada</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-handshake"></i><span class="menu-label">Referral</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-chart-bar"></i><span class="menu-label">Laporan & Rekap</span></a>
+      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-gear"></i><span class="menu-label">Pengaturan</span></a>
     </nav>
   </aside>
 
-  <!-- Main Content -->
-  <main class="flex-1 p-4 transition-all duration-300">
-    <button onclick="toggleSidebar()" class="text-black hover:text-red-500 mb-4 flex items-center gap-2">
-      <i class="ph ph-list text-xl"></i>
-      <span class="text-sm">Buka Menu</span>
-    </button>
+  <!-- Content -->
+  <main class="flex-1 p-6">
+    <h2 class="text-xl font-bold text-red-500 mb-4">Data Pengiriman</h2>
 
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-bold text-red-600">Data Pengiriman</h2>
-      <div class="flex gap-2 items-center">
-        <select id="filterBulan" class="border border-gray-300 px-2 py-1 rounded">
-          <option value="">Bulan</option>
-          <option value="01">Januari</option>
-          <option value="02">Februari</option>
-          <option value="03">Maret</option>
-          <option value="04">April</option>
-          <option value="05">Mei</option>
-          <option value="06">Juni</option>
-          <option value="07">Juli</option>
-          <option value="08">Agustus</option>
-          <option value="09">September</option>
-          <option value="10">Oktober</option>
-          <option value="11">November</option>
-          <option value="12">Desember</option>
-        </select>
-        <select id="filterTahun" class="border border-gray-300 px-2 py-1 rounded">
-          <option value="">Tahun</option>
-          <script>
-            const tahunIni = new Date().getFullYear();
-            for (let i = tahunIni; i >= tahunIni - 5; i--) {
-              document.write(`<option value="${i}">${i}</option>`);
-            }
-          </script>
-        </select>
-        <button onclick="loadData()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded">
-          Tampilkan
-        </button>
-      </div>
+    <!-- Filter -->
+    <div class="flex items-center gap-4 mb-4">
+      <select id="bulan" class="border rounded p-2">
+        <option value="">Pilih Bulan</option>
+        <option value="01">Januari</option><option value="02">Februari</option><option value="03">Maret</option>
+        <option value="04">April</option><option value="05">Mei</option><option value="06">Juni</option>
+        <option value="07">Juli</option><option value="08">Agustus</option><option value="09">September</option>
+        <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+      </select>
+      <select id="tahun" class="border rounded p-2">
+        <option value="">Pilih Tahun</option>
+        <script>
+          const thisYear = new Date().getFullYear();
+          for (let i = thisYear; i >= 2020; i--) {
+            document.write(`<option value="${i}">${i}</option>`);
+          }
+        </script>
+      </select>
+      <button onclick="loadData()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Tampilkan</button>
     </div>
 
-    <!-- Table -->
-    <div class="overflow-x-auto">
-      <table class="w-full text-xs border">
-        <thead class="bg-red-100">
+    <!-- Tabel -->
+    <div class="overflow-auto rounded border">
+      <table class="min-w-full bg-white border text-xs">
+        <thead class="bg-black text-white">
           <tr>
-            <th class="p-2 border">No</th>
-            <th class="p-2 border">No Surat Jalan</th>
-            <th class="p-2 border">Tanggal</th>
-            <th class="p-2 border">Customer</th>
-            <th class="p-2 border">Asal</th>
-            <th class="p-2 border">Tujuan</th>
-            <th class="p-2 border">Barang</th>
-            <th class="p-2 border">Tarif</th>
-            <th class="p-2 border">Status</th>
-            <th class="p-2 border">Aksi</th>
+            <th class="px-2 py-2 border">No</th>
+            <th class="px-2 py-2 border">Tanggal</th>
+            <th class="px-2 py-2 border">Customer</th>
+            <th class="px-2 py-2 border">Tujuan</th>
+            <th class="px-2 py-2 border">Layanan</th>
+            <th class="px-2 py-2 border">Tarif</th>
+            <th class="px-2 py-2 border">Status</th>
+            <th class="px-2 py-2 border">Detail</th>
           </tr>
         </thead>
-        <tbody id="dataBody"></tbody>
+        <tbody id="tabelData" class="text-center"></tbody>
       </table>
     </div>
   </main>
 
-  <!-- Popup Detail -->
-  <div id="popupDetail" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
-    <div class="bg-white p-6 rounded shadow-lg max-w-md w-full text-sm relative">
-      <button onclick="tutupPopup()" class="absolute top-2 right-3 text-red-600">
-        <i class="ph ph-x text-xl"></i>
-      </button>
-      <h3 class="text-lg font-bold mb-4 text-red-600">Detail Pengiriman</h3>
-      <div id="detailContent" class="grid grid-cols-2 gap-2 text-xs">
-        <!-- konten detail akan muncul di sini -->
-      </div>
+  <!-- Modal Detail -->
+  <div id="popupDetail" class="fixed inset-0 hidden items-center justify-center z-50 modal">
+    <div class="bg-white w-11/12 md:w-2/3 lg:w-1/2 p-6 rounded shadow relative">
+      <button onclick="tutupPopup()" class="absolute top-2 right-2 text-red-500 text-lg"><i class="ph ph-x"></i></button>
+      <h3 class="text-lg font-bold mb-4">Detail Pengiriman</h3>
+      <div id="isiDetail" class="grid grid-cols-2 gap-2 text-sm"></div>
     </div>
   </div>
 
-  <!-- JS -->
   <script>
-    const sidebar = document.getElementById("sidebar");
-    const logoText = document.getElementById("logoText");
-    const toggleLabel = document.getElementById("toggleLabel");
+    const supabaseUrl = "https://mrghlcedtafomwnznywf.supabase.co";
+    const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...";
+    const table = "Data_Barang";
+
+    const client = supabase.createClient(supabaseUrl, apiKey);
 
     function toggleSidebar() {
-      if (sidebar.classList.contains("w-0")) {
-        sidebar.classList.remove("w-0", "overflow-hidden");
-        sidebar.classList.add("w-64");
-        logoText.classList.remove("hidden");
-        toggleLabel.textContent = "Tutup Menu";
-      } else {
-        sidebar.classList.add("w-0", "overflow-hidden");
-        sidebar.classList.remove("w-64");
-        logoText.classList.add("hidden");
-        toggleLabel.textContent = "Buka Menu";
-      }
+      document.body.classList.toggle("hide-sidebar");
     }
 
-    const supabase = supabase.createClient(
-      'https://mrghlcedtafomwnznywf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-    );
-
     async function loadData() {
-      const bulan = document.getElementById("filterBulan").value;
-      const tahun = document.getElementById("filterTahun").value;
-      const { data, error } = await supabase
-        .from('Data_Barang')
-        .select("*");
+      const bulan = document.getElementById('bulan').value;
+      const tahun = document.getElementById('tahun').value;
+      if (!bulan || !tahun) return Swal.fire("Pilih bulan dan tahun!");
 
-      let filtered = data;
-      if (bulan && tahun) {
-        filtered = data.filter(item => {
-          const tgl = new Date(item.tanggal_masuk);
-          return (
-            tgl.getMonth() + 1 === parseInt(bulan) &&
-            tgl.getFullYear() === parseInt(tahun)
-          );
-        });
-      }
+      const { data, error } = await client
+        .from(table)
+        .select("*")
+        .like('tanggal_masuk', `${tahun}-${bulan}-%`)
+        .order('tanggal_masuk', { ascending: false });
 
-      const tbody = document.getElementById("dataBody");
+      if (error) return console.error(error);
+
+      const tbody = document.getElementById('tabelData');
       tbody.innerHTML = "";
-      filtered.forEach((item, index) => {
+
+      data.forEach((item, i) => {
         tbody.innerHTML += `
-          <tr class="border hover:bg-red-50">
-            <td class="p-2 border">${index + 1}</td>
-            <td class="p-2 border">${item.nomor_surat_jalan}</td>
-            <td class="p-2 border">${item.tanggal_masuk}</td>
-            <td class="p-2 border">${item.nama_customer}</td>
-            <td class="p-2 border">${item.asal_kirim}</td>
-            <td class="p-2 border">${item.tujuan_kirim}</td>
-            <td class="p-2 border">${item.nama_barang}</td>
-            <td class="p-2 border">Rp${item.tarif_pengiriman?.toLocaleString()}</td>
-            <td class="p-2 border">${item.status_kirim}</td>
-            <td class="p-2 border text-center">
-              <button onclick='lihatDetail(${JSON.stringify(item)})' class="text-blue-600 underline">Lihat</button>
-            </td>
-          </tr>
-        `;
+          <tr>
+            <td class="border px-2 py-1">${i + 1}</td>
+            <td class="border px-2 py-1">${item.tanggal_masuk}</td>
+            <td class="border px-2 py-1">${item.nama_customer}</td>
+            <td class="border px-2 py-1">${item.tujuan_kirim}</td>
+            <td class="border px-2 py-1">${item.layanan}</td>
+            <td class="border px-2 py-1">Rp${item.tarif_pengiriman?.toLocaleString()}</td>
+            <td class="border px-2 py-1">${item.status_kirim}</td>
+            <td class="border px-2 py-1"><button onclick='lihatDetail(${JSON.stringify(item)})' class="text-blue-500 underline">Lihat</button></td>
+          </tr>`;
       });
     }
 
     function lihatDetail(data) {
-      const container = document.getElementById("detailContent");
-      container.innerHTML = "";
-      for (const [key, value] of Object.entries(data)) {
-        container.innerHTML += `
-          <div class="font-semibold">${key.replaceAll("_", " ")}</div>
-          <div>: ${value}</div>
-        `;
+      const isi = document.getElementById('isiDetail');
+      isi.innerHTML = "";
+      for (const key in data) {
+        isi.innerHTML += `<div><strong>${key.replaceAll("_", " ")}:</strong></div><div>${data[key]}</div>`;
       }
       document.getElementById("popupDetail").classList.remove("hidden");
     }
@@ -188,11 +160,14 @@
       document.getElementById("popupDetail").classList.add("hidden");
     }
 
+    // Auto load bulan & tahun sekarang
     window.onload = () => {
-      sidebar.classList.add("w-0", "overflow-hidden");
-      logoText.classList.add("hidden");
-      toggleLabel.textContent = "Buka Menu";
+      const now = new Date();
+      document.getElementById('bulan').value = String(now.getMonth() + 1).padStart(2, '0');
+      document.getElementById('tahun').value = now.getFullYear();
+      loadData();
     };
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </body>
 </html>
