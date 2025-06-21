@@ -1,0 +1,66 @@
+/* File: wheel-picker.css */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.picker-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.picker-title {
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.picker-wrapper {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
+.wheel {
+  height: 120px;
+  width: 100px;
+  overflow-y: scroll;
+  text-align: center;
+  scroll-snap-type: y mandatory;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0.5rem 0;
+}
+
+.wheel div {
+  scroll-snap-align: center;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.btn-ok, .btn-cancel {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  margin: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-ok {
+  background: #d50000;
+  color: #fff;
+}
+
+.btn-cancel {
+  background: #eee;
+}
