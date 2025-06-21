@@ -1,50 +1,43 @@
-// File: wheel-picker.js
-document.addEventListener("DOMContentLoaded", () => {
-  const filterBtn = document.getElementById("filterBtn");
-  const pickerModal = document.getElementById("pickerModal");
-  const btnApply = document.getElementById("btnApplyPicker");
-  const btnClose = document.getElementById("btnClosePicker");
-  const monthWheel = document.getElementById("monthWheel");
-  const yearWheel = document.getElementById("yearWheel");
+// /assets-admin/js/wheel-picker.js
+document.addEventListener('DOMContentLoaded', () => {
+  const openBtn = document.getElementById('openWheelPicker');
+  const modal = document.getElementById('wheelPickerModal');
+  const selectBtn = document.getElementById('selectWheelButton');
 
-  const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+  const months = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
   const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+  const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
 
-  months.forEach((month, index) => {
-    const item = document.createElement("div");
-    item.textContent = month;
-    item.dataset.value = index + 1;
-    monthWheel.appendChild(item);
+  const monthWheel = document.getElementById('monthWheel');
+  const yearWheel = document.getElementById('yearWheel');
+
+  function populateWheel(container, data) {
+    container.innerHTML = '';
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.textContent = item;
+      container.appendChild(div);
+    });
+  }
+
+  populateWheel(monthWheel, months);
+  populateWheel(yearWheel, years);
+
+  openBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
   });
 
-  years.forEach(year => {
-    const item = document.createElement("div");
-    item.textContent = year;
-    item.dataset.value = year;
-    yearWheel.appendChild(item);
-  });
+  selectBtn.addEventListener('click', () => {
+    const selectedMonth = months[Math.round(monthWheel.scrollTop / 40)];
+    const selectedYear = years[Math.round(yearWheel.scrollTop / 40)];
 
-  filterBtn.addEventListener("click", () => {
-    pickerModal.style.display = "flex";
-  });
+    modal.classList.add('hidden');
 
-  btnClose.addEventListener("click", () => {
-    pickerModal.style.display = "none";
-  });
-
-  btnApply.addEventListener("click", () => {
-    const selectedMonth = monthWheel.querySelector("div:nth-child(6)");
-    const selectedYear = yearWheel.querySelector("div:nth-child(6)");
-
-    if (selectedMonth && selectedYear) {
-      const bulan = selectedMonth.dataset.value;
-      const tahun = selectedYear.dataset.value;
-
-      // Panggil Supabase atau tampilkan data lokal
-      console.log("Tampilkan data untuk bulan:", bulan, "tahun:", tahun);
-    }
-
-    pickerModal.style.display = "none";
+    const bulanIndex = months.indexOf(selectedMonth) + 1;
+    const yearStr = selectedYear.toString();
+    fetchDataPengiriman(bulanIndex, yearStr);
   });
 });
