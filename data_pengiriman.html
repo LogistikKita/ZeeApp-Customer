@@ -2,113 +2,148 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard - Logistik Kita</title>
-  <script src="https://unpkg.com/phosphor-icons"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Pengiriman - Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" href="logo_logistikkita.png" />
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 flex h-screen overflow-hidden">
+<body class="bg-gray-100 text-gray-900">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-black text-white flex flex-col p-4 transition-all duration-300 transform -translate-x-64">
+      <div class="flex flex-col items-start gap-2 mb-4">
+        <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
+        <h1 id="logoText" class="text-md font-bold text-red-500">Logistik Kita</h1>
+      </div>
+      <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mb-6 flex items-center gap-2">
+        <i class="ph ph-list text-xl"></i>
+        <span id="toggleLabel" class="text-sm">Tutup Menu</span>
+      </button>
+      <nav id="menuLinks" class="flex flex-col gap-2 text-sm">
+        <a href="admin.html" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-gauge"></i><span>Dashboard</span></a>
+        <a href="data_pengiriman.html" class="flex items-center gap-2 bg-red-700 px-3 py-2 rounded"><i class="ph ph-truck"></i><span>Data Pengiriman</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-pencil"></i><span>CRUD Tarif per Kg</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-map-pin"></i><span>Carter & Tarif Khusus</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-users"></i><span>Mitra Driver</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-globe"></i><span>Monitoring Armada</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-handshake"></i><span>Referral</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-chart-bar"></i><span>Laporan & Rekap</span></a>
+        <a href="#" class="flex items-center gap-2 hover:bg-red-600 px-3 py-2 rounded"><i class="ph ph-gear"></i><span>Pengaturan</span></a>
+      </nav>
+    </aside>
 
-  <!-- Sidebar -->
-  <aside id="sidebar" class="w-20 bg-black text-white flex flex-col p-4 transition-all duration-300">
-    <div class="flex flex-col items-start gap-2 mb-4">
-      <img src="logo_logistikkita.png" alt="Logo" class="h-8" />
-      <h1 id="logoText" class="text-sm font-bold text-red-500 transition-all duration-300 hidden">Logistik Kita</h1>
+    <!-- Main -->
+    <main class="flex-1 p-6 overflow-y-auto">
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-red-600">Data Pengiriman</h2>
+        <button onclick="toggleSidebar()" class="md:hidden bg-red-600 text-white px-3 py-1 rounded flex items-center gap-1">
+          <i class="ph ph-list"></i> Menu
+        </button>
+      </div>
+
+      <!-- Filter -->
+      <div class="flex gap-4 items-end mb-6">
+        <div>
+          <label for="bulan" class="block text-sm font-medium">Bulan</label>
+          <select id="bulan" class="border px-3 py-2 rounded w-full">
+            <option value="01">Januari</option><option value="02">Februari</option><option value="03">Maret</option>
+            <option value="04">April</option><option value="05">Mei</option><option value="06">Juni</option>
+            <option value="07">Juli</option><option value="08">Agustus</option><option value="09">September</option>
+            <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+          </select>
+        </div>
+        <div>
+          <label for="tahun" class="block text-sm font-medium">Tahun</label>
+          <input type="number" id="tahun" class="border px-3 py-2 rounded w-full" value="2025" />
+        </div>
+        <button onclick="tampilkanData()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Tampilkan</button>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="w-full text-sm">
+          <thead class="bg-red-600 text-white">
+            <tr>
+              <th class="px-4 py-2 text-left">No Surat Jalan</th>
+              <th class="px-4 py-2 text-left">Tanggal</th>
+              <th class="px-4 py-2 text-left">Customer</th>
+              <th class="px-4 py-2 text-left">Asal</th>
+              <th class="px-4 py-2 text-left">Tujuan</th>
+              <th class="px-4 py-2 text-left">Armada</th>
+              <th class="px-4 py-2 text-left">Layanan</th>
+              <th class="px-4 py-2 text-left">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="data-body" class="text-gray-800">
+            <!-- Data akan diisi lewat JS -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <!-- Popup Detail -->
+  <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg w-full max-w-2xl p-6 relative">
+      <button onclick="tutupPopup()" class="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-xl">×</button>
+      <h3 class="text-xl font-semibold mb-4 text-red-600">Detail Pengiriman</h3>
+      <div id="popup-content" class="grid grid-cols-2 gap-4 text-sm"></div>
     </div>
-    <button onclick="toggleSidebar()" class="text-white hover:text-red-500 mb-6 flex items-center gap-2">
-      <i class="ph ph-list text-xl"></i>
-      <span id="toggleLabel" class="text-sm hidden">Tutup Menu</span>
-    </button>
-    <nav id="menuLinks" class="flex flex-col gap-2">
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-gauge"></i><span class="menu-label hidden">Dashboard</span>
-      </a>
-      <a href="data_pengiriman.html" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-truck"></i><span class="menu-label hidden">Data Pengiriman</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-pencil"></i><span class="menu-label hidden">CRUD Tarif per Kg</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-map-pin"></i><span class="menu-label hidden">Carter & Tarif Khusus</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-users"></i><span class="menu-label hidden">Mitra Driver</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-globe"></i><span class="menu-label hidden">Monitoring Armada</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-handshake"></i><span class="menu-label hidden">Referral</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-chart-bar"></i><span class="menu-label hidden">Laporan & Rekap</span>
-      </a>
-      <a href="#" class="flex items-center gap-2 text-sm hover:bg-red-600 px-3 py-2 rounded">
-        <i class="ph ph-gear"></i><span class="menu-label hidden">Pengaturan</span>
-      </a>
-    </nav>
-  </aside>
+  </div>
 
-  <!-- Main Content -->
-  <main class="flex-1 overflow-y-auto p-6">
-    <h2 class="text-2xl font-bold mb-4 text-red-600">📦 Data Pengiriman</h2>
-    
-    <div class="overflow-x-auto">
-      <table class="w-full border border-gray-300 rounded-md shadow-sm bg-white text-sm text-left">
-        <thead class="bg-red-600 text-white">
-          <tr>
-            <th class="px-4 py-2">Nomor SJ</th>
-            <th class="px-4 py-2">Tanggal</th>
-            <th class="px-4 py-2">Customer</th>
-            <th class="px-4 py-2">Asal</th>
-            <th class="px-4 py-2">Tujuan</th>
-            <th class="px-4 py-2">Barang</th>
-            <th class="px-4 py-2">Tarif</th>
-            <th class="px-4 py-2">Status</th>
-          </tr>
-        </thead>
-        <tbody id="dataPengirimanBody">
-          <!-- Data akan dimuat dari Supabase -->
-          <tr>
-            <td class="px-4 py-2 text-gray-700">SJ001</td>
-            <td class="px-4 py-2">2025-06-20</td>
-            <td class="px-4 py-2">Andi</td>
-            <td class="px-4 py-2">Jakarta</td>
-            <td class="px-4 py-2">Surabaya</td>
-            <td class="px-4 py-2">Elektronik</td>
-            <td class="px-4 py-2">Rp250.000</td>
-            <td class="px-4 py-2"><span class="text-green-600 font-semibold">Terkirim</span></td>
-          </tr>
-          <!-- Tambah data dinamis di sini -->
-        </tbody>
-      </table>
-    </div>
-  </main>
-
-  <!-- Script -->
   <script>
+    const supabaseUrl = "https://mrghlcedtafomwnznywf.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs";
+
+    async function tampilkanData() {
+      const bulan = document.getElementById("bulan").value;
+      const tahun = document.getElementById("tahun").value;
+      const { data, error } = await fetch(`${supabaseUrl}/rest/v1/Data_Barang?select=*&tanggal_masuk=gte.${tahun}-${bulan}-01&tanggal_masuk=lte.${tahun}-${bulan}-31`, {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`
+        }
+      }).then(res => res.json());
+
+      const tbody = document.getElementById("data-body");
+      tbody.innerHTML = "";
+
+      data.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="px-4 py-2">${item.nomor_surat_jalan}</td>
+          <td class="px-4 py-2">${item.tanggal_masuk}</td>
+          <td class="px-4 py-2">${item.nama_customer}</td>
+          <td class="px-4 py-2">${item.asal_kirim}</td>
+          <td class="px-4 py-2">${item.tujuan_kirim}</td>
+          <td class="px-4 py-2">${item.jenis_armada}</td>
+          <td class="px-4 py-2">${item.layanan}</td>
+          <td class="px-4 py-2"><button class="bg-blue-500 text-white px-2 py-1 rounded" onclick='lihatDetail(${JSON.stringify(item)})'>Lihat Detail</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function lihatDetail(data) {
+      const content = document.getElementById("popup-content");
+      content.innerHTML = Object.entries(data).map(([key, val]) => `
+        <div><strong>${key.replace(/_/g, ' ')}:</strong> ${val}</div>
+      `).join("");
+      document.getElementById("popup").classList.remove("hidden");
+    }
+
+    function tutupPopup() {
+      document.getElementById("popup").classList.add("hidden");
+    }
+
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
-      const labels = document.querySelectorAll(".menu-label");
-      const logoText = document.getElementById("logoText");
-      const toggleLabel = document.getElementById("toggleLabel");
-
-      if (sidebar.classList.contains("w-64")) {
-        sidebar.classList.remove("w-64");
-        sidebar.classList.add("w-20");
-        labels.forEach(label => label.classList.add("hidden"));
-        logoText.classList.add("hidden");
-        toggleLabel.classList.add("hidden");
-      } else {
-        sidebar.classList.remove("w-20");
-        sidebar.classList.add("w-64");
-        labels.forEach(label => label.classList.remove("hidden"));
-        logoText.classList.remove("hidden");
-        toggleLabel.classList.remove("hidden");
-      }
+      sidebar.classList.toggle("-translate-x-64");
     }
+
+    // Buka otomatis filter data awal
+    window.onload = tampilkanData;
   </script>
 </body>
 </html>
