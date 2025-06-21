@@ -1,43 +1,26 @@
-// /assets-admin/js/wheel-picker.js
-document.addEventListener('DOMContentLoaded', () => {
-  const openBtn = document.getElementById('openWheelPicker');
-  const modal = document.getElementById('wheelPickerModal');
-  const selectBtn = document.getElementById('selectWheelButton');
+// wheel-picker.js
+class WheelPicker {
+  constructor(id, items) {
+    this.container = document.getElementById(id);
+    this.items = items;
+    this.selectedIndex = 0;
+    this.render();
+    this.container.addEventListener("wheel", this.scroll.bind(this));
+  }
 
-  const months = [
-    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-  ];
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 10 }, (_, i) => currentYear - 5 + i);
-
-  const monthWheel = document.getElementById('monthWheel');
-  const yearWheel = document.getElementById('yearWheel');
-
-  function populateWheel(container, data) {
-    container.innerHTML = '';
-    data.forEach(item => {
-      const div = document.createElement('div');
+  render() {
+    this.container.innerHTML = "";
+    this.items.forEach((item, i) => {
+      const div = document.createElement("div");
       div.textContent = item;
-      container.appendChild(div);
+      if (i === this.selectedIndex) div.classList.add("selected");
+      this.container.appendChild(div);
     });
   }
 
-  populateWheel(monthWheel, months);
-  populateWheel(yearWheel, years);
-
-  openBtn.addEventListener('click', () => {
-    modal.classList.remove('hidden');
-  });
-
-  selectBtn.addEventListener('click', () => {
-    const selectedMonth = months[Math.round(monthWheel.scrollTop / 40)];
-    const selectedYear = years[Math.round(yearWheel.scrollTop / 40)];
-
-    modal.classList.add('hidden');
-
-    const bulanIndex = months.indexOf(selectedMonth) + 1;
-    const yearStr = selectedYear.toString();
-    fetchDataPengiriman(bulanIndex, yearStr);
-  });
-});
+  scroll(e) {
+    e.preventDefault();
+    this.selectedIndex = (this.selectedIndex + (e.deltaY > 0 ? 1 : -1) + this.items.length) % this.items.length;
+    this.render();
+  }
+}
