@@ -1,42 +1,24 @@
-/* /assets-admin/css/wheel-picker.css */
-.wheel-picker-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-}
-
-.wheel-modal-content {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.wheel-wrapper {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.wheel {
-  width: 120px;
-  height: 150px;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
+/* wheel-picker.css */
+.wheel-picker {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
-  padding: 0.5rem;
+  background: #fff;
+  text-align: center;
+  font-weight: bold;
 }
 
-.wheel div {
-  text-align: center;
-  scroll-snap-align: center;
-  padding: 10px 0;
+.wheel-picker div {
+  line-height: 2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.wheel-picker .selected {
+  color: #ef4444;
+  font-size: 1.2rem;
 }
