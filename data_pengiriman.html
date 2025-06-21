@@ -3,124 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Logistik Kita</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+  <title>Dashboard Admin | Logistik Kita</title>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script>
+    // Inisialisasi Supabase
+    const supabaseUrl = 'https://mrghlcedtafomwnznywf.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+  </script>
   <style>
-    body { font-family: 'Segoe UI', sans-serif; background-color: #111; }
-    .sidebar-hidden .sidebar { transform: translateX(-100%); }
-    .sidebar-hidden .main { margin-left: 0; }
-    .sidebar { transition: transform 0.3s ease; }
-    .main { transition: margin-left 0.3s ease; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+    .sidebar {
+      width: 5rem;
+      background-color: black;
+      color: white;
+      padding: 1rem;
+      transition: width 0.3s;
+      overflow: hidden;
+    }
+    .sidebar.open {
+      width: 16rem;
+    }
+    .sidebar h1 {
+      color: #ef4444;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    .sidebar button {
+      background: none;
+      border: none;
+      color: white;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .sidebar nav a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      transition: background 0.3s;
+    }
+    .sidebar nav a:hover {
+      background-color: #dc2626;
+    }
+    .menu-label {
+      display: none;
+    }
+    .sidebar.open .menu-label,
+    .sidebar.open #logoText {
+      display: inline;
+    }
+    .content {
+      margin-left: 5rem;
+      padding: 1rem;
+      transition: margin-left 0.3s;
+    }
+    .content.shifted {
+      margin-left: 16rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th {
+      background-color: #ef4444;
+      color: white;
+    }
   </style>
 </head>
-<body class="sidebar-hidden">
-
+<body>
   <!-- Sidebar -->
-  <aside class="sidebar fixed top-0 left-0 w-64 h-full bg-gray-900 text-white z-20 p-4 shadow-xl">
-    <h1 class="text-2xl font-bold text-red-500 mb-6 flex items-center gap-2">
-      <i class="ph ph-warehouse"></i> Logistik Kita
-    </h1>
-    <nav class="space-y-3">
-      <a href="#" class="block py-2 px-3 rounded hover:bg-red-600"><i class="ph ph-list"></i> Data Pengiriman</a>
-      <a href="#" class="block py-2 px-3 rounded hover:bg-red-600"><i class="ph ph-plus"></i> Buat Database</a>
-      <a href="#" class="block py-2 px-3 rounded hover:bg-red-600"><i class="ph ph-file-text"></i> Laporan</a>
-      <a href="#" class="block py-2 px-3 rounded hover:bg-red-600"><i class="ph ph-sign-out"></i> Keluar</a>
+  <aside id="sidebar" class="sidebar">
+    <div class="flex flex-col items-start gap-2 mb-4">
+      <img src="logo_logistikkita.png" alt="Logo" class="h-10" />
+      <h1 id="logoText" class="hidden">Logistik Kita</h1>
+    </div>
+
+    <button onclick="toggleSidebar()">
+      <i class="ph ph-list text-xl"></i>
+      <span id="toggleLabel" class="text-sm menu-label">Buka Menu</span>
+    </button>
+
+    <nav>
+      <a href="#"><i class="ph ph-gauge"></i><span class="menu-label">Dashboard</span></a>
+      <a href="#"><i class="ph ph-truck"></i><span class="menu-label">Data Pengiriman</span></a>
+      <a href="#"><i class="ph ph-pencil"></i><span class="menu-label">CRUD Tarif per Kg</span></a>
+      <a href="#"><i class="ph ph-map-pin"></i><span class="menu-label">Carter & Tarif Khusus</span></a>
+      <a href="#"><i class="ph ph-users"></i><span class="menu-label">Mitra Driver</span></a>
+      <a href="#"><i class="ph ph-globe"></i><span class="menu-label">Monitoring Armada</span></a>
+      <a href="#"><i class="ph ph-handshake"></i><span class="menu-label">Referral</span></a>
+      <a href="#"><i class="ph ph-chart-bar"></i><span class="menu-label">Laporan & Rekap</span></a>
+      <a href="#"><i class="ph ph-gear"></i><span class="menu-label">Pengaturan</span></a>
     </nav>
   </aside>
 
-  <!-- Main Content -->
-  <main class="main ml-0 md:ml-64 p-6 text-white">
-
-    <!-- Toggle Sidebar -->
-    <button onclick="toggleSidebar()" class="mb-4 text-red-500 hover:text-white flex items-center gap-2">
-      <i class="ph ph-list"></i> Menu
-    </button>
-
-    <!-- Content -->
-    <section id="dataPengiriman" class="mt-6">
-      <h2 class="text-xl font-bold text-red-500 mb-4 flex items-center gap-2">
-        <i class="ph ph-truck"></i> Data Pengiriman
-      </h2>
-
-      <!-- Loading -->
-      <div id="loading" class="text-white mb-4 hidden">Memuat data...</div>
-
-      <!-- Tabel -->
-      <div class="overflow-auto rounded shadow border border-gray-600">
-        <table class="min-w-full text-sm text-white">
-          <thead class="bg-red-600 text-left">
-            <tr>
-              <th class="px-4 py-2">No. SJ</th>
-              <th class="px-4 py-2">Tanggal</th>
-              <th class="px-4 py-2">Customer</th>
-              <th class="px-4 py-2">Tujuan</th>
-              <th class="px-4 py-2">Layanan</th>
-              <th class="px-4 py-2">Tarif</th>
-              <th class="px-4 py-2">Status</th>
-            </tr>
-          </thead>
-          <tbody id="tabelDataPengiriman" class="bg-gray-900">
-            <!-- Data diisi oleh JS -->
-          </tbody>
-        </table>
-      </div>
-    </section>
+  <!-- Content -->
+  <main id="mainContent" class="content">
+    <h2>Data Pengiriman</h2>
+    <div style="overflow-x:auto">
+      <table id="tabelPengiriman">
+        <thead>
+          <tr>
+            <th>No. Surat Jalan</th>
+            <th>Tanggal</th>
+            <th>Customer</th>
+            <th>Tujuan</th>
+            <th>Barang</th>
+            <th>Armada</th>
+            <th>Tarif</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </main>
 
   <script>
-    function toggleSidebar() {
-      document.body.classList.toggle("sidebar-hidden");
+    // Sidebar awal tertutup
+    window.addEventListener('DOMContentLoaded', () => {
+      toggleSidebar(false);
+      fetchData();
+    });
+
+    function toggleSidebar(forceState) {
+      const sidebar = document.getElementById("sidebar");
+      const logoText = document.getElementById("logoText");
+      const toggleLabel = document.getElementById("toggleLabel");
+      const content = document.getElementById("mainContent");
+      const isOpen = sidebar.classList.contains("open");
+
+      const newState = typeof forceState === "boolean" ? forceState : !isOpen;
+
+      if (newState) {
+        sidebar.classList.add("open");
+        content.classList.add("shifted");
+        toggleLabel.innerText = "Tutup Menu";
+      } else {
+        sidebar.classList.remove("open");
+        content.classList.remove("shifted");
+        toggleLabel.innerText = "Buka Menu";
+      }
     }
 
-    // Supabase config
-    const supabaseUrl = 'https://mrghlcedtafomwnznywf.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs';
-    const client = supabase.createClient(supabaseUrl, supabaseKey);
-
-    // Ambil data pengiriman
-    async function ambilDataPengiriman() {
-      document.getElementById('loading').classList.remove('hidden');
-      const { data, error } = await client.from('Data_Barang').select(`
-        nomor_surat_jalan,
-        tanggal_masuk,
-        nama_customer,
-        tujuan_kirim,
-        layanan,
-        tarif_pengiriman,
-        status_kirim
-      `).order('tanggal_masuk', { ascending: false });
-
-      const tabel = document.getElementById('tabelDataPengiriman');
-      tabel.innerHTML = '';
+    async function fetchData() {
+      const { data, error } = await supabase.from("Data_Barang").select("*").limit(50).order("tanggal_masuk", { ascending: false });
 
       if (error) {
-        tabel.innerHTML = `<tr><td colspan="7" class="text-center text-red-400 px-4 py-2">Gagal ambil data 😢</td></tr>`;
-        console.error(error);
-      } else if (data.length === 0) {
-        tabel.innerHTML = `<tr><td colspan="7" class="text-center text-gray-400 px-4 py-2">Data kosong</td></tr>`;
-      } else {
-        data.forEach(item => {
-          const row = `
-            <tr class="border-b border-gray-700 hover:bg-gray-800">
-              <td class="px-4 py-2">${item.nomor_surat_jalan}</td>
-              <td class="px-4 py-2">${item.tanggal_masuk}</td>
-              <td class="px-4 py-2">${item.nama_customer}</td>
-              <td class="px-4 py-2">${item.tujuan_kirim}</td>
-              <td class="px-4 py-2">${item.layanan}</td>
-              <td class="px-4 py-2">Rp ${parseInt(item.tarif_pengiriman).toLocaleString()}</td>
-              <td class="px-4 py-2">${item.status_kirim}</td>
-            </tr>
-          `;
-          tabel.innerHTML += row;
-        });
+        console.error("Gagal ambil data:", error.message);
+        return;
       }
 
-      document.getElementById('loading').classList.add('hidden');
-    }
+      const tbody = document.querySelector("#tabelPengiriman tbody");
+      tbody.innerHTML = "";
 
-    ambilDataPengiriman();
+      data.forEach(item => {
+        const row = `
+          <tr>
+            <td>${item.nomor_surat_jalan}</td>
+            <td>${item.tanggal_masuk}</td>
+            <td>${item.nama_customer}</td>
+            <td>${item.tujuan_kirim}</td>
+            <td>${item.nama_barang}</td>
+            <td>${item.jenis_armada}</td>
+            <td>Rp${item.tarif_pengiriman?.toLocaleString("id-ID") || 0}</td>
+            <td>${item.status_kirim}</td>
+          </tr>
+        `;
+        tbody.insertAdjacentHTML("beforeend", row);
+      });
+    }
   </script>
 </body>
 </html>
