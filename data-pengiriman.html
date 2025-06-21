@@ -1,161 +1,127 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Data Pengiriman - Logistik Kita</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/+esm"></script>
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; }
-    .navbar { background-color: #dc3545; }
-    .navbar-brand, .nav-link { color: #fff !important; }
-    .filter-box { background: #f8f9fa; padding: 20px; border-radius: 10px; }
-    table { margin-top: 20px; }
-    .modal-content strong { color: #dc3545; }
-  </style>
-</head>
-<body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="admin.html">
-        <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2">
-        Logistik Kita - Admin
-      </a>
-    </div>
-  </nav>
-
-  <!-- Filter -->
-  <div class="container mt-4">
-    <div class="filter-box">
-      <div class="row g-2 align-items-end">
-        <div class="col-md-5">
-          <label>Bulan</label>
-          <select id="bulan" class="form-select">
-            <option value="01">Januari</option><option value="02">Februari</option>
-            <option value="03">Maret</option><option value="04">April</option>
-            <option value="05">Mei</option><option value="06">Juni</option>
-            <option value="07">Juli</option><option value="08">Agustus</option>
-            <option value="09">September</option><option value="10">Oktober</option>
-            <option value="11">November</option><option value="12">Desember</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label>Tahun</label>
-          <select id="tahun" class="form-select">
-            <script>
-              const yNow = new Date().getFullYear();
-              for(let y = yNow; y >= yNow - 5; y--) {
-                document.write(`<option value="${y}">${y}</option>`);
-              }
-            </script>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <button onclick="tampilkanData()" class="btn btn-danger w-100">Tampilkan</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Table -->
-    <div id="dataContainer" class="table-responsive d-none">
-      <table class="table table-bordered table-striped mt-4">
-        <thead class="table-danger">
-          <tr>
-            <th>No</th>
-            <th>Nama</th>
-            <th>Tujuan</th>
-            <th>Berat</th>
-            <th>Tarif</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="tabelData"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Modal Detail -->
-  <div class="modal fade" id="modalDetail" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content p-4">
-        <h5 class="modal-title mb-3">Detail Pengiriman</h5>
-        <div id="isiDetail"></div>
-        <div class="mt-3 text-end">
-          <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
-          <button class="btn btn-warning" onclick="editData()">Edit</button>
-          <button class="btn btn-danger" onclick="hapusData()">Hapus</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Script -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Pengiriman - Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient(
-      "https://mrghlcedtafomwnznywf.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
-    );
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";const supabase = createClient(
+  "https://mrghlcedtafomwnznywf.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+);
 
-    let selectedData = null;
+window.tampilkanData = async function () {
+  const bulan = parseInt(document.getElementById("bulan").value);
+  const tahun = parseInt(document.getElementById("tahun").value);
 
-    async function tampilkanData() {
-      const bulan = document.getElementById("bulan").value;
-      const tahun = document.getElementById("tahun").value;
-      const { data, error } = await supabase
-        .from("Data_Barang")
-        .select("*")
-        .gte("tanggal_masuk", `${tahun}-${bulan}-01`)
-        .lte("tanggal_masuk", `${tahun}-${bulan}-31`)
-        .order("tanggal_masuk", { ascending: false });
+  let { data, error } = await supabase.from("Data_Barang").select("*");
 
-      const table = document.getElementById("tabelData");
-      table.innerHTML = "";
-      if (data && data.length) {
-        data.forEach((item, i) => {
-          const row = `
-            <tr>
-              <td>${i + 1}</td>
-              <td>${item.nama_customer}</td>
-              <td>${item.tujuan_kirim}</td>
-              <td>${item.berat_kg} kg</td>
-              <td>Rp ${item.tarif_pengiriman?.toLocaleString("id-ID")}</td>
-              <td><button class="btn btn-sm btn-outline-primary" onclick='showDetail(${JSON.stringify(JSON.stringify(item))})'>Lihat Detail</button></td>
-            </tr>
-          `;
-          table.innerHTML += row;
-        });
-        document.getElementById("dataContainer").classList.remove("d-none");
-      } else {
-        table.innerHTML = `<tr><td colspan="6" class="text-center text-muted">Data tidak ditemukan</td></tr>`;
-        document.getElementById("dataContainer").classList.remove("d-none");
-      }
-    }
+  if (error) {
+    alert("❌ Gagal mengambil data: " + error.message);
+    return;
+  }
 
-    function showDetail(dataStr) {
-      selectedData = JSON.parse(dataStr);
-      const d = selectedData;
-      const detailHTML = Object.entries(d).map(([k, v]) => `<p><strong>${k.replace(/_/g, ' ')}:</strong> ${v}</p>`).join("");
-      document.getElementById("isiDetail").innerHTML = detailHTML;
-      new bootstrap.Modal(document.getElementById("modalDetail")).show();
-    }
+  const hasilFilter = data.filter(item => {
+    const tgl = new Date(item.tanggal_masuk);
+    return tgl.getMonth() + 1 === bulan && tgl.getFullYear() === tahun;
+  });
 
-    function editData() {
-      alert("✏️ Edit data belum diaktifkan. Fitur sedang dikembangkan...");
-    }
+  const isiTabel = document.getElementById("isiTabel");
+  isiTabel.innerHTML = "";
+  hasilFilter.forEach(item => {
+    isiTabel.innerHTML += `
+      <tr>
+        <td>${item.nomor_surat_jalan}</td>
+        <td>${item.nama_customer}</td>
+        <td>${item.tujuan_kirim}</td>
+        <td>${item.tanggal_masuk}</td>
+        <td>
+          <button class="btn btn-sm btn-info" onclick='lihatDetail(${JSON.stringify(JSON.stringify(item))})'>Lihat</button>
+        </td>
+      </tr>
+    `;
+  });
+};
 
-    async function hapusData() {
-      if (!confirm("Yakin ingin menghapus data ini?")) return;
-      const { error } = await supabase.from("Data_Barang").delete().eq("nomor_surat_jalan", selectedData.nomor_surat_jalan);
-      if (error) return alert("❌ Gagal hapus data: " + error.message);
-      alert("✅ Data berhasil dihapus");
-      tampilkanData();
-      bootstrap.Modal.getInstance(document.getElementById("modalDetail")).hide();
-    }
+window.lihatDetail = function (jsonData) {
+  const data = JSON.parse(jsonData);
+  document.getElementById("popupBody").innerHTML = `
+    <strong>Nama Customer:</strong> ${data.nama_customer}<br>
+    <strong>Tujuan:</strong> ${data.tujuan_kirim}<br>
+    <strong>Tarif:</strong> Rp ${data.tarif_pengiriman?.toLocaleString("id-ID") || 0}
+  `;
+  const modal = new bootstrap.Modal(document.getElementById("detailModal"));
+  modal.show();
+}
+
   </script>
+</head>
+<body class="bg-light">
+  <nav class="navbar navbar-dark bg-danger mb-4">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">📦 Admin - Data Pengiriman</span>
+    </div>
+  </nav>  <div class="container">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="bulan">Bulan</label>
+        <select id="bulan" class="form-select">
+          <option value="1">Januari</option>
+          <option value="2">Februari</option>
+          <option value="3">Maret</option>
+          <option value="4">April</option>
+          <option value="5">Mei</option>
+          <option value="6">Juni</option>
+          <option value="7">Juli</option>
+          <option value="8">Agustus</option>
+          <option value="9">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="tahun">Tahun</label>
+        <select id="tahun" class="form-select"></select>
+      </div>
+    </div>
+    <button class="btn btn-danger mb-4" onclick="tampilkanData()">Tampilkan</button><table class="table table-bordered table-hover">
+  <thead class="table-dark">
+    <tr>
+      <th>No. Surat</th>
+      <th>Customer</th>
+      <th>Tujuan</th>
+      <th>Tanggal</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody id="isiTabel"></tbody>
+</table>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </div>  <!-- Modal -->  <div class="modal fade" id="detailModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detail Pengiriman</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="popupBody">
+          <!-- detail akan muncul di sini -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-warning">Edit</button>
+          <button class="btn btn-danger">Hapus</button>
+        </div>
+      </div>
+    </div>
+  </div>  <script>
+    const tahun = new Date().getFullYear();
+    const selectTahun = document.getElementById("tahun");
+    for (let i = tahun; i >= 2022; i--) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.text = i;
+      selectTahun.appendChild(opt);
+    }
+  </script>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script></body>
 </html>
