@@ -1,66 +1,42 @@
-/* File: wheel-picker.css */
-.modal-overlay {
+/* /assets-admin/css/wheel-picker.css */
+.wheel-picker-modal {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: none;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 50;
 }
 
-.picker-content {
-  background: #fff;
+.wheel-modal-content {
+  background: white;
   padding: 1.5rem;
-  border-radius: 12px;
+  border-radius: 1rem;
   width: 90%;
   max-width: 400px;
   text-align: center;
 }
 
-.picker-title {
-  font-weight: bold;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
-}
-
-.picker-wrapper {
+.wheel-wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 1rem;
 }
 
 .wheel {
-  height: 120px;
-  width: 100px;
+  width: 120px;
+  height: 150px;
   overflow-y: scroll;
-  text-align: center;
   scroll-snap-type: y mandatory;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 0.5rem 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
 }
 
 .wheel div {
+  text-align: center;
   scroll-snap-align: center;
-  padding: 0.5rem 0;
-  font-size: 1rem;
-}
-
-.btn-ok, .btn-cancel {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  margin: 0.5rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-ok {
-  background: #d50000;
-  color: #fff;
-}
-
-.btn-cancel {
-  background: #eee;
+  padding: 10px 0;
 }
