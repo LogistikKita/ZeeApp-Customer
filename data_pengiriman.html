@@ -1,52 +1,39 @@
-<!-- File: data_pengiriman.html --><!DOCTYPE html><html lang="id">
+<!-- data_pengiriman.html --><!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Data Pengiriman - Logistik Kita</title>
-  <link rel="stylesheet" href="/assets-admin/css/style-admin.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Pengiriman</title>
+  <link rel="stylesheet" href="/assets-admin/css/style.css" />
   <link rel="stylesheet" href="/assets-admin/css/wheel-picker.css" />
-  <script defer src="/assets-admin/js/script-admin.js"></script>
-  <script defer src="/assets-admin/js/wheel-picker.js"></script>
 </head>
-<body>
-  <div class="wrapper">
-    <aside class="sidebar closed" id="sidebar">
-      <div class="logo-section">
-        <img src="/assets-admin/img/logo.png" alt="Logo" class="logo-img">
-        <span class="logo-text" id="logoText">Logistik Kita</span>
-      </div>
-      <ul class="menu">
-        <li><a href="admin.html">🏠 Dashboard</a></li>
-        <li><a href="data_pengiriman.html">📦 Data Pengiriman</a></li>
-        <li><a href="#">🧾 Invoice</a></li>
-        <li><a href="#">📋 Surat Jalan</a></li>
-        <li><a href="#">📊 Laporan</a></li>
-        <li><a href="#">🔧 Pengaturan</a></li>
-      </ul>
-      <button class="toggle-btn" id="toggleBtn">☰</button>
-    </aside><main class="content">
-  <header class="topbar">
-    <h1>Data Pengiriman</h1>
-    <button id="filterBtn">🗓️ Pilih Bulan & Tahun</button>
-  </header>
+<body class="bg-gray-100 text-gray-900">
+  <div class="min-h-screen flex flex-col">
+    <!-- Navbar & Sidebar bisa dipanggil include di sini jika pakai template engine --><main class="flex-1 p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">Data Pengiriman</h1>
+    <button id="openWheelPicker" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+      Pilih Bulan & Tahun
+    </button>
+  </div>
 
-  <section class="main-content">
-    <div id="dataContainer">
-      <p>Silakan pilih bulan dan tahun untuk menampilkan data.</p>
-    </div>
-  </section>
+  <div id="tableContainer">
+    <!-- Tabel data akan dimuat di sini oleh JS -->
+  </div>
 </main>
 
-  </div>  <!-- Wheel Picker Modal -->  <div class="modal-overlay" id="pickerModal">
-    <div class="picker-content">
-      <div class="picker-title">Pilih Bulan & Tahun</div>
-      <div class="picker-wrapper">
-        <div class="wheel" id="monthWheel"></div>
-        <div class="wheel" id="yearWheel"></div>
+  </div>  <!-- Modal Wheel Picker -->  <div id="wheelPickerModal" class="wheel-picker-modal hidden">
+    <div class="wheel-modal-content">
+      <div class="wheel-wrapper">
+        <div>
+          <label class="block text-center mb-1 font-medium">Bulan</label>
+          <div id="monthWheel" class="wheel"></div>
+        </div>
+        <div>
+          <label class="block text-center mb-1 font-medium">Tahun</label>
+          <div id="yearWheel" class="wheel"></div>
+        </div>
       </div>
-      <button class="btn-ok" id="btnApplyPicker">Tampilkan</button>
-      <button class="btn-cancel" id="btnClosePicker">Batal</button>
+      <button id="selectWheelButton" class="bg-green-600 text-white px-4 py-2 mt-4 w-full rounded hover:bg-green-700">Tampilkan Data</button>
     </div>
-  </div>
-</body>
+  </div>  <script src="/assets-admin/js/wheel-picker.js" defer></script>  <script src="/assets-admin/js/data_pengiriman.js" defer></script></body>
 </html>
