@@ -2,163 +2,136 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simulasi Carter - Logistik Kita</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Estimasi Tarif Carter - Logistik Kita</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.3/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .section-title { @apply text-lg font-semibold mt-4 mb-2; }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container mt-4 mb-5">
-    <h3 class="mb-3">🚛 Simulasi Tarif Carter</h3>
+<body class="bg-white p-4 text-black">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-xl font-bold text-center mb-4">Estimasi Tarif Carter</h1>
 
-    <!-- Lokasi Garasi -->
-    <div class="mb-3">
-      <label class="form-label">Lokasi Garasi (default)</label>
-      <input type="text" class="form-control" value="Garasi Logistik Kita" disabled>
-      <input type="number" class="form-control mt-2" value="0" disabled>
-    </div>
+    <form id="carterForm">
+      <div class="section-title">1. Lokasi Garasi (Default)</div>
+      <div class="flex gap-2 items-center mb-2">
+        <input type="text" value="Garasi Logistik Kita" readonly class="input input-bordered w-full" />
+        <input type="number" value="0" readonly class="input input-bordered w-32" />
+        <span class="text-sm">km</span>
+      </div>
 
-    <!-- Lokasi Penjemputan -->
-    <div id="pickup-section" class="mb-3">
-      <label class="form-label">Lokasi Penjemputan / Muat</label>
-      <div class="row g-2 mb-2">
-        <div class="col">
-          <input type="text" class="form-control" placeholder="Lokasi Penjemputan 1">
-        </div>
-        <div class="col-3">
-          <input type="number" class="form-control" placeholder="Jarak dari Garasi (km)">
+      <div class="section-title">2. Lokasi Penjemputan / Muat</div>
+      <div id="pickupFields"></div>
+      <button type="button" onclick="addPickup()" class="btn btn-outline btn-sm mb-2">+ Tambah Lokasi Penjemputan</button>
+
+      <div class="section-title">3. Lokasi Bongkar / Tujuan</div>
+      <div id="dropoffFields"></div>
+      <button type="button" onclick="addDropoff()" class="btn btn-outline btn-sm mb-2">+ Tambah Lokasi Bongkar</button>
+
+      <div class="form-control mb-4">
+        <label class="label cursor-pointer">
+          <input type="checkbox" id="returnToGarage" class="checkbox" />
+          <span class="label-text ml-2">Kembali ke Garasi</span>
+        </label>
+      </div>
+      <div id="returnField" class="hidden mb-2">
+        <input type="text" value="Garasi Logistik Kita" readonly class="input input-bordered w-full mb-2" />
+        <input type="number" placeholder="Jarak ke garasi (km)" class="input input-bordered w-full" id="returnDistance" />
+      </div>
+
+      <div class="section-title">4. Sewa Mobil</div>
+      <div class="mb-4">
+        <label class="label cursor-pointer">
+          <input type="radio" name="sewa" value="125000" class="radio" checked />
+          <span class="label-text ml-2">0-6 Jam = Rp125.000</span>
+        </label><br />
+        <label class="label cursor-pointer">
+          <input type="radio" name="sewa" value="150000" class="radio" />
+          <span class="label-text ml-2">7-12 Jam = Rp150.000</span>
+        </label><br />
+        <label class="label cursor-pointer">
+          <input type="radio" name="sewa" value="200000" class="radio" />
+          <span class="label-text ml-2">13-24 Jam = Rp200.000</span>
+        </label>
+      </div>
+
+      <div class="form-control">
+        <button type="button" onclick="cekTarif()" class="btn btn-primary">Cek Tarif</button>
+      </div>
+    </form>
+
+    <!-- Modal -->
+    <dialog id="modalHasil" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Estimasi Tarif Carter</h3>
+        <div id="hasilOutput" class="mt-2 text-sm"></div>
+        <p class="text-xs mt-4 text-red-600">* Estimasi tarif belum termasuk biaya TKBM<br />* Hubungi Admin Logistik Kita untuk info selengkapnya</p>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn">Tutup</button>
+          </form>
         </div>
       </div>
-    </div>
-    <button onclick="addPickup()" class="btn btn-outline-secondary btn-sm mb-3">+ Tambah Lokasi Penjemputan</button>
-
-    <!-- Lokasi Bongkar -->
-    <div id="drop-section" class="mb-3">
-      <label class="form-label">Lokasi Antar / Bongkar</label>
-      <div class="row g-2 mb-2">
-        <div class="col">
-          <input type="text" class="form-control" placeholder="Lokasi Bongkar 1">
-        </div>
-        <div class="col-3">
-          <input type="number" class="form-control" placeholder="Jarak dari Penjemputan terakhir (km)">
-        </div>
-      </div>
-    </div>
-    <button onclick="addDrop()" class="btn btn-outline-secondary btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
-
-    <!-- Kembali ke garasi -->
-    <div class="form-check form-switch mb-3">
-      <input class="form-check-input" type="checkbox" id="returnSwitch" onchange="toggleReturnInput()">
-      <label class="form-check-label" for="returnSwitch">Kembali ke Garasi</label>
-    </div>
-    <div id="return-section" class="row g-2 mb-3 d-none">
-      <div class="col">
-        <input type="text" class="form-control" value="Garasi Logistik Kita" disabled>
-      </div>
-      <div class="col-3">
-        <input type="number" class="form-control" placeholder="Jarak (km)" id="return-distance">
-      </div>
-    </div>
-
-    <!-- Tombol Cek Tarif -->
-    <button class="btn btn-danger w-100" onclick="showResult()">Cek Tarif</button>
+    </dialog>
   </div>
 
-  <!-- Modal Hasil -->
-  <div class="modal fade" id="resultModal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">📦 Estimasi Tarif Carter Anda</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body" id="resultBody"></div>
-        <div class="modal-footer">
-          <small class="text-muted">
-            * Estimasi tarif belum termasuk biaya TKBM<br>
-            * Hubungi Admin Logistik Kita untuk info selengkapnya
-          </small>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bootstrap & JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    const pickupFields = document.getElementById('pickupFields');
+    const dropoffFields = document.getElementById('dropoffFields');
+    let pickupCount = 0;
+    let dropoffCount = 0;
+
     function addPickup() {
-      const html = `
-        <div class="row g-2 mb-2">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Lokasi Penjemputan">
-          </div>
-          <div class="col-3">
-            <input type="number" class="form-control" placeholder="Jarak (km)">
-          </div>
-        </div>`;
-      document.getElementById('pickup-section').insertAdjacentHTML('beforeend', html);
+      pickupCount++;
+      const div = document.createElement('div');
+      div.className = 'mb-2';
+      div.innerHTML = `<input type="text" placeholder="Lokasi penjemputan ${pickupCount}" class="input input-bordered w-full mb-1 pickup" /><input type="number" placeholder="Jarak dari lokasi sebelumnya (km)" class="input input-bordered w-full jarak" />`;
+      pickupFields.appendChild(div);
     }
 
-    function addDrop() {
-      const html = `
-        <div class="row g-2 mb-2">
-          <div class="col">
-            <input type="text" class="form-control" placeholder="Lokasi Bongkar">
-          </div>
-          <div class="col-3">
-            <input type="number" class="form-control" placeholder="Jarak (km)">
-          </div>
-        </div>`;
-      document.getElementById('drop-section').insertAdjacentHTML('beforeend', html);
+    function addDropoff() {
+      dropoffCount++;
+      const div = document.createElement('div');
+      div.className = 'mb-2';
+      div.innerHTML = `<input type="text" placeholder="Lokasi bongkar ${dropoffCount}" class="input input-bordered w-full mb-1 dropoff" /><input type="number" placeholder="Jarak dari lokasi sebelumnya (km)" class="input input-bordered w-full jarak" />`;
+      dropoffFields.appendChild(div);
     }
 
-    function toggleReturnInput() {
-      document.getElementById('return-section').classList.toggle('d-none');
-    }
+    document.getElementById('returnToGarage').addEventListener('change', (e) => {
+      document.getElementById('returnField').classList.toggle('hidden', !e.target.checked);
+    });
 
-    function showResult() {
-      const pickupInputs = document.querySelectorAll('#pickup-section .row');
-      const dropInputs = document.querySelectorAll('#drop-section .row');
-      let totalKM = 0;
-      let route = ['1. Garasi (Logistik Kita)'];
+    function cekTarif() {
+      const jarakInputs = document.querySelectorAll('.jarak');
+      const totalJarak = Array.from(jarakInputs).reduce((acc, el) => acc + Number(el.value || 0), 0) + (document.getElementById('returnToGarage').checked ? Number(document.getElementById('returnDistance').value || 0) : 0);
+      const sewa = Number(document.querySelector('input[name="sewa"]:checked').value);
 
-      pickupInputs.forEach((row, i) => {
-        const loc = row.querySelector('input[type="text"]').value || `Penjemputan ${i+1}`;
-        const km = Number(row.querySelector('input[type="number"]').value || 0);
-        totalKM += km;
-        route.push(`${i+2}. ${loc} (${km} km)`);
-      });
+      const konsumsi = 9;
+      const hargaBBM = 10000;
+      const liter = totalJarak / konsumsi;
+      const biayaBBM = Math.ceil(liter * hargaBBM);
+      const total = biayaBBM + sewa;
 
-      dropInputs.forEach((row, i) => {
-        const loc = row.querySelector('input[type="text"]').value || `Bongkar ${i+1}`;
-        const km = Number(row.querySelector('input[type="number"]').value || 0);
-        totalKM += km;
-        route.push(`${pickupInputs.length + i + 2}. ${loc} (${km} km)`);
-      });
+      const pickupList = Array.from(document.querySelectorAll('.pickup')).map(el => el.value).filter(Boolean);
+      const dropoffList = Array.from(document.querySelectorAll('.dropoff')).map(el => el.value).filter(Boolean);
 
-      if (document.getElementById('returnSwitch').checked) {
-        const returnKM = Number(document.getElementById('return-distance').value || 0);
-        totalKM += returnKM;
-        route.push(`${route.length + 1}. Kembali ke Garasi (${returnKM} km)`);
-      }
-
-      // Tarif estimasi
-      const bbmPerLiter = 10000;
-      const kmPerLiter = 9;
-      const sewa = 200000;
-      const margin = 50000;
-      const bbmCost = Math.ceil((totalKM / kmPerLiter) * bbmPerLiter);
-      const totalTarif = bbmCost + sewa + margin;
-
-      const resultText = `
-        <p>🔁 Rute:</p>
-        <ul>${route.map(r => `<li>${r}</li>`).join('')}</ul>
-        <p>📏 Total Jarak Tempuh: <strong>${totalKM} km</strong></p>
-        <p>💰 Estimasi Tarif Carter: <strong>Rp${totalTarif.toLocaleString('id-ID')}</strong></p>
+      const output = `
+        <p><strong>Total Jarak:</strong> ${totalJarak} km</p>
+        <p><strong>Lokasi Muat:</strong><br />${pickupList.join('<br />')}</p>
+        <p><strong>Lokasi Tujuan:</strong><br />${dropoffList.join('<br />')}</p>
+        <p><strong>Sewa Mobil:</strong> Rp${sewa.toLocaleString()}</p>
+        <p class="mt-2 text-lg font-semibold">Estimasi Tarif: Rp${total.toLocaleString()}</p>
       `;
 
-      document.getElementById('resultBody').innerHTML = resultText;
-      new bootstrap.Modal(document.getElementById('resultModal')).show();
+      document.getElementById('hasilOutput').innerHTML = output;
+      document.getElementById('modalHasil').showModal();
     }
+
+    // Auto init
+    addPickup();
+    addDropoff();
   </script>
 </body>
 </html>
