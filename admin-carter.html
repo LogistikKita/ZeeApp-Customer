@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Perhitungan Carter Pickup - Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Google Maps -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+  <style>
+    body { padding: 2rem; background: #f9f9f9; }
+    .card { margin-bottom: 1rem; }
+    .result-box { background: #fff; padding: 1rem; border-radius: 10px; border: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3 class="mb-4 text-danger">📦 Admin - Hitung Carter Pickup</h3>
+
+    <div class="card">
+      <div class="card-body">
+        <form id="carterForm">
+          <div class="mb-3">
+            <label class="form-label">Lokasi Garasi (default: Logistik Kita, Mojokerto)</label>
+            <input type="text" class="form-control" id="garasi" value="Logistik Kita Mojokerto">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Lokasi Penjemputan</label>
+            <input type="text" class="form-control" id="jemput" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Lokasi Bongkar</label>
+            <input type="text" class="form-control" id="bongkar" required>
+          </div>
+          <div class="mb-3 form-check">
+            <input class="form-check-input" type="checkbox" id="pulang" checked>
+            <label class="form-check-label">Kembali ke Garasi?</label>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Harga BBM/liter</label>
+              <input type="number" class="form-control" id="harga_bbm" value="10000">
+            </div>
+            <div class="col">
+              <label class="form-label">Konsumsi BBM (km/l)</label>
+              <input type="number" class="form-control" id="konsumsi_bbm" value="9">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="form-label">Biaya Driver (opsional)</label>
+              <input type="number" class="form-control" id="biaya_driver" value="0">
+            </div>
+            <div class="col">
+              <label class="form-label">Margin Perusahaan</label>
+              <input type="number" class="form-control" id="margin" value="50000">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-danger w-100">🔍 Hitung Tarif Carter</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="result-box" id="hasil" style="display:none">
+      <h5 class="text-primary">💡 Hasil Perhitungan</h5>
+      <div id="resultText"></div>
+    </div>
+  </div>
+
+  <script>
+    async function getRouteDistance(origin, via, destination, pulang) {
+      return new Promise((resolve) => {
+        const directionsService = new google.maps.DirectionsService();
+        const waypts = via ? [{ location: via, stopover: true }] : [];
+        const legs = [];
+
+        directionsService.route({
+          origin: origin,
+          destination: pulang ? origin : destination,
+          waypoints: waypts.concat(pulang ? [{ location: destination, stopover: true }] : []),
+          travelMode: google.maps.TravelMode.DRIVING
+        }, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            let totalDistance = 0;
+            let totalDuration = 0;
+            result.routes[0].legs.forEach(leg => {
+              totalDistance += leg.distance.value;
+              totalDuration += leg.duration.value;
+              legs.push(leg);
+            });
+            resolve({ km: totalDistance / 1000, durationSec: totalDuration, legs });
+          } else {
+            alert('Gagal mengambil data Google Maps: ' + status);
+            resolve({ km: 0, durationSec: 0, legs: [] });
+          }
+        });
+      });
+    }
+
+    document.getElementById('carterForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const garasi = document.getElementById('garasi').value;
+      const jemput = document.getElementById('jemput').value;
+      const bongkar = document.getElementById('bongkar').value;
+      const pulang = document.getElementById('pulang').checked;
+      const harga_bbm = parseFloat(document.getElementById('harga_bbm').value);
+      const konsumsi_bbm = parseFloat(document.getElementById('konsumsi_bbm').value);
+      const biaya_driver = parseFloat(document.getElementById('biaya_driver').value);
+      const margin = parseFloat(document.getElementById('margin').value);
+
+      const route = await getRouteDistance(garasi, jemput, bongkar, pulang);
+
+      const total_km = route.km;
+      const durasi_jam = route.durationSec / 3600;
+      const liter_bbm = total_km / konsumsi_bbm;
+      const biaya_bbm = liter_bbm * harga_bbm;
+
+      let sewa_mobil = 0;
+      if (durasi_jam <= 6) sewa_mobil = 100000;
+      else if (durasi_jam <= 12) sewa_mobil = 200000;
+      else if (durasi_jam <= 24) sewa_mobil = 250000;
+      else sewa_mobil = 250000 + (Math.ceil(durasi_jam - 24) * 10000);
+
+      const tarif_kotor = biaya_bbm + sewa_mobil + biaya_driver + margin;
+      const pph = tarif_kotor * 0.015;
+      const total_tarif = Math.ceil(tarif_kotor + pph);
+
+      document.getElementById('hasil').style.display = 'block';
+      document.getElementById('resultText').innerHTML = `
+        <p>🚗 Total Jarak: <strong>${total_km.toFixed(1)} km</strong></p>
+        <p>⏱️ Durasi Perjalanan: <strong>${durasi_jam.toFixed(1)} jam</strong></p>
+        <p>⛽ Estimasi BBM: <strong>${liter_bbm.toFixed(1)} liter</strong> → Rp${biaya_bbm.toFixed(0)}</p>
+        <p>💰 Sewa Mobil: Rp${sewa_mobil.toFixed(0)}</p>
+        <p>👨‍✈️ Biaya Driver: Rp${biaya_driver.toFixed(0)}</p>
+        <p>📈 Margin: Rp${margin.toFixed(0)}</p>
+        <p>🧾 PPh 1.5%: Rp${pph.toFixed(0)}</p>
+        <hr>
+        <h5 class="text-success">💳 Total Tarif: <strong>Rp${total_tarif.toLocaleString()}</strong></h5>
+      `;
+    });
+  </script>
+</body>
+</html>
