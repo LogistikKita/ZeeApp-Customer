@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Carter - Logistik Kita</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text-center mt-4">
+      <div class="logo">🚚 Logistik Kita</div>
+      <h5 class="text-muted">Form Carter Mobil Pickup</h5>
+    </div>
+    
+    <div class="form-container">
+      <form id="carterForm">
+        <div class="mb-3">
+          <label class="form-label">Nama Customer</label>
+          <input type="text" class="form-control" id="namaCustomer" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Nomor HP</label>
+          <input type="tel" class="form-control" id="nomorHP" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Lokasi Penjemputan</label>
+          <input type="text" class="form-control" id="lokasiJemput" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Lokasi Tujuan</label>
+          <input type="text" class="form-control" id="lokasiTujuan" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jarak (km)</label>
+          <input type="number" class="form-control" id="jarak" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Waktu Pemakaian</label>
+          <select class="form-select" id="waktuPakai" required>
+            <option value="6">0–6 jam</option>
+            <option value="12">6–12 jam</option>
+            <option value="24">12–24 jam</option>
+          </select>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="pulangPergi">
+          <label class="form-check-label">Pulang - Pergi</label>
+        </div>
+        <button type="button" class="btn btn-danger w-100" onclick="hitungTarif()">Hitung Tarif</button>
+      </form>
+
+      <div class="mt-4 p-3 bg-light border rounded" id="hasilPerhitungan" style="display:none;">
+        <h6 class="text-danger">Estimasi Harga Carter</h6>
+        <p id="hasilTarif" class="fw-bold fs-4">Rp -</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function hitungTarif() {
+      const jarak = parseFloat(document.getElementById('jarak').value);
+      const waktu = parseInt(document.getElementById('waktuPakai').value);
+      const pulangPergi = document.getElementById('pulangPergi').checked;
+
+      const hargaBBM = 10000;
+      const konsumsi = 9; // km per liter
+      const biayaDriver = 150000;
+
+      // Hitung total jarak
+      let totalJarak = jarak;
+      if (pulangPergi) totalJarak *= 2;
+
+      const estimasiBBM = totalJarak / konsumsi;
+      const biayaBBM = Math.ceil(estimasiBBM * hargaBBM);
+
+      // Hitung sewa mobil berdasarkan jam
+      let biayaSewa = 0;
+      if (waktu <= 6) biayaSewa = 100000;
+      else if (waktu <= 12) biayaSewa = 200000;
+      else biayaSewa = 250000;
+
+      const margin = 50000;
+
+      const tarif = biayaBBM + biayaSewa + biayaDriver + margin;
+
+      document.getElementById('hasilTarif').innerText = 'Rp ' + tarif.toLocaleString('id-ID');
+      document.getElementById('hasilPerhitungan').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
