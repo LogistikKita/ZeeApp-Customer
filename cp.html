@@ -1,11 +1,12 @@
 <!DOCTYPE html><html lang="id"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logistik Kita - Company Profile</title>
+  <title>Logistik Kita - Landing Page</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
     }.navbar {
   background-color: #b30000;
 }
@@ -19,29 +20,33 @@
   font-weight: 500;
 }
 
-.hero {
-  background: url('assets/logo_logistikkita.png') no-repeat center center;
-  background-size: cover;
-  height: 70vh;
+.hero-section {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/logo_logistikkita.png') center/cover no-repeat;
   color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #000;
-  text-shadow: 1px 1px 4px #000;
+  text-align: center;
+  padding: 100px 20px;
 }
 
-.hero h1 {
+.hero-section h1 {
   font-size: 3rem;
   font-weight: bold;
+}
+
+.hero-section p {
+  font-size: 1.25rem;
 }
 
 .section {
   padding: 60px 15px;
 }
 
+.bg-red {
+  background-color: #b30000;
+  color: white;
+}
+
 .footer {
-  background-color: #111;
+  background-color: #000;
   color: white;
   padding: 20px;
   text-align: center;
@@ -50,7 +55,7 @@
   </style>
 </head><body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
       <a class="navbar-brand" href="#">
         <img src="assets/logo_logistikkita.png" alt="Logo Logistik Kita">
@@ -63,55 +68,50 @@
           <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
           <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
-          <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
           <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
         </ul>
       </div>
     </div>
-  </nav>  <!-- Hero Section -->  <section class="hero" id="beranda">
-    <h1>Selamat Datang di Logistik Kita</h1>
-  </section>  <!-- Tentang Kami -->  <section class="section bg-light" id="tentang">
-    <div class="container text-center">
-      <h2>Tentang Kami</h2>
-      <p>Logistik Kita adalah perusahaan yang bergerak di bidang pengiriman barang darat dengan pelayanan terbaik, jangkauan luas, dan tarif kompetitif.</p>
+  </nav>  <!-- Hero Section -->  <section class="hero-section" id="beranda">
+    <div class="container">
+      <h1>Selamat Datang di Logistik Kita</h1>
+      <p>Solusi logistik terpercaya untuk pengiriman Anda</p>
+      <a href="#layanan" class="btn btn-light mt-3">Lihat Layanan</a>
     </div>
-  </section>  <!-- Layanan -->  <section class="section" id="layanan">
+  </section>  <!-- Tentang Kami -->  <section class="section" id="tentang">
     <div class="container text-center">
-      <h2>Layanan Kami</h2>
-      <div class="row mt-4">
-        <div class="col-md-4">
-          <h5>Pengiriman Reguler</h5>
-          <p>Layanan pengiriman hemat dan tepat waktu antar kota.</p>
-        </div>
-        <div class="col-md-4">
-          <h5>Pengiriman Prioritas</h5>
-          <p>Layanan ekspres untuk kebutuhan mendesak.</p>
-        </div>
-        <div class="col-md-4">
-          <h5>Carter Armada</h5>
-          <p>Sewa armada eksklusif untuk pengiriman besar atau proyek.</p>
-        </div>
-      </div>
+      <h2 class="mb-4">Tentang Kami</h2>
+      <p>Logistik Kita adalah perusahaan penyedia jasa pengiriman barang dengan armada handal, layanan profesional, dan komitmen tinggi terhadap kepuasan pelanggan.</p>
     </div>
-  </section>  <!-- Galeri -->  <section class="section bg-light" id="galeri">
+  </section>  <!-- Layanan -->  <section class="section bg-red" id="layanan">
     <div class="container text-center">
-      <h2>Galeri</h2>
-      <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-          <img src="assets/truck1.jpg" class="img-fluid rounded" alt="Truck 1">
+      <h2 class="mb-4">Layanan Kami</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="p-3 bg-white text-dark rounded shadow">
+            <h5>Reguler</h5>
+            <p>Pengiriman efisien antar kota dengan tarif kompetitif.</p>
+          </div>
         </div>
-        <div class="col-md-4 mb-3">
-          <img src="assets/warehouse.jpg" class="img-fluid rounded" alt="Gudang">
+        <div class="col-md-4 mb-4">
+          <div class="p-3 bg-white text-dark rounded shadow">
+            <h5>Prioritas</h5>
+            <p>Pengiriman ekspres untuk kebutuhan yang mendesak dan penting.</p>
+          </div>
         </div>
-        <div class="col-md-4 mb-3">
-          <img src="assets/delivery.jpg" class="img-fluid rounded" alt="Pengiriman">
+        <div class="col-md-4 mb-4">
+          <div class="p-3 bg-white text-dark rounded shadow">
+            <h5>Carter Armada</h5>
+            <p>Layanan sewa armada untuk proyek besar dan fleksibel.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>  <!-- Kontak -->  <section class="section" id="kontak">
     <div class="container text-center">
-      <h2>Kontak Kami</h2>
-      <p>Email: info@logistikkita.com | Telepon: +62 812-3456-7890</p>
+      <h2 class="mb-4">Hubungi Kami</h2>
+      <p>Email: info@logistikkita.com</p>
+      <p>Telepon: +62 812-3456-7890</p>
       <p>Alamat: Jl. Raya Logistik No. 123, Jakarta</p>
     </div>
   </section>  <!-- Footer -->  <footer class="footer">
