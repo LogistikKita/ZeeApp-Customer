@@ -3,171 +3,197 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carter - Logistik Kita</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <title>Simulasi Tarif Carter - Logistik Kita</title>
   <style>
     body {
-      background-color: #f8f9fa;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
     }
-
     header {
       background-color: #ba1a1a;
       color: white;
       padding: 1rem;
       text-align: center;
     }
-
     .container {
       max-width: 700px;
       margin: 2rem auto;
       background: white;
       padding: 2rem;
       border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
     }
-
-    .form-label {
-      font-weight: 600;
+    label {
+      display: block;
+      margin-top: 1rem;
     }
-
-    .popup {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 0.4rem;
     }
-
-    .btn-danger {
+    .btn {
       background-color: #ba1a1a;
+      color: white;
+      padding: 0.8rem 1.5rem;
+      margin-top: 1.5rem;
       border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      width: 100%;
     }
-
-    .btn-danger:hover {
-      background-color: #a31414;
+    .popup {
+      display: none;
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    .popup.show {
+      display: block;
+    }
+    .checkbox-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h3>🚚 Estimasi Tarif Carter - Logistik Kita</h3>
+  <h1>Simulasi Tarif Carter</h1>
 </header>
 
 <div class="container">
-  <form id="carterForm">
-    <div class="mb-3">
-      <label class="form-label">📍 Lokasi Garasi</label>
-      <input type="text" class="form-control" value="Logistik Kita - Mojokerto" disabled />
-    </div>
+  <label>Lokasi Garasi (default)</label>
+  <input type="text" value="Logistik Kita (0 km)" disabled />
 
-    <div class="mb-3">
-      <label class="form-label">🚚 Jarak ke Lokasi Muat (km)</label>
-      <input type="number" id="jarakMuat" class="form-control" required />
-    </div>
+  <label>Jarak dari Garasi ke Penjemputan</label>
+  <input type="number" id="jarakPenjemputan" placeholder="Misal: 21 km" />
 
-    <div class="mb-3">
-      <label class="form-label">📦 Jarak ke Lokasi Bongkar (km)</label>
-      <input type="number" id="jarakBongkar" class="form-control" required />
-    </div>
+  <label>Jarak dari Penjemputan ke Bongkar</label>
+  <input type="number" id="jarakBongkar" placeholder="Misal: 37 km" />
 
-    <div class="mb-3">
-      <label class="form-label">↩️ Jarak Kembali ke Garasi (km)</label>
-      <input type="number" id="jarakKembali" class="form-control" required />
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">📄 Nama Barang</label>
-      <input type="text" id="namaBarang" class="form-control" required />
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">⚖️ Berat Barang (kg)</label>
-      <input type="number" id="beratBarang" class="form-control" required />
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">⛏️ Pilih TKBM (Opsional)</label>
-      <select class="form-select" id="tkbm">
-        <option value="0">- Tidak memilih -</option>
-        <option value="75000">6 Jam - Rp75.000</option>
-        <option value="90000">8 Jam - Rp90.000</option>
-        <option value="100000">12 Jam - Rp100.000</option>
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">📅 Jadwal Pengiriman</label>
-      <input type="date" class="form-control" required />
-    </div>
-
-    <div class="form-check form-switch mb-3">
-      <input class="form-check-input" type="checkbox" id="isPerusahaan">
-      <label class="form-check-label" for="isPerusahaan">Perusahaan (PPN + PPH)</label>
-    </div>
-
-    <button type="submit" class="btn btn-danger w-100">🔍 Cek Estimasi Tarif</button>
-  </form>
-
-  <div id="hasilPopup" class="popup mt-4 d-none">
-    <h5 class="text-success">✅ Estimasi Tarif Carter</h5>
-    <ul class="list-group my-3" id="hasilList"></ul>
-    <p class="small text-muted">* Estimasi belum termasuk tol & TKBM tambahan</p>
-    <p class="small text-muted">* Hubungi Admin Logistik Kita untuk info selengkapnya</p>
+  <label>Kembali ke Garasi?</label>
+  <div class="checkbox-group">
+    <input type="checkbox" id="kembaliGarasi" />
+    <label for="kembaliGarasi">Ya, kembali ke garasi</label>
   </div>
+
+  <div id="kembaliInput" style="display:none;">
+    <label>Jarak Bongkar ke Garasi</label>
+    <input type="number" id="jarakKembali" placeholder="Misal: 52 km" />
+  </div>
+
+  <label>Nama Barang</label>
+  <input type="text" id="namaBarang" placeholder="Misal: Jumbo Bag" />
+
+  <label>Berat Barang (kg)</label>
+  <input type="number" id="beratBarang" />
+
+  <label>Jadwal Pengiriman</label>
+  <input type="date" id="jadwal" />
+
+  <label>Biaya TKBM</label>
+  <select id="tkbm">
+    <option value="0">Tidak ada</option>
+    <option value="75000">75.000 (6 jam)</option>
+    <option value="90000">90.000 (8 jam)</option>
+    <option value="100000">100.000 (12 jam)</option>
+  </select>
+
+  <label>Jenis Customer</label>
+  <select id="jenisCustomer">
+    <option value="perorangan">Perorangan</option>
+    <option value="perusahaan">Perusahaan</option>
+  </select>
+
+  <button class="btn" onclick="hitungTarif()">Cek Tarif Carter</button>
+</div>
+
+<!-- Popup hasil -->
+<div class="popup" id="popup">
+  <h2>Estimasi Tarif Carter</h2>
+  <div id="hasilOutput"></div>
+  <p><strong>Catatan:</strong><br>
+  Estimasi tarif belum termasuk biaya TKBM.<br>
+  Hubungi Admin Logistik Kita untuk info selengkapnya.</p>
+  <button class="btn" onclick="document.getElementById('popup').classList.remove('show')">Tutup</button>
 </div>
 
 <script>
-  document.getElementById("carterForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+  document.getElementById("kembaliGarasi").addEventListener("change", function () {
+    document.getElementById("kembaliInput").style.display = this.checked ? "block" : "none";
+  });
 
-    const jarakMuat = parseFloat(document.getElementById("jarakMuat").value);
-    const jarakBongkar = parseFloat(document.getElementById("jarakBongkar").value);
-    const jarakKembali = parseFloat(document.getElementById("jarakKembali").value);
-    const namaBarang = document.getElementById("namaBarang").value;
-    const beratBarang = parseFloat(document.getElementById("beratBarang").value);
-    const tkbm = parseFloat(document.getElementById("tkbm").value);
-    const isPerusahaan = document.getElementById("isPerusahaan").checked;
+  function hitungTarif() {
+    const jarak1 = parseFloat(document.getElementById("jarakPenjemputan").value) || 0;
+    const jarak2 = parseFloat(document.getElementById("jarakBongkar").value) || 0;
+    const kembali = document.getElementById("kembaliGarasi").checked;
+    const jarakKembali = kembali ? parseFloat(document.getElementById("jarakKembali").value) || 0 : 0;
+    const berat = parseFloat(document.getElementById("beratBarang").value) || 0;
+    const tkbm = parseInt(document.getElementById("tkbm").value);
+    const jenisCustomer = document.getElementById("jenisCustomer").value;
 
-    const totalJarak = jarakMuat + jarakBongkar + jarakKembali;
-    const durasiJam = totalJarak / 80;
+    const totalJarak = jarak1 + jarak2 + jarakKembali;
+    const estimasiJam = totalJarak / 80;
 
-    // Armada
-    let armada = beratBarang <= 1300 ? "Granmax Pickup" : "L300 Pickup";
+    let armada = berat <= 1300 ? "Pickup Granmax" : "Pickup L300";
 
     // Sewa mobil
-    let sewaMobil = 0;
-    if (armada === "Granmax Pickup") {
-      if (durasiJam <= 6) sewaMobil = 100000;
-      else if (durasiJam <= 12) sewaMobil = 150000;
-      else sewaMobil = 200000;
+    let sewa = 0;
+    if (armada === "Pickup Granmax") {
+      if (estimasiJam <= 6) sewa = 100000;
+      else if (estimasiJam <= 12) sewa = 150000;
+      else sewa = 200000;
     } else {
-      if (durasiJam <= 6) sewaMobil = 200000;
-      else if (durasiJam <= 12) sewaMobil = 250000;
-      else sewaMobil = 350000;
+      if (estimasiJam <= 6) sewa = 200000;
+      else if (estimasiJam <= 12) sewa = 250000;
+      else sewa = 350000;
     }
 
-    // BBM & Driver
-    const biayaBBM = (totalJarak / 9) * 10000;
-    let biayaDriver = durasiJam <= 6 ? 150000 : durasiJam <= 12 ? 200000 : 250000;
+    // Biaya BBM
+    const konsumsi = 9;
+    const hargaBBM = 10000;
+    const liter = totalJarak / konsumsi;
+    const biayaBBM = liter * hargaBBM;
+
+    // Biaya Driver
+    let driver = 0;
+    if (estimasiJam <= 6) driver = 150000;
+    else if (estimasiJam <= 12) driver = 200000;
+    else driver = 250000;
 
     // Pajak
-    let subtotal = biayaBBM + sewaMobil + biayaDriver + tkbm;
-    let pajak = isPerusahaan ? subtotal * 0.14 : subtotal * 0.02;
-    let total = Math.ceil(subtotal + pajak);
+    let pajak = 0;
+    if (jenisCustomer === "perusahaan") {
+      pajak = 0.14;
+    } else {
+      pajak = 0.02;
+    }
 
-    // Output
-    const hasilList = document.getElementById("hasilList");
-    hasilList.innerHTML = `
-      <li class="list-group-item">📦 Barang: ${namaBarang}</li>
-      <li class="list-group-item">⚖️ Berat: ${beratBarang} kg (${armada})</li>
-      <li class="list-group-item">🛣️ Total Jarak: ${totalJarak} km</li>
-      <li class="list-group-item">🕒 Estimasi Waktu: ${durasiJam.toFixed(1)} jam</li>
-      <li class="list-group-item">💰 Estimasi Tarif: <strong>Rp${total.toLocaleString()}</strong></li>
+    const subtotal = biayaBBM + sewa + driver + tkbm;
+    const total = subtotal + subtotal * pajak;
+
+    document.getElementById("hasilOutput").innerHTML = `
+      <p>🧭 Total Jarak: <strong>${totalJarak.toFixed(1)} km</strong></p>
+      <p>🚚 Armada: <strong>${armada}</strong></p>
+      <p>📦 Barang: <strong>${document.getElementById("namaBarang").value}</strong> (${berat} kg)</p>
+      <p>📅 Jadwal: ${document.getElementById("jadwal").value}</p>
+      <p><strong>💰 Estimasi Tarif: Rp ${Math.round(total).toLocaleString("id-ID")}</strong></p>
     `;
-
-    document.getElementById("hasilPopup").classList.remove("d-none");
-  });
+    document.getElementById("popup").classList.add("show");
+  }
 </script>
 
 </body>
