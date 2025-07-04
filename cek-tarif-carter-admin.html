@@ -7,202 +7,232 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
-    .container { max-width: 760px; margin-top: 2rem; background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    h1 { color: #ba1a1a; }
-    .logo { height: 60px; }
-    #hasilPopup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999; }
-    #hasilPopup .popup-box { background: white; padding: 2rem; border-radius: 1rem; max-width: 520px; max-height: 90vh; overflow-y: auto; }
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      max-width: 760px;
+      margin-top: 2rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #ba1a1a;
+    }
+    .logo {
+      height: 60px;
+    }
+    #hasilPopup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #hasilPopup .popup-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <div class="text-center mb-4">
-    <img src="logo_logistikkita.png" class="logo mb-2" alt="Logo Logistik Kita" />
-    <h1>📦 Cek Tarif Carter Logistik Kita (Admin)</h1>
-  </div>
-
-  <div class="mb-3"><label class="form-label">👮 Nama Petugas</label><input type="text" class="form-control" id="namaPetugas" placeholder="Nama petugas"></div>
-
-  <div id="penjemputan-container">
-    <label class="form-label">🚚 Lokasi Penjemputan</label>
-    <div class="row g-2 mb-2">
-      <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
-      <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
+  <div class="container">
+    <div class="text-center mb-4">
+      <img src="logo_logistikkita.png" class="logo mb-2" alt="Logo Logistik Kita" />
+      <h1>📦 Cek Tarif Carter Logistik Kita (Admin)</h1>
     </div>
-  </div>
-  <button onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
 
-  <div id="bongkar-container">
-    <label class="form-label">🏁 Lokasi Bongkar</label>
-    <div class="row g-2 mb-2">
-      <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
-      <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
-    </div>
-  </div>
-  <button onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
+    <div class="mb-3"><label class="form-label">👮 Nama Petugas</label><input type="text" class="form-control" id="namaPetugas" placeholder="Nama petugas"></div>
 
-  <div class="form-check mb-2">
-    <input class="form-check-input" type="checkbox" id="kembaliGarasi" onchange="toggleKembaliGarasi()">
-    <label class="form-check-label">🔁 Kembali ke Garasi</label>
-  </div>
-  <div id="kembaliFields" class="mb-3" style="display:none;">
-    <input type="number" class="form-control" id="jarakKembali" placeholder="Jarak kembali ke garasi (km)">
-  </div>
-
-  <div class="mb-3"><label class="form-label">📦 Nama Barang</label><input type="text" class="form-control" id="namaBarang"></div>
-  <div class="mb-3"><label class="form-label">⚖️ Berat Barang (kg)</label><input type="number" class="form-control" id="beratBarang"></div>
-
-  <div class="form-check mb-2">
-    <input class="form-check-input" type="checkbox" id="tkbmCheck" onchange="toggleTKBM()">
-    <label class="form-check-label">🧑‍🔧 Gunakan TKBM</label>
-  </div>
-  <div id="tkbmOptions" class="mb-3" style="display:none;">
-    <select class="form-select" id="tkbmValue">
-      <option value="75000">Rp75.000</option>
-      <option value="90000">Rp90.000</option>
-      <option value="100000">Rp100.000</option>
-    </select>
-  </div>
-
-  <div class="mb-3"><label class="form-label">🕑 Jadwal Pengiriman</label><input type="datetime-local" class="form-control" id="jadwalPengiriman" /></div>
-
-  <div class="mb-3">
-    <label class="form-label">👤 Jenis Customer</label>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="tipeCustomer" value="perorangan" checked />
-      <label class="form-check-label">Perorangan</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="tipeCustomer" value="perusahaan" />
-      <label class="form-check-label">Perusahaan</label>
-    </div>
-  </div>
-
-  <button onclick="cekTarif()" class="btn btn-danger">🧮 Hitung Tarif</button>
-
-  <div id="hasilPopup">
-    <div class="popup-box">
-      <h5 class="mb-3">📄 Estimasi & Rincian Tarif</h5>
-      <div id="hasilTarif"></div>
-      <div class="mt-3 d-flex gap-2 flex-wrap">
-        <button class="btn btn-success btn-sm" onclick="simpanKeDatabase()">💾 Simpan ke Database</button>
-        <button class="btn btn-outline-secondary btn-sm" onclick="tutupPopup()">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  const supabase = supabase.createClient(
-    "https://mrghlcedtafomwnznywf.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
-  );
-
-  let globalData = {};
-
-  const konsumsiBBM = 9, hargaBBM = 10000, kecepatan = 80;
-
-  function tambahJemput() {
-    document.getElementById("penjemputan-container").insertAdjacentHTML("beforeend", `
+    <div id="penjemputan-container">
+      <label class="form-label">🚚 Lokasi Penjemputan</label>
       <div class="row g-2 mb-2">
         <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
         <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
-      </div>`);
-  }
+      </div>
+    </div>
+    <button onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
 
-  function tambahBongkar() {
-    document.getElementById("bongkar-container").insertAdjacentHTML("beforeend", `
+    <div id="bongkar-container">
+      <label class="form-label">🏁 Lokasi Bongkar</label>
       <div class="row g-2 mb-2">
         <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
         <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
-      </div>`);
-  }
+      </div>
+    </div>
+    <button onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
 
-  function toggleKembaliGarasi() {
-    document.getElementById("kembaliFields").style.display = document.getElementById("kembaliGarasi").checked ? 'block' : 'none';
-  }
+    <div class="form-check mb-2">
+      <input class="form-check-input" type="checkbox" id="kembaliGarasi" onchange="toggleKembaliGarasi()">
+      <label class="form-check-label">🔁 Kembali ke Garasi</label>
+    </div>
+    <div id="kembaliFields" class="mb-3" style="display:none;">
+      <input type="number" class="form-control" id="jarakKembali" placeholder="Jarak kembali ke garasi (km)">
+    </div>
 
-  function toggleTKBM() {
-    document.getElementById("tkbmOptions").style.display = document.getElementById("tkbmCheck").checked ? 'block' : 'none';
-  }
+    <div class="mb-3"><label class="form-label">📦 Nama Barang</label><input type="text" class="form-control" id="namaBarang"></div>
+    <div class="mb-3"><label class="form-label">⚖️ Berat Barang (kg)</label><input type="number" class="form-control" id="beratBarang"></div>
 
-  function cekTarif() {
-    const kmJemput = Array.from(document.querySelectorAll(".km-jemput")).map(el => parseFloat(el.value) || 0);
-    const kmBongkar = Array.from(document.querySelectorAll(".km-bongkar")).map(el => parseFloat(el.value) || 0);
-    const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
-    const totalKM = kmJemput.reduce((a,b)=>a+b,0) + kmBongkar.reduce((a,b)=>a+b,0) + kembali;
-    const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
-    const estimasiJam = totalKM / kecepatan;
+    <div class="form-check mb-2">
+      <input class="form-check-input" type="checkbox" id="tkbmCheck" onchange="toggleTKBM()">
+      <label class="form-check-label">🧑‍🔧 Gunakan TKBM</label>
+    </div>
+    <div id="tkbmOptions" class="mb-3" style="display:none;">
+      <select class="form-select" id="tkbmValue">
+        <option value="75000">Rp75.000</option>
+        <option value="90000">Rp90.000</option>
+        <option value="100000">Rp100.000</option>
+      </select>
+    </div>
 
-    const berat = parseFloat(document.getElementById("beratBarang").value || 0);
-    const tkbm = document.getElementById("tkbmCheck").checked ? parseFloat(document.getElementById("tkbmValue").value) : 0;
-    const petugas = document.getElementById("namaPetugas").value || "-";
+    <div class="mb-3"><label class="form-label">🕑 Jadwal Pengiriman</label><input type="datetime-local" class="form-control" id="jadwalPengiriman" /></div>
 
-    let armada = 'Armada Khusus', sewaMobil = 0, biayaDriver = 0;
-    if (berat <= 1300) {
-      armada = "Granmax Pickup";
-      sewaMobil = estimasiJam <= 6 ? 100000 : estimasiJam <= 12 ? 150000 : 200000;
-      biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
-    } else if (berat <= 2500) {
-      armada = "L300 Pickup";
-      sewaMobil = estimasiJam <= 6 ? 200000 : estimasiJam <= 12 ? 250000 : 350000;
-      biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
+    <div class="mb-3">
+      <label class="form-label">👤 Jenis Customer</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="tipeCustomer" value="perorangan" checked />
+        <label class="form-check-label">Perorangan</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="tipeCustomer" value="perusahaan" />
+        <label class="form-check-label">Perusahaan</label>
+      </div>
+    </div>
+
+    <button onclick="cekTarif()" class="btn btn-danger">🧮 Hitung Tarif</button>
+
+    <div id="hasilPopup">
+      <div class="popup-box">
+        <h5 class="mb-3">📄 Estimasi & Rincian Tarif</h5>
+        <div id="hasilTarif"></div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
+          <button class="btn btn-success btn-sm" onclick="simpanKeDatabase()">💾 Simpan ke Database</button>
+          <button class="btn btn-outline-secondary btn-sm" onclick="tutupPopup()">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const supabase = supabase.createClient(
+      "https://mrghlcedtafomwnznywf.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+    );
+
+    let globalData = {};
+
+    const konsumsiBBM = 9, hargaBBM = 10000, kecepatan = 80;
+
+    function tambahJemput() {
+      document.getElementById("penjemputan-container").insertAdjacentHTML("beforeend", `
+        <div class="row g-2 mb-2">
+          <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
+          <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
+        </div>`);
     }
 
-    const tarifDasar = totalBBM + sewaMobil + biayaDriver + tkbm;
-    const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
-    const markup = tipe === "perorangan" ? 1.02 : 1.14;
-    const tarifFinal = tarifDasar * markup;
-    const profit = tarifFinal - (totalBBM + sewaMobil + biayaDriver + tkbm);
-
-    globalData = {
-      nama_petugas: petugas,
-      armada,
-      berat_barang: berat,
-      total_km: totalKM,
-      biaya_bbm: Math.round(totalBBM),
-      biaya_driver: biayaDriver,
-      biaya_sewa_armada: sewaMobil,
-      biaya_tkbm: tkbm,
-      tarif_dasar: Math.round(tarifDasar),
-      tarif_final: Math.round(tarifFinal),
-      estimasi_profit: Math.round(profit),
-      jenis_customer: tipe,
-      tanggal_input: new Date().toISOString()
-    };
-
-    document.getElementById("hasilTarif").innerHTML = `
-      <ul>
-        <li>👮 Petugas: ${petugas}</li>
-        <li>🚛 Armada: ${armada}</li>
-        <li>⚖️ Berat: ${berat} kg</li>
-        <li>📏 Total Jarak: ${totalKM.toFixed(1)} km</li>
-        <li>⛽ Biaya BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
-        <li>🧑‍✈️ Biaya Driver: Rp${biayaDriver.toLocaleString()}</li>
-        <li>🚚 Sewa Armada: Rp${sewaMobil.toLocaleString()}</li>
-        ${tkbm ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
-        <li>💼 Tarif Dasar: Rp${Math.round(tarifDasar).toLocaleString()}</li>
-        <li>📊 Tarif Final: Rp${Math.round(tarifFinal).toLocaleString()}</li>
-        <li>💰 Estimasi Profit: Rp${Math.round(profit).toLocaleString()}</li>
-      </ul>`;
-    document.getElementById("hasilPopup").style.display = "flex";
-  }
-
-  async function simpanKeDatabase() {
-    const { error } = await supabase.from("Tarif_Carter_Admin").insert([globalData]);
-    if (error) {
-      alert("❌ Gagal menyimpan ke database: " + error.message);
-      console.error(error);
-    } else {
-      alert("✅ Data berhasil disimpan ke Supabase!");
-      tutupPopup();
+    function tambahBongkar() {
+      document.getElementById("bongkar-container").insertAdjacentHTML("beforeend", `
+        <div class="row g-2 mb-2">
+          <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
+          <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
+        </div>`);
     }
-  }
 
-  function tutupPopup() {
-    document.getElementById("hasilPopup").style.display = "none";
-  }
-</script>
+    function toggleKembaliGarasi() {
+      document.getElementById("kembaliFields").style.display = document.getElementById("kembaliGarasi").checked ? 'block' : 'none';
+    }
+
+    function toggleTKBM() {
+      document.getElementById("tkbmOptions").style.display = document.getElementById("tkbmCheck").checked ? 'block' : 'none';
+    }
+
+    function cekTarif() {
+      const kmJemput = Array.from(document.querySelectorAll(".km-jemput")).map(el => parseFloat(el.value) || 0);
+      const kmBongkar = Array.from(document.querySelectorAll(".km-bongkar")).map(el => parseFloat(el.value) || 0);
+      const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
+      const totalKM = kmJemput.reduce((a,b)=>a+b,0) + kmBongkar.reduce((a,b)=>a+b,0) + kembali;
+      const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
+      const estimasiJam = totalKM / kecepatan;
+
+      const berat = parseFloat(document.getElementById("beratBarang").value || 0);
+      const tkbm = document.getElementById("tkbmCheck").checked ? parseFloat(document.getElementById("tkbmValue").value) : 0;
+      const petugas = document.getElementById("namaPetugas").value || "-";
+
+      let armada = 'Armada Khusus', sewaMobil = 0, biayaDriver = 0;
+      if (berat <= 1300) {
+        armada = "Granmax Pickup";
+        sewaMobil = estimasiJam <= 6 ? 100000 : estimasiJam <= 12 ? 150000 : 200000;
+        biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
+      } else if (berat <= 2500) {
+        armada = "L300 Pickup";
+        sewaMobil = estimasiJam <= 6 ? 200000 : estimasiJam <= 12 ? 250000 : 350000;
+        biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
+      }
+
+      const tarifDasar = totalBBM + sewaMobil + biayaDriver + tkbm;
+      const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
+      const markup = tipe === "perorangan" ? 1.02 : 1.14;
+      const tarifFinal = tarifDasar * markup;
+      const profit = tarifFinal - (totalBBM + sewaMobil + biayaDriver + tkbm);
+
+      globalData = {
+        nama_petugas: petugas,
+        armada,
+        berat_barang: berat,
+        total_km: totalKM,
+        biaya_bbm: Math.round(totalBBM),
+        biaya_driver: biayaDriver,
+        biaya_sewa_armada: sewaMobil,
+        biaya_tkbm: tkbm,
+        tarif_dasar: Math.round(tarifDasar),
+        tarif_final: Math.round(tarifFinal),
+        estimasi_profit: Math.round(profit),
+        jenis_customer: tipe,
+        tanggal_input: new Date().toISOString()
+      };
+
+      document.getElementById("hasilTarif").innerHTML = `
+        <ul>
+          <li>👮 Petugas: ${petugas}</li>
+          <li>🚛 Armada: ${armada}</li>
+          <li>⚖️ Berat: ${berat} kg</li>
+          <li>📏 Total Jarak: ${totalKM.toFixed(1)} km</li>
+          <li>⛽ Biaya BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
+          <li>🧑‍✈️ Biaya Driver: Rp${biayaDriver.toLocaleString()}</li>
+          <li>🚚 Sewa Armada: Rp${sewaMobil.toLocaleString()}</li>
+          ${tkbm ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
+          <li>💼 Tarif Dasar: Rp${Math.round(tarifDasar).toLocaleString()}</li>
+          <li>📊 Tarif Final: Rp${Math.round(tarifFinal).toLocaleString()}</li>
+          <li>💰 Estimasi Profit: Rp${Math.round(profit).toLocaleString()}</li>
+        </ul>`;
+      document.getElementById("hasilPopup").style.display = "flex";
+    }
+
+    async function simpanKeDatabase() {
+      const { error } = await supabase.from("Tarif_Carter_Admin").insert([globalData]);
+      if (error) {
+        alert("❌ Gagal menyimpan ke database: " + error.message);
+        console.error(error);
+      } else {
+        alert("✅ Data berhasil disimpan ke Supabase!");
+        tutupPopup();
+      }
+    }
+
+    function tutupPopup() {
+      document.getElementById("hasilPopup").style.display = "none";
+    }
+  </script>
 </body>
 </html>
