@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -41,82 +40,78 @@
 </head>
 <body>
   <div class="container">
-    <h1 class="mb-4">📦 Simulasi Tarif Carter</h1>
+    <h1 class="mb-4">📦 Simulasi Tarif Carter</h1><div class="mb-3">
+  <label class="form-label">📍 Lokasi Garasi (Default)</label>
+  <input type="text" class="form-control" value="Logistik Kita" disabled>
+</div>
 
-    <div class="mb-3">
-      <label class="form-label">📍 Lokasi Garasi (Default)</label>
-      <input type="text" class="form-control" value="Logistik Kita" disabled>
-    </div>
-
-    <div id="penjemputan-container">
-      <label class="form-label">🚚 Lokasi Penjemputan</label>
-      <div class="row g-2 mb-2">
-        <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
-        <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
-      </div>
-    </div>
-    <button onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
-
-    <div id="bongkar-container">
-      <label class="form-label">🏁 Lokasi Tujuan/Bongkar</label>
-      <div class="row g-2 mb-2">
-        <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
-        <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
-      </div>
-    </div>
-    <button onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
-
-    <div class="form-check mb-3">
-      <input class="form-check-input" type="checkbox" id="kembaliGarasi">
-      <label class="form-check-label" for="kembaliGarasi">Kembali ke Garasi</label>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">📦 Nama Barang</label>
-      <input type="text" class="form-control" id="namaBarang">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">⚖️ Berat Barang (kg)</label>
-      <input type="number" class="form-control" id="beratBarang">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">🧑‍🔧 Biaya TKBM (Opsional)</label>
-      <input type="number" class="form-control" id="tkbm" placeholder="75000 / 90000 / 100000">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">⛽ Harga BBM / liter</label>
-      <input type="number" class="form-control" id="hargaBBM" value="10000">
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">👤 Jenis Customer</label>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="tipeCustomer" value="perorangan" checked />
-        <label class="form-check-label">Perorangan (PPH 2%)</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="tipeCustomer" value="perusahaan" />
-        <label class="form-check-label">Perusahaan (PPN 12% + PPH 2%)</label>
-      </div>
-    </div>
-
-    <button onclick="cekTarif()" class="btn btn-danger">🧮 Cek Tarif</button>
-
-    <div id="hasilPopup">
-      <div class="popup-box">
-        <h5 class="mb-3">💰 Estimasi Tarif Carter</h5>
-        <div id="hasilTarif"></div>
-        <small class="text-muted d-block mt-3">* Estimasi tarif belum termasuk biaya TKBM jika tidak diinput<br>* Hubungi Admin Logistik Kita untuk info selengkapnya</small>
-        <button onclick="tutupPopup()" class="btn btn-outline-secondary btn-sm mt-3">Tutup</button>
-      </div>
-    </div>
+<div id="penjemputan-container">
+  <label class="form-label">🚚 Lokasi Penjemputan</label>
+  <div class="row g-2 mb-2">
+    <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
+    <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
   </div>
+</div>
+<button onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
 
-  <script>
+<div id="bongkar-container">
+  <label class="form-label">🏁 Lokasi Tujuan/Bongkar</label>
+  <div class="row g-2 mb-2">
+    <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
+    <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
+  </div>
+</div>
+<button onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
+
+<div class="row g-2 mb-3 align-items-center">
+  <div class="col-auto">
+    <input class="form-check-input" type="checkbox" id="kembaliGarasi">
+  </div>
+  <div class="col">
+    <input type="number" class="form-control" id="jarakKembali" placeholder="Jarak kembali ke garasi (km)">
+  </div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">📦 Nama Barang</label>
+  <input type="text" class="form-control" id="namaBarang">
+</div>
+
+<div class="mb-3">
+  <label class="form-label">⚖️ Berat Barang (kg)</label>
+  <input type="number" class="form-control" id="beratBarang">
+</div>
+
+<div class="form-check mb-3">
+  <input class="form-check-input" type="checkbox" id="tkbmCheck">
+  <label class="form-check-label" for="tkbmCheck">Gunakan Biaya TKBM</label>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">👤 Jenis Customer</label>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="tipeCustomer" value="perorangan" checked />
+    <label class="form-check-label">Perorangan</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="tipeCustomer" value="perusahaan" />
+    <label class="form-check-label">Perusahaan</label>
+  </div>
+</div>
+
+<button onclick="cekTarif()" class="btn btn-danger">🧮 Cek Tarif</button>
+
+<div id="hasilPopup">
+  <div class="popup-box">
+    <h5 class="mb-3">💰 Estimasi Tarif Carter</h5>
+    <div id="hasilTarif"></div>
+    <button onclick="tutupPopup()" class="btn btn-outline-secondary btn-sm mt-3">Tutup</button>
+  </div>
+</div>
+
+  </div>  <script>
     const konsumsiBBM = 9;
+    const hargaBBM = 10000;
     const kecepatan = 80;
 
     function tambahJemput() {
@@ -140,15 +135,15 @@
     function cekTarif() {
       const kmJemput = Array.from(document.querySelectorAll(".km-jemput")).map(el => parseFloat(el.value) || 0);
       const kmBongkar = Array.from(document.querySelectorAll(".km-bongkar")).map(el => parseFloat(el.value) || 0);
-      const kembali = document.getElementById("kembaliGarasi").checked ? (kmBongkar.at(-1) || 0) : 0;
+      const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
       const totalKM = kmJemput.reduce((a,b)=>a+b,0) + kmBongkar.reduce((a,b)=>a+b,0) + kembali;
 
-      const hargaBBM = parseFloat(document.getElementById("hargaBBM").value || 10000);
       const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
       const estimasiJam = totalKM / kecepatan;
 
       const berat = parseFloat(document.getElementById("beratBarang").value || 0);
-      const tkbm = parseFloat(document.getElementById("tkbm").value || 0);
+      const pakaiTKBM = document.getElementById("tkbmCheck").checked;
+      const tkbm = pakaiTKBM ? 100000 : 0;
       let armada = '';
       let sewaMobil = 0;
       let biayaDriver = 0;
@@ -179,9 +174,11 @@
           <li>🚛 Armada: <strong>${armada}</strong></li>
           <li>⛽ Estimasi BBM: Rp${totalBBM.toLocaleString()}</li>
           <li>🚚 Sewa Mobil: Rp${sewaMobil.toLocaleString()}</li>
-          ${tkbm > 0 ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
-          <li>💵 Total Estimasi Tarif <strong>(sudah termasuk pajak)</strong>: <span class="text-success fw-bold">Rp${Math.round(tarifFinal).toLocaleString()}</span></li>
+          <li>🧑‍✈️ Biaya Driver: Rp${biayaDriver.toLocaleString()}</li>
+          ${pakaiTKBM ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
+          <li>💵 Total Estimasi Tarif: <strong class="text-success">Rp${Math.round(tarifFinal).toLocaleString()}</strong></li>
         </ul>`;
+
       document.getElementById("hasilTarif").innerHTML = hasil;
       document.getElementById("hasilPopup").style.display = "flex";
     }
@@ -189,6 +186,5 @@
     function tutupPopup() {
       document.getElementById("hasilPopup").style.display = "none";
     }
-  </script>
-</body>
+  </script></body>
 </html>
