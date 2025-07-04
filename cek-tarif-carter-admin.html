@@ -1,4 +1,3 @@
-<!-- Salin seluruh isi file ini ke cek-tarif-carter-admin.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -57,7 +56,59 @@
     <input type="text" class="form-control" id="namaPetugas" placeholder="Nama petugas">
   </div>
 
-  <!-- ... bagian input lainnya tidak berubah ... -->
+  <div class="mb-3">
+    <label class="form-label">📍 Lokasi Garasi</label>
+    <input type="text" class="form-control" value="Logistik Kita" disabled>
+  </div>
+
+  <div id="penjemputan-container">
+    <label class="form-label">🚚 Lokasi Penjemputan</label>
+    <div class="row g-2 mb-2">
+      <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
+      <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
+    </div>
+  </div>
+  <button onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
+
+  <div id="bongkar-container">
+    <label class="form-label">🏁 Lokasi Bongkar</label>
+    <div class="row g-2 mb-2">
+      <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
+      <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
+    </div>
+  </div>
+  <button onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
+
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="kembaliGarasi" onchange="toggleKembaliGarasi()">
+    <label class="form-check-label">🔁 Kembali ke Garasi</label>
+  </div>
+  <div id="kembaliFields" class="mb-3" style="display:none;">
+    <input type="text" class="form-control mb-2" value="Logistik Kita" readonly>
+    <input type="number" class="form-control" id="jarakKembali" placeholder="Jarak kembali ke garasi (km)">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">📦 Nama Barang</label>
+    <input type="text" class="form-control" id="namaBarang">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">⚖️ Berat Barang (kg)</label>
+    <input type="number" class="form-control" id="beratBarang">
+  </div>
+
+  <div class="form-check mb-2">
+    <input class="form-check-input" type="checkbox" id="tkbmCheck" onchange="toggleTKBM()">
+    <label class="form-check-label">🧑‍🔧 Gunakan TKBM</label>
+  </div>
+  <div id="tkbmOptions" class="mb-3" style="display:none;">
+    <select class="form-select" id="tkbmValue">
+      <option value="75000">Rp75.000</option>
+      <option value="90000">Rp90.000</option>
+      <option value="100000">Rp100.000</option>
+    </select>
+  </div>
 
   <div class="mb-3">
     <label class="form-label">🕑 Jadwal Pengiriman</label>
@@ -95,20 +146,35 @@
   const konsumsiBBM = 9, hargaBBM = 10000, kecepatan = 80;
   let jemputCount = 1, bongkarCount = 1;
 
-  function tambahJemput() { /* kode asli tetap */ }
-  function tambahBongkar() { /* kode asli tetap */ }
-  function toggleKembaliGarasi() { /* kode asli tetap */ }
-  function toggleTKBM() { /* kode asli tetap */ }
+  function tambahJemput() {
+    if (jemputCount >= 4) return;
+    jemputCount++;
+    document.getElementById("penjemputan-container").insertAdjacentHTML("beforeend", `
+      <div class="row g-2 mb-2">
+        <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
+        <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
+      </div>`);
+  }
 
-  function generateNomorSurat() {
-    const date = new Date();
-    const yyyyMMdd = date.toISOString().slice(0, 10).replace(/-/g, '');
-    const random = Math.floor(100 + Math.random() * 900);
-    return `SJ-${yyyyMMdd}-${random}`;
+  function tambahBongkar() {
+    if (bongkarCount >= 4) return;
+    bongkarCount++;
+    document.getElementById("bongkar-container").insertAdjacentHTML("beforeend", `
+      <div class="row g-2 mb-2">
+        <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
+        <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
+      </div>`);
+  }
+
+  function toggleKembaliGarasi() {
+    document.getElementById("kembaliFields").style.display = document.getElementById("kembaliGarasi").checked ? 'block' : 'none';
+  }
+
+  function toggleTKBM() {
+    document.getElementById("tkbmOptions").style.display = document.getElementById("tkbmCheck").checked ? 'block' : 'none';
   }
 
   function cekTarif() {
-    const nomorSurat = generateNomorSurat(); // 👈 Tambahan
     const kmJemput = Array.from(document.querySelectorAll(".km-jemput")).map(el => parseFloat(el.value) || 0);
     const kmBongkar = Array.from(document.querySelectorAll(".km-bongkar")).map(el => parseFloat(el.value) || 0);
     const lokasiJemput = Array.from(document.querySelectorAll(".lokasi-jemput")).map(el => el.value || "-");
@@ -149,7 +215,6 @@
 
     const hasil = `
       <ul>
-        <li>🆔 Nomor Surat Jalan: <strong>${nomorSurat}</strong></li>
         ${ruteHTML}
         ${kembali ? `<li>🔁 Kembali ke Garasi: ${kembali} km</li>` : ""}
         <li>📏 Total Jarak: <strong>${totalKM.toFixed(1)} km</strong></li>
