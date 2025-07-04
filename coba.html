@@ -3,212 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Form Carter - Logistik Kita</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <title>Carter - Logistik Kita</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <style>
     body {
       background-color: #f8f9fa;
       font-family: 'Segoe UI', sans-serif;
     }
-    .header {
+
+    header {
       background-color: #ba1a1a;
       color: white;
       padding: 1rem;
       text-align: center;
     }
-    .section-title {
-      font-weight: bold;
-      margin-top: 2rem;
-    }
-    .form-section {
+
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
       background: white;
       padding: 2rem;
       border-radius: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-top: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
-    .btn-red {
+
+    .form-label {
+      font-weight: 600;
+    }
+
+    .popup {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .btn-danger {
       background-color: #ba1a1a;
-      color: white;
+      border: none;
     }
-    .btn-red:hover {
-      background-color: #931313;
+
+    .btn-danger:hover {
+      background-color: #a31414;
     }
   </style>
 </head>
 <body>
-  <header class="header">
-    <h2>Form Estimasi Carter - Logistik Kita 🚚</h2>
-  </header>
 
-  <div class="container my-4">
-    <div class="form-section">
-      <form id="carterForm">
-        <h5 class="section-title">1. Lokasi & Jarak</h5>
+<header>
+  <h3>🚚 Estimasi Tarif Carter - Logistik Kita</h3>
+</header>
 
-        <div class="mb-3">
-          <label class="form-label">Lokasi Garasi (default)</label>
-          <input type="text" class="form-control" value="Garasi Logistik Kita" disabled />
-        </div>
-
-        <div id="pickupArea">
-          <label class="form-label">📍 Lokasi Penjemputan & Jarak dari titik sebelumnya</label>
-          <div class="input-group mb-2">
-            <input type="text" class="form-control" name="pickup[]" placeholder="Contoh: Mojosari" required />
-            <input type="number" class="form-control" name="pickup_km[]" placeholder="Jarak (km)" required />
-          </div>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary mb-3" onclick="addPickup()">➕ Tambah Lokasi Jemput</button>
-
-        <div id="dropArea">
-          <label class="form-label">🎯 Lokasi Bongkar & Jarak dari titik sebelumnya</label>
-          <div class="input-group mb-2">
-            <input type="text" class="form-control" name="drop[]" placeholder="Contoh: Tanjung Perak" required />
-            <input type="number" class="form-control" name="drop_km[]" placeholder="Jarak (km)" required />
-          </div>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary mb-3" onclick="addDrop()">➕ Tambah Lokasi Bongkar</button>
-
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="returnToGarage" onchange="toggleReturn()">
-          <label class="form-check-label" for="returnToGarage">Kembali ke Garasi?</label>
-        </div>
-        <div id="returnInput" style="display: none;">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" value="Garasi Logistik Kita" disabled />
-            <input type="number" class="form-control" id="return_km" placeholder="Jarak (km) ke garasi" />
-          </div>
-        </div>
-
-        <hr>
-        <h5 class="section-title">2. Detail Barang</h5>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="nama_barang" placeholder="Nama Barang" required />
-        </div>
-        <div class="mb-3">
-          <input type="number" class="form-control" id="berat_barang" placeholder="Berat Barang (kg)" required />
-        </div>
-
-        <hr>
-        <h5 class="section-title">3. Opsi Tambahan</h5>
-        <div class="mb-3">
-          <label for="tkbm">Butuh TKBM?</label>
-          <select class="form-select" id="tkbm">
-            <option value="0">Tidak</option>
-            <option value="75000">6 jam - Rp75.000</option>
-            <option value="90000">8 jam - Rp90.000</option>
-            <option value="100000">12 jam - Rp100.000</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label for="jadwal">Jadwal Pengiriman</label>
-          <input type="date" class="form-control" id="jadwal" required />
-        </div>
-
-        <div class="mb-3">
-          <label>Jenis Customer</label><br>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customer_type" value="perorangan" checked>
-            <label class="form-check-label">Perorangan</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customer_type" value="perusahaan">
-            <label class="form-check-label">Perusahaan</label>
-          </div>
-        </div>
-
-        <button type="button" class="btn btn-red w-100" onclick="cekTarif()">🔍 Cek Tarif</button>
-      </form>
+<div class="container">
+  <form id="carterForm">
+    <div class="mb-3">
+      <label class="form-label">📍 Lokasi Garasi</label>
+      <input type="text" class="form-control" value="Logistik Kita - Mojokerto" disabled />
     </div>
-  </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content p-3">
-        <div class="modal-header">
-          <h5 class="modal-title">💰 Estimasi Tarif Carter</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-        </div>
-        <div class="modal-body" id="modalContent">
-          <p><strong>Total Jarak:</strong> <span id="hasil_jarak"></span> km</p>
-          <p><strong>Jenis Armada:</strong> <span id="hasil_armada"></span></p>
-          <p><strong>Estimasi Tarif:</strong> <span id="hasil_tarif"></span></p>
-          <hr>
-          <small class="text-muted">* Tarif belum termasuk biaya TKBM<br>* Hubungi Admin Logistik Kita untuk info lebih lanjut</small>
-        </div>
-      </div>
+    <div class="mb-3">
+      <label class="form-label">🚚 Jarak ke Lokasi Muat (km)</label>
+      <input type="number" id="jarakMuat" class="form-control" required />
     </div>
+
+    <div class="mb-3">
+      <label class="form-label">📦 Jarak ke Lokasi Bongkar (km)</label>
+      <input type="number" id="jarakBongkar" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">↩️ Jarak Kembali ke Garasi (km)</label>
+      <input type="number" id="jarakKembali" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">📄 Nama Barang</label>
+      <input type="text" id="namaBarang" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">⚖️ Berat Barang (kg)</label>
+      <input type="number" id="beratBarang" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">⛏️ Pilih TKBM (Opsional)</label>
+      <select class="form-select" id="tkbm">
+        <option value="0">- Tidak memilih -</option>
+        <option value="75000">6 Jam - Rp75.000</option>
+        <option value="90000">8 Jam - Rp90.000</option>
+        <option value="100000">12 Jam - Rp100.000</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">📅 Jadwal Pengiriman</label>
+      <input type="date" class="form-control" required />
+    </div>
+
+    <div class="form-check form-switch mb-3">
+      <input class="form-check-input" type="checkbox" id="isPerusahaan">
+      <label class="form-check-label" for="isPerusahaan">Perusahaan (PPN + PPH)</label>
+    </div>
+
+    <button type="submit" class="btn btn-danger w-100">🔍 Cek Estimasi Tarif</button>
+  </form>
+
+  <div id="hasilPopup" class="popup mt-4 d-none">
+    <h5 class="text-success">✅ Estimasi Tarif Carter</h5>
+    <ul class="list-group my-3" id="hasilList"></ul>
+    <p class="small text-muted">* Estimasi belum termasuk tol & TKBM tambahan</p>
+    <p class="small text-muted">* Hubungi Admin Logistik Kita untuk info selengkapnya</p>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    function addPickup() {
-      const pickupArea = document.getElementById('pickupArea');
-      pickupArea.insertAdjacentHTML('beforeend', `
-        <div class="input-group mb-2">
-          <input type="text" class="form-control" name="pickup[]" placeholder="Lokasi jemput berikutnya" />
-          <input type="number" class="form-control" name="pickup_km[]" placeholder="Jarak (km)" />
-        </div>`);
+<script>
+  document.getElementById("carterForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const jarakMuat = parseFloat(document.getElementById("jarakMuat").value);
+    const jarakBongkar = parseFloat(document.getElementById("jarakBongkar").value);
+    const jarakKembali = parseFloat(document.getElementById("jarakKembali").value);
+    const namaBarang = document.getElementById("namaBarang").value;
+    const beratBarang = parseFloat(document.getElementById("beratBarang").value);
+    const tkbm = parseFloat(document.getElementById("tkbm").value);
+    const isPerusahaan = document.getElementById("isPerusahaan").checked;
+
+    const totalJarak = jarakMuat + jarakBongkar + jarakKembali;
+    const durasiJam = totalJarak / 80;
+
+    // Armada
+    let armada = beratBarang <= 1300 ? "Granmax Pickup" : "L300 Pickup";
+
+    // Sewa mobil
+    let sewaMobil = 0;
+    if (armada === "Granmax Pickup") {
+      if (durasiJam <= 6) sewaMobil = 100000;
+      else if (durasiJam <= 12) sewaMobil = 150000;
+      else sewaMobil = 200000;
+    } else {
+      if (durasiJam <= 6) sewaMobil = 200000;
+      else if (durasiJam <= 12) sewaMobil = 250000;
+      else sewaMobil = 350000;
     }
 
-    function addDrop() {
-      const dropArea = document.getElementById('dropArea');
-      dropArea.insertAdjacentHTML('beforeend', `
-        <div class="input-group mb-2">
-          <input type="text" class="form-control" name="drop[]" placeholder="Lokasi bongkar berikutnya" />
-          <input type="number" class="form-control" name="drop_km[]" placeholder="Jarak (km)" />
-        </div>`);
-    }
+    // BBM & Driver
+    const biayaBBM = (totalJarak / 9) * 10000;
+    let biayaDriver = durasiJam <= 6 ? 150000 : durasiJam <= 12 ? 200000 : 250000;
 
-    function toggleReturn() {
-      const checkbox = document.getElementById("returnToGarage");
-      const returnInput = document.getElementById("returnInput");
-      returnInput.style.display = checkbox.checked ? "block" : "none";
-    }
+    // Pajak
+    let subtotal = biayaBBM + sewaMobil + biayaDriver + tkbm;
+    let pajak = isPerusahaan ? subtotal * 0.14 : subtotal * 0.02;
+    let total = Math.ceil(subtotal + pajak);
 
-    function cekTarif() {
-      const berat = parseFloat(document.getElementById("berat_barang").value);
-      const tkbm = parseFloat(document.getElementById("tkbm").value);
-      const return_km = parseFloat(document.getElementById("return_km")?.value || 0);
-      const pickup_km = Array.from(document.getElementsByName("pickup_km[]")).reduce((sum, input) => sum + Number(input.value || 0), 0);
-      const drop_km = Array.from(document.getElementsByName("drop_km[]")).reduce((sum, input) => sum + Number(input.value || 0), 0);
-      const total_km = pickup_km + drop_km + return_km;
+    // Output
+    const hasilList = document.getElementById("hasilList");
+    hasilList.innerHTML = `
+      <li class="list-group-item">📦 Barang: ${namaBarang}</li>
+      <li class="list-group-item">⚖️ Berat: ${beratBarang} kg (${armada})</li>
+      <li class="list-group-item">🛣️ Total Jarak: ${totalJarak} km</li>
+      <li class="list-group-item">🕒 Estimasi Waktu: ${durasiJam.toFixed(1)} jam</li>
+      <li class="list-group-item">💰 Estimasi Tarif: <strong>Rp${total.toLocaleString()}</strong></li>
+    `;
 
-      const jenis = berat <= 1300 ? "Granmax" : "L300";
-      const durasi_jam = total_km / 80;
-      let sewa = 0;
-      if (jenis === "Granmax") {
-        if (durasi_jam <= 6) sewa = 100000;
-        else if (durasi_jam <= 12) sewa = 150000;
-        else sewa = 200000;
-      } else {
-        if (durasi_jam <= 6) sewa = 200000;
-        else if (durasi_jam <= 12) sewa = 250000;
-        else sewa = 350000;
-      }
+    document.getElementById("hasilPopup").classList.remove("d-none");
+  });
+</script>
 
-      const biaya_bbm = (total_km / 9) * 10000;
-      const dasar = biaya_bbm + sewa + (tkbm || 0);
-
-      const jenis_cust = document.querySelector('input[name="customer_type"]:checked').value;
-      let pajak = 0;
-      if (jenis_cust === "perusahaan") {
-        pajak = dasar * 0.14;
-      } else {
-        pajak = dasar * 0.02;
-      }
-
-      const total_tarif = Math.round(dasar + pajak);
-
-      document.getElementById("hasil_jarak").innerText = total_km + " km";
-      document.getElementById("hasil_armada").innerText = jenis;
-      document.getElementById("hasil_tarif").innerText = "Rp" + total_tarif.toLocaleString("id-ID");
-
-      const modal = new bootstrap.Modal(document.getElementById("resultModal"));
-      modal.show();
-    }
-  </script>
 </body>
 </html>
