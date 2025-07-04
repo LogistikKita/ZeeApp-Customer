@@ -36,6 +36,8 @@
       padding: 2rem;
       border-radius: 1rem;
       max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .logo {
       height: 60px;
@@ -49,13 +51,11 @@
     <h1>📦 Cek Tarif Carter Logistik Kita (Admin)</h1>
   </div>
 
-  <!-- Nama Petugas -->
   <div class="mb-3">
     <label class="form-label">👮 Nama Petugas</label>
     <input type="text" class="form-control" id="namaPetugas" placeholder="Nama petugas">
   </div>
 
-  <!-- Form Lokasi -->
   <div class="mb-3">
     <label class="form-label">📍 Lokasi Garasi</label>
     <input type="text" class="form-control" value="Logistik Kita" disabled>
@@ -133,7 +133,7 @@
     <div class="popup-box">
       <h5 class="mb-3">📄 Estimasi & Rincian Tarif</h5>
       <div id="hasilTarif"></div>
-      <div class="mt-3 d-flex gap-2">
+      <div class="mt-3 d-flex gap-2 flex-wrap">
         <button class="btn btn-success btn-sm" onclick="alert('Surat Jalan akan dicetak (fitur simulasi)')">🖨️ Cetak Surat Jalan</button>
         <button class="btn btn-primary btn-sm" onclick="kirimWA()">📤 Kirim Invoice via WA</button>
         <button onclick="tutupPopup()" class="btn btn-outline-secondary btn-sm">Tutup</button>
@@ -183,6 +183,7 @@
     const totalKM = kmJemput.reduce((a,b)=>a+b,0) + kmBongkar.reduce((a,b)=>a+b,0) + kembali;
     const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
     const estimasiJam = totalKM / kecepatan;
+
     const namaBarang = document.getElementById("namaBarang").value || "-";
     const berat = parseFloat(document.getElementById("beratBarang").value || 0);
     const pakaiTKBM = document.getElementById("tkbmCheck").checked;
@@ -203,7 +204,9 @@
 
     const tarifDasar = totalBBM + sewaMobil + biayaDriver + tkbm;
     const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
-    let tarifFinal = tarifDasar * (tipe === "perorangan" ? 1.02 : 1.14);
+    const markup = tipe === "perorangan" ? 1.02 : 1.14;
+    const tarifFinal = tarifDasar * markup;
+    const margin = tarifFinal - tarifDasar;
     const profit = tarifFinal - (totalBBM + biayaDriver + sewaMobil + tkbm);
 
     let ruteHTML = '';
@@ -221,8 +224,15 @@
         <li>🗓️ Jadwal: ${jadwal}</li>
         <li>👮 Petugas: ${petugas}</li>
         ${pakaiTKBM ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
-        <li>💰 Estimasi Tarif: <span class="text-success fw-bold">Rp${Math.round(tarifFinal).toLocaleString()}</span></li>
-        <li>📈 Estimasi Profit: <span class="text-primary fw-bold">Rp${Math.round(profit).toLocaleString()}</span></li>
+        <hr/>
+        <li>⛽ Biaya BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
+        <li>🚚 Sewa Armada: Rp${Math.round(sewaMobil).toLocaleString()}</li>
+        <li>🧑‍✈️ Biaya Driver: Rp${Math.round(biayaDriver).toLocaleString()}</li>
+        ${pakaiTKBM ? `<li>🧑‍🔧 TKBM: Rp${Math.round(tkbm).toLocaleString()}</li>` : ""}
+        <li>💼 Tarif Dasar: <strong>Rp${Math.round(tarifDasar).toLocaleString()}</strong></li>
+        <li>📊 Margin (${((markup - 1) * 100).toFixed(0)}%): Rp${Math.round(margin).toLocaleString()}</li>
+        <li>💰 Estimasi Tarif: <strong class="text-success">Rp${Math.round(tarifFinal).toLocaleString()}</strong></li>
+        <li>📈 Estimasi Profit: <strong class="text-primary">Rp${Math.round(profit).toLocaleString()}</strong></li>
       </ul>`;
 
     document.getElementById("hasilTarif").innerHTML = hasil;
