@@ -35,7 +35,7 @@
       background: white;
       padding: 2rem;
       border-radius: 1rem;
-      max-width: 400px;
+      max-width: 480px;
     }
   </style>
 </head>
@@ -55,7 +55,7 @@
       <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
     </div>
   </div>
-  <button id="btnTambahJemput" onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
+  <button onclick="tambahJemput()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Jemput</button>
 
   <div id="bongkar-container">
     <label class="form-label">🏁 Lokasi Bongkar</label>
@@ -64,7 +64,7 @@
       <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
     </div>
   </div>
-  <button id="btnTambahBongkar" onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
+  <button onclick="tambahBongkar()" class="btn btn-outline-danger btn-sm mb-3">+ Tambah Lokasi Bongkar</button>
 
   <div class="form-check mb-2">
     <input class="form-check-input" type="checkbox" id="kembaliGarasi" onchange="toggleKembaliGarasi()">
@@ -95,6 +95,11 @@
       <option value="90000">Rp90.000</option>
       <option value="100000">Rp100.000</option>
     </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">🕑 Jadwal Pengiriman</label>
+    <input type="datetime-local" class="form-control" id="jadwalPengiriman" />
   </div>
 
   <div class="mb-3">
@@ -162,6 +167,9 @@
   function cekTarif() {
     const kmJemput = Array.from(document.querySelectorAll(".km-jemput")).map(el => parseFloat(el.value) || 0);
     const kmBongkar = Array.from(document.querySelectorAll(".km-bongkar")).map(el => parseFloat(el.value) || 0);
+    const lokasiJemput = Array.from(document.querySelectorAll(".lokasi-jemput")).map(el => el.value || "-");
+    const lokasiBongkar = Array.from(document.querySelectorAll(".lokasi-bongkar")).map(el => el.value || "-");
+
     const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
     const totalKM = kmJemput.reduce((a,b)=>a+b,0) + kmBongkar.reduce((a,b)=>a+b,0) + kembali;
     const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
@@ -171,6 +179,7 @@
     const berat = parseFloat(document.getElementById("beratBarang").value || 0);
     const pakaiTKBM = document.getElementById("tkbmCheck").checked;
     const tkbm = pakaiTKBM ? parseFloat(document.getElementById("tkbmValue").value) : 0;
+    const jadwal = document.getElementById("jadwalPengiriman").value || "-";
 
     let armada = 'Armada Khusus';
     let sewaMobil = 0;
@@ -194,12 +203,20 @@
     if (tipe === "perorangan") tarifFinal *= 1.02;
     else if (tipe === "perusahaan") tarifFinal *= 1.14;
 
+    let ruteHTML = '';
+    lokasiJemput.forEach((lok, i) => ruteHTML += `<li>🚚 Jemput ${i+1}: ${lok} (${kmJemput[i]} km)</li>`);
+    lokasiBongkar.forEach((lok, i) => ruteHTML += `<li>🏁 Bongkar ${i+1}: ${lok} (${kmBongkar[i]} km)</li>`);
+
     const hasil = `
       <ul>
+        ${ruteHTML}
+        ${kembali ? `<li>🔁 Kembali ke Garasi: ${kembali} km</li>` : ""}
         <li>📏 Total Jarak: <strong>${totalKM.toFixed(1)} km</strong></li>
         <li>🚛 Armada: <strong>${armada}</strong></li>
         <li>📦 Barang: <strong>${namaBarang}</strong></li>
         <li>⚖️ Berat: <strong>${berat} kg</strong></li>
+        <li>🗓️ Jadwal: ${jadwal}</li>
+        ${pakaiTKBM ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
         <li>💵 Estimasi Tarif: <span class="text-success fw-bold">Rp${Math.round(tarifFinal).toLocaleString()}</span></li>
       </ul>`;
 
