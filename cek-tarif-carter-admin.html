@@ -175,7 +175,8 @@ async function cekTarif() {
     lokasi: document.querySelectorAll(".lokasi-bongkar")[i].value || "-",
     jarak: parseFloat(el.value) || 0
   }));
-  const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
+  const kembaliKeGarasi = document.getElementById("kembaliGarasi").checked;
+const jarakKembali = kembaliKeGarasi ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : null;
   const totalKM = [...kmJemput, ...kmBongkar].reduce((sum, item) => sum + item.jarak, 0) + kembali;
   const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
   const estimasiJam = totalKM / kecepatan;
@@ -225,6 +226,8 @@ async function cekTarif() {
   estimasi_jam: estimasiJam.toFixed(2),
   armada_yang_dipakai: armada,
   markup_persen: markup,
+  kembali_ke_garasi: kembaliKeGarasi,
+  jarak_kembali: jarakKembali,
 };
 
   const ruteHTML = kmJemput.map((x,i)=>`<li>🚚 Jemput ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("") +
