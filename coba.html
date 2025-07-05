@@ -14,11 +14,10 @@
 </head>
 <body class="bg-white text-gray-800">
 
-  <!-- Sidebar -->
+  <!-- Sidebar & Navbar -->
   <div class="drawer drawer-start">
     <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
-      <!-- Navbar -->
       <div class="navbar bg-gradient-to-r from-red-700 to-red-500 text-white px-6 py-4 shadow-md">
         <div class="flex-none md:hidden">
           <label for="drawer-toggle" class="btn btn-ghost btn-circle">
@@ -41,33 +40,43 @@
 
       <!-- Hero -->
       <section class="bg-gradient-to-br from-red-700 to-red-600 text-white py-20 px-6 text-center">
+        <img src="https://www.svgrepo.com/show/354331/logistics.svg" class="w-24 mx-auto mb-4" alt="Logistics Icon" />
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h1>
         <p class="text-lg md:text-xl mb-6">Layanan logistik terpercaya, cepat, dan hemat ke seluruh Nusantara</p>
         <a href="#layanan" class="btn btn-outline text-white border-white">Lihat Layanan</a>
       </section>
 
-      <!-- Tentang Kami -->
+      <!-- Tentang Kita -->
       <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
-        <h2 class="text-3xl font-bold text-red-700 mb-4">Tentang Kami</h2>
-        <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada terpercaya yang berpusat di Mojokerto, Jawa Timur. Kami berkomitmen memberikan layanan terbaik untuk pengiriman dalam kota maupun ke seluruh penjuru Nusantara. Didukung oleh armada handal dan tim profesional, kami hadir sebagai solusi logistik aman dan efisien untuk Anda.</p>
+        <div class="flex items-center gap-4 mb-4">
+          <i data-lucide="info" class="text-red-700 w-6 h-6"></i>
+          <h2 class="text-3xl font-bold text-red-700">Tentang Kita</h2>
+        </div>
+        <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada terpercaya yang berpusat di Mojokerto, Jawa Timur. Kita berkomitmen memberikan layanan terbaik untuk pengiriman dalam kota maupun ke seluruh penjuru Nusantara. Didukung oleh armada handal dan tim profesional, Kita hadir sebagai solusi logistik aman dan efisien untuk Anda.</p>
       </section>
 
-      <!-- Layanan Kami -->
+      <!-- Layanan Kita -->
       <section id="layanan" class="bg-gray-100 py-16 px-6">
         <div class="max-w-6xl mx-auto">
-          <h2 class="text-3xl font-bold text-center text-red-700 mb-10">Layanan Kami</h2>
+          <div class="flex items-center gap-3 justify-center mb-10">
+            <i data-lucide="truck" class="text-red-700 w-6 h-6"></i>
+            <h2 class="text-3xl font-bold text-red-700">Layanan Kita</h2>
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white rounded-lg shadow p-6">
+              <img src="https://www.svgrepo.com/show/276264/delivery.svg" class="w-12 mb-3" alt="Carter Icon" />
               <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Prioritas</h3>
               <p>Carter armada pickup (hingga 2,5 Ton) untuk pengiriman cepat, fleksibel, dan langsung ke tujuan.</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6">
+              <img src="https://www.svgrepo.com/show/485089/weight.svg" class="w-12 mb-3" alt="Kg Icon" />
               <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Reguler</h3>
               <p>Pengiriman barang dengan tarif per kilogram yang ekonomis dan efisien, cocok untuk bisnis dan personal.</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6">
+              <img src="https://www.svgrepo.com/show/531992/ship.svg" class="w-12 mb-3" alt="Forwarding Icon" />
               <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Nusantara</h3>
-              <p>Kami bantu forwarding barang ke ekspedisi terpercaya, menjangkau pelosok Nusantara dari Sabang sampai Merauke.</p>
+              <p>Kita bantu forwarding barang ke ekspedisi terpercaya, menjangkau pelosok Nusantara dari Sabang sampai Merauke.</p>
             </div>
           </div>
         </div>
@@ -75,7 +84,10 @@
 
       <!-- Galeri Armada -->
       <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-red-700 mb-10 text-center">Galeri Armada</h2>
+        <div class="flex items-center gap-3 justify-center mb-10">
+          <i data-lucide="image" class="text-red-700 w-6 h-6"></i>
+          <h2 class="text-3xl font-bold text-red-700">Galeri Armada</h2>
+        </div>
         <div class="splide" aria-label="Galeri Armada Logistik Kita">
           <div class="splide__track">
             <ul class="splide__list">
@@ -85,39 +97,39 @@
               <li class="splide__slide">
                 <img src="https://via.placeholder.com/960x540?text=Armada+16x9" class="mx-auto rounded shadow object-cover h-96" />
               </li>
-              <li class="splide__slide">
-                <img src="https://via.placeholder.com/540x960?text=Armada+Vertical" class="mx-auto rounded shadow object-cover h-96" />
-              </li>
-              <li class="splide__slide">
-                <img src="https://via.placeholder.com/960x540?text=Armada+Landscape" class="mx-auto rounded shadow object-cover h-96" />
-              </li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- Google Maps -->
+      <!-- Lokasi -->
       <section class="px-6 py-12 bg-white">
-        <h2 class="text-3xl font-bold text-red-700 mb-6 text-center">Lokasi Kami</h2>
+        <div class="flex items-center gap-3 justify-center mb-6">
+          <i data-lucide="map-pin" class="text-red-700 w-6 h-6"></i>
+          <h2 class="text-3xl font-bold text-red-700">Lokasi Kita</h2>
+        </div>
         <div class="flex justify-center">
           <iframe class="w-full max-w-4xl h-72 rounded-lg shadow" loading="lazy"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCyE3rYtmapDummy1234&q=Logistik+Kita+Mojokerto"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.047801725306!2d112.4379165!3d-7.118333199999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7857256fbeeb87%3A0x7362d93f65cfaa70!2sLogistik%20Kita%20%26%20Jeng%20Ayu%20Trans!5e0!3m2!1sid!2sid!4v1720171744450"
             allowfullscreen></iframe>
         </div>
         <p class="text-center mt-4 text-sm text-gray-600">📍 Lokasi: Logistik Kita & Jeng Ayu Trans – Mojokerto, Jawa Timur</p>
       </section>
 
-      <!-- Kontak -->
+      <!-- Kontak Kita -->
       <section id="kontak" class="bg-gray-100 py-16 px-6">
         <div class="max-w-4xl mx-auto">
-          <h2 class="text-3xl font-bold text-red-700 mb-6 text-center">Kontak Kami</h2>
+          <div class="flex items-center gap-3 justify-center mb-6">
+            <i data-lucide="phone" class="text-red-700 w-6 h-6"></i>
+            <h2 class="text-3xl font-bold text-red-700">Kontak Kita</h2>
+          </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <p class="mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/6285813487753" class="text-red-600">0858-1348-7753</a></p>
-              <p class="mb-2"><strong>Email:</strong> logistikkita.assist@gmail.com</p>
-              <p class="mb-2"><strong>Instagram:</strong> <a href="https://instagram.com/logistikkita.official" class="text-red-600">@logistikkita.official</a></p>
-              <p class="mb-2"><strong>Facebook:</strong> <a href="https://www.facebook.com/share/1Ab7aTTn98/" class="text-red-600">Logistik Kita</a></p>
-              <p class="mb-2"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/puput-wicaksana" class="text-red-600">Puput Wicaksana</a></p>
+            <div class="space-y-2">
+              <p><i data-lucide="message-circle" class="inline w-4 h-4 me-2"></i><strong>WhatsApp:</strong> <a href="https://wa.me/6285813487753" class="text-red-600">0858-1348-7753</a></p>
+              <p><i data-lucide="mail" class="inline w-4 h-4 me-2"></i><strong>Email:</strong> logistikkita.assist@gmail.com</p>
+              <p><i data-lucide="instagram" class="inline w-4 h-4 me-2"></i><strong>Instagram:</strong> <a href="https://instagram.com/logistikkita.official" class="text-red-600">@logistikkita.official</a></p>
+              <p><i data-lucide="facebook" class="inline w-4 h-4 me-2"></i><strong>Facebook:</strong> <a href="https://www.facebook.com/share/1Ab7aTTn98/" class="text-red-600">Logistik Kita</a></p>
+              <p><i data-lucide="linkedin" class="inline w-4 h-4 me-2"></i><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/puput-wicaksana" class="text-red-600">Puput Wicaksana</a></p>
             </div>
             <form class="space-y-4">
               <input type="text" placeholder="Nama" class="input input-bordered w-full" />
@@ -129,18 +141,15 @@
         </div>
       </section>
 
-      <!-- Visitor Counter -->
       <section class="py-6 text-center text-sm text-gray-600">
         <p>👁 Total Pengunjung Hari Ini: <span id="visitorCount">0</span></p>
       </section>
 
-      <!-- Footer -->
       <footer class="bg-red-700 text-white text-center py-6 mt-10">
         <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
       </footer>
     </div>
 
-    <!-- Sidebar Menu -->
     <div class="drawer-side z-50">
       <label for="drawer-toggle" class="drawer-overlay"></label>
       <aside class="menu p-4 w-64 bg-white text-base-content">
@@ -160,7 +169,6 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
   <script>
     new Splide('.splide', {
@@ -168,11 +176,7 @@
       perPage: 1,
       autoplay: true,
       interval: 3000,
-      pauseOnHover: true,
-      breakpoints: {
-        640: { height: '360px' },
-        1024: { height: '400px' },
-      },
+      pauseOnHover: true
     }).mount();
 
     const today = new Date().toLocaleDateString();
