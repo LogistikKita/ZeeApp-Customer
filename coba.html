@@ -13,11 +13,10 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-white text-gray-800">
-
-  <!-- Sidebar & Navbar -->
   <div class="drawer drawer-start">
     <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
+      <!-- Navbar -->
       <div class="navbar bg-gradient-to-r from-red-700 to-red-500 text-white px-6 py-4 shadow-md">
         <div class="flex-none md:hidden">
           <label for="drawer-toggle" class="btn btn-ghost btn-circle">
@@ -82,7 +81,7 @@
         </div>
       </section>
 
-      <!-- Galeri Armada -->
+      <!-- Galeri -->
       <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto">
         <div class="flex items-center gap-3 justify-center mb-10">
           <i data-lucide="image" class="text-red-700 w-6 h-6"></i>
@@ -116,7 +115,7 @@
         <p class="text-center mt-4 text-sm text-gray-600">📍 Lokasi: Logistik Kita & Jeng Ayu Trans – Mojokerto, Jawa Timur</p>
       </section>
 
-      <!-- Kontak Kita -->
+      <!-- Kontak -->
       <section id="kontak" class="bg-gray-100 py-16 px-6">
         <div class="max-w-4xl mx-auto">
           <div class="flex items-center gap-3 justify-center mb-6">
@@ -141,34 +140,19 @@
         </div>
       </section>
 
+      <!-- Visitor -->
       <section class="py-6 text-center text-sm text-gray-600">
         <p>👁 Total Pengunjung Hari Ini: <span id="visitorCount">0</span></p>
       </section>
 
+      <!-- Footer -->
       <footer class="bg-red-700 text-white text-center py-6 mt-10">
         <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
       </footer>
     </div>
-
-    <div class="drawer-side z-50">
-      <label for="drawer-toggle" class="drawer-overlay"></label>
-      <aside class="menu p-4 w-64 bg-white text-base-content">
-        <div class="flex items-center gap-2 mb-6">
-          <img src="logo_logistikkita.png" class="w-10" />
-          <span class="font-bold text-lg text-red-700">Logistik Kita</span>
-        </div>
-        <ul class="menu menu-vertical font-medium">
-          <li><a href="#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i> Tentang</a></li>
-          <li><a href="#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i> Layanan</a></li>
-          <li><a href="#galeri"><i data-lucide="images" class="w-4 h-4 me-1"></i> Galeri</a></li>
-          <li><a href="#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i> Kontak</a></li>
-          <li><a href="cek-tarif-kg.html"><i data-lucide="package" class="w-4 h-4 me-1"></i> Cek Tarif (Kg)</a></li>
-          <li><a href="cek-tarif-carter.html"><i data-lucide="calculator" class="w-4 h-4 me-1"></i> Cek Tarif Carter</a></li>
-        </ul>
-      </aside>
-    </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
   <script>
     new Splide('.splide', {
