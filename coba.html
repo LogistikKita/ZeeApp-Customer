@@ -1,97 +1,77 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistik Kita - Kirim Barang Aman, Pikiranpun Tenang</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" type="text/css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jasa Pengiriman Mojokerto | Logistik Kita</title>
+  <meta name="description" content="Logistik Kita menyediakan jasa pengiriman dan sewa pickup di Mojokerto, Jawa Timur. Aman, cepat, dan terpercaya.">
+  <meta name="keywords" content="jasa pengiriman Mojokerto, sewa pickup Mojokerto, carter barang Mojokerto, ekspedisi Mojokerto, Logistik Kita">
+  <meta name="author" content="Logistik Kita">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #fefefe; }
+    header { background: #ba1a1a; color: white; padding: 1rem 0; }
+    nav a { color: white; margin-right: 1rem; text-decoration: none; font-weight: bold; }
+    nav a:hover { text-decoration: underline; }
+    .hero { padding: 4rem 2rem; text-align: center; background: #fff3f3; }
+    .hero h1 { font-size: 2.5rem; color: #ba1a1a; }
+    .hero p { font-size: 1.2rem; }
+    .services { padding: 2rem 1rem; background: #fff; }
+    .services h2 { color: #ba1a1a; text-align: center; margin-bottom: 2rem; }
+    .service-card { border-left: 5px solid #ba1a1a; padding: 1rem; background: #fdfdfd; margin-bottom: 1.5rem; border-radius: 0.5rem; }
+    .contact { background: #fff3f3; padding: 2rem 1rem; }
+    .footer { background: #222; color: #ccc; padding: 1rem; text-align: center; font-size: 0.9rem; }
+    .logo { height: 50px; }
+  </style>
 </head>
-<body class="bg-white text-gray-800">
-  <!-- Navbar -->
-  <div class="navbar bg-white px-6 py-4 shadow-md">
-    <div class="flex-1">
-      <img src="logo_logistikkita.png" alt="Logo" class="w-10 mr-3" />
-      <span class="text-xl font-bold text-red-700">Logistik Kita</span>
+<body>
+  <header class="container-fluid">
+    <div class="container d-flex justify-content-between align-items-center">
+      <img src="logo_logistikkita.png" alt="Logistik Kita" class="logo">
+      <nav>
+        <a href="#">Beranda</a>
+        <a href="cek-tarif-kg.html">Cek Tarif Reguler</a>
+        <a href="cek-tarif-carter.html">Cek Tarif Carter</a>
+        <a href="#layanan">Layanan</a>
+        <a href="#kontak">Kontak</a>
+      </nav>
     </div>
-    <div class="hidden md:flex gap-6">
-      <a href="#tentang" class="hover:text-red-600">Tentang</a>
-      <a href="#layanan" class="hover:text-red-600">Layanan</a>
-      <a href="#galeri" class="hover:text-red-600">Galeri</a>
-      <a href="#kontak" class="hover:text-red-600">Kontak</a>
+  </header>  <section class="hero">
+    <h1>Kirim Barang Aman, Pikiranpun Tenang</h1>
+    <p>Solusi pengiriman terpercaya di Mojokerto dan seluruh Nusantara!</p>
+  </section>  <section id="layanan" class="services container">
+    <h2>Layanan Logistik Kita</h2>
+    <div class="service-card">
+      <h5>🚚 Layanan Prioritas</h5>
+      <p>Carter Pickup hingga 2,5 Ton dengan penjemputan cepat dan langsung antar.</p>
     </div>
-  </div>
-
-  <!-- Hero -->
-  <section class="bg-red-700 text-white py-20 px-6 text-center">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h1>
-    <p class="text-lg md:text-xl mb-6">Layanan logistik terpercaya, cepat, dan hemat ke seluruh Nusantara</p>
-    <a href="#layanan" class="btn btn-outline btn-white">Lihat Layanan</a>
-  </section>
-
-  <!-- Tentang Kami -->
-  <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
-    <h2 class="text-3xl font-bold text-red-700 mb-4">Tentang Kami</h2>
-    <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada yang berkomitmen untuk menghadirkan layanan logistik terbaik. Dengan armada terpercaya dan jangkauan luas, kami melayani pengiriman dari dalam kota hingga ke pelosok negeri.</p>
-  </section>
-
-  <!-- Layanan Kami -->
-  <section id="layanan" class="bg-gray-100 py-16 px-6">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold text-center text-red-700 mb-10">Layanan Kami</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white rounded-lg shadow p-6">
-          <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Prioritas</h3>
-          <p>Carter armada pickup (hingga 2,5 Ton) untuk pengiriman cepat, fleksibel, dan langsung ke tujuan.</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-          <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Reguler</h3>
-          <p>Pengiriman barang dengan tarif per kilogram yang ekonomis dan efisien, cocok untuk bisnis dan personal.</p>
-        </div>
-        <div class="bg-white rounded-lg shadow p-6">
-          <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Nusantara</h3>
-          <p>Kami bantu forwarding barang ke ekspedisi terpercaya, menjangkau pelosok Nusantara dari Sabang sampai Merauke.</p>
-        </div>
-      </div>
+    <div class="service-card">
+      <h5>📦 Layanan Reguler</h5>
+      <p>Pengiriman barang hemat dengan perhitungan tarif per Kg ke seluruh Jawa Timur.</p>
     </div>
-  </section>
-
-  <!-- Galeri -->
-  <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto">
-    <h2 class="text-3xl font-bold text-red-700 mb-10 text-center">Galeri Armada</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <img src="https://via.placeholder.com/300x200?text=Armada+1" class="rounded shadow" alt="Armada 1">
-      <img src="https://via.placeholder.com/300x200?text=Armada+2" class="rounded shadow" alt="Armada 2">
-      <img src="https://via.placeholder.com/300x200?text=Armada+3" class="rounded shadow" alt="Armada 3">
-      <img src="https://via.placeholder.com/300x200?text=Armada+4" class="rounded shadow" alt="Armada 4">
+    <div class="service-card">
+      <h5>🌏 Layanan Nusantara</h5>
+      <p>Forwarding ke ekspedisi nasional hingga pelosok negeri, termasuk pulau dan daerah terpencil.</p>
     </div>
-  </section>
-
-  <!-- Kontak -->
-  <section id="kontak" class="bg-gray-100 py-16 px-6">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-3xl font-bold text-red-700 mb-6 text-center">Kontak Kami</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <p class="mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/6285813487753" class="text-red-600">0858-1348-7753</a></p>
-          <p class="mb-2"><strong>Email:</strong> logistikkita.assist@gmail.com</p>
-          <p class="mb-2"><strong>Instagram:</strong> <a href="https://instagram.com/logistikkita.official" class="text-red-600">@logistikkita.official</a></p>
-          <p class="mb-2"><strong>Facebook:</strong> <a href="https://www.facebook.com/share/1Ab7aTTn98/" class="text-red-600">Logistik Kita</a></p>
-          <p class="mb-2"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/puput-wicaksana" class="text-red-600">Puput Wicaksana</a></p>
-        </div>
-        <form class="space-y-4">
-          <input type="text" placeholder="Nama" class="input input-bordered w-full" />
-          <input type="email" placeholder="Email" class="input input-bordered w-full" />
-          <textarea placeholder="Pesan" class="textarea textarea-bordered w-full"></textarea>
-          <button class="btn btn-error w-full">Kirim Pesan</button>
-        </form>
-      </div>
+  </section>  <section class="container my-5">
+    <h2 class="text-center text-danger mb-4">📍 Lokasi Kami</h2>
+    <div class="ratio ratio-16x9">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.654630506787!2d112.4282182!3d-7.0572676!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78726b2c5ef16f%3A0x73c2b26de10b8f8!2sLogistik%20Kita%20%26%20Jeng%20Ayu%20Trans!5e0!3m2!1sen!2sid!4v1720146604291!5m2!1sen!2sid"
+        style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-red-700 text-white text-center py-6 mt-10">
-    <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
-  </footer>
-</body>
+  </section>  <section id="kontak" class="contact container">
+    <h2 class="text-center text-danger mb-4">Hubungi Kami</h2>
+    <p><strong>📞 WhatsApp:</strong> <a href="https://wa.me/6285813487753">0858-1348-7753</a></p>
+    <p><strong>📧 Email:</strong> logistikkita.assist@gmail.com</p>
+    <p><strong>📱 Instagram:</strong> <a href="https://www.instagram.com/logistikkita.official">@logistikkita.official</a></p>
+    <p><strong>📘 Facebook:</strong> <a href="https://www.facebook.com/share/1Ab7aTTn98/">Logistik Kita</a></p>
+    <p><strong>💼 LinkedIn:</strong> <a href="https://www.linkedin.com/in/puput-wicaksana">Puput Wicaksana</a></p>
+  </section>  <footer class="footer">
+    <p>© 2025 Logistik Kita. All rights reserved.</p>
+    <p><span id="visitorCount">👁️ Pengunjung hari ini: menghitung...</span></p>
+  </footer>  <script>
+    // Real-time pengunjung dummy (replace this with server-side counter if needed)
+    const count = Math.floor(Math.random() * 50) + 50;
+    document.getElementById("visitorCount").innerText = `👁️ Pengunjung hari ini: ${count}`;
+  </script></body>
 </html>
