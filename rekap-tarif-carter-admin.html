@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="id"><head>
+<!DOCTYPE html>
+<html lang="id">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rekap Carter & Grafik Omzet</title>
@@ -14,11 +16,13 @@
     .summary-box { background: #fff3f3; border-left: 5px solid #ba1a1a; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
     .badge-margin-low { background: #f8d7da; color: #721c24; }
     .badge-margin-good { background: #d4edda; color: #155724; }
+    .rekap-biaya { background: #fefefe; border: 1px solid #ccc; border-radius: 0.5rem; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
 <body>
 <div class="container">
   <h1 class="mb-4">📊 Rekap Carter & Grafik Omzet</h1>
+  <!-- FILTER -->
   <div class="row mb-3">
     <div class="col-md-4"><input type="text" class="form-control" id="searchInput" placeholder="🔎 Cari customer / barang..." oninput="searchData()"></div>
     <div class="col-md-2"><select class="form-select" id="sortSelect" onchange="sortTable()">
@@ -33,31 +37,61 @@
     <div class="col-md-1"><button class="btn btn-danger w-100" onclick="filterTanggal()">Filter</button></div>
     <div class="col-md-1"><button class="btn btn-success w-100" onclick="exportExcel()">Excel</button></div>
   </div>
+
+  <!-- SUMMARY -->
   <div class="row">
     <div class="col-md-3 summary-box"><strong>Total Omzet:</strong><div id="totalOmzet">Rp0</div></div>
     <div class="col-md-3 summary-box"><strong>Estimasi Profit:</strong><div id="totalProfit">Rp0</div></div>
     <div class="col-md-3 summary-box"><strong>PPH (0.5%):</strong><div id="totalPph">Rp0</div></div>
-    <div class="col-md-3 summary-box"><strong>Total Order:</strong><div id="totalOrder">0</div><div id="rataRataOrder" class="text-muted small"></div></div>
+    <div class="col-md-3 summary-box">
+      <strong>Total Order:</strong><div id="totalOrder">0</div>
+      <div id="rataRataOrder" class="text-muted small"></div>
+    </div>
   </div>
+
+  <!-- TABEL -->
   <div class="table-responsive mt-4">
     <table class="table table-bordered table-striped" id="rekapTable">
       <thead class="table-danger text-center">
         <tr>
-          <th>#</th><th>Nomor Surat</th><th>Jadwal</th><th>Customer</th><th>Barang</th><th>Omzet</th><th>Profit</th><th>Margin</th><th>PPH</th><th>Aksi</th>
+          <th>#</th><th>Nomor Surat</th><th>Jadwal</th><th>Customer</th><th>Barang</th>
+          <th>Omzet</th><th>Profit</th><th>Margin</th><th>PPH</th><th>Aksi</th>
         </tr>
       </thead>
       <tbody id="rekapBody"></tbody>
     </table>
   </div>
+
+  <!-- PAGINATION -->
   <div class="d-flex justify-content-end">
     <button class="btn btn-outline-dark me-2" onclick="prevPage()">⬅️</button>
     <button class="btn btn-outline-dark" onclick="nextPage()">➡️</button>
   </div>
+
+  <!-- GRAFIK -->
   <canvas id="grafikOmzet" height="120" class="mt-5"></canvas>
+
+  <!-- REKAP BIAYA -->
+  <div class="rekap-biaya">
+    <h5>💸 Rangkuman Pengeluaran Operasional</h5>
+    <ul>
+      <li>Total Biaya BBM: <strong id="rekapBBM">Rp0</strong></li>
+      <li>Total Biaya Driver: <strong id="rekapDriver">Rp0</strong></li>
+      <li>Total Sewa Armada: <strong id="rekapSewa">Rp0</strong></li>
+      <li>Total TKBM: <strong id="rekapTKBM">Rp0</strong></li>
+      <li><hr>Total Biaya Operasional: <strong id="totalBiaya">Rp0</strong></li>
+    </ul>
+  </div>
 </div>
+
 <script>
-const supabase = window.supabase.createClient("https://mrghlcedtafomwnznywf.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs");
+const supabase = window.supabase.createClient(
+  "https://mrghlcedtafomwnznywf.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+);
+
 let allData = [], fullData = [], currentPage = 1, itemsPerPage = 10;
+
 async function loadData() {
   const { data, error } = await supabase.from("tarif_carter_admin").select("*").order("jadwal_pengiriman", { ascending: false });
   if (error) return alert("Gagal mengambil data: " + error.message);
@@ -65,9 +99,14 @@ async function loadData() {
   currentPage = 1;
   renderAll();
 }
+
 function renderAll() {
-  renderTable(); renderSummary(); renderGrafik();
+  renderTable();
+  renderSummary();
+  renderGrafik();
+  renderRekapBiaya();
 }
+
 function renderTable() {
   const tbody = document.getElementById("rekapBody");
   tbody.innerHTML = "";
@@ -92,6 +131,7 @@ function renderTable() {
       </tr>`;
   });
 }
+
 function renderSummary() {
   const total = fullData.reduce((sum, d) => sum + d.tarif_final, 0);
   const profit = fullData.reduce((sum, d) => sum + d.estimasi_profit, 0);
@@ -101,13 +141,29 @@ function renderSummary() {
   document.getElementById("totalProfit").innerText = `Rp${profit.toLocaleString()}`;
   document.getElementById("totalPph").innerText = `Rp${Math.round(pph).toLocaleString()}`;
   document.getElementById("totalOrder").innerText = fullData.length;
-  document.getElementById("rataRataOrder").innerText = `(Rata-rata ${ (fullData.length / hariUnik.length).toFixed(2) } order/hari)`;
+  document.getElementById("rataRataOrder").innerText = `(Rata-rata ${(fullData.length / hariUnik.length).toFixed(2)} order/hari)`;
 }
+
+function renderRekapBiaya() {
+  const totalBBM = fullData.reduce((sum, d) => sum + (d.biaya_bbm || 0), 0);
+  const totalDriver = fullData.reduce((sum, d) => sum + (d.biaya_driver || 0), 0);
+  const totalSewa = fullData.reduce((sum, d) => sum + (d.biaya_sewa_armada || 0), 0);
+  const totalTKBM = fullData.reduce((sum, d) => sum + (d.biaya_tkbm || 0), 0);
+  const totalBiaya = totalBBM + totalDriver + totalSewa + totalTKBM;
+
+  document.getElementById("rekapBBM").innerText = `Rp${totalBBM.toLocaleString()}`;
+  document.getElementById("rekapDriver").innerText = `Rp${totalDriver.toLocaleString()}`;
+  document.getElementById("rekapSewa").innerText = `Rp${totalSewa.toLocaleString()}`;
+  document.getElementById("rekapTKBM").innerText = `Rp${totalTKBM.toLocaleString()}`;
+  document.getElementById("totalBiaya").innerText = `Rp${totalBiaya.toLocaleString()}`;
+}
+
 function searchData() {
   const q = document.getElementById("searchInput").value.toLowerCase();
   fullData = allData.filter(d => d.nama_barang.toLowerCase().includes(q) || d.jenis_customer.toLowerCase().includes(q));
   currentPage = 1; renderAll();
 }
+
 function sortTable() {
   const val = document.getElementById("sortSelect").value;
   if (val === "jadwal_asc") fullData.sort((a,b)=>a.jadwal_pengiriman.localeCompare(b.jadwal_pengiriman));
@@ -116,8 +172,10 @@ function sortTable() {
   if (val === "omzet_desc") fullData.sort((a,b)=>b.tarif_final - a.tarif_final);
   currentPage = 1; renderAll();
 }
+
 function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
 function nextPage() { if ((currentPage * itemsPerPage) < fullData.length) { currentPage++; renderTable(); } }
+
 function renderGrafik() {
   const ctx = document.getElementById("grafikOmzet").getContext("2d");
   const daily = {};
@@ -129,10 +187,12 @@ function renderGrafik() {
   const labels = Object.keys(daily);
   const data = Object.values(daily);
   new Chart(ctx, {
-    type: 'bar', data: { labels, datasets: [{ label: 'Omzet Harian', data, backgroundColor: '#ba1a1a' }] },
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Omzet Harian', data, backgroundColor: '#ba1a1a' }] },
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
 }
+
 function filterTanggal() {
   const start = document.getElementById("startDate").value;
   const end = document.getElementById("endDate").value;
@@ -140,6 +200,7 @@ function filterTanggal() {
   fullData = allData.filter(d => d.jadwal_pengiriman >= start && d.jadwal_pengiriman <= end + "T23:59:59");
   currentPage = 1; renderAll();
 }
+
 function exportExcel() {
   const wb = XLSX.utils.book_new();
   const rows = fullData.map((d, i) => ({
@@ -157,6 +218,7 @@ function exportExcel() {
   XLSX.utils.book_append_sheet(wb, ws, "Rekap Carter");
   XLSX.writeFile(wb, "rekap-carter.xlsx");
 }
+
 loadData();
 </script>
 </body>
