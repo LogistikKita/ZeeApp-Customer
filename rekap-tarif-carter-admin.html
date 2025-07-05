@@ -17,11 +17,20 @@
 </head>
 <body>
 <div class="container">
-  <h1 class="mb-4">📊 Rekap Carter & Grafik Omzet</h1>  <div class="row mb-3">
-    <div class="col-md-3"><input type="date" class="form-control" id="startDate"></div>
-    <div class="col-md-3"><input type="date" class="form-control" id="endDate"></div>
-    <div class="col-md-3"><button class="btn btn-danger w-100" onclick="filterTanggal()">🔍 Filter Tanggal</button></div>
-    <div class="col-md-3"><button class="btn btn-success w-100" onclick="exportExcel()">📤 Export Excel</button></div>
+  <h1 class="mb-4">📊 Rekap Carter & Grafik Omzet</h1>
+  <div class="row mb-3">
+    <div class="col-md-4"><input type="text" class="form-control" id="searchInput" placeholder="🔎 Cari customer / barang..." oninput="searchData()"></div>
+    <div class="col-md-2"><select class="form-select" id="sortSelect" onchange="sortTable()">
+      <option value="">Urutkan</option>
+      <option value="jadwal_asc">Jadwal Naik</option>
+      <option value="jadwal_desc">Jadwal Turun</option>
+      <option value="omzet_asc">Omzet Naik</option>
+      <option value="omzet_desc">Omzet Turun</option>
+    </select></div>
+    <div class="col-md-2"><input type="date" class="form-control" id="startDate"></div>
+    <div class="col-md-2"><input type="date" class="form-control" id="endDate"></div>
+    <div class="col-md-1"><button class="btn btn-danger w-100" onclick="filterTanggal()">Filter</button></div>
+    <div class="col-md-1"><button class="btn btn-success w-100" onclick="exportExcel()">Excel</button></div>
   </div>  <div class="row">
     <div class="col-md-3 summary-box"><strong>Total Omzet:</strong><div id="totalOmzet">Rp0</div></div>
     <div class="col-md-3 summary-box"><strong>Estimasi Profit:</strong><div id="totalProfit">Rp0</div></div>
@@ -37,34 +46,42 @@
       </thead>
       <tbody id="rekapBody"></tbody>
     </table>
-  </div><canvas id="grafikOmzet" height="120" class="mt-5"></canvas>
-
+  </div>
+  <div class="d-flex justify-content-end">
+    <button class="btn btn-outline-dark me-2" onclick="prevPage()">⬅️</button>
+    <button class="btn btn-outline-dark" onclick="nextPage()">➡️</button>
+  </div>
+  <canvas id="grafikOmzet" height="120" class="mt-5"></canvas>
 </div><script>
 const supabase = window.supabase.createClient(
   "https://mrghlcedtafomwnznywf.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs" // Replace with full anon key
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
 );
 
-let fullData = [];
+let allData = [], fullData = [], currentPage = 1, itemsPerPage = 10;
 
 async function loadData() {
   const { data, error } = await supabase.from("tarif_carter_admin").select("*").order("jadwal_pengiriman", { ascending: false });
   if (error) return alert("Gagal mengambil data: " + error.message);
-  fullData = data;
-  renderTable();
-  renderGrafik();
-  renderSummary();
+  allData = fullData = data;
+  currentPage = 1;
+  renderAll();
+}
+
+function renderAll() {
+  renderTable(); renderSummary(); renderGrafik();
 }
 
 function renderTable() {
   const tbody = document.getElementById("rekapBody");
   tbody.innerHTML = "";
-  const limited = fullData.slice(0, 15);
-  limited.forEach((item, i) => {
+  const start = (currentPage - 1) * itemsPerPage;
+  const pageData = fullData.slice(start, start + itemsPerPage);
+  pageData.forEach((item, i) => {
     const pph = item.tarif_final * 0.005;
     tbody.innerHTML += `
       <tr>
-        <td>${i + 1}</td>
+        <td>${start + i + 1}</td>
         <td>${item.nomor_surat_jalan}</td>
         <td>${item.jadwal_pengiriman?.slice(0, 10)}</td>
         <td>${item.jenis_customer}</td>
@@ -72,11 +89,28 @@ function renderTable() {
         <td>Rp${item.tarif_final.toLocaleString()}</td>
         <td>Rp${item.estimasi_profit.toLocaleString()}</td>
         <td>Rp${Math.round(pph).toLocaleString()}</td>
-        <td><button class="btn btn-sm btn-warning" onclick='editData("${item.id}")'>Edit</button>
-            <button class="btn btn-sm btn-danger" onclick='hapusData("${item.id}")'>Hapus</button></td>
+        <td><button class='btn btn-sm btn-warning'>Edit</button></td>
       </tr>`;
   });
 }
+
+function searchData() {
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  fullData = allData.filter(d => d.nama_barang.toLowerCase().includes(q) || d.jenis_customer.toLowerCase().includes(q));
+  currentPage = 1; renderAll();
+}
+
+function sortTable() {
+  const val = document.getElementById("sortSelect").value;
+  if (val === "jadwal_asc") fullData.sort((a,b)=>a.jadwal_pengiriman.localeCompare(b.jadwal_pengiriman));
+  if (val === "jadwal_desc") fullData.sort((a,b)=>b.jadwal_pengiriman.localeCompare(a.jadwal_pengiriman));
+  if (val === "omzet_asc") fullData.sort((a,b)=>a.tarif_final - b.tarif_final);
+  if (val === "omzet_desc") fullData.sort((a,b)=>b.tarif_final - a.tarif_final);
+  currentPage = 1; renderAll();
+}
+
+function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
+function nextPage() { if ((currentPage * itemsPerPage) < fullData.length) { currentPage++; renderTable(); } }
 
 function renderSummary() {
   const total = fullData.reduce((sum, d) => sum + d.tarif_final, 0);
@@ -98,16 +132,18 @@ function renderGrafik() {
   });
   const labels = Object.keys(daily);
   const data = Object.values(daily);
-
   new Chart(ctx, {
-    type: 'bar',
-    data: { labels, datasets: [{
-      label: 'Omzet Harian',
-      data,
-      backgroundColor: '#ba1a1a'
-    }] },
+    type: 'bar', data: { labels, datasets: [{ label: 'Omzet Harian', data, backgroundColor: '#ba1a1a' }] },
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
+}
+
+function filterTanggal() {
+  const start = document.getElementById("startDate").value;
+  const end = document.getElementById("endDate").value;
+  if (!start || !end) return alert("Pilih rentang tanggal dulu!");
+  fullData = allData.filter(d => d.jadwal_pengiriman >= start && d.jadwal_pengiriman <= end + "T23:59:59");
+  currentPage = 1; renderAll();
 }
 
 function exportExcel() {
@@ -125,26 +161,6 @@ function exportExcel() {
   const ws = XLSX.utils.json_to_sheet(rows);
   XLSX.utils.book_append_sheet(wb, ws, "Rekap Carter");
   XLSX.writeFile(wb, "rekap-carter.xlsx");
-}
-
-function filterTanggal() {
-  const start = document.getElementById("startDate").value;
-  const end = document.getElementById("endDate").value;
-  if (!start || !end) return alert("Pilih rentang tanggal dulu!");
-  fullData = fullData.filter(d => d.jadwal_pengiriman >= start && d.jadwal_pengiriman <= end + "T23:59:59");
-  renderTable(); renderSummary(); renderGrafik();
-}
-
-async function hapusData(id) {
-  if (!confirm("Hapus data ini?")) return;
-  const { error } = await supabase.from("tarif_carter_admin").delete().eq("id", id);
-  if (error) return alert("Gagal hapus: " + error.message);
-  alert("Data berhasil dihapus");
-  loadData();
-}
-
-function editData(id) {
-  alert("🚧 Fitur edit belum tersedia. Dalam pengembangan!");
 }
 
 loadData();
