@@ -1,79 +1,120 @@
-<!DOCTYPE html><html lang="id"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Logistik Kita - Landing Page</title>
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- TailwindCSS CDN (for utility overrides) -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Logistik Kita - Layanan Pengiriman dan Carter Armada Mojokerto - Jawa Timur">
+  <title>Logistik Kita | Kirim Barang Aman, Pikiranpun Tenang</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: white;
-    }.navbar {
-  background-color: #b30000;
-}
-
-.nav-link {
-  color: white !important;
-  font-weight: 500;
-}
-
-.hero-section {
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/logo_logistikkita.png') center/contain no-repeat;
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: white;
-}
-
-.footer {
-  background-color: black;
-  color: white;
-  padding: 20px 0;
-  text-align: center;
-}
-
+    html { scroll-behavior: smooth; }
   </style>
-</head><body>
+</head>
+<body class="bg-white text-gray-800">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="assets/logo_logistikkita.png" alt="Logo Logistik Kita" height="40">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="#cek-tarif">Cek Tarif</a></li>
-          <li class="nav-item"><a class="nav-link" href="#lainnya">Dll</a></li>
-        </ul>
+  <header class="sticky top-0 z-50 bg-white bg-opacity-90 backdrop-blur shadow">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="logo_logistikkita.png" alt="Logo Logistik Kita" class="h-10 w-10" />
+        <span class="text-lg md:text-xl font-bold tracking-wide text-red-700">Logistik Kita</span>
+      </div>
+      <nav class="hidden md:flex gap-6 font-medium text-sm">
+        <a href="#tentang" class="hover:text-red-600">Tentang</a>
+        <a href="#layanan" class="hover:text-red-600">Layanan</a>
+        <a href="#galeri" class="hover:text-red-600">Galeri</a>
+        <a href="#kontak" class="hover:text-red-600">Kontak</a>
+        <a href="#" onclick="alert('UNDER MAINTENANCE')" class="hover:text-red-600">Cek Tarif</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative h-[90vh] bg-cover bg-center flex items-center justify-center" style="background-image: url('https://via.placeholder.com/1600x900?text=Armada+Logistik+Kita');">
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+    <div class="relative z-10 text-center text-white px-4 max-w-2xl">
+      <h1 class="text-4xl md:text-6xl font-bold leading-tight">Kirim Barang Aman,<br>Pikiranpun Tenang</h1>
+      <p class="mt-4 text-lg md:text-xl">Solusi logistik cepat, efisien, dan terpercaya ke seluruh penjuru Nusantara</p>
+      <a href="#layanan" class="mt-6 inline-block bg-white text-red-700 px-6 py-3 rounded-full font-semibold hover:bg-red-100 transition">Lihat Layanan</a>
+    </div>
+  </section>
+
+  <!-- Tentang Kita -->
+  <section id="tentang" class="py-16 px-6 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold text-red-700 mb-2">Tentang Kami</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Logistik Kita adalah layanan pengiriman dan carter armada pickup dari Mojokerto untuk seluruh Indonesia. Kami hadir dengan layanan fleksibel, harga transparan, dan dukungan tim yang profesional.</p>
+    </div>
+  </section>
+
+  <!-- Layanan -->
+  <section id="layanan" class="bg-gray-50 py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-red-700 text-center mb-12">Layanan Kami</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+          <i data-lucide="clock" class="w-10 h-10 text-red-600 mb-4"></i>
+          <h3 class="text-xl font-bold text-red-600 mb-2">Layanan Prioritas</h3>
+          <p class="text-gray-700">Pengiriman carter langsung ke tujuan, cocok untuk kebutuhan cepat & fleksibel.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+          <i data-lucide="scale" class="w-10 h-10 text-red-600 mb-4"></i>
+          <h3 class="text-xl font-bold text-red-600 mb-2">Layanan Reguler</h3>
+          <p class="text-gray-700">Pengiriman berdasarkan berat (per kg), hemat untuk keperluan rutin & UMKM.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+          <i data-lucide="globe" class="w-10 h-10 text-red-600 mb-4"></i>
+          <h3 class="text-xl font-bold text-red-600 mb-2">Forwarding Nusantara</h3>
+          <p class="text-gray-700">Kami bantu antar ke ekspedisi terpercaya untuk menjangkau seluruh Indonesia.</p>
+        </div>
       </div>
     </div>
-  </nav>  <!-- Hero Section -->  <section class="hero-section" id="beranda">
-    <div class="container">
-      <h1 class="text-4xl md:text-5xl font-bold">Selamat Datang di Logistik Kita</h1>
-      <p class="text-lg mt-3">Solusi pengiriman barang terpercaya dan profesional</p>
-      <a href="#cek-tarif" class="btn btn-light mt-4">Cek Tarif Sekarang</a>
+  </section>
+
+  <!-- Galeri Armada -->
+  <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto">
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-bold text-red-700 mb-2">Galeri Armada</h2>
+      <p class="text-gray-600">Beberapa dokumentasi pengiriman & armada Logistik Kita</p>
     </div>
-  </section>  <!-- Cek Tarif Section -->  <section class="py-5 bg-gray-100" id="cek-tarif">
-    <div class="container text-center">
-      <h2 class="text-2xl font-semibold mb-4">Cek Tarif Pengiriman</h2>
-      <p class="mb-4">Gunakan fitur ini untuk mengetahui estimasi biaya pengiriman barang Anda.</p>
-      <a href="cek-tarif.html" class="btn btn-danger">Mulai Cek Tarif</a>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <img src="https://via.placeholder.com/640x360?text=Pickup+1" class="rounded shadow" />
+      <img src="https://via.placeholder.com/640x360?text=Pickup+2" class="rounded shadow" />
     </div>
-  </section>  <!-- Lainnya / Dll Section -->  <section class="py-5" id="lainnya">
-    <div class="container text-center">
-      <h2 class="text-2xl font-semibold mb-4">Menu Lainnya</h2>
-      <p>Halaman ini akan memuat fitur-fitur tambahan seperti tracking, testimoni, layanan khusus, dan lainnya.</p>
+  </section>
+
+  <!-- Kontak Kami -->
+  <section id="kontak" class="bg-gray-100 py-16 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-6">
+        <h2 class="text-3xl font-bold text-red-700">Hubungi Kami</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-3">
+          <p><strong>WhatsApp:</strong> <a href="https://wa.me/6285813487753" class="text-red-600">0858-1348-7753</a></p>
+          <p><strong>Email:</strong> logistikkita.assist@gmail.com</p>
+          <p><strong>Instagram:</strong> <a href="https://instagram.com/logistikkita.official" class="text-red-600">@logistikkita.official</a></p>
+          <p><strong>Lokasi:</strong> Mojokerto - Jawa Timur</p>
+        </div>
+        <form class="space-y-4">
+          <input type="text" placeholder="Nama" class="input input-bordered w-full" />
+          <input type="email" placeholder="Email" class="input input-bordered w-full" />
+          <textarea placeholder="Pesan" class="textarea textarea-bordered w-full"></textarea>
+          <button class="btn btn-error w-full">Kirim Pesan</button>
+        </form>
+      </div>
     </div>
-  </section>  <!-- Footer -->  <footer class="footer">
-    <div class="container">
-      <p class="mb-0">&copy; 2025 Logistik Kita. All rights reserved.</p>
-    </div>
-  </footer>  <!-- Scripts -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body></html>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-red-700 text-white text-center py-6 mt-10">
+    <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
+  </footer>
+
+  <!-- Script -->
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
