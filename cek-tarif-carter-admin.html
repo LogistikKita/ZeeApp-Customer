@@ -221,7 +221,11 @@ async function cekTarif() {
     tarif_final: Math.round(tarifFinal),
     estimasi_profit: Math.round(profit),
     jenis_customer: tipe
-  };
+    total_jarak: totalKM,
+    estimasi_jam: estimasiJam.toFixed(2),
+    armada_yang_dipakai: armada,
+    markup_persen: markup,
+};
 
   const ruteHTML = kmJemput.map((x,i)=>`<li>🚚 Jemput ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("") +
                    kmBongkar.map((x,i)=>`<li>🏁 Bongkar ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("");
