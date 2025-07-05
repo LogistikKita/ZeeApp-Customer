@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="id">
-<head>
+<!DOCTYPE html><html lang="id"><head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rekap Carter & Grafik Omzet</title>
@@ -13,6 +12,8 @@
     h1 { color: #ba1a1a; }
     table th, table td { vertical-align: middle; }
     .summary-box { background: #fff3f3; border-left: 5px solid #ba1a1a; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; }
+    .badge-margin-low { background: #f8d7da; color: #721c24; }
+    .badge-margin-good { background: #d4edda; color: #155724; }
   </style>
 </head>
 <body>
@@ -31,17 +32,18 @@
     <div class="col-md-2"><input type="date" class="form-control" id="endDate"></div>
     <div class="col-md-1"><button class="btn btn-danger w-100" onclick="filterTanggal()">Filter</button></div>
     <div class="col-md-1"><button class="btn btn-success w-100" onclick="exportExcel()">Excel</button></div>
-  </div>  <div class="row">
+  </div>
+  <div class="row">
     <div class="col-md-3 summary-box"><strong>Total Omzet:</strong><div id="totalOmzet">Rp0</div></div>
     <div class="col-md-3 summary-box"><strong>Estimasi Profit:</strong><div id="totalProfit">Rp0</div></div>
     <div class="col-md-3 summary-box"><strong>PPH (0.5%):</strong><div id="totalPph">Rp0</div></div>
-    <div class="col-md-3 summary-box"><strong>Total Order:</strong><div id="totalOrder">0</div></div>
-  </div>  <div class="table-responsive mt-4">
+    <div class="col-md-3 summary-box"><strong>Total Order:</strong><div id="totalOrder">0</div><div id="rataRataOrder" class="text-muted small"></div></div>
+  </div>
+  <div class="table-responsive mt-4">
     <table class="table table-bordered table-striped" id="rekapTable">
       <thead class="table-danger text-center">
         <tr>
-          <th>#</th><th>Nomor Surat</th><th>Jadwal</th><th>Customer</th><th>Barang</th>
-          <th>Omzet</th><th>Profit</th><th>PPH</th><th>Aksi</th>
+          <th>#</th><th>Nomor Surat</th><th>Jadwal</th><th>Customer</th><th>Barang</th><th>Omzet</th><th>Profit</th><th>Margin</th><th>PPH</th><th>Aksi</th>
         </tr>
       </thead>
       <tbody id="rekapBody"></tbody>
@@ -52,14 +54,10 @@
     <button class="btn btn-outline-dark" onclick="nextPage()">➡️</button>
   </div>
   <canvas id="grafikOmzet" height="120" class="mt-5"></canvas>
-</div><script>
-const supabase = window.supabase.createClient(
-  "https://mrghlcedtafomwnznywf.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
-);
-
+</div>
+<script>
+const supabase = window.supabase.createClient("https://mrghlcedtafomwnznywf.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs");
 let allData = [], fullData = [], currentPage = 1, itemsPerPage = 10;
-
 async function loadData() {
   const { data, error } = await supabase.from("tarif_carter_admin").select("*").order("jadwal_pengiriman", { ascending: false });
   if (error) return alert("Gagal mengambil data: " + error.message);
@@ -67,11 +65,9 @@ async function loadData() {
   currentPage = 1;
   renderAll();
 }
-
 function renderAll() {
   renderTable(); renderSummary(); renderGrafik();
 }
-
 function renderTable() {
   const tbody = document.getElementById("rekapBody");
   tbody.innerHTML = "";
@@ -79,6 +75,8 @@ function renderTable() {
   const pageData = fullData.slice(start, start + itemsPerPage);
   pageData.forEach((item, i) => {
     const pph = item.tarif_final * 0.005;
+    const margin = item.estimasi_profit / item.tarif_final;
+    const badgeClass = margin < 0.1 ? 'badge-margin-low' : 'badge-margin-good';
     tbody.innerHTML += `
       <tr>
         <td>${start + i + 1}</td>
@@ -88,18 +86,28 @@ function renderTable() {
         <td>${item.nama_barang}</td>
         <td>Rp${item.tarif_final.toLocaleString()}</td>
         <td>Rp${item.estimasi_profit.toLocaleString()}</td>
+        <td><span class="badge ${badgeClass}">${(margin * 100).toFixed(1)}%</span></td>
         <td>Rp${Math.round(pph).toLocaleString()}</td>
         <td><button class='btn btn-sm btn-warning'>Edit</button></td>
       </tr>`;
   });
 }
-
+function renderSummary() {
+  const total = fullData.reduce((sum, d) => sum + d.tarif_final, 0);
+  const profit = fullData.reduce((sum, d) => sum + d.estimasi_profit, 0);
+  const pph = total * 0.005;
+  const hariUnik = [...new Set(fullData.map(d => d.jadwal_pengiriman?.slice(0,10)))];
+  document.getElementById("totalOmzet").innerText = `Rp${total.toLocaleString()}`;
+  document.getElementById("totalProfit").innerText = `Rp${profit.toLocaleString()}`;
+  document.getElementById("totalPph").innerText = `Rp${Math.round(pph).toLocaleString()}`;
+  document.getElementById("totalOrder").innerText = fullData.length;
+  document.getElementById("rataRataOrder").innerText = `(Rata-rata ${ (fullData.length / hariUnik.length).toFixed(2) } order/hari)`;
+}
 function searchData() {
   const q = document.getElementById("searchInput").value.toLowerCase();
   fullData = allData.filter(d => d.nama_barang.toLowerCase().includes(q) || d.jenis_customer.toLowerCase().includes(q));
   currentPage = 1; renderAll();
 }
-
 function sortTable() {
   const val = document.getElementById("sortSelect").value;
   if (val === "jadwal_asc") fullData.sort((a,b)=>a.jadwal_pengiriman.localeCompare(b.jadwal_pengiriman));
@@ -108,20 +116,8 @@ function sortTable() {
   if (val === "omzet_desc") fullData.sort((a,b)=>b.tarif_final - a.tarif_final);
   currentPage = 1; renderAll();
 }
-
 function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
 function nextPage() { if ((currentPage * itemsPerPage) < fullData.length) { currentPage++; renderTable(); } }
-
-function renderSummary() {
-  const total = fullData.reduce((sum, d) => sum + d.tarif_final, 0);
-  const profit = fullData.reduce((sum, d) => sum + d.estimasi_profit, 0);
-  const pph = total * 0.005;
-  document.getElementById("totalOmzet").innerText = `Rp${total.toLocaleString()}`;
-  document.getElementById("totalProfit").innerText = `Rp${profit.toLocaleString()}`;
-  document.getElementById("totalPph").innerText = `Rp${Math.round(pph).toLocaleString()}`;
-  document.getElementById("totalOrder").innerText = fullData.length;
-}
-
 function renderGrafik() {
   const ctx = document.getElementById("grafikOmzet").getContext("2d");
   const daily = {};
@@ -137,7 +133,6 @@ function renderGrafik() {
     options: { responsive: true, scales: { y: { beginAtZero: true } } }
   });
 }
-
 function filterTanggal() {
   const start = document.getElementById("startDate").value;
   const end = document.getElementById("endDate").value;
@@ -145,7 +140,6 @@ function filterTanggal() {
   fullData = allData.filter(d => d.jadwal_pengiriman >= start && d.jadwal_pengiriman <= end + "T23:59:59");
   currentPage = 1; renderAll();
 }
-
 function exportExcel() {
   const wb = XLSX.utils.book_new();
   const rows = fullData.map((d, i) => ({
@@ -156,13 +150,14 @@ function exportExcel() {
     Barang: d.nama_barang,
     Omzet: d.tarif_final,
     Profit: d.estimasi_profit,
+    Margin: `${((d.estimasi_profit / d.tarif_final) * 100).toFixed(1)}%`,
     PPH: Math.round(d.tarif_final * 0.005)
   }));
   const ws = XLSX.utils.json_to_sheet(rows);
   XLSX.utils.book_append_sheet(wb, ws, "Rekap Carter");
   XLSX.writeFile(wb, "rekap-carter.xlsx");
 }
-
 loadData();
-</script></body>
+</script>
+</body>
 </html>
