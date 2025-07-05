@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cek Tarif Carter Logistik Kita (Admin)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body {
       background-color: #f8f9fa;
@@ -27,12 +28,11 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
       z-index: 9999;
     }
     #hasilPopup .popup-box {
       background: white;
+      margin: 5% auto;
       padding: 2rem;
       border-radius: 1rem;
       max-width: 520px;
@@ -51,15 +51,7 @@
     <h1>📦 Cek Tarif Carter Logistik Kita (Admin)</h1>
   </div>
 
-  <div class="mb-3">
-    <label class="form-label">👮 Nama Petugas</label>
-    <input type="text" class="form-control" id="namaPetugas" placeholder="Nama petugas">
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">📍 Lokasi Garasi</label>
-    <input type="text" class="form-control" value="Logistik Kita" disabled>
-  </div>
+  <div class="mb-3"><label class="form-label">👮 Nama Petugas</label><input type="text" class="form-control" id="namaPetugas" placeholder="Nama petugas"></div>
 
   <div id="penjemputan-container">
     <label class="form-label">🚚 Lokasi Penjemputan</label>
@@ -84,19 +76,11 @@
     <label class="form-check-label">🔁 Kembali ke Garasi</label>
   </div>
   <div id="kembaliFields" class="mb-3" style="display:none;">
-    <input type="text" class="form-control mb-2" value="Logistik Kita" readonly>
     <input type="number" class="form-control" id="jarakKembali" placeholder="Jarak kembali ke garasi (km)">
   </div>
 
-  <div class="mb-3">
-    <label class="form-label">📦 Nama Barang</label>
-    <input type="text" class="form-control" id="namaBarang">
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">⚖️ Berat Barang (kg)</label>
-    <input type="number" class="form-control" id="beratBarang">
-  </div>
+  <div class="mb-3"><label class="form-label">📦 Nama Barang</label><input type="text" class="form-control" id="namaBarang"></div>
+  <div class="mb-3"><label class="form-label">⚖️ Berat Barang (kg)</label><input type="number" class="form-control" id="beratBarang"></div>
 
   <div class="form-check mb-2">
     <input class="form-check-input" type="checkbox" id="tkbmCheck" onchange="toggleTKBM()">
@@ -110,21 +94,12 @@
     </select>
   </div>
 
-  <div class="mb-3">
-    <label class="form-label">🕑 Jadwal Pengiriman</label>
-    <input type="datetime-local" class="form-control" id="jadwalPengiriman" />
-  </div>
+  <div class="mb-3"><label class="form-label">🕑 Jadwal Pengiriman</label><input type="datetime-local" class="form-control" id="jadwalPengiriman" /></div>
 
   <div class="mb-3">
     <label class="form-label">👤 Jenis Customer</label>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="tipeCustomer" value="perorangan" checked />
-      <label class="form-check-label">Perorangan</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="tipeCustomer" value="perusahaan" />
-      <label class="form-check-label">Perusahaan</label>
-    </div>
+    <div class="form-check"><input class="form-check-input" type="radio" name="tipeCustomer" value="perorangan" checked /><label class="form-check-label">Perorangan</label></div>
+    <div class="form-check"><input class="form-check-input" type="radio" name="tipeCustomer" value="perusahaan" /><label class="form-check-label">Perusahaan</label></div>
   </div>
 
   <button onclick="cekTarif()" class="btn btn-danger">🧮 Hitung Tarif</button>
@@ -134,21 +109,23 @@
       <h5 class="mb-3">📄 Estimasi & Rincian Tarif</h5>
       <div id="hasilTarif"></div>
       <div class="mt-3 d-flex gap-2 flex-wrap">
-        <button class="btn btn-success btn-sm" onclick="alert('Surat Jalan akan dicetak (fitur simulasi)')">🖨️ Cetak Surat Jalan</button>
-        <button class="btn btn-primary btn-sm" onclick="kirimWA()">📤 Kirim Invoice via WA</button>
-        <button onclick="tutupPopup()" class="btn btn-outline-secondary btn-sm">Tutup</button>
+        <button class="btn btn-success btn-sm" onclick="simpanKeDatabase()">💾 Simpan ke Database</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="tutupPopup()">Tutup</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
+  const supabase = supabase.createClient(
+    "https://mrghlcedtafomwnznywf.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+  );
+
+  let globalData = {};
   const konsumsiBBM = 9, hargaBBM = 10000, kecepatan = 80;
-  let jemputCount = 1, bongkarCount = 1;
 
   function tambahJemput() {
-    if (jemputCount >= 4) return;
-    jemputCount++;
     document.getElementById("penjemputan-container").insertAdjacentHTML("beforeend", `
       <div class="row g-2 mb-2">
         <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
@@ -157,8 +134,6 @@
   }
 
   function tambahBongkar() {
-    if (bongkarCount >= 4) return;
-    bongkarCount++;
     document.getElementById("bongkar-container").insertAdjacentHTML("beforeend", `
       <div class="row g-2 mb-2">
         <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
@@ -175,21 +150,26 @@
   }
 
   function cekTarif() {
-    const kmJemput = Array.from(document.querySelectorAll(".km-jemput")).map(el => parseFloat(el.value) || 0);
-    const kmBongkar = Array.from(document.querySelectorAll(".km-bongkar")).map(el => parseFloat(el.value) || 0);
-    const lokasiJemput = Array.from(document.querySelectorAll(".lokasi-jemput")).map(el => el.value || "-");
-    const lokasiBongkar = Array.from(document.querySelectorAll(".lokasi-bongkar")).map(el => el.value || "-");
+    const kmJemput = [...document.querySelectorAll(".km-jemput")].map((el, i) => ({
+      lokasi: document.querySelectorAll(".lokasi-jemput")[i].value || "-",
+      jarak: parseFloat(el.value) || 0
+    }));
+    const kmBongkar = [...document.querySelectorAll(".km-bongkar")].map((el, i) => ({
+      lokasi: document.querySelectorAll(".lokasi-bongkar")[i].value || "-",
+      jarak: parseFloat(el.value) || 0
+    }));
+
     const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
-    const totalKM = kmJemput.reduce((a,b)=>a+b,0) + kmBongkar.reduce((a,b)=>a+b,0) + kembali;
+    const totalKM = [...kmJemput, ...kmBongkar].reduce((sum, item) => sum + item.jarak, 0) + kembali;
     const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
     const estimasiJam = totalKM / kecepatan;
 
     const namaBarang = document.getElementById("namaBarang").value || "-";
     const berat = parseFloat(document.getElementById("beratBarang").value || 0);
-    const pakaiTKBM = document.getElementById("tkbmCheck").checked;
-    const tkbm = pakaiTKBM ? parseFloat(document.getElementById("tkbmValue").value) : 0;
-    const jadwal = document.getElementById("jadwalPengiriman").value || "-";
+    const tkbm = document.getElementById("tkbmCheck").checked ? parseFloat(document.getElementById("tkbmValue").value) : 0;
+    const jadwal = document.getElementById("jadwalPengiriman").value || null;
     const petugas = document.getElementById("namaPetugas").value || "-";
+    const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
 
     let armada = 'Armada Khusus', sewaMobil = 0, biayaDriver = 0;
     if (berat <= 1300) {
@@ -203,52 +183,67 @@
     }
 
     const tarifDasar = totalBBM + sewaMobil + biayaDriver + tkbm;
-    const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
     const markup = tipe === "perorangan" ? 1.02 : 1.14;
     const tarifFinal = tarifDasar * markup;
-    const margin = tarifFinal - tarifDasar;
-    const profit = tarifFinal - (totalBBM + biayaDriver + sewaMobil + tkbm);
+    const profit = tarifFinal - (totalBBM + sewaMobil + biayaDriver + tkbm);
 
-    let ruteHTML = '';
-    lokasiJemput.forEach((lok, i) => ruteHTML += `<li>🚚 Jemput ${i+1}: ${lok} (${kmJemput[i]} km)</li>`);
-    lokasiBongkar.forEach((lok, i) => ruteHTML += `<li>🏁 Bongkar ${i+1}: ${lok} (${kmBongkar[i]} km)</li>`);
+    globalData = {
+      nama_petugas: petugas,
+      jadwal_pengiriman: jadwal,
+      nama_barang: namaBarang,
+      berat_barang: berat,
+      lokasi_angkut: JSON.stringify(kmJemput),
+      lokasi_bongkar: JSON.stringify(kmBongkar),
+      biaya_bbm: Math.round(totalBBM),
+      biaya_driver: biayaDriver,
+      biaya_sewa_armada: sewaMobil,
+      biaya_tkbm: tkbm,
+      tarif_dasar: Math.round(tarifDasar),
+      tarif_final: Math.round(tarifFinal),
+      estimasi_profit: Math.round(profit),
+      jenis_customer: tipe
+    };
 
-    const hasil = `
+    const ruteHTML = kmJemput.map((x,i)=>`<li>🚚 Jemput ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("") +
+                     kmBongkar.map((x,i)=>`<li>🏁 Bongkar ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("");
+
+    document.getElementById("hasilTarif").innerHTML = `
       <ul>
         ${ruteHTML}
-        ${kembali ? `<li>🔁 Kembali ke Garasi: ${kembali} km</li>` : ""}
-        <li>📏 Total Jarak: <strong>${totalKM.toFixed(1)} km</strong></li>
-        <li>🚛 Armada: <strong>${armada}</strong></li>
-        <li>📦 Barang: <strong>${namaBarang}</strong></li>
-        <li>⚖️ Berat: <strong>${berat} kg</strong></li>
+        <li>📏 Total Jarak: ${totalKM.toFixed(1)} km</li>
+        <li>🚛 Armada: ${armada}</li>
+        <li>📦 Barang: ${namaBarang}</li>
+        <li>⚖️ Berat: ${berat} kg</li>
         <li>🗓️ Jadwal: ${jadwal}</li>
         <li>👮 Petugas: ${petugas}</li>
-        ${pakaiTKBM ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
+        ${tkbm ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
         <hr/>
-        <li>⛽ Biaya BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
-        <li>🚚 Sewa Armada: Rp${Math.round(sewaMobil).toLocaleString()}</li>
-        <li>🧑‍✈️ Biaya Driver: Rp${Math.round(biayaDriver).toLocaleString()}</li>
-        ${pakaiTKBM ? `<li>🧑‍🔧 TKBM: Rp${Math.round(tkbm).toLocaleString()}</li>` : ""}
-        <li>💼 Tarif Dasar: <strong>Rp${Math.round(tarifDasar).toLocaleString()}</strong></li>
-        <li>📊 Margin (${((markup - 1) * 100).toFixed(0)}%): Rp${Math.round(margin).toLocaleString()}</li>
-        <li>💰 Estimasi Tarif: <strong class="text-success">Rp${Math.round(tarifFinal).toLocaleString()}</strong></li>
-        <li>📈 Estimasi Profit: <strong class="text-primary">Rp${Math.round(profit).toLocaleString()}</strong></li>
+        <li>⛽ BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
+        <li>🚚 Sewa Armada: Rp${sewaMobil.toLocaleString()}</li>
+        <li>🧑‍✈️ Driver: Rp${biayaDriver.toLocaleString()}</li>
+        <li>💼 Dasar: Rp${Math.round(tarifDasar).toLocaleString()}</li>
+        <li>💰 Final: Rp${Math.round(tarifFinal).toLocaleString()}</li>
+        <li>📈 Profit: Rp${Math.round(profit).toLocaleString()}</li>
       </ul>`;
 
-    document.getElementById("hasilTarif").innerHTML = hasil;
-    document.getElementById("hasilPopup").style.display = "flex";
+    const popup = document.getElementById("hasilPopup");
+    popup.style.display = "flex";
+    popup.style.justifyContent = "center";
+    popup.style.alignItems = "center";
   }
 
   function tutupPopup() {
     document.getElementById("hasilPopup").style.display = "none";
   }
 
-  function kirimWA() {
-    const nomorHP = prompt("Masukkan nomor WhatsApp customer (format 628xxxx):");
-    if (nomorHP) {
-      const text = encodeURIComponent(document.getElementById("hasilTarif").innerText);
-      const link = `https://wa.me/${nomorHP}?text=${text}`;
-      window.open(link, "_blank");
+  async function simpanKeDatabase() {
+    const { error } = await supabase.from("tarif_carter_admin").insert([globalData]);
+    if (error) {
+      alert("❌ Gagal menyimpan ke database: " + error.message);
+      console.error(error);
+    } else {
+      alert("✅ Data berhasil disimpan!");
+      tutupPopup();
     }
   }
 </script>
