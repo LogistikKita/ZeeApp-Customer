@@ -26,8 +26,7 @@
       display: none;
       position: fixed;
       top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.5);
       z-index: 9999;
       justify-content: center;
@@ -123,129 +122,146 @@
 </div>
 
 <script>
-  const clientSupabase = window.supabase.createClient(
-    "https://mrghlcedtafomwnznywf.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
-  );
+const clientSupabase = window.supabase.createClient(
+  "https://mrghlcedtafomwnznywf.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+);
 
-  const konsumsiBBM = 9, hargaBBM = 10000, kecepatan = 80;
-  let globalData = {};
+let globalData = {};
+const konsumsiBBM = 9, hargaBBM = 10000, kecepatan = 80;
+let nomorSuratGenerated = "";
 
-  function tambahJemput() {
-    document.getElementById("penjemputan-container").insertAdjacentHTML("beforeend", `
-      <div class="row g-2 mb-2">
-        <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
-        <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
-      </div>`);
+function tambahJemput() {
+  document.getElementById("penjemputan-container").insertAdjacentHTML("beforeend", `
+    <div class="row g-2 mb-2">
+      <div class="col-md-6"><input type="text" class="form-control lokasi-jemput" placeholder="Nama Lokasi" /></div>
+      <div class="col-md-3"><input type="number" class="form-control km-jemput" placeholder="Jarak (km)" /></div>
+    </div>`);
+}
+function tambahBongkar() {
+  document.getElementById("bongkar-container").insertAdjacentHTML("beforeend", `
+    <div class="row g-2 mb-2">
+      <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
+      <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
+    </div>`);
+}
+function toggleKembaliGarasi() {
+  document.getElementById("kembaliFields").style.display = document.getElementById("kembaliGarasi").checked ? 'block' : 'none';
+}
+function toggleTKBM() {
+  document.getElementById("tkbmOptions").style.display = document.getElementById("tkbmCheck").checked ? 'block' : 'none';
+}
+
+async function generateNomorSurat() {
+  const today = new Date();
+  const ymd = today.toISOString().slice(2,10).replace(/-/g,"");
+  const tanggalFilter = today.toISOString().slice(0,10);
+  const { data, error } = await clientSupabase
+    .from("tarif_carter_admin")
+    .select("nomor_surat_jalan")
+    .like("nomor_surat_jalan", `SJ-${ymd}-LK-%`);
+
+  const nextNumber = (data?.length || 0) + 1;
+  const nomor = String(nextNumber).padStart(3, '0');
+  return `SJ-${ymd}-LK-${nomor}`;
+}
+
+async function cekTarif() {
+  const kmJemput = [...document.querySelectorAll(".km-jemput")].map((el, i) => ({
+    lokasi: document.querySelectorAll(".lokasi-jemput")[i].value || "-",
+    jarak: parseFloat(el.value) || 0
+  }));
+  const kmBongkar = [...document.querySelectorAll(".km-bongkar")].map((el, i) => ({
+    lokasi: document.querySelectorAll(".lokasi-bongkar")[i].value || "-",
+    jarak: parseFloat(el.value) || 0
+  }));
+  const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
+  const totalKM = [...kmJemput, ...kmBongkar].reduce((sum, item) => sum + item.jarak, 0) + kembali;
+  const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
+  const estimasiJam = totalKM / kecepatan;
+
+  const namaBarang = document.getElementById("namaBarang").value || "-";
+  const berat = parseFloat(document.getElementById("beratBarang").value || 0);
+  const tkbm = document.getElementById("tkbmCheck").checked ? parseFloat(document.getElementById("tkbmValue").value) : 0;
+  const jadwal = document.getElementById("jadwalPengiriman").value || null;
+  const petugas = document.getElementById("namaPetugas").value || "-";
+  const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
+
+  let armada = 'Armada Khusus', sewaMobil = 0, biayaDriver = 0;
+  if (berat <= 1300) {
+    armada = "Granmax Pickup";
+    sewaMobil = estimasiJam <= 6 ? 100000 : estimasiJam <= 12 ? 150000 : 200000;
+    biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
+  } else if (berat <= 2500) {
+    armada = "L300 Pickup";
+    sewaMobil = estimasiJam <= 6 ? 200000 : estimasiJam <= 12 ? 250000 : 350000;
+    biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
   }
 
-  function tambahBongkar() {
-    document.getElementById("bongkar-container").insertAdjacentHTML("beforeend", `
-      <div class="row g-2 mb-2">
-        <div class="col-md-6"><input type="text" class="form-control lokasi-bongkar" placeholder="Nama Lokasi" /></div>
-        <div class="col-md-3"><input type="number" class="form-control km-bongkar" placeholder="Jarak (km)" /></div>
-      </div>`);
+  const tarifDasar = totalBBM + sewaMobil + biayaDriver + tkbm;
+  const markup = tipe === "perorangan" ? 1.02 : 1.14;
+  const tarifFinal = tarifDasar * markup;
+  const profit = tarifFinal - (totalBBM + sewaMobil + biayaDriver + tkbm);
+
+  nomorSuratGenerated = await generateNomorSurat();
+
+  globalData = {
+    nomor_surat_jalan: nomorSuratGenerated,
+    nama_petugas: petugas,
+    jadwal_pengiriman: jadwal,
+    nama_barang: namaBarang,
+    berat_barang: berat,
+    lokasi_angkut: JSON.stringify(kmJemput),
+    lokasi_bongkar: JSON.stringify(kmBongkar),
+    biaya_bbm: Math.round(totalBBM),
+    biaya_driver: biayaDriver,
+    biaya_sewa_armada: sewaMobil,
+    biaya_tkbm: tkbm,
+    tarif_dasar: Math.round(tarifDasar),
+    tarif_final: Math.round(tarifFinal),
+    estimasi_profit: Math.round(profit),
+    jenis_customer: tipe
+  };
+
+  const ruteHTML = kmJemput.map((x,i)=>`<li>🚚 Jemput ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("") +
+                   kmBongkar.map((x,i)=>`<li>🏁 Bongkar ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("");
+
+  document.getElementById("hasilTarif").innerHTML = `
+    <ul>
+      <li>📄 Nomor Surat: <strong>${nomorSuratGenerated}</strong></li>
+      ${ruteHTML}
+      <li>📏 Total Jarak: ${totalKM.toFixed(1)} km</li>
+      <li>🚛 Armada: ${armada}</li>
+      <li>📦 Barang: ${namaBarang}</li>
+      <li>⚖️ Berat: ${berat} kg</li>
+      <li>🗓️ Jadwal: ${jadwal}</li>
+      <li>👮 Petugas: ${petugas}</li>
+      ${tkbm ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
+      <hr/>
+      <li>⛽ BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
+      <li>🚚 Sewa Armada: Rp${sewaMobil.toLocaleString()}</li>
+      <li>🧑‍✈️ Driver: Rp${biayaDriver.toLocaleString()}</li>
+      <li>💼 Dasar: Rp${Math.round(tarifDasar).toLocaleString()}</li>
+      <li>💰 Final: Rp${Math.round(tarifFinal).toLocaleString()}</li>
+      <li>📈 Profit: Rp${Math.round(profit).toLocaleString()}</li>
+    </ul>`;
+
+  document.getElementById("hasilPopup").classList.add("show");
+}
+
+function tutupPopup() {
+  document.getElementById("hasilPopup").classList.remove("show");
+}
+
+async function simpanKeDatabase() {
+  const { error } = await clientSupabase.from("tarif_carter_admin").insert([globalData]);
+  if (error) {
+    alert("❌ Gagal menyimpan ke database: " + error.message);
+  } else {
+    alert("✅ Data berhasil disimpan!\nNomor Surat: " + nomorSuratGenerated);
+    tutupPopup();
   }
-
-  function toggleKembaliGarasi() {
-    document.getElementById("kembaliFields").style.display = document.getElementById("kembaliGarasi").checked ? 'block' : 'none';
-  }
-
-  function toggleTKBM() {
-    document.getElementById("tkbmOptions").style.display = document.getElementById("tkbmCheck").checked ? 'block' : 'none';
-  }
-
-  function cekTarif() {
-    const kmJemput = [...document.querySelectorAll(".km-jemput")].map((el, i) => ({
-      lokasi: document.querySelectorAll(".lokasi-jemput")[i].value || "-",
-      jarak: parseFloat(el.value) || 0
-    }));
-    const kmBongkar = [...document.querySelectorAll(".km-bongkar")].map((el, i) => ({
-      lokasi: document.querySelectorAll(".lokasi-bongkar")[i].value || "-",
-      jarak: parseFloat(el.value) || 0
-    }));
-    const kembali = document.getElementById("kembaliGarasi").checked ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : 0;
-    const totalKM = [...kmJemput, ...kmBongkar].reduce((sum, item) => sum + item.jarak, 0) + kembali;
-    const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
-    const estimasiJam = totalKM / kecepatan;
-    const namaBarang = document.getElementById("namaBarang").value || "-";
-    const berat = parseFloat(document.getElementById("beratBarang").value || 0);
-    const tkbm = document.getElementById("tkbmCheck").checked ? parseFloat(document.getElementById("tkbmValue").value) : 0;
-    const jadwal = document.getElementById("jadwalPengiriman").value || null;
-    const petugas = document.getElementById("namaPetugas").value || "-";
-    const tipe = document.querySelector('input[name="tipeCustomer"]:checked')?.value || "perorangan";
-
-    let armada = 'Armada Khusus', sewaMobil = 0, biayaDriver = 0;
-    if (berat <= 1300) {
-      armada = "Granmax Pickup";
-      sewaMobil = estimasiJam <= 6 ? 100000 : estimasiJam <= 12 ? 150000 : 200000;
-      biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
-    } else if (berat <= 2500) {
-      armada = "L300 Pickup";
-      sewaMobil = estimasiJam <= 6 ? 200000 : estimasiJam <= 12 ? 250000 : 350000;
-      biayaDriver = estimasiJam <= 6 ? 150000 : estimasiJam <= 12 ? 200000 : 250000;
-    }
-
-    const tarifDasar = totalBBM + sewaMobil + biayaDriver + tkbm;
-    const markup = tipe === "perorangan" ? 1.02 : 1.14;
-    const tarifFinal = tarifDasar * markup;
-    const profit = tarifFinal - (totalBBM + sewaMobil + biayaDriver + tkbm);
-
-    globalData = {
-      nama_petugas: petugas,
-      jadwal_pengiriman: jadwal,
-      nama_barang: namaBarang,
-      berat_barang: berat,
-      lokasi_angkut: JSON.stringify(kmJemput),
-      lokasi_bongkar: JSON.stringify(kmBongkar),
-      biaya_bbm: Math.round(totalBBM),
-      biaya_driver: biayaDriver,
-      biaya_sewa_armada: sewaMobil,
-      biaya_tkbm: tkbm,
-      tarif_dasar: Math.round(tarifDasar),
-      tarif_final: Math.round(tarifFinal),
-      estimasi_profit: Math.round(profit),
-      jenis_customer: tipe
-    };
-
-    const ruteHTML = kmJemput.map((x,i)=>`<li>🚚 Jemput ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("") +
-                     kmBongkar.map((x,i)=>`<li>🏁 Bongkar ${i+1}: ${x.lokasi} (${x.jarak} km)</li>`).join("");
-
-    document.getElementById("hasilTarif").innerHTML = `
-      <ul>
-        ${ruteHTML}
-        <li>📏 Total Jarak: ${totalKM.toFixed(1)} km</li>
-        <li>🚛 Armada: ${armada}</li>
-        <li>📦 Barang: ${namaBarang}</li>
-        <li>⚖️ Berat: ${berat} kg</li>
-        <li>🗓️ Jadwal: ${jadwal}</li>
-        <li>👮 Petugas: ${petugas}</li>
-        ${tkbm ? `<li>🧑‍🔧 TKBM: Rp${tkbm.toLocaleString()}</li>` : ""}
-        <hr/>
-        <li>⛽ BBM: Rp${Math.round(totalBBM).toLocaleString()}</li>
-        <li>🚚 Sewa Armada: Rp${sewaMobil.toLocaleString()}</li>
-        <li>🧑‍✈️ Driver: Rp${biayaDriver.toLocaleString()}</li>
-        <li>💼 Dasar: Rp${Math.round(tarifDasar).toLocaleString()}</li>
-        <li>💰 Final: Rp${Math.round(tarifFinal).toLocaleString()}</li>
-        <li>📈 Profit: Rp${Math.round(profit).toLocaleString()}</li>
-      </ul>`;
-
-    document.getElementById("hasilPopup").classList.add("show");
-  }
-
-  function tutupPopup() {
-    document.getElementById("hasilPopup").classList.remove("show");
-  }
-
-  async function simpanKeDatabase() {
-    const { error } = await clientSupabase.from("tarif_carter_admin").insert([globalData]);
-    if (error) {
-      alert("❌ Gagal menyimpan ke database: " + error.message);
-    } else {
-      alert("✅ Data berhasil disimpan!");
-      tutupPopup();
-    }
-  }
+}
 </script>
 </body>
 </html>
