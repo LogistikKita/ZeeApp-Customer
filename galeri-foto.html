@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri Foto - Logistik Kita</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white text-gray-800">
+
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-red-700 mb-6 text-center">
+      Galeri Dokumentasi Logistik Kita
+    </h1>
+
+    <!-- Galeri -->
+    <div id="galeri" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-10">
+      <!-- Konten galeri akan di-generate oleh JavaScript -->
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center gap-2" id="pagination"></div>
+  </div>
+
+  <!-- Modal Deskripsi -->
+  <dialog id="deskripsiModal" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg mb-2" id="modalJudul"></h3>
+      <img id="modalImg" class="w-full h-52 object-cover rounded mb-3" />
+      <p id="modalDeskripsi" class="text-gray-700 whitespace-pre-line"></p>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn">Tutup</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    // Dummy data sementara
+    const galeriData = [
+      {
+        judul: "Pengiriman Mojokerto - Surabaya",
+        image_url: "https://source.unsplash.com/400x300/?truck,1",
+        deskripsi_pendek: "Dokumentasi pengiriman pickup besar ke Surabaya...",
+        deskripsi_lengkap: "Dokumentasi pengiriman pickup besar dari Mojokerto ke Surabaya, termasuk proses loading, pengemasan aman, dan tracking langsung oleh petugas lapangan."
+      },
+      {
+        judul: "Armada Carteran Prioritas",
+        image_url: "https://source.unsplash.com/400x300/?pickup,2",
+        deskripsi_pendek: "Pengantaran ekspres dengan armada prioritas...",
+        deskripsi_lengkap: "Pengantaran ekspres dari Mojokerto ke wilayah kota dalam waktu kurang dari 4 jam, dengan pengemudi terlatih dan sistem pelacakan langsung."
+      },
+      {
+        judul: "Barang Fragile",
+        image_url: "https://source.unsplash.com/400x300/?logistics,3",
+        deskripsi_pendek: "Packing aman untuk barang pecah belah...",
+        deskripsi_lengkap: "Dokumentasi packing aman menggunakan bubblewrap, kardus tebal dan pengikatan barang fragile untuk rute Mojokerto - Kediri."
+      },
+      {
+        judul: "Logistik Event Besar",
+        image_url: "https://source.unsplash.com/400x300/?cargo,4",
+        deskripsi_pendek: "Distribusi barang event Mojokerto Expo...",
+        deskripsi_lengkap: "Tim Logistik Kita menangani distribusi 50+ koli ke venue event Expo di Mojokerto selama 3 hari berturut-turut, on-time dan tanpa kerusakan."
+      },
+      {
+        judul: "Pengiriman Perabot Rumah",
+        image_url: "https://source.unsplash.com/400x300/?furniture,5",
+        deskripsi_pendek: "Armada khusus untuk barang besar...",
+        deskripsi_lengkap: "Khusus pengiriman meja, lemari, springbed dengan armada bak terbuka + selimut pelindung dan tali pengikat."
+      },
+      {
+        judul: "Pengiriman Sewa 12 Jam",
+        image_url: "https://source.unsplash.com/400x300/?delivery,6",
+        deskripsi_pendek: "Sewa mobil pickup harian...",
+        deskripsi_lengkap: "Layanan carter 12 jam full fleksibel untuk pengangkutan bahan bangunan, hasil panen dan pindahan."
+      },
+      {
+        judul: "Penjemputan dari Gudang",
+        image_url: "https://source.unsplash.com/400x300/?warehouse,7",
+        deskripsi_pendek: "Pick-up barang langsung dari warehouse...",
+        deskripsi_lengkap: "Kami melakukan penjemputan barang langsung dari gudang utama Surabaya Barat menuju Mojokerto dan sekitarnya."
+      },
+      {
+        judul: "Logistik Produk UMKM",
+        image_url: "https://source.unsplash.com/400x300/?smallbusiness,8",
+        deskripsi_pendek: "Distribusi produk UMKM Mojokerto...",
+        deskripsi_lengkap: "Kami bantu kirim keripik, oleh-oleh, dan produk olahan ke agen reseller di seluruh Jawa Timur."
+      },
+      {
+        judul: "Ekspedisi Rutin Mingguan",
+        image_url: "https://source.unsplash.com/400x300/?van,9",
+        deskripsi_pendek: "Rute ekspedisi reguler tiap minggu...",
+        deskripsi_lengkap: "Dokumentasi rute mingguan Mojokerto – Nganjuk – Kediri – Blitar. Terjadwal dan konsisten tiap Senin & Kamis."
+      },
+      {
+        judul: "Angkutan Proyek Bangunan",
+        image_url: "https://source.unsplash.com/400x300/?construction,10",
+        deskripsi_pendek: "Pengiriman material berat ke lokasi proyek...",
+        deskripsi_lengkap: "Armada heavy-duty membawa pasir, bata merah dan semen ke proyek perumahan klien."
+      },
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function renderGaleri(page) {
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const galeri = galeriData.slice(start, end);
+
+      const galeriContainer = document.getElementById("galeri");
+      galeriContainer.innerHTML = "";
+
+      galeri.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "bg-white shadow-md rounded overflow-hidden";
+
+        card.innerHTML = `
+          <img src="${item.image_url}" class="w-full h-32 object-cover" alt="${item.judul}">
+          <div class="p-3">
+            <h3 class="font-semibold text-red-700 text-sm">${item.judul}</h3>
+            <p class="text-xs text-gray-600 line-clamp-2">${item.deskripsi_pendek}</p>
+            <button class="btn btn-xs btn-link text-red-600 px-0 mt-1" onclick="showModal('${item.judul}', '${item.image_url}', \`${item.deskripsi_lengkap.replace(/`/g, "'")}\`)">Read More</button>
+          </div>
+        `;
+        galeriContainer.appendChild(card);
+      });
+    }
+
+    function renderPagination() {
+      const totalPages = Math.ceil(galeriData.length / itemsPerPage);
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = `btn btn-sm ${i === currentPage ? 'btn-error' : 'btn-outline btn-error'}`;
+        btn.onclick = () => {
+          currentPage = i;
+          renderGaleri(currentPage);
+          renderPagination();
+        };
+        pagination.appendChild(btn);
+      }
+    }
+
+    function showModal(judul, img, desc) {
+      document.getElementById("modalJudul").textContent = judul;
+      document.getElementById("modalImg").src = img;
+      document.getElementById("modalDeskripsi").textContent = desc;
+      document.getElementById("deskripsiModal").showModal();
+    }
+
+    // Init
+    renderGaleri(currentPage);
+    renderPagination();
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
