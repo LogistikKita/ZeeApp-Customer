@@ -32,8 +32,8 @@
           <a href="#layanan" class="hover:text-yellow-200">Layanan</a>
           <a href="#galeri" class="hover:text-yellow-200">Galeri</a>
           <a href="#kontak" class="hover:text-yellow-200">Kontak</a>
-          <a href="cek-tarif-kg.html" class="hover:text-yellow-200">Cek Tarif (Kg)</a>
-          <a href="cek-tarif-carter.html" class="hover:text-yellow-200">Cek Tarif Carter</a>
+          <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')" class="hover:text-yellow-200">Cek Tarif (Kg)</a>
+          <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')" class="hover:text-yellow-200">Cek Tarif Carter</a>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
         <a href="#layanan" class="btn btn-outline text-white border-white">Lihat Layanan</a>
       </section>
 
-      <!-- Tentang -->
+      <!-- Tentang Kita -->
       <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
         <div class="flex items-center gap-4 mb-4">
           <i data-lucide="info" class="text-red-700 w-6 h-6"></i>
@@ -54,7 +54,7 @@
         <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada terpercaya yang berpusat di Mojokerto, Jawa Timur. Kita berkomitmen memberikan layanan terbaik untuk pengiriman dalam kota maupun ke seluruh penjuru Nusantara. Didukung oleh armada handal dan tim profesional, Kita hadir sebagai solusi logistik aman dan efisien untuk Anda.</p>
       </section>
 
-      <!-- Layanan -->
+      <!-- Layanan Kita -->
       <section id="layanan" class="bg-gray-100 py-16 px-6">
         <div class="max-w-6xl mx-auto">
           <div class="flex items-center gap-3 justify-center mb-10">
@@ -148,8 +148,28 @@
         <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
       </footer>
     </div>
+
+    <!-- Sidebar -->
+    <div class="drawer-side z-50">
+      <label for="drawer-toggle" class="drawer-overlay"></label>
+      <aside class="menu p-4 w-64 bg-white text-base-content">
+        <div class="flex items-center gap-2 mb-6">
+          <img src="logo_logistikkita.png" class="w-10" />
+          <span class="font-bold text-lg text-red-700">Logistik Kita</span>
+        </div>
+        <ul class="menu menu-vertical font-medium">
+          <li><a href="#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i>Tentang</a></li>
+          <li><a href="#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i>Layanan</a></li>
+          <li><a href="#galeri"><i data-lucide="image" class="w-4 h-4 me-1"></i>Galeri</a></li>
+          <li><a href="#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i>Kontak</a></li>
+          <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="package" class="w-4 h-4 me-1"></i>Cek Tarif (Kg)</a></li>
+          <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="calculator" class="w-4 h-4 me-1"></i>Cek Tarif Carter</a></li>
+        </ul>
+      </aside>
+    </div>
   </div>
 
+  <!-- Script -->
   <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
   <script>
     new Splide('.splide', {
