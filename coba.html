@@ -13,7 +13,6 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-white text-gray-800">
-
   <div class="drawer drawer-start">
     <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
@@ -40,13 +39,13 @@
 
       <!-- Hero -->
       <section class="bg-gradient-to-br from-red-700 to-red-600 text-white py-20 px-6 text-center">
-        <img src="https://www.svgrepo.com/show/354331/logistics.svg" class="w-24 mx-auto mb-4" alt="Logistics Icon" />
+        <i data-lucide="truck" class="w-20 h-20 mx-auto mb-4"></i>
         <h1 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h1>
         <p class="text-lg md:text-xl mb-6">Layanan logistik terpercaya, cepat, dan hemat ke seluruh Nusantara</p>
         <a href="#layanan" class="btn btn-outline text-white border-white">Lihat Layanan</a>
       </section>
 
-      <!-- Tentang Kita -->
+      <!-- Tentang -->
       <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
         <div class="flex items-center gap-4 mb-4">
           <i data-lucide="info" class="text-red-700 w-6 h-6"></i>
@@ -55,26 +54,26 @@
         <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada terpercaya yang berpusat di Mojokerto, Jawa Timur. Kita berkomitmen memberikan layanan terbaik untuk pengiriman dalam kota maupun ke seluruh penjuru Nusantara. Didukung oleh armada handal dan tim profesional, Kita hadir sebagai solusi logistik aman dan efisien untuk Anda.</p>
       </section>
 
-      <!-- Layanan Kita -->
+      <!-- Layanan -->
       <section id="layanan" class="bg-gray-100 py-16 px-6">
         <div class="max-w-6xl mx-auto">
           <div class="flex items-center gap-3 justify-center mb-10">
-            <i data-lucide="truck" class="text-red-700 w-6 h-6"></i>
+            <i data-lucide="box" class="text-red-700 w-6 h-6"></i>
             <h2 class="text-3xl font-bold text-red-700">Layanan Kita</h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white rounded-lg shadow p-6">
-              <img src="https://www.svgrepo.com/show/276264/delivery.svg" class="w-12 mb-3" alt="Carter Icon" />
+              <i data-lucide="clock" class="w-10 h-10 mb-3 text-red-600"></i>
               <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Prioritas</h3>
               <p>Carter armada pickup (hingga 2,5 Ton) untuk pengiriman cepat, fleksibel, dan langsung ke tujuan.</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6">
-              <img src="https://www.svgrepo.com/show/485089/weight.svg" class="w-12 mb-3" alt="Kg Icon" />
+              <i data-lucide="scale" class="w-10 h-10 mb-3 text-red-600"></i>
               <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Reguler</h3>
               <p>Pengiriman barang dengan tarif per kilogram yang ekonomis dan efisien, cocok untuk bisnis dan personal.</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6">
-              <img src="https://www.svgrepo.com/show/531992/ship.svg" class="w-12 mb-3" alt="Forwarding Icon" />
+              <i data-lucide="globe" class="w-10 h-10 mb-3 text-red-600"></i>
               <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Nusantara</h3>
               <p>Kita bantu forwarding barang ke ekspedisi terpercaya, menjangkau pelosok Nusantara dari Sabang sampai Merauke.</p>
             </div>
@@ -102,27 +101,20 @@
         </div>
       </section>
 
-      <!-- Lokasi Kita -->
+      <!-- Lokasi -->
       <section class="px-6 py-12 bg-white">
         <div class="flex items-center gap-3 justify-center mb-6">
           <i data-lucide="map-pin" class="text-red-700 w-6 h-6"></i>
           <h2 class="text-3xl font-bold text-red-700">Lokasi Kita</h2>
         </div>
         <div class="flex justify-center">
-          <iframe
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.058346528224!2d112.4370636!3d-7.4853574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e780db14e93fd0d%3A0x6526ffa46cfe50a3!2sLogistik%20Kita%20%26%20Jeng%20Ayu%20Trans%20Rental%20Mobil%20Pickup!5e0!3m2!1sid!2sid!4v1720167640000!5m2!1sid!2sid"
-  class="w-full max-w-4xl h-72 rounded-lg shadow"
-  loading="lazy"
-  allowfullscreen
-  referrerpolicy="no-referrer-when-downgrade">
-</iframe>
+          <iframe class="w-full max-w-4xl h-72 rounded-lg shadow" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.058346528224!2d112.4370636!3d-7.4853574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e780db14e93fd0d%3A0x6526ffa46cfe50a3!2sLogistik%20Kita%20%26%20Jeng%20Ayu%20Trans%20Rental%20Mobil%20Pickup!5e0!3m2!1sid!2sid!4v1720167640000!5m2!1sid!2sid"></iframe>
         </div>
-        <p class="text-center mt-4 text-sm text-gray-600">
-  📍 Lokasi: Logistik Kita & Jeng Ayu Trans, Jl. Irian Jaya No.8, Banjaragung, Mojokerto
-</p>
+        <p class="text-center mt-4 text-sm text-gray-600">📍 Lokasi: Logistik Kita & Jeng Ayu Trans – Mojokerto, Jawa Timur</p>
       </section>
 
-      <!-- Kontak Kita -->
+      <!-- Kontak -->
       <section id="kontak" class="bg-gray-100 py-16 px-6">
         <div class="max-w-4xl mx-auto">
           <div class="flex items-center gap-3 justify-center mb-6">
@@ -147,6 +139,7 @@
         </div>
       </section>
 
+      <!-- Footer & Visitor -->
       <section class="py-6 text-center text-sm text-gray-600">
         <p>👁 Total Pengunjung Hari Ini: <span id="visitorCount">0</span></p>
       </section>
@@ -154,25 +147,6 @@
       <footer class="bg-red-700 text-white text-center py-6 mt-10">
         <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
       </footer>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="drawer-side z-50">
-      <label for="drawer-toggle" class="drawer-overlay"></label>
-      <aside class="menu p-4 w-64 bg-white text-base-content">
-        <div class="flex items-center gap-2 mb-6">
-          <img src="logo_logistikkita.png" class="w-10" />
-          <span class="font-bold text-lg text-red-700">Logistik Kita</span>
-        </div>
-        <ul class="menu menu-vertical font-medium">
-          <li><a href="#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i>Tentang</a></li>
-          <li><a href="#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i>Layanan</a></li>
-          <li><a href="#galeri"><i data-lucide="images" class="w-4 h-4 me-1"></i>Galeri</a></li>
-          <li><a href="#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i>Kontak</a></li>
-          <li><a href="cek-tarif-kg.html"><i data-lucide="package" class="w-4 h-4 me-1"></i>Cek Tarif (Kg)</a></li>
-          <li><a href="cek-tarif-carter.html"><i data-lucide="calculator" class="w-4 h-4 me-1"></i>Cek Tarif Carter</a></li>
-        </ul>
-      </aside>
     </div>
   </div>
 
@@ -194,6 +168,5 @@
 
     lucide.createIcons();
   </script>
-
 </body>
 </html>
