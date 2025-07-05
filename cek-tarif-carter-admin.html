@@ -177,7 +177,7 @@ async function cekTarif() {
   }));
   const kembaliKeGarasi = document.getElementById("kembaliGarasi").checked;
 const jarakKembali = kembaliKeGarasi ? (parseFloat(document.getElementById("jarakKembali").value) || 0) : null;
-  const totalKM = [...kmJemput, ...kmBongkar].reduce((sum, item) => sum + item.jarak, 0) + kembali;
+  const totalKM = [...kmJemput, ...kmBongkar].reduce((sum, item) => sum + item.jarak, 0) + (jarakKembali || 0);
   const totalBBM = (totalKM / konsumsiBBM) * hargaBBM;
   const estimasiJam = totalKM / kecepatan;
 
