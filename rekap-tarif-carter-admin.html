@@ -2,132 +2,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rekap Tarif Carter - Admin</title>
+  <title>Rekap Carter & Grafik - Logistik Kita</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
     .container { margin-top: 2rem; }
     h1 { color: #ba1a1a; }
-    .table thead { background-color: #ba1a1a; color: white; }
-    .modal-content { border-radius: 0.8rem; }
+    .table-container { max-height: 480px; overflow-y: auto; border: 1px solid #dee2e6; border-radius: 0.5rem; padding: 1rem; background: white; }
+    canvas { background: white; padding: 1rem; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-top: 2rem; }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1 class="mb-4 text-center">📋 Rekap Tarif Carter (Admin)</h1>
-  <div class="mb-3 d-flex justify-content-between">
-    <button class="btn btn-danger" onclick="loadData()">🔄 Refresh</button>
-    <input type="text" class="form-control w-25" placeholder="🔍 Cari No. Surat" oninput="searchData(this.value)">
-  </div>  <div class="table-responsive">
-    <table class="table table-bordered table-striped align-middle">
-      <thead>
+  <h1 class="text-center mb-4">📊 Rekap Carter & Grafik</h1>  <div class="table-container mb-4">
+    <table class="table table-striped table-sm">
+      <thead class="table-danger">
         <tr>
-          <th>📄 No. Surat</th>
-          <th>👮 Petugas</th>
-          <th>📦 Barang</th>
-          <th>🗓️ Jadwal</th>
-          <th>📏 Jarak</th>
-          <th>💰 Tarif</th>
-          <th>📈 Profit</th>
-          <th>⚙️ Aksi</th>
+          <th>Nomor Surat</th>
+          <th>Petugas</th>
+          <th>Customer</th>
+          <th>Barang</th>
+          <th>Berat</th>
+          <th>Tarif Final</th>
+          <th>Profit</th>
+          <th>Tanggal</th>
         </tr>
       </thead>
-      <tbody id="dataTable">
-        <tr><td colspan="8" class="text-center">🔄 Memuat data...</td></tr>
-      </tbody>
+      <tbody id="dataBody"></tbody>
     </table>
+  </div>  <!-- Grafik Section -->  <div class="row">
+    <div class="col-md-6">
+      <canvas id="chartPendapatan"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="chartProfit"></canvas>
+    </div>
   </div>
-</div><!-- Modal Edit --><div class="modal fade" id="editModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title">✏️ Edit Data Tarif</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <input type="hidden" id="editId">
-        <div class="mb-3"><label>No Surat</label><input class="form-control" id="editSurat" readonly></div>
-        <div class="mb-3"><label>Nama Petugas</label><input class="form-control" id="editPetugas"></div>
-        <div class="mb-3"><label>Nama Barang</label><input class="form-control" id="editBarang"></div>
-        <div class="mb-3"><label>Tarif Final</label><input class="form-control" id="editTarif" type="number"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button class="btn btn-success" onclick="simpanEdit()">💾 Simpan Perubahan</button>
-      </div>
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <canvas id="chartArmada"></canvas>
+    </div>
+    <div class="col-md-6">
+      <canvas id="chartCustomer"></canvas>
     </div>
   </div>
 </div><script>
-const clientSupabase = window.supabase.createClient(
+const client = window.supabase.createClient(
   "https://mrghlcedtafomwnznywf.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz..."
 );
 
-let semuaData = [];
-
 async function loadData() {
-  const tbody = document.getElementById("dataTable");
-  tbody.innerHTML = `<tr><td colspan="8" class="text-center">🔄 Memuat data...</td></tr>`;
-  const { data, error } = await clientSupabase.from("tarif_carter_admin").select("*").order("created_at", { ascending: false });
-  if (error) return tbody.innerHTML = `<tr><td colspan="8" class="text-danger">❌ ${error.message}</td></tr>`;
-  semuaData = data;
-  renderTable(data);
-}
+  const { data, error } = await client.from("tarif_carter_admin")
+    .select("nomor_surat_jalan, nama_petugas, jenis_customer, nama_barang, berat_barang, tarif_final, estimasi_profit, created_at, armada_yang_dipakai")
+    .order("created_at", { ascending: false })
+    .limit(15);
 
-function renderTable(data) {
-  const tbody = document.getElementById("dataTable");
-  tbody.innerHTML = data.map(item => `
+  if (error) return console.error(error);
+
+  const body = document.getElementById("dataBody");
+  body.innerHTML = data.map(row => `
     <tr>
-      <td>${item.nomor_surat_jalan}</td>
-      <td>${item.nama_petugas}</td>
-      <td>${item.nama_barang}</td>
-      <td>${item.jadwal_pengiriman?.split("T")[0]}</td>
-      <td>${item.total_jarak || 0} km</td>
-      <td>Rp${(item.tarif_final || 0).toLocaleString()}</td>
-      <td>Rp${(item.estimasi_profit || 0).toLocaleString()}</td>
-      <td>
-        <button class="btn btn-sm btn-warning" onclick='editData(${JSON.stringify(item)})'>✏️</button>
-        <button class="btn btn-sm btn-danger" onclick='hapusData("${item.id}")'>🗑️</button>
-      </td>
-    </tr>
-  `).join("");
+      <td>${row.nomor_surat_jalan}</td>
+      <td>${row.nama_petugas}</td>
+      <td>${row.jenis_customer}</td>
+      <td>${row.nama_barang}</td>
+      <td>${row.berat_barang ?? 0} kg</td>
+      <td>Rp${(row.tarif_final || 0).toLocaleString()}</td>
+      <td>Rp${(row.estimasi_profit || 0).toLocaleString()}</td>
+      <td>${new Date(row.created_at).toLocaleDateString()}</td>
+    </tr>`).join("");
+
+  renderCharts(data);
 }
 
-function searchData(keyword) {
-  const filtered = semuaData.filter(item => item.nomor_surat_jalan?.toLowerCase().includes(keyword.toLowerCase()));
-  renderTable(filtered);
-}
+function renderCharts(rows) {
+  const byDate = {};
+  const armadaCount = {};
+  const customerType = { perorangan: 0, perusahaan: 0 };
 
-function editData(item) {
-  document.getElementById("editId").value = item.id;
-  document.getElementById("editSurat").value = item.nomor_surat_jalan;
-  document.getElementById("editPetugas").value = item.nama_petugas;
-  document.getElementById("editBarang").value = item.nama_barang;
-  document.getElementById("editTarif").value = item.tarif_final;
-  new bootstrap.Modal(document.getElementById('editModal')).show();
-}
+  rows.forEach(r => {
+    const tgl = new Date(r.created_at).toISOString().slice(0, 10);
+    if (!byDate[tgl]) byDate[tgl] = { pendapatan: 0, profit: 0 };
+    byDate[tgl].pendapatan += r.tarif_final || 0;
+    byDate[tgl].profit += r.estimasi_profit || 0;
+    armadaCount[r.armada_yang_dipakai] = (armadaCount[r.armada_yang_dipakai] || 0) + 1;
+    if (r.jenis_customer in customerType) customerType[r.jenis_customer]++;
+  });
 
-async function simpanEdit() {
-  const id = document.getElementById("editId").value;
-  const petugas = document.getElementById("editPetugas").value;
-  const barang = document.getElementById("editBarang").value;
-  const tarif = parseInt(document.getElementById("editTarif").value);
-  const { error } = await clientSupabase.from("tarif_carter_admin").update({ nama_petugas: petugas, nama_barang: barang, tarif_final: tarif }).eq("id", id);
-  if (error) return alert("❌ Gagal: " + error.message);
-  alert("✅ Berhasil diupdate!");
-  loadData();
-  bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-}
+  new Chart(document.getElementById("chartPendapatan"), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(byDate),
+      datasets: [{ label: 'Pendapatan', data: Object.values(byDate).map(d => d.pendapatan), backgroundColor: '#ba1a1a' }]
+    }
+  });
 
-async function hapusData(id) {
-  if (!confirm("Hapus data ini?")) return;
-  const { error } = await clientSupabase.from("tarif_carter_admin").delete().eq("id", id);
-  if (error) return alert("❌ Gagal hapus: " + error.message);
-  alert("🗑️ Data dihapus");
-  loadData();
+  new Chart(document.getElementById("chartProfit"), {
+    type: 'line',
+    data: {
+      labels: Object.keys(byDate),
+      datasets: [{ label: 'Profit', data: Object.values(byDate).map(d => d.profit), borderColor: '#28a745', backgroundColor: 'rgba(40,167,69,0.1)' }]
+    }
+  });
+
+  new Chart(document.getElementById("chartArmada"), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(armadaCount),
+      datasets: [{ label: 'Armada Dipakai', data: Object.values(armadaCount), backgroundColor: ['#ff6384','#36a2eb','#ffcd56','#4bc0c0'] }]
+    }
+  });
+
+  new Chart(document.getElementById("chartCustomer"), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(customerType),
+      datasets: [{ label: 'Tipe Customer', data: Object.values(customerType), backgroundColor: ['#007bff','#ffc107'] }]
+    }
+  });
 }
 
 loadData();
-</script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script></body>
+</script></body>
 </html>
