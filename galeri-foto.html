@@ -81,12 +81,38 @@
 </div>
 
 <script>
-  const galeriData = Array.from({ length: 20 }, (_, i) => ({
-    judul: `Foto Dokumentasi #${i + 1}`,
-    image_url: `https://images.pexels.com/photos/417332/pexels-photo-${100000 + i}.jpeg?auto=compress&cs=tinysrgb&w=400`,
-    deskripsi_pendek: "Kegiatan pengiriman barang dan dokumentasi lapangan...",
-    deskripsi_lengkap: `Ini adalah dokumentasi lengkap dari proses pengiriman ke lokasi customer #${i + 1}. Termasuk loading, pengemasan, dan proses antar.`
-  }));
+  const galeriData = [
+    {
+      judul: "Truk Pengiriman #1",
+      image_url: "https://images.pexels.com/photos/6169663/pexels-photo-6169663.jpeg?auto=compress&cs=tinysrgb&w=600",
+      deskripsi_pendek: "Pengiriman barang ke gudang Mojokerto...",
+      deskripsi_lengkap: `Proses pengiriman ke Mojokerto dengan armada truk besar. Barang dikemas dengan rapi dan aman untuk memastikan tidak ada kerusakan selama perjalanan.`
+    },
+    {
+      judul: "Armada Siap Jalan",
+      image_url: "https://images.pexels.com/photos/24353/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=600",
+      deskripsi_pendek: "Armada disiapkan di pool utama sebelum keberangkatan...",
+      deskripsi_lengkap: `Setiap armada diperiksa oleh petugas sebelum diberangkatkan. Foto ini diambil saat briefing pagi oleh supervisor lapangan.`
+    },
+    {
+      judul: "Packing Barang",
+      image_url: "https://images.pexels.com/photos/5025508/pexels-photo-5025508.jpeg?auto=compress&cs=tinysrgb&w=600",
+      deskripsi_pendek: "Tim sedang melakukan pengepakan barang besar...",
+      deskripsi_lengkap: `Barang-barang customer dikemas menggunakan bubble wrap dan plastik pelindung sebelum dinaikkan ke truk.`
+    },
+    {
+      judul: "Distribusi di Surabaya",
+      image_url: "https://images.pexels.com/photos/6169653/pexels-photo-6169653.jpeg?auto=compress&cs=tinysrgb&w=600",
+      deskripsi_pendek: "Pengiriman cepat ke daerah Surabaya dalam 1 hari...",
+      deskripsi_lengkap: `Tim Logistik Kita melakukan pengiriman express prioritas ke klien retail di Surabaya pusat.`
+    },
+    {
+      judul: "Muat Barang Besar",
+      image_url: "https://images.pexels.com/photos/5025512/pexels-photo-5025512.jpeg?auto=compress&cs=tinysrgb&w=600",
+      deskripsi_pendek: "Barang dengan dimensi besar diangkat pakai forklift...",
+      deskripsi_lengkap: `Logistik Kita menangani pengiriman barang industri berat menggunakan forklift dan crane.`
+    }
+  ];
 
   let currentPage = 1;
   const itemsPerPage = 10;
