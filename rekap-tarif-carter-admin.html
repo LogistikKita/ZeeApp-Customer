@@ -17,11 +17,16 @@
     .badge-margin-low { background: #f8d7da; color: #721c24; }
     .badge-margin-good { background: #d4edda; color: #155724; }
     .rekap-biaya { background: #fefefe; border: 1px solid #ccc; border-radius: 0.5rem; padding: 1rem; margin-top: 2rem; }
+    .logo-kita { height: 60px; }
   </style>
 </head>
 <body>
 <div class="container">
-  <h1 class="mb-4">📊 Rekap Carter & Grafik Omzet</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>📊 Rekap Carter & Grafik Omzet</h1>
+    <img src="logo_logistikkita.png" alt="Logo Logistik Kita" class="logo-kita" />
+  </div>
+
   <!-- FILTER -->
   <div class="row mb-3">
     <div class="col-md-4"><input type="text" class="form-control" id="searchInput" placeholder="🔎 Cari customer / barang..." oninput="searchData()"></div>
@@ -101,10 +106,7 @@ async function loadData() {
 }
 
 function renderAll() {
-  renderTable();
-  renderSummary();
-  renderGrafik();
-  renderRekapBiaya();
+  renderTable(); renderSummary(); renderGrafik(); renderRekapBiaya();
 }
 
 function renderTable() {
