@@ -1,13 +1,15 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Galeri Foto - Logistik Kita</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-white text-gray-800">
+
 <div class="drawer drawer-start">
   <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content">
@@ -27,36 +29,141 @@
         <a href="index.html#layanan" class="hover:text-yellow-200">Layanan</a>
         <a href="galeri-foto.html" class="hover:text-yellow-200">Galeri</a>
         <a href="index.html#kontak" class="hover:text-yellow-200">Kontak</a>
-        <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')" class="hover:text-yellow-200">Cek Tarif (Kg)</a>
-        <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')" class="hover:text-yellow-200">Cek Tarif Carter</a>
+        <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')">Cek Tarif</a>
       </div>
-    </div><!-- Galeri Foto -->
-<div class="max-w-7xl mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-red-700 mb-6 text-center">Galeri Dokumentasi Logistik Kita</h1>
-  <div id="galeri" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-10"></div>
-  <div class="flex justify-center gap-2" id="pagination"></div>
-</div>
-
-<!-- Modal Deskripsi -->
-<dialog id="deskripsiModal" class="modal">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg mb-2" id="modalJudul"></h3>
-    <img id="modalImg" class="w-full h-52 object-cover rounded mb-3" />
-    <p id="modalDeskripsi" class="text-gray-700 whitespace-pre-line"></p>
-    <div class="modal-action">
-      <form method="dialog">
-        <button class="btn">Tutup</button>
-      </form>
     </div>
+
+    <!-- GALERI -->
+    <section class="px-6 py-10 max-w-7xl mx-auto">
+      <h2 class="text-3xl font-bold text-red-700 mb-6 flex items-center gap-2">
+        <i data-lucide="image" class="w-6 h-6"></i> Galeri Pengiriman
+      </h2>
+
+      <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-5 gap-6">
+        <!-- FOTO 1 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 1" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Pengiriman prioritas Mojokerto - Surabaya menggunakan armada pick up bak terbuka 🚚</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Pengiriman prioritas Mojokerto - Surabaya menggunakan armada pick up bak terbuka dan dilakukan dalam waktu kurang dari 3 jam perjalanan.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 2 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/6169673/pexels-photo-6169673.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 2" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Barang industri dikemas rapi & aman untuk perjalanan antar kota.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Barang industri dari customer pabrik dikemas dengan aman dan dikirim dari Sidoarjo ke Gresik.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 3 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/4483871/pexels-photo-4483871.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 3" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Pengiriman alat berat skala kecil ke proyek daerah Nganjuk.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Logistik Kita mengirim alat berat kecil untuk proyek konstruksi di daerah Nganjuk, Jawa Timur.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 4 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/6169675/pexels-photo-6169675.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 4" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Dokumentasi pengiriman barang furniture dari Jombang ke Malang.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Pengiriman meja dan lemari kayu ke rumah customer di Malang, dilakukan dengan armada tertutup.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 5 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/4483875/pexels-photo-4483875.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 5" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Tim Logistik Kita siap angkut barang pagi-pagi dari gudang mitra.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Armada Logistik Kita standby sejak pagi hari di gudang mitra untuk melakukan pengangkutan rutin setiap Senin dan Kamis.')">Read More</button>
+          </div>
+        </div>
+
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/4483610/pexels-photo-4483610.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 1" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Pengiriman prioritas Mojokerto - Surabaya menggunakan armada pick up bak terbuka 🚚</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Pengiriman prioritas Mojokerto - Surabaya menggunakan armada pick up bak terbuka dan dilakukan dalam waktu kurang dari 3 jam perjalanan.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 2 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/6169673/pexels-photo-6169673.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 2" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Barang industri dikemas rapi & aman untuk perjalanan antar kota.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Barang industri dari customer pabrik dikemas dengan aman dan dikirim dari Sidoarjo ke Gresik.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 3 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/4483871/pexels-photo-4483871.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 3" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Pengiriman alat berat skala kecil ke proyek daerah Nganjuk.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Logistik Kita mengirim alat berat kecil untuk proyek konstruksi di daerah Nganjuk, Jawa Timur.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 4 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/6169675/pexels-photo-6169675.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 4" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Dokumentasi pengiriman barang furniture dari Jombang ke Malang.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Pengiriman meja dan lemari kayu ke rumah customer di Malang, dilakukan dengan armada tertutup.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- FOTO 5 -->
+        <div class="card shadow">
+          <figure><img src="https://images.pexels.com/photos/4483875/pexels-photo-4483875.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pengiriman 5" /></figure>
+          <div class="card-body p-3">
+            <p class="text-sm line-clamp-2">Tim Logistik Kita siap angkut barang pagi-pagi dari gudang mitra.</p>
+            <button class="btn btn-sm btn-outline btn-error mt-2" onclick="showDetail('Armada Logistik Kita standby sejak pagi hari di gudang mitra untuk melakukan pengangkutan rutin setiap Senin dan Kamis.')">Read More</button>
+          </div>
+        </div>
+
+        <!-- Tambah 5 lagi jika ingin halaman penuh -->
+      </div>
+
+      <!-- PAGINATION -->
+      <div class="mt-10 flex justify-center">
+        <div class="join">
+          <button class="join-item btn btn-sm btn-outline">«</button>
+          <button class="join-item btn btn-sm btn-error">1</button>
+          <button class="join-item btn btn-sm btn-outline">2</button>
+          <button class="join-item btn btn-sm btn-outline">»</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal -->
+    <dialog id="modal-detail" class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg mb-3">Detail Foto</h3>
+        <p id="modal-description" class="text-sm"></p>
+        <div class="modal-action">
+          <form method="dialog">
+            <button class="btn btn-error">Tutup</button>
+          </form>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Footer -->
+    <footer class="bg-red-700 text-white text-center py-6 mt-10">
+      <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
+    </footer>
   </div>
-</dialog>
 
-<!-- Footer -->
-<footer class="bg-red-700 text-white text-center py-6 mt-10">
-  <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
-</footer>
-
-  </div>  <!-- Sidebar -->  <div class="drawer-side z-50">
+  <!-- SIDEBAR -->
+  <div class="drawer-side z-50">
     <label for="drawer-toggle" class="drawer-overlay"></label>
     <aside class="menu p-4 w-64 bg-white text-base-content">
       <div class="flex items-center gap-2 mb-6">
@@ -64,74 +171,24 @@
         <span class="font-bold text-lg text-red-700">Logistik Kita</span>
       </div>
       <ul class="menu menu-vertical font-medium">
-        <li><a href="index.html#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i>Tentang</a></li>
-        <li><a href="index.html#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i>Layanan</a></li>
-        <li><a href="galeri-foto.html"><i data-lucide="image" class="w-4 h-4 me-1"></i>Galeri</a></li>
-        <li><a href="index.html#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i>Kontak</a></li>
-        <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="package" class="w-4 h-4 me-1"></i>Cek Tarif (Kg)</a></li>
-        <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="calculator" class="w-4 h-4 me-1"></i>Cek Tarif Carter</a></li>
+        <li><a href="index.html#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i> Tentang</a></li>
+        <li><a href="index.html#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i> Layanan</a></li>
+        <li><a href="galeri-foto.html"><i data-lucide="image" class="w-4 h-4 me-1"></i> Galeri</a></li>
+        <li><a href="index.html#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i> Kontak</a></li>
+        <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="package" class="w-4 h-4 me-1"></i> Cek Tarif</a></li>
       </ul>
     </aside>
   </div>
-</div><script>
-  const galeriData = Array.from({ length: 20 }, (_, i) => ({
-    judul: `Foto Dokumentasi #${i + 1}`,
-    image_url: `https://source.unsplash.com/400x300/?truck,${i + 1}`,
-    deskripsi_pendek: "Kegiatan pengiriman barang dan dokumentasi lapangan...",
-    deskripsi_lengkap: `Ini adalah dokumentasi lengkap dari proses pengiriman ke lokasi customer #${i + 1}. Termasuk loading, pengemasan, dan proses antar.`
-  }));
+</div>
 
-  let currentPage = 1;
-  const itemsPerPage = 10;
-
-  function renderGaleri(page) {
-    const start = (page - 1) * itemsPerPage;
-    const galeri = galeriData.slice(start, start + itemsPerPage);
-    const galeriContainer = document.getElementById("galeri");
-    galeriContainer.innerHTML = "";
-
-    galeri.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "bg-white shadow-md rounded overflow-hidden";
-      card.innerHTML = `
-        <img src="${item.image_url}" class="w-full h-32 object-cover" alt="${item.judul}">
-        <div class="p-3">
-          <h3 class="font-semibold text-red-700 text-sm">${item.judul}</h3>
-          <p class="text-xs text-gray-600 line-clamp-2">${item.deskripsi_pendek}</p>
-          <button class="btn btn-xs btn-link text-red-600 px-0 mt-1" onclick="showModal('${item.judul}', '${item.image_url}', \`${item.deskripsi_lengkap.replace(/`/g, "'")}\`)">Read More</button>
-        </div>
-      `;
-      galeriContainer.appendChild(card);
-    });
+<!-- Script -->
+<script>
+  function showDetail(text) {
+    document.getElementById("modal-description").innerText = text;
+    document.getElementById("modal-detail").showModal();
   }
-
-  function renderPagination() {
-    const totalPages = Math.ceil(galeriData.length / itemsPerPage);
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
-
-    for (let i = 1; i <= totalPages; i++) {
-      const btn = document.createElement("button");
-      btn.textContent = i;
-      btn.className = `btn btn-sm ${i === currentPage ? 'btn-error' : 'btn-outline btn-error'}`;
-      btn.onclick = () => {
-        currentPage = i;
-        renderGaleri(currentPage);
-        renderPagination();
-      };
-      pagination.appendChild(btn);
-    }
-  }
-
-  function showModal(judul, img, desc) {
-    document.getElementById("modalJudul").textContent = judul;
-    document.getElementById("modalImg").src = img;
-    document.getElementById("modalDeskripsi").textContent = desc;
-    document.getElementById("deskripsiModal").showModal();
-  }
-
-  renderGaleri(currentPage);
-  renderPagination();
   lucide.createIcons();
-</script></body>
+</script>
+
+</body>
 </html>
