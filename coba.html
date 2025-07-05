@@ -1,117 +1,97 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simulasi Tarif Carter - Logistik Kita</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logistik Kita - Kirim Barang Aman, Pikiranpun Tenang</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#ba1a1a',
-          },
-        },
-      },
-    }
-  </script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.6.0/dist/full.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="bg-gray-100 font-sans">
-  <div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl">
-    <div class="flex items-center gap-4 mb-6">
-      <img src="logo_logistikkita.png" alt="Logo Logistik Kita" class="w-12 h-12"/>
-      <h1 class="text-2xl font-bold text-primary">📦 Simulasi Tarif Carter</h1>
-    </div><div class="form-control mb-4">
-  <label class="label">📍 Lokasi Garasi</label>
-  <input type="text" class="input input-bordered bg-gray-100" value="Logistik Kita" disabled />
-</div>
-
-<div id="penjemputan-container">
-  <label class="label">🚚 Lokasi Penjemputan</label>
-  <div class="flex gap-2 mb-2">
-    <input type="text" class="input input-bordered w-full lokasi-jemput" placeholder="Nama Lokasi" />
-    <input type="number" class="input input-bordered w-32 km-jemput" placeholder="Jarak (km)" />
+<body class="bg-white text-gray-800">
+  <!-- Navbar -->
+  <div class="navbar bg-white px-6 py-4 shadow-md">
+    <div class="flex-1">
+      <img src="logo_logistikkita.png" alt="Logo" class="w-10 mr-3" />
+      <span class="text-xl font-bold text-red-700">Logistik Kita</span>
+    </div>
+    <div class="hidden md:flex gap-6">
+      <a href="#tentang" class="hover:text-red-600">Tentang</a>
+      <a href="#layanan" class="hover:text-red-600">Layanan</a>
+      <a href="#galeri" class="hover:text-red-600">Galeri</a>
+      <a href="#kontak" class="hover:text-red-600">Kontak</a>
+    </div>
   </div>
-</div>
-<button onclick="tambahJemput()" class="btn btn-outline btn-sm btn-error mb-4">+ Tambah Lokasi Jemput</button>
 
-<div id="bongkar-container">
-  <label class="label">🏁 Lokasi Bongkar</label>
-  <div class="flex gap-2 mb-2">
-    <input type="text" class="input input-bordered w-full lokasi-bongkar" placeholder="Nama Lokasi" />
-    <input type="number" class="input input-bordered w-32 km-bongkar" placeholder="Jarak (km)" />
-  </div>
-</div>
-<button onclick="tambahBongkar()" class="btn btn-outline btn-sm btn-error mb-4">+ Tambah Lokasi Bongkar</button>
+  <!-- Hero -->
+  <section class="bg-red-700 text-white py-20 px-6 text-center">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h1>
+    <p class="text-lg md:text-xl mb-6">Layanan logistik terpercaya, cepat, dan hemat ke seluruh Nusantara</p>
+    <a href="#layanan" class="btn btn-outline btn-white">Lihat Layanan</a>
+  </section>
 
-<div class="form-control mb-2">
-  <label class="cursor-pointer label">
-    <input type="checkbox" id="kembaliGarasi" class="checkbox" onchange="toggleKembaliGarasi()" />
-    <span class="label-text">🔁 Kembali ke Garasi</span>
-  </label>
-</div>
-<div id="kembaliFields" class="mb-4 hidden">
-  <input type="text" class="input input-bordered mb-2" value="Logistik Kita" readonly />
-  <input type="number" class="input input-bordered" id="jarakKembali" placeholder="Jarak kembali ke garasi (km)" />
-</div>
+  <!-- Tentang Kami -->
+  <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-red-700 mb-4">Tentang Kami</h2>
+    <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada yang berkomitmen untuk menghadirkan layanan logistik terbaik. Dengan armada terpercaya dan jangkauan luas, kami melayani pengiriman dari dalam kota hingga ke pelosok negeri.</p>
+  </section>
 
-<div class="form-control mb-4">
-  <label class="label">📦 Nama Barang</label>
-  <input type="text" class="input input-bordered" id="namaBarang" />
-</div>
-
-<div class="form-control mb-4">
-  <label class="label">⚖️ Berat Barang (kg)</label>
-  <input type="number" class="input input-bordered" id="beratBarang" />
-</div>
-
-<div class="form-control mb-2">
-  <label class="cursor-pointer label">
-    <input type="checkbox" id="tkbmCheck" class="checkbox" onchange="toggleTKBM()" />
-    <span class="label-text">🧑‍🔧 Gunakan TKBM</span>
-  </label>
-</div>
-<div id="tkbmOptions" class="mb-4 hidden">
-  <select class="select select-bordered w-full" id="tkbmValue">
-    <option value="75000">Rp75.000</option>
-    <option value="90000">Rp90.000</option>
-    <option value="100000">Rp100.000</option>
-  </select>
-</div>
-
-<div class="form-control mb-4">
-  <label class="label">🕑 Jadwal Pengiriman</label>
-  <input type="datetime-local" class="input input-bordered" id="jadwalPengiriman" />
-</div>
-
-<div class="form-control mb-6">
-  <label class="label">👤 Jenis Customer</label>
-  <label class="label cursor-pointer">
-    <input type="radio" name="tipeCustomer" value="perorangan" class="radio" checked />
-    <span class="label-text ml-2">Perorangan</span>
-  </label>
-  <label class="label cursor-pointer">
-    <input type="radio" name="tipeCustomer" value="perusahaan" class="radio" />
-    <span class="label-text ml-2">Perusahaan</span>
-  </label>
-</div>
-
-<button onclick="cekTarif()" class="btn btn-error w-full">🧮 Cek Tarif</button>
-
-  </div>  <div id="hasilPopup" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-2xl w-full max-w-md">
-      <h2 class="text-xl font-bold mb-4">💰 Estimasi Tarif Carter</h2>
-      <div id="hasilTarif"></div>
-      <p class="text-sm text-gray-500 mt-4">
-        * Estimasi harga belum termasuk biaya toll dan lain-lain jika dibutuhkan<br>
-        ** Silahkan hubungi admin Logistik Kita jika ada yang ditanyakan
-      </p>
-      <div class="text-end mt-4">
-        <button onclick="tutupPopup()" class="btn btn-outline btn-sm">Tutup</button>
+  <!-- Layanan Kami -->
+  <section id="layanan" class="bg-gray-100 py-16 px-6">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center text-red-700 mb-10">Layanan Kami</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Prioritas</h3>
+          <p>Carter armada pickup (hingga 2,5 Ton) untuk pengiriman cepat, fleksibel, dan langsung ke tujuan.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Reguler</h3>
+          <p>Pengiriman barang dengan tarif per kilogram yang ekonomis dan efisien, cocok untuk bisnis dan personal.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Nusantara</h3>
+          <p>Kami bantu forwarding barang ke ekspedisi terpercaya, menjangkau pelosok Nusantara dari Sabang sampai Merauke.</p>
+        </div>
       </div>
     </div>
-  </div><script>
-// Tambahkan script JS seperti tambahJemput, tambahBongkar, cekTarif di bawah sini sesuai versi sebelumnya
-</script></body>
+  </section>
+
+  <!-- Galeri -->
+  <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold text-red-700 mb-10 text-center">Galeri Armada</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <img src="https://via.placeholder.com/300x200?text=Armada+1" class="rounded shadow" alt="Armada 1">
+      <img src="https://via.placeholder.com/300x200?text=Armada+2" class="rounded shadow" alt="Armada 2">
+      <img src="https://via.placeholder.com/300x200?text=Armada+3" class="rounded shadow" alt="Armada 3">
+      <img src="https://via.placeholder.com/300x200?text=Armada+4" class="rounded shadow" alt="Armada 4">
+    </div>
+  </section>
+
+  <!-- Kontak -->
+  <section id="kontak" class="bg-gray-100 py-16 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-red-700 mb-6 text-center">Kontak Kami</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <p class="mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/6285813487753" class="text-red-600">0858-1348-7753</a></p>
+          <p class="mb-2"><strong>Email:</strong> logistikkita.assist@gmail.com</p>
+          <p class="mb-2"><strong>Instagram:</strong> <a href="https://instagram.com/logistikkita.official" class="text-red-600">@logistikkita.official</a></p>
+          <p class="mb-2"><strong>Facebook:</strong> <a href="https://www.facebook.com/share/1Ab7aTTn98/" class="text-red-600">Logistik Kita</a></p>
+          <p class="mb-2"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/puput-wicaksana" class="text-red-600">Puput Wicaksana</a></p>
+        </div>
+        <form class="space-y-4">
+          <input type="text" placeholder="Nama" class="input input-bordered w-full" />
+          <input type="email" placeholder="Email" class="input input-bordered w-full" />
+          <textarea placeholder="Pesan" class="textarea textarea-bordered w-full"></textarea>
+          <button class="btn btn-error w-full">Kirim Pesan</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-red-700 text-white text-center py-6 mt-10">
+    <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
+  </footer>
+</body>
 </html>
