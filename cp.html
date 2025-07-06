@@ -3,122 +3,166 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Logistik Kita - Kirim Barang Aman, Pikiranpun Tenang">
-  <meta name="author" content="Logistik Kita">
-  <title>Logistik Kita - Landing Page</title>
+  <title>Logistik Kita - Profesional & Aman</title>
+  <meta name="description" content="Layanan pengiriman barang dan carter armada terbaik dari Mojokerto ke seluruh Indonesia">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              light: '#f87171',
-              DEFAULT: '#dc2626',
-              dark: '#991b1b',
-            },
-            background: {
-              DEFAULT: '#ffffff',
-              dark: '#1f2937'
-            },
-            text: {
-              DEFAULT: '#1f2937',
-              dark: '#f9fafb'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css" />
   <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .navbar-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(6px);
+      background-color: rgba(220, 38, 38, 0.95);
+    }
+  </style>
 </head>
-<body class="bg-background text-text dark:bg-background-dark dark:text-text-dark transition duration-300">
-  <header class="bg-primary text-white dark:bg-gray-900">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <img src="logo_logistikkita.png" alt="Logo" class="w-10 h-10">
-        <h1 class="text-xl font-bold">Logistik Kita</h1>
+<body class="bg-white text-gray-800">
+
+<!-- Drawer -->
+<div class="drawer drawer-start">
+  <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+
+    <!-- Navbar -->
+    <div class="navbar navbar-sticky text-white px-6 py-4 shadow-md">
+      <div class="flex-none md:hidden">
+        <label for="drawer-toggle" class="btn btn-ghost btn-circle">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </label>
+      </div>
+      <div class="flex-1 flex items-center gap-3">
+        <img src="logo_logistikkita.png" alt="Logo" class="w-10 h-10" />
+        <span class="text-xl font-bold tracking-wide">Logistik Kita</span>
       </div>
       <div class="hidden md:flex gap-6 font-medium">
-        <a href="#tentang" class="hover:text-gray-200">Tentang</a>
-        <a href="#layanan" class="hover:text-gray-200">Layanan</a>
-        <a href="#kontak" class="hover:text-gray-200">Kontak</a>
-        <button id="darkToggle" class="ml-4">
-          <i data-lucide="moon" class="w-5 h-5"></i>
-        </button>
+        <a href="#tentang" class="hover:text-yellow-200">Tentang</a>
+        <a href="#layanan" class="hover:text-yellow-200">Layanan</a>
+        <a href="#galeri" class="hover:text-yellow-200">Galeri</a>
+        <a href="#kontak" class="hover:text-yellow-200">Kontak</a>
       </div>
     </div>
-  </header>
 
-  <section class="min-h-[80vh] flex items-center justify-center text-center bg-gradient-to-br from-primary to-primary-dark text-white px-6">
-    <div>
-      <i data-lucide="truck" class="mx-auto w-16 h-16 mb-6"></i>
-      <h2 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h2>
-      <p class="text-lg md:text-xl mb-6">Layanan logistik profesional untuk seluruh Indonesia</p>
-      <a href="#layanan" class="bg-white text-primary font-semibold py-2 px-6 rounded shadow hover:bg-gray-100 transition">Lihat Layanan</a>
-    </div>
-  </section>
+    <!-- Hero -->
+    <section class="bg-gradient-to-br from-red-700 to-red-600 text-white py-20 px-6 text-center" data-aos="fade-up">
+      <i data-lucide="truck" class="w-20 h-20 mx-auto mb-4"></i>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h1>
+      <p class="text-lg md:text-xl mb-6">Layanan logistik profesional dan terpercaya</p>
+      <a href="#layanan" class="btn btn-outline text-white border-white">Lihat Layanan</a>
+    </section>
 
-  <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
-    <div class="mb-6">
-      <h3 class="text-3xl font-bold text-primary">Tentang Kami</h3>
-    </div>
-    <p class="text-lg leading-relaxed">Logistik Kita adalah penyedia jasa pengiriman dan carter armada terpercaya dari Mojokerto. Dengan armada handal, pengemudi berpengalaman, dan komitmen terhadap kepuasan pelanggan, kami mengantarkan barang Anda dengan aman, cepat, dan profesional.</p>
-  </section>
-
-  <section id="layanan" class="py-16 bg-gray-50 dark:bg-gray-800 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="mb-10 text-center">
-        <h3 class="text-3xl font-bold text-primary mb-2">Layanan Kami</h3>
-        <p class="text-gray-600 dark:text-gray-300">Berikut layanan unggulan Logistik Kita:</p>
+    <!-- Tentang -->
+    <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto" data-aos="fade-up">
+      <div class="flex items-center gap-4 mb-4">
+        <i data-lucide="info" class="text-red-700 w-6 h-6"></i>
+        <h2 class="text-3xl font-bold text-red-700">Tentang Kita</h2>
       </div>
-      <div class="grid md:grid-cols-3 gap-6">
-        <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 text-center">
-          <i data-lucide="clock" class="w-8 h-8 text-primary mb-3 mx-auto"></i>
-          <h4 class="text-xl font-bold text-primary mb-2">Prioritas</h4>
-          <p>Layanan cepat dan fleksibel untuk kebutuhan darurat atau pengiriman khusus.</p>
+      <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada terpercaya berbasis di Mojokerto. Kami siap melayani kebutuhan logistik Anda ke seluruh penjuru Nusantara.</p>
+    </section>
+
+    <!-- Layanan -->
+    <section id="layanan" class="bg-gray-100 py-16 px-6" data-aos="fade-up">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+          <h2 class="text-3xl font-bold text-red-700 mb-2">Layanan Kita</h2>
         </div>
-        <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 text-center">
-          <i data-lucide="scale" class="w-8 h-8 text-primary mb-3 mx-auto"></i>
-          <h4 class="text-xl font-bold text-primary mb-2">Reguler</h4>
-          <p>Pengiriman ekonomis berdasarkan berat dan volume barang.</p>
-        </div>
-        <div class="bg-white dark:bg-gray-900 rounded-lg shadow p-6 text-center">
-          <i data-lucide="globe" class="w-8 h-8 text-primary mb-3 mx-auto"></i>
-          <h4 class="text-xl font-bold text-primary mb-2">Forwarding</h4>
-          <p>Kami bantu kirimkan melalui ekspedisi terpercaya ke seluruh Indonesia.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-lg shadow p-6 text-center">
+            <i data-lucide="clock" class="w-10 h-10 text-red-600 mb-3 mx-auto"></i>
+            <h3 class="text-xl font-bold mb-2 text-red-600">Prioritas</h3>
+            <p>Carter armada cepat untuk pengiriman mendesak.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6 text-center">
+            <i data-lucide="scale" class="w-10 h-10 text-red-600 mb-3 mx-auto"></i>
+            <h3 class="text-xl font-bold mb-2 text-red-600">Reguler</h3>
+            <p>Pengiriman hemat berdasarkan berat.</p>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6 text-center">
+            <i data-lucide="globe" class="w-10 h-10 text-red-600 mb-3 mx-auto"></i>
+            <h3 class="text-xl font-bold mb-2 text-red-600">Forwarding</h3>
+            <p>Kirim ke seluruh Indonesia melalui ekspedisi terpercaya.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="kontak" class="py-16 px-6 max-w-4xl mx-auto">
-    <h3 class="text-3xl font-bold text-primary mb-6 text-center">Kontak Kami</h3>
-    <div class="grid md:grid-cols-2 gap-8">
-      <div class="space-y-2 text-lg">
-        <p><i data-lucide="phone" class="inline w-4 h-4 me-2"></i> 0858-1348-7753</p>
-        <p><i data-lucide="mail" class="inline w-4 h-4 me-2"></i> logistikkita.assist@gmail.com</p>
-        <p><i data-lucide="map-pin" class="inline w-4 h-4 me-2"></i> Mojokerto, Jawa Timur</p>
+    <!-- Galeri -->
+    <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto" data-aos="fade-up">
+      <div class="flex items-center gap-3 justify-center mb-10">
+        <i data-lucide="image" class="text-red-700 w-6 h-6"></i>
+        <h2 class="text-3xl font-bold text-red-700">Galeri Armada</h2>
       </div>
-      <form class="space-y-4">
-        <input type="text" placeholder="Nama" class="input input-bordered w-full" />
-        <input type="email" placeholder="Email" class="input input-bordered w-full" />
-        <textarea placeholder="Pesan" class="textarea textarea-bordered w-full"></textarea>
-        <button class="btn btn-primary w-full">Kirim Pesan</button>
-      </form>
-    </div>
-  </section>
+      <div class="splide" aria-label="Galeri Armada">
+        <div class="splide__track">
+          <ul class="splide__list">
+            <li class="splide__slide"><img src="https://via.placeholder.com/800x450?text=Armada+1" class="rounded shadow" /></li>
+            <li class="splide__slide"><img src="https://via.placeholder.com/800x450?text=Armada+2" class="rounded shadow" /></li>
+            <li class="splide__slide"><img src="https://via.placeholder.com/800x450?text=Armada+3" class="rounded shadow" /></li>
+          </ul>
+        </div>
+      </div>
+    </section>
 
-  <footer class="bg-primary text-white text-center py-6">
-    <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
-  </footer>
+    <!-- Kontak -->
+    <section id="kontak" class="bg-gray-100 py-16 px-6" data-aos="fade-up">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-red-700 mb-6 text-center">Kontak Kita</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2 text-lg">
+            <p><i data-lucide="phone" class="inline w-4 h-4 me-2"></i> 0858-1348-7753</p>
+            <p><i data-lucide="mail" class="inline w-4 h-4 me-2"></i> logistikkita.assist@gmail.com</p>
+            <p><i data-lucide="map-pin" class="inline w-4 h-4 me-2"></i> Mojokerto, Jawa Timur</p>
+          </div>
+          <form class="space-y-4">
+            <input type="text" placeholder="Nama" class="input input-bordered w-full" />
+            <input type="email" placeholder="Email" class="input input-bordered w-full" />
+            <textarea placeholder="Pesan" class="textarea textarea-bordered w-full"></textarea>
+            <button class="btn btn-error w-full">Kirim Pesan</button>
+          </form>
+        </div>
+      </div>
+    </section>
 
-  <script>
-    lucide.createIcons();
-    document.getElementById('darkToggle').addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-    });
-  </script>
+    <!-- Footer -->
+    <footer class="bg-red-700 text-white text-center py-6 mt-10">
+      <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="drawer-side z-50">
+    <label for="drawer-toggle" class="drawer-overlay"></label>
+    <aside class="menu p-4 w-64 bg-white text-base-content">
+      <div class="flex items-center gap-2 mb-6">
+        <img src="logo_logistikkita.png" class="w-10" />
+        <span class="font-bold text-lg text-red-700">Logistik Kita</span>
+      </div>
+      <ul class="menu menu-vertical font-medium">
+        <li><a href="#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i>Tentang</a></li>
+        <li><a href="#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i>Layanan</a></li>
+        <li><a href="#galeri"><i data-lucide="image" class="w-4 h-4 me-1"></i>Galeri</a></li>
+        <li><a href="#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i>Kontak</a></li>
+      </ul>
+    </aside>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  new Splide('.splide', {
+    type: 'loop',
+    perPage: 1,
+    autoplay: true,
+    interval: 4000,
+    pauseOnHover: true
+  }).mount();
+  AOS.init();
+  lucide.createIcons();
+</script>
 </body>
 </html>
