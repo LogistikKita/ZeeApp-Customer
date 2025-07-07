@@ -9,9 +9,9 @@
   <style>
     :root {
       --primary: #c8102e;
-      --dark: #111111;
+      --dark: #111;
       --gray: #f4f4f4;
-      --light: #ffffff;
+      --light: #fff;
     }
 
     body {
@@ -21,7 +21,7 @@
     }
 
     body.dark-mode {
-      background-color: #111;
+      background-color: var(--dark);
       color: #eee;
     }
 
@@ -35,7 +35,7 @@
     }
 
     .navbar-brand img {
-      height: 38px;
+      height: 40px;
     }
 
     .btn-logistik {
@@ -50,20 +50,23 @@
       background-color: #9f0b20;
     }
 
-    .hero-carousel .carousel-item img {
-      height: 70vh;
-      object-fit: cover;
-      filter: brightness(70%);
-    }
-
     .carousel-caption {
-      bottom: 20%;
+      bottom: 12%;
+      left: 5%;
+      right: 5%;
+      text-align: left;
     }
 
     .carousel-caption h1 {
-      font-size: 2.8rem;
+      font-size: 2.2rem;
       font-weight: bold;
+      line-height: 1.3;
       text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+    }
+
+    .carousel-caption p {
+      font-size: 1rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
     }
 
     .section-title {
@@ -80,21 +83,30 @@
       font-size: 2rem;
       color: var(--primary);
     }
+
+    .testimoni-card {
+      min-width: 280px;
+    }
+
+    .dark-toggle-btn {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
 
-<!-- Toggle Dark Mode -->
-<div class="position-fixed top-0 end-0 p-3 z-3">
-  <button class="btn btn-sm btn-outline-light" onclick="toggleDarkMode()">🌓</button>
+<!-- Dark Mode Toggle -->
+<div class="dark-toggle-btn">
+  <button class="btn btn-sm btn-outline-secondary bg-white shadow" onclick="toggleDarkMode()">🌓</button>
 </div>
 
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#">
-      <img src="assets/logo_logistikkita.png" alt="Logistik Kita" />
-    </a>
+    <a class="navbar-brand" href="#"><img src="assets/logo_logistikkita.png" alt="Logistik Kita" /></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -103,6 +115,7 @@
         <li class="nav-item"><a href="#" class="nav-link active">Beranda</a></li>
         <li class="nav-item"><a href="#layanan" class="nav-link">Layanan</a></li>
         <li class="nav-item"><a href="#portofolio" class="nav-link">Portofolio</a></li>
+        <li class="nav-item"><a href="#testimoni" class="nav-link">Testimoni</a></li>
         <li class="nav-item"><a href="#kontak" class="nav-link">Kontak</a></li>
       </ul>
     </div>
@@ -110,30 +123,27 @@
 </nav>
 
 <!-- Hero Carousel -->
-<div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="assets/logo_logistikkita.png" class="d-block w-100" alt="Slide 1">
-      <div class="carousel-caption text-start" data-aos="fade-right">
-        <h1 data-aos="zoom-in">Solusi Pengiriman Mojokerto & Seluruh Jawa</h1>
-        <p data-aos="fade-up">Cepat, aman, dan terpercaya – hanya dari Logistik Kita.</p>
-        <a href="#layanan" class="btn btn-logistik mt-3" data-aos="fade-up" data-aos-delay="200">Cek Layanan</a>
-      </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://source.unsplash.com/1600x700/?warehouse,transport" class="d-block w-100" alt="Slide 2">
-      <div class="carousel-caption text-end" data-aos="fade-left">
-        <h1 data-aos="zoom-in-left">Armada Siap Antar & Jemput Barang</h1>
-        <p data-aos="fade-left">Dari barang kecil sampai muatan besar</p>
+      <img src="assets/logo_logistikkita.png" class="d-block w-100" style="height:70vh; object-fit:cover; filter:brightness(70%)" alt="Hero">
+      <div class="carousel-caption" data-aos="fade-up">
+        <h1>Solusi Pengiriman Mojokerto & Seluruh Jawa</h1>
+        <p>Cepat, aman, dan terpercaya – hanya dari Logistik Kita.</p>
+        <a href="#layanan" class="btn btn-logistik mt-3">Cek Layanan</a>
       </div>
     </div>
   </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon bg-dark rounded-circle"></span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-    <span class="carousel-control-next-icon bg-dark rounded-circle"></span>
-  </button>
+</div>
+
+<!-- Slide Menu Mobile -->
+<div class="bg-white shadow-sm d-lg-none py-2">
+  <div class="d-flex overflow-auto px-3 gap-3">
+    <a href="#layanan" class="btn btn-outline-dark flex-shrink-0">Layanan</a>
+    <a href="#portofolio" class="btn btn-outline-dark flex-shrink-0">Portofolio</a>
+    <a href="#testimoni" class="btn btn-outline-dark flex-shrink-0">Testimoni</a>
+    <a href="#kontak" class="btn btn-outline-dark flex-shrink-0">Kontak</a>
+  </div>
 </div>
 
 <!-- Layanan -->
@@ -146,7 +156,7 @@
           <div class="card-body">
             <div class="card-icon mb-3">🚛</div>
             <h5>Pengiriman Reguler</h5>
-            <p>Layanan hemat dan aman antar kota, cocok untuk usaha dan individu.</p>
+            <p>Hemat dan aman antar kota, cocok untuk usaha dan individu.</p>
           </div>
         </div>
       </div>
@@ -187,43 +197,26 @@
 <!-- Testimoni -->
 <section id="testimoni" class="py-5 bg-white">
   <div class="container">
-    <h2 class="section-title text-center mb-5" data-aos="fade-up">Apa Kata Mereka</h2>
-    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner text-center">
-        <div class="carousel-item active">
-          <img src="assets/logo_logistikkita.png" class="rounded-circle mb-3" width="80" height="80" alt="Testimoni">
-          <blockquote class="blockquote">
-            <p class="mb-2">"Layanan terbaik sejauh ini. Kiriman kami cepat sampai dan aman!"</p>
-            <footer class="blockquote-footer">Pak Joko, UMKM Mojokerto</footer>
-          </blockquote>
-        </div>
-        <div class="carousel-item">
-          <img src="https://source.unsplash.com/80x80/?man,face" class="rounded-circle mb-3" alt="Testimoni">
-          <blockquote class="blockquote">
-            <p class="mb-2">"Sistem dashboard dan laporan pengiriman sangat memudahkan kami."</p>
-            <footer class="blockquote-footer">Bu Rina, Logistik Toko Online</footer>
-          </blockquote>
-        </div>
-        <div class="carousel-item">
-          <img src="https://source.unsplash.com/80x80/?woman,face" class="rounded-circle mb-3" alt="Testimoni">
-          <blockquote class="blockquote">
-            <p class="mb-2">"Suka sama armadanya, rapi dan sopan driver-nya."</p>
-            <footer class="blockquote-footer">Dewi, Freelancer</footer>
-          </blockquote>
-        </div>
+    <h2 class="section-title text-center mb-4" data-aos="fade-up">Apa Kata Mereka</h2>
+    <div class="d-flex overflow-auto gap-3 px-2">
+      <div class="card testimoni-card shadow-sm p-3" data-aos="fade-right">
+        <p>"Pengiriman cepat & aman. Recommended!"</p>
+        <strong>– Budi, Mojokerto</strong>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon bg-dark rounded-circle"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon bg-dark rounded-circle"></span>
-      </button>
+      <div class="card testimoni-card shadow-sm p-3" data-aos="fade-up" data-aos-delay="100">
+        <p>"Armada lengkap, sopirnya ramah."</p>
+        <strong>– Sari, Jombang</strong>
+      </div>
+      <div class="card testimoni-card shadow-sm p-3" data-aos="fade-left" data-aos-delay="200">
+        <p>"Dashboardnya sangat membantu buat rekap pengiriman."</p>
+        <strong>– Ahmad, Surabaya</strong>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- CTA & Kontak -->
-<section id="kontak" class="py-5 text-center">
+<section id="kontak" class="py-5 text-center bg-light">
   <div class="container" data-aos="zoom-in">
     <h2 class="section-title">Hubungi Kami</h2>
     <p class="mb-4">Tertarik bekerja sama atau punya pertanyaan? Hubungi kami langsung.</p>
@@ -257,12 +250,11 @@
     document.body.classList.add('dark-mode');
   }
 
-  // Sticky navbar on scroll
+  // Sticky navbar
   window.addEventListener('scroll', () => {
     const nav = document.querySelector('.navbar');
     nav.classList.toggle('sticky', window.scrollY > 50);
   });
 </script>
-
 </body>
 </html>
