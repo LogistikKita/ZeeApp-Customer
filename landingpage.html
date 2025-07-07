@@ -3,14 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Logistik Kita | Profesional & Aman</title>
+  <title>Logistik Kita | Solusi Pengiriman Andal</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
     }
     .bg-logistik {
-      background-color: #b30000; /* merah khas */
+      background-color: #b30000;
     }
     .text-logistik {
       color: #b30000;
@@ -18,74 +23,130 @@
     .btn-logistik {
       background-color: #b30000;
       color: white;
+      border-radius: 50px;
+      padding: 10px 30px;
+      font-weight: bold;
     }
     .btn-logistik:hover {
       background-color: #8c0000;
+    }
+    .carousel-item img {
+      height: 420px;
+      object-fit: cover;
+      filter: brightness(90%);
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">🚛 Logistik Kita</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link active" href="#">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Form Customer</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Admin</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Rekap</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Cek Tarif</a></li>
-        </ul>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="#">🚛 Logistik Kita</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navContent">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link active" href="#">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Layanan</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Portofolio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- CAROUSEL HERO -->
+<div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="https://source.unsplash.com/1600x420/?logistics,truck" class="d-block w-100" alt="Slide 1">
+      <div class="carousel-caption d-none d-md-block">
+        <h1 class="text-white">Solusi Pengiriman Darat Cepat & Aman</h1>
+        <p>Layanan Mojokerto dan sekitarnya ke seluruh Jawa</p>
+        <a href="#" class="btn btn-logistik">Cek Tarif</a>
       </div>
     </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="py-5 text-center bg-light">
-    <div class="container">
-      <h1 class="display-5 fw-bold text-logistik">Layanan Pengiriman & Carter Armada</h1>
-      <p class="lead mb-4">Dari Mojokerto ke seluruh Jawa dengan cepat, aman, dan terpercaya 💼📦</p>
-      <a href="#" class="btn btn-logistik btn-lg">Cek Tarif Sekarang</a>
-    </div>
-  </section>
-
-  <!-- Informasi Layanan -->
-  <section class="py-5">
-    <div class="container">
-      <div class="row text-center">
-        <div class="col-md-4 mb-4">
-          <h4 class="text-logistik">📦 Pengiriman Reguler</h4>
-          <p>Layanan cepat & hemat ke berbagai kota tujuan.</p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h4 class="text-logistik">🚚 Carter Armada</h4>
-          <p>Armada siap jemput & antar barang besar atau banyak.</p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h4 class="text-logistik">📈 Laporan Lengkap</h4>
-          <p>Rekap pengiriman & keuntungan harian otomatis.</p>
-        </div>
+    <div class="carousel-item">
+      <img src="https://source.unsplash.com/1600x420/?cargo,warehouse" class="d-block w-100" alt="Slide 2">
+      <div class="carousel-caption d-none d-md-block">
+        <h1 class="text-white">Gudang & Distribusi Terintegrasi</h1>
+        <p>Kami tangani barang Anda dari awal hingga akhir</p>
       </div>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-dark text-white pt-4 pb-2">
-    <div class="container text-center">
-      <p class="mb-1">© 2025 Logistik Kita. All rights reserved.</p>
-      <div class="d-flex justify-content-center gap-3">
-        <a href="#" class="text-white text-decoration-none">📞 WhatsApp</a>
-        <a href="#" class="text-white text-decoration-none">📸 Instagram</a>
-        <a href="#" class="text-white text-decoration-none">🌐 Website</a>
+    <div class="carousel-item">
+      <img src="https://source.unsplash.com/1600x420/?delivery,truck" class="d-block w-100" alt="Slide 3">
+      <div class="carousel-caption d-none d-md-block">
+        <h1 class="text-white">Carter Armada Fleksibel</h1>
+        <p>Armada berbagai ukuran sesuai kebutuhan Anda</p>
       </div>
     </div>
-  </footer>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+  </button>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- LAYANAN UTAMA -->
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center section-title text-logistik">Layanan Kami</h2>
+    <div class="row text-center">
+      <div class="col-md-4 mb-4">
+        <h5>📦 Pengiriman Reguler</h5>
+        <p>Harga kompetitif, tepat waktu, dan aman.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>🚚 Carter Armada</h5>
+        <p>Fleksibel untuk kebutuhan skala kecil hingga besar.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>📊 Laporan & Tracking</h5>
+        <p>Setiap transaksi tercatat otomatis dan bisa dilacak.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTOFOLIO -->
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center section-title text-dark">Portofolio Pengiriman</h2>
+    <div class="row g-3">
+      <div class="col-md-4">
+        <img src="https://source.unsplash.com/500x300/?truck,logistics" class="img-fluid rounded shadow-sm" alt="Project 1">
+      </div>
+      <div class="col-md-4">
+        <img src="https://source.unsplash.com/500x300/?freight,transport" class="img-fluid rounded shadow-sm" alt="Project 2">
+      </div>
+      <div class="col-md-4">
+        <img src="https://source.unsplash.com/500x300/?cargo,van" class="img-fluid rounded shadow-sm" alt="Project 3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white pt-4 pb-2">
+  <div class="container text-center">
+    <p class="mb-1">© 2025 Logistik Kita • Mojokerto</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="#" class="text-white text-decoration-none">📞 WhatsApp</a>
+      <a href="#" class="text-white text-decoration-none">📸 Instagram</a>
+      <a href="#" class="text-white text-decoration-none">🌐 Website</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
