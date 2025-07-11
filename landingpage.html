@@ -34,15 +34,6 @@
       color: white;
       text-shadow: 1px 1px 4px black;
     }
-    .btn-red {
-      background-color: white;
-      color: #121212;
-      border-radius: 25px;
-      font-weight: 600;
-    }
-    .btn-red:hover {
-      background-color: #e4e4e4;
-    }
     .section-slide-left, .section-slide-right {
       opacity: 0;
       transform: translateX(80px);
@@ -56,7 +47,6 @@
       transform: translateX(0);
       opacity: 1;
     }
-
     .item-slide {
       opacity: 0;
       transform: translateX(50px);
@@ -66,7 +56,6 @@
       opacity: 1;
       transform: translateX(0);
     }
-
     .testimoni-card {
       background: #1e1e1e;
       padding: 20px;
@@ -74,7 +63,6 @@
       box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
       margin-bottom: 20px;
     }
-
     .galeri-img {
       width: 100%;
       aspect-ratio: 9/16;
@@ -86,7 +74,6 @@
     .galeri-img:hover {
       transform: scale(1.03);
     }
-
     footer {
       background-color: #000;
       color: #aaa;
@@ -105,6 +92,7 @@
   </style>
 </head>
 <body onload="window.scrollTo({top: 0, behavior: 'smooth'})">
+
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
@@ -115,7 +103,6 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link" href="#hero">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="#layanan">Layanan</a></li>
           <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
           <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
           <li class="nav-item dropdown">
@@ -137,30 +124,12 @@
     </div>
   </section>
 
-  <!-- Menu & Layanan -->
-  <section id="layanan" class="py-5 text-center section-slide-left">
-    <div class="container">
-      <h2 class="text-light mb-4">Menu & Layanan</h2>
-      <div class="row text-start">
-        <div class="col-md-8 mx-auto">
-          <ul class="list-group">
-            <li class="list-group-item bg-dark text-light border-secondary item-slide"><a class="text-white" href="#" onclick="alert('Masih dalam pengembangan')">Form Customer</a> - Input pengiriman barang oleh pelanggan</li>
-            <li class="list-group-item bg-dark text-light border-secondary item-slide"><a class="text-white" href="#">Admin Dashboard</a> - Kelola data & status pengiriman</li>
-            <li class="list-group-item bg-dark text-light border-secondary item-slide"><a class="text-white" href="#">Owner Panel</a> - Laporan keuangan dan profit</li>
-            <li class="list-group-item bg-dark text-light border-secondary item-slide"><a class="text-white" href="#">Rekap & Laporan</a> - Rekap bulanan dan analisis</li>
-            <li class="list-group-item bg-dark text-light border-secondary item-slide"><a class="text-white" href="#">Cek Tarif</a> - Simulasi tarif carter atau per kg</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Testimoni -->
   <section id="testimoni" class="py-5 section-slide-right">
     <div class="container">
       <h2 class="text-center text-light mb-4">Testimoni Pelanggan</h2>
       <div class="row justify-content-center">
-        <div class="col-md-4 item-slide">
+        <div class="col-md-4">
           <div class="testimoni-card text-center">
             <p>"Pengiriman cepat dan pelayanan luar biasa!"</p>
             <strong>- Pak Ahmad, Sidoarjo</strong>
@@ -187,9 +156,15 @@
     <div class="container">
       <h2 class="text-center text-light mb-4">Armada & Dokumentasi</h2>
       <div class="row">
-        <div class="col-md-4 item-slide"><img src="logo_logistikkita.png" class="galeri-img" alt="Armada 1"></div>
-        <div class="col-md-4 item-slide"><img src="logo_logistikkita.png" class="galeri-img" alt="Armada 2"></div>
-        <div class="col-md-4 item-slide"><img src="logo_logistikkita.png" class="galeri-img" alt="Dokumentasi"></div>
+        <div class="col-md-4">
+          <img src="logo_logistikkita.png" class="galeri-img" alt="Armada 1">
+        </div>
+        <div class="col-md-4 item-slide">
+          <img src="logo_logistikkita.png" class="galeri-img" alt="Armada 2">
+        </div>
+        <div class="col-md-4 item-slide">
+          <img src="logo_logistikkita.png" class="galeri-img" alt="Dokumentasi">
+        </div>
       </div>
     </div>
   </section>
