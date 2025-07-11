@@ -1,159 +1,197 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <title>Logistik Kita - Profesional & Aman</title>
+  <link rel="icon" href="https://img.icons8.com/fluency/48/instagram-new.png" type="image/png">
 
   <style>
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 0;
     }
-
     header {
       background: #dc3545;
       color: white;
-      padding: 20px 0;
+      padding: 15px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-inline: 30px;
+      flex-wrap: wrap;
     }
-
     header img {
       height: 50px;
     }
-
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
     nav a {
       color: white;
-      margin: 0 15px;
       text-decoration: none;
-      font-weight: bold;
+      font-weight: 600;
     }
-
-    .hero {
-      background: url('https://source.unsplash.com/1600x600/?truck,logistics') center center no-repeat;
-      background-size: cover;
-      height: 500px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    nav .dropdown {
+      position: relative;
+    }
+    nav .dropdown-content {
+      display: none;
+      position: absolute;
+      background: white;
+      color: black;
+      min-width: 160px;
+      z-index: 10;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #dc3545;
+    }
+    nav .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
       color: white;
-      text-shadow: 1px 1px 5px black;
+      font-size: 1.5rem;
     }
-
-    .hero h1 {
-      font-size: 3rem;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-    }
-
-    .section {
-      padding: 60px 20px;
+    .hero {
+      background: url('https://source.unsplash.com/1600x600/?logistics,truck') center/cover no-repeat;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-shadow: 1px 1px 4px black;
+      font-size: 2rem;
       text-align: center;
     }
-
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .section h2 {
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
     .carousel {
       display: flex;
+      gap: 15px;
       overflow-x: auto;
+      padding: 10px 0;
       scroll-snap-type: x mandatory;
-      gap: 20px;
-      padding: 10px;
     }
-
     .carousel img {
       width: 300px;
       height: 200px;
       object-fit: cover;
       border-radius: 10px;
       scroll-snap-align: start;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-
-    .section h2 {
-      margin-bottom: 30px;
-      color: #dc3545;
-    }
-
-    footer {
-      background-color: #343a40;
-      color: white;
-      text-align: center;
-      padding: 30px 20px;
-    }
-
-    .btn-red {
-      background-color: #dc3545;
-      color: white;
-      padding: 10px 25px;
-      border: none;
-      border-radius: 25px;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .btn-red:hover {
-      background-color: #c82333;
-    }
-
     .testimoni-card {
       background: #f8f9fa;
-      padding: 20px;
-      border-radius: 15px;
       margin: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-
     .testimoni-wrapper {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
     }
+    footer {
+      background: #343a40;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .btn-red {
+      background-color: #dc3545;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+    }
+    .social-icons img {
+      width: 30px;
+      margin: 0 10px;
+      vertical-align: middle;
+    }
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        display: none;
+        width: 100%;
+        text-align: right;
+        padding: 10px 0;
+      }
+      nav.active {
+        display: flex;
+      }
+      .menu-toggle {
+        display: block;
+      }
+    }
   </style>
 </head>
 
 <body>
-
   <!-- Header -->
   <header>
     <img src="logo_logistikkita.png" alt="Logo Logistik Kita" />
-    <nav>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav id="mainNav">
       <a href="#">Beranda</a>
       <a href="#">Layanan</a>
       <a href="#">Galeri</a>
+      <div class="dropdown">
+        <a href="#">Cek Tarif ▾</a>
+        <div class="dropdown-content">
+          <a href="#">Cek Tarif Carter</a>
+          <a href="#">Cek Tarif per Kg</a>
+        </div>
+      </div>
       <a href="#">Form Kirim</a>
       <a href="#">Hubungi</a>
     </nav>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section class="hero">
     <h1>Pengiriman Cepat, Aman, dan Terpercaya</h1>
   </section>
 
-  <!-- Section: Layanan -->
+  <!-- Layanan -->
   <section class="section">
     <h2>Layanan Kami</h2>
-    <p>Logistik Kita menyediakan layanan pengiriman reguler, prioritas, dan carter armada khusus untuk wilayah Jawa Timur dan sekitarnya.</p>
-    <a href="#" class="btn-red mt-3">Cek Tarif Sekarang</a>
+    <p>Logistik Kita menyediakan layanan pengiriman reguler, prioritas, dan carter armada untuk wilayah Jawa Timur dan sekitarnya.</p>
+    <a href="#" class="btn-red">Cek Tarif Sekarang</a>
   </section>
 
-  <!-- Section: Galeri Armada -->
+  <!-- Galeri -->
   <section class="section">
     <h2>Armada & Dokumentasi</h2>
     <div class="carousel">
-      <img src="https://source.unsplash.com/400x200/?truck" alt="armada">
-      <img src="https://source.unsplash.com/400x200/?warehouse" alt="gudang">
-      <img src="https://source.unsplash.com/400x200/?delivery" alt="pengiriman">
-      <img src="https://source.unsplash.com/400x200/?cargo" alt="cargo">
+      <img src="https://source.unsplash.com/400x200/?truck" alt="Armada">
+      <img src="https://source.unsplash.com/400x200/?warehouse" alt="Gudang">
+      <img src="https://source.unsplash.com/400x200/?cargo" alt="Pengiriman">
+      <img src="https://source.unsplash.com/400x200/?logistics" alt="Dokumentasi">
     </div>
   </section>
 
-  <!-- Section: Testimoni -->
+  <!-- Testimoni -->
   <section class="section">
     <h2>Testimoni Pelanggan</h2>
     <div class="testimoni-wrapper">
@@ -175,9 +213,17 @@
   <!-- Footer -->
   <footer>
     <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
-    <p>📱 Instagram: @logistikkita | 📞 WhatsApp: 08xx-xxxx-xxxx | ✉️ Email: info@logistikkita.id</p>
+    <div class="social-icons">
+      <a href="#"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"></a>
+      <a href="#"><img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp"></a>
+    </div>
   </footer>
 
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('menuToggle').addEventListener('click', function () {
+      document.getElementById('mainNav').classList.toggle('active');
+    });
+  </script>
 </body>
-
 </html>
