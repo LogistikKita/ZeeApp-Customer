@@ -1,49 +1,143 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin - Logistik Kita</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets-admin/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Panel - Logistik Kita</title>
+  <link rel="icon" href="logo_logistikkita.png" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #121212;
+      color: #f1f1f1;
+      font-family: 'Poppins', sans-serif;
+    }
+    .navbar {
+      background-color: #1f1f1f;
+    }
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: 600;
+    }
+    .sidebar {
+      background-color: #1f1f1f;
+      height: 100vh;
+      position: fixed;
+      width: 250px;
+      top: 0;
+      left: 0;
+      padding-top: 60px;
+      border-right: 1px solid #333;
+    }
+    .sidebar a {
+      color: #f1f1f1;
+      padding: 10px 20px;
+      display: block;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+    .content {
+      margin-left: 250px;
+      padding: 30px;
+    }
+    .card-custom {
+      background-color: #2a2a2a;
+      border: none;
+      border-radius: 10px;
+      color: white;
+    }
+    .btn-custom {
+      background-color: #dc3545;
+      color: #fff;
+    }
+    .btn-custom:hover {
+      background-color: #c82333;
+    }
+  </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold text-danger" href="#">Logistik Kita Admin</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#dataMasuk">📥 Data Masuk</a></li>
-          <li class="nav-item"><a class="nav-link" href="#rekap">📊 Rekap</a></li>
-          <li class="nav-item"><a class="nav-link" href="#buatDb">🛠️ Buat DB Baru</a></li>
-          <li class="nav-item"><a class="nav-link" href="../index.html">🔙 Kembali ke Home</a></li>
-        </ul>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="#">Dashboard</a>
+    <a href="#">Input Data</a>
+    <a href="#">Lihat Pengiriman</a>
+    <a href="#">Kelola Tarif</a>
+    <a href="#">Artikel & SEO</a>
+    <a href="#">Keluar</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h2 class="mb-4">Dashboard Admin</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card card-custom p-3">
+          <h5>Total Pengiriman Hari Ini</h5>
+          <h3>120</h3>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card card-custom p-3">
+          <h5>Profit Kotor</h5>
+          <h3>Rp 7.800.000</h3>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card card-custom p-3">
+          <h5>Pending Kiriman</h5>
+          <h3>8</h3>
+        </div>
       </div>
     </div>
-  </nav>  <!-- Hero Section -->  <header class="hero text-center text-white d-flex align-items-center justify-content-center">
-    <div>
-      <h1 class="display-5 fw-bold">Dashboard Admin</h1>
-      <p class="lead">Kelola data pengiriman, update status, dan rekap laporan harian dengan mudah</p>
+
+    <div class="card card-custom p-4 mt-4">
+      <h5>Artikel Terbaru</h5>
+      <div id="artikel-list" class="row mt-3"></div>
     </div>
-  </header>  <!-- Main Content Placeholder -->  <main class="container py-4">
-    <section id="dataMasuk" class="mb-5">
-      <h2 class="text-danger">📥 Data Masuk</h2>
-      <p>Menampilkan data pengiriman terbaru dari customer.</p>
-    </section><section id="rekap" class="mb-5">
-  <h2 class="text-danger">📊 Rekap & Laporan</h2>
-  <p>Fitur untuk melihat rekap pengiriman dan laporan keuangan.</p>
-</section>
+  </div>
 
-<section id="buatDb">
-  <h2 class="text-danger">🛠️ Buat Database Baru</h2>
-  <button class="btn btn-danger" onclick="buatDatabaseBaru()">+ Buat DB</button>
-  <p class="mt-2" id="statusDb"></p>
-</section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+  <script>
+    const supabase = supabase.createClient(
+      'https://mrghlcedtafomwnznywf.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
+    );
 
-  </main>  <!-- Footer -->  <footer class="bg-dark text-white text-center py-3">
-    <small>&copy; 2025 Logistik Kita - Admin Panel</small>
-  </footer>  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>  <script src="assets-admin/config.js"></script>  <script src="assets-admin/script.js"></script></body>
+    async function loadArtikel() {
+      const { data, error } = await supabase
+        .from('artikel')
+        .select('*')
+        .order('tanggal', { ascending: false })
+        .limit(3);
+
+      const container = document.getElementById('artikel-list');
+      if (data) {
+        data.forEach(item => {
+          const col = document.createElement('div');
+          col.className = 'col-md-4';
+          col.innerHTML = `
+            <div class="card card-custom">
+              <img src="${item.thumbnail}" alt="${item.judul}" style="width:100%; height:160px; object-fit:cover; border-radius:10px 10px 0 0">
+              <div class="p-3">
+                <h6>${item.judul}</h6>
+                <small>${new Date(item.tanggal).toLocaleDateString()}</small>
+                <p class="mt-2">${item.konten.substring(0, 80)}...</p>
+              </div>
+            </div>`;
+          container.appendChild(col);
+        });
+      } else {
+        container.innerHTML = "<p class='text-danger'>Gagal memuat artikel.</p>";
+      }
+    }
+
+    loadArtikel();
+  </script>
+</body>
 </html>
