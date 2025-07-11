@@ -3,28 +3,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Logistik Kita - Profesional & Aman</title>
   <link rel="icon" href="https://img.icons8.com/fluency/48/instagram-new.png" type="image/png">
-  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- AOS Animation Library -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #f9f9f9;
-      color: #333;
-      font-family: 'Urbanist', sans-serif;
+      background-color: #121212;
+      color: #f1f1f1;
+      font-family: 'Poppins', sans-serif;
     }
     .navbar {
-      background-color: #ffffff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background-color: #1f1f1f;
     }
-    .navbar-brand, .navbar-nav .nav-link {
-      color: #333 !important;
+    .navbar-nav .nav-link, .navbar-brand {
+      color: white !important;
       font-weight: 600;
+      transition: all 0.3s ease;
     }
-    .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23333' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    .navbar-nav .dropdown-menu {
+      animation: slideDown 0.4s ease forwards;
+    }
+    @keyframes slideDown {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .hero {
       background: url('https://source.unsplash.com/1600x600/?logistics,truck') center/cover no-repeat;
@@ -34,40 +35,30 @@
       align-items: center;
       text-align: center;
       color: white;
-      position: relative;
+      text-shadow: 1px 1px 4px black;
     }
-    .hero h1 {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-    }
-    .btn-cta {
-      background-color: #4CAF50;
+    .btn-red {
+      background-color: #ff4b5c;
       color: white;
-      border-radius: 30px;
-      padding: 12px 24px;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      border-radius: 25px;
     }
-    .btn-cta:hover {
-      background-color: #45a049;
-      transform: scale(1.05);
+    .btn-red:hover {
+      background-color: #e03e4e;
     }
     .carousel-item img {
       object-fit: cover;
       height: 300px;
     }
     .testimoni-card {
-      background: #ffffff;
+      background: #1e1e1e;
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
       margin-bottom: 20px;
     }
     footer {
-      background-color: #f1f1f1;
-      color: #555;
+      background-color: #000;
+      color: #aaa;
       padding: 30px 0;
       text-align: center;
     }
@@ -78,7 +69,7 @@
   </style>
 </head><body>
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg sticky-top" data-aos="fade-down">
+  <nav class="navbar navbar-expand-lg">
     <div class="container">
       <a class="navbar-brand" href="#"><img src="logo_logistikkita.png" alt="Logo" height="40"> Logistik Kita</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -86,18 +77,18 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Layanan</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Galeri</a></li>
-          <li class="nav-item dropdown">
+          <li class="nav-item" data-aos="fade-down"><a class="nav-link" href="#">Beranda</a></li>
+          <li class="nav-item" data-aos="fade-down" data-aos-delay="100"><a class="nav-link" href="#">Layanan</a></li>
+          <li class="nav-item" data-aos="fade-down" data-aos-delay="200"><a class="nav-link" href="#">Galeri</a></li>
+          <li class="nav-item dropdown" data-aos="fade-down" data-aos-delay="300">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Cek Tarif</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Cek Tarif Carter</a></li>
-              <li><a class="dropdown-item" href="#">Cek Tarif per Kg</a></li>
+            <ul class="dropdown-menu bg-dark">
+              <li><a class="dropdown-item text-light" href="#">Cek Tarif Carter</a></li>
+              <li><a class="dropdown-item text-light" href="#">Cek Tarif per Kg</a></li>
             </ul>
           </li>
-          <li class="nav-item"><a class="nav-link" href="#">Form Kirim</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Hubungi</a></li>
+          <li class="nav-item" data-aos="fade-down" data-aos-delay="400"><a class="nav-link" href="#">Form Kirim</a></li>
+          <li class="nav-item" data-aos="fade-down" data-aos-delay="500"><a class="nav-link" href="#">Hubungi</a></li>
         </ul>
       </div>
     </div>
@@ -107,13 +98,13 @@
     </div>
   </section>  <!-- Layanan -->  <section class="py-5 text-center" data-aos="fade-up">
     <div class="container">
-      <h2 class="mb-3">Layanan Kami</h2>
-      <p class="lead">Logistik Kita menyediakan layanan pengiriman reguler, prioritas, dan carter armada khusus wilayah Jawa Timur dan sekitarnya.</p>
-      <a href="#" class="btn btn-cta">Lihat Tarif Pengiriman</a>
+      <h2 class="text-light">Layanan Kami</h2>
+      <p class="lead">Logistik Kita menyediakan layanan pengiriman reguler, prioritas, dan carter armada untuk wilayah Jawa Timur dan sekitarnya.</p>
+      <a href="#" class="btn btn-red">Cek Tarif Sekarang</a>
     </div>
   </section>  <!-- Galeri (Carousel) -->  <section class="py-5" data-aos="fade-up">
     <div class="container">
-      <h2 class="text-center mb-4">Armada & Dokumentasi</h2>
+      <h2 class="text-center text-light mb-4">Armada & Dokumentasi</h2>
       <div id="carouselGaleri" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
@@ -136,21 +127,21 @@
     </div>
   </section>  <!-- Testimoni -->  <section class="py-5" data-aos="fade-up">
     <div class="container">
-      <h2 class="text-center mb-4">Testimoni Pelanggan</h2>
+      <h2 class="text-center text-light mb-4">Testimoni Pelanggan</h2>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
           <div class="testimoni-card">
             <p>"Pelayanan cepat dan sopir sangat profesional. Terima kasih Logistik Kita!"</p>
             <strong>- Ibu Rina, Mojokerto</strong>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
           <div class="testimoni-card">
             <p>"Harga bersaing, pengiriman aman. Sukses selalu!"</p>
             <strong>- Pak Dedi, Surabaya</strong>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
           <div class="testimoni-card">
             <p>"Customer service-nya ramah dan proses pengiriman transparan."</p>
             <strong>- Bu Intan, Sidoarjo</strong>
@@ -158,13 +149,20 @@
         </div>
       </div>
     </div>
+  </section>  <!-- Social Section Sebelum Footer -->  <section class="py-4 text-center" data-aos="fade-up">
+    <div class="container">
+      <h5>Ikuti Sosial Media Kami</h5>
+      <div class="social-icons mt-3">
+        <a href="#"><img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="Facebook"></a>
+        <a href="#"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"></a>
+        <a href="#"><img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp"></a>
+        <a href="#"><img src="https://img.icons8.com/fluency/48/youtube-play.png" alt="YouTube"></a>
+        <a href="#"><img src="https://img.icons8.com/fluency/48/tiktok.png" alt="TikTok"></a>
+      </div>
+    </div>
   </section>  <!-- Footer -->  <footer>
     <div class="container">
       <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
-      <div class="social-icons">
-        <a href="#"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"></a>
-        <a href="#"><img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp"></a>
-      </div>
     </div>
   </footer>  <!-- Scripts -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>  <script>
     AOS.init({
