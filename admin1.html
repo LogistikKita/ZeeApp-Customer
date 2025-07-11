@@ -1,142 +1,176 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard Admin - Logistik Kita</title>
+  <title>Admin - Logistik Kita</title>
   <link rel="icon" href="logo_logistikkita.png" type="image/png">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
+      font-family: 'Poppins', sans-serif;
       background-color: #121212;
       color: #f1f1f1;
-      font-family: 'Poppins', sans-serif;
     }
-    .sidebar {
-      height: 100vh;
+    .navbar {
       background-color: #1f1f1f;
-      padding-top: 60px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 220px;
     }
-    .sidebar a {
-      display: block;
-      color: #ccc;
-      padding: 15px;
-      text-decoration: none;
-      transition: 0.3s;
+    .navbar-brand, .nav-link {
+      color: #ffffff !important;
+      font-weight: 600;
     }
-    .sidebar a:hover {
-      background-color: #333;
+    .navbar-toggler {
+      background-color: white;
+    }
+    .hero {
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #dc3545, #721c24);
+      color: white;
+      text-align: center;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    .card {
+      background-color: #1f1f1f;
+      border: 1px solid #dc3545;
       color: #fff;
-    }
-    .main-content {
-      margin-left: 220px;
-      padding: 20px;
-    }
-    .card-dark {
-      background-color: #2c2c2c;
-      border: none;
       border-radius: 12px;
-      padding: 20px;
-      color: #eee;
+      transition: transform 0.3s ease;
     }
-    .card-dark h4 {
-      margin-bottom: 15px;
-      color: #fff;
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
     }
-    .artikel-card {
-      background-color: #2a2a2a;
-      border-radius: 10px;
-      padding: 15px;
-      color: #ccc;
+    .card-title {
+      color: #dc3545;
     }
-    .artikel-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-    .artikel-card h5 {
-      color: #fff;
-      margin-top: 10px;
-    }
-    .artikel-card small {
+    footer {
+      background-color: #000;
       color: #aaa;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 14px;
     }
-    .artikel-card p {
-      color: #ccc;
+    a.text-decoration-none:hover {
+      text-decoration: none;
+      opacity: 0.9;
     }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <a href="#">📦 Dashboard</a>
-    <a href="#">📝 Input Pengiriman</a>
-    <a href="#">🚚 Status Kiriman</a>
-    <a href="#">📊 Rekap & Laporan</a>
-    <a href="#">💰 Profit & Tarif</a>
-    <a href="#">📄 Artikel</a>
-    <a href="#">⚙️ Pengaturan</a>
-  </div>  <!-- Main Content -->  <div class="main-content">
-    <h2 class="mb-4">Selamat Datang, Admin</h2>
-    <div class="row mb-4">
-      <div class="col-md-4">
-        <div class="card-dark">
-          <h4>Total Kiriman</h4>
-          <p class="fs-3">1.250</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card-dark">
-          <h4>Pending</h4>
-          <p class="fs-3">37</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card-dark">
-          <h4>Total Profit</h4>
-          <p class="fs-3">Rp 135.450.000</p>
-        </div>
-      </div>
-    </div><h4 class="mt-4 mb-3">Artikel Terbaru</h4>
-<div class="row" id="artikel-list"></div>
 
-  </div>  <!-- Script -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>  <script>
-    const supabase = supabase.createClient(
-      'https://mrghlcedtafomwnznywf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
-    );
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="logo_logistikkita.png" alt="Logo" height="36" class="me-2" />
+        Logistik Kita - Admin
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarAdmin">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="index.html">🏠 Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="customer.html">📦 Form Customer</a></li>
+          <li class="nav-item"><a class="nav-link" href="carter.html">🚚 Carter</a></li>
+          <li class="nav-item"><a class="nav-link" href="laporan-dan-rekap.html">🧾 Laporan</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    async function loadArtikel() {
-      const { data, error } = await supabase
-        .from('artikel')
-        .select('*')
-        .order('tanggal', { ascending: false })
-        .limit(3);
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Selamat Datang, Admin!</h1>
+      <p>Kelola pengiriman, armada, mitra, dan laporan dengan mudah dan cepat.</p>
+    </div>
+  </section>
 
-      const container = document.getElementById('artikel-list');
-      if (data) {
-        data.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'col-md-4';
-          card.innerHTML = `
-            <div class="artikel-card">
-              <img src="${item.thumbnail}" alt="${item.judul}">
-              <h5>${item.judul}</h5>
-              <small>${new Date(item.tanggal).toLocaleDateString()}</small>
-              <p>${item.konten.substring(0, 100)}...</p>
-              <a href="#" class="btn btn-sm btn-danger mt-2">Baca Selengkapnya</a>
-            </div>`;
-          container.appendChild(card);
-        });
-      } else {
-        container.innerHTML = "<p class='text-center'>Gagal memuat artikel.</p>";
-      }
-    }
-    loadArtikel();
-  </script></body>
+  <!-- Menu Cards -->
+  <div class="container my-5">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <a href="customer.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">📦 Form Customer</h5>
+            <p class="card-text">Input pengiriman dari customer</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="data-pengiriman.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">📊 Data Pengiriman</h5>
+            <p class="card-text">Lihat dan kelola pengiriman</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="carter.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">🚚 Carter</h5>
+            <p class="card-text">Simulasi dan input carter</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="mitra-driver.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">👷 Mitra Driver</h5>
+            <p class="card-text">Manajemen mitra pengemudi</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="laporan-dan-rekap.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">🧾 Laporan & Rekap</h5>
+            <p class="card-text">Rekap dan analisis laporan</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="buat-db-baru.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">🗃 Buat DB Baru</h5>
+            <p class="card-text">Inisiasi database baru</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="pengaturan.html" class="text-decoration-none">
+          <div class="card p-4 text-center">
+            <h5 class="card-title">⚙️ Pengaturan</h5>
+            <p class="card-text">Atur konfigurasi sistem</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>© 2025 Logistik Kita. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
