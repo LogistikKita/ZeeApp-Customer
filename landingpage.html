@@ -1,88 +1,74 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Logistik Kita - Profesional & Aman</title>
-  <link rel="icon" href="logo_logistikkita.png" type="image/png">
-
-  <!-- Bootstrap & Google Fonts -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- SwiperJS CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
-
-  <style>
+  <link rel="icon" href="logo_logistikkita.png" type="image/png">  <!-- Bootstrap & Google Fonts -->  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">  <!-- SwiperJS CSS -->  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>  <style>
     html { scroll-behavior: smooth; }
     body {
-      background-color: #121212;
-      color: #f1f1f1;
+      background-color: #ffffff;
+      color: #333;
       font-family: 'Poppins', sans-serif;
     }
     .navbar {
-      background-color: #1f1f1f;
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
     .navbar-nav .nav-link, .navbar-brand {
-      color: white !important;
+      color: #222 !important;
       font-weight: 600;
     }
     .navbar-toggler {
-      background-color: white;
+      background-color: #ddd;
     }
     .banner-img {
       width: 100%;
       height: 600px;
       object-fit: cover;
-      transition: transform 1.2s ease-in-out, opacity 1.2s ease-in-out;
     }
-
     .testimoni-card {
-      background: #2c2c2c;
+      background: #f8f8f8;
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      color: #444;
     }
-
     .galeri-img {
       width: 100%;
       aspect-ratio: 9/16;
       object-fit: cover;
       border-radius: 10px;
       transition: transform 1s ease;
+      cursor: pointer;
     }
-
     .swiper-slide-active .galeri-img {
       transform: scale(1.05);
     }
-
     .artikel {
-      background-color: #1f1f1f;
-      color: #e0e0e0;
+      background-color: #f7f7f7;
+      color: #333;
       padding: 60px 0;
     }
-
-    .artikel h2 { color: #ffffff; }
-
+    .artikel h2 {
+      color: #000;
+    }
     .artikel-card {
-      background-color: #2a2a2a;
+      background-color: #fff;
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-
     .artikel-card img {
       width: 100%;
       border-radius: 8px;
       height: 180px;
       object-fit: cover;
     }
-
-    .artikel-card h5 { color: #fff; margin-top: 10px; }
-    .artikel-card small { color: #aaa; }
-    .artikel-card p { color: #ccc; }
-
+    .artikel-card h5 { color: #111; margin-top: 10px; }
+    .artikel-card small { color: #888; }
+    .artikel-card p { color: #555; }
     .btn-artikel {
       background-color: #dc3545;
       color: #fff;
@@ -90,30 +76,22 @@
       padding: 6px 12px;
       border-radius: 6px;
     }
-
     footer {
-      background-color: #000;
-      color: #aaa;
+      background-color: #f1f1f1;
+      color: #555;
       padding: 30px 0;
       text-align: center;
     }
-
     .social-icons img {
       width: 28px;
       margin: 0 8px;
-      filter: grayscale(100%) brightness(200%);
       transition: transform 0.3s ease;
     }
-
     .social-icons img:hover {
       transform: scale(1.1);
     }
-  </style>
-</head>
-<body onload="window.scrollTo({top: 0, behavior: 'smooth'})">
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg sticky-top">
+  </style></head>
+<body onload="window.scrollTo({top: 0, behavior: 'smooth'})">  <!-- Navbar -->  <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href="#"><img src="logo_logistikkita.png" alt="Logo" height="40"> Logistik Kita</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -128,10 +106,7 @@
         </ul>
       </div>
     </div>
-  </nav>
-
-  <!-- Hero Banner -->
-  <section id="hero">
+  </nav>  <!-- Hero Banner -->  <section id="hero">
     <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
       <div class="carousel-inner">
         <div class="carousel-item active">
@@ -151,12 +126,9 @@
         <span class="carousel-control-next-icon"></span>
       </button>
     </div>
-  </section>
-
-  <!-- Testimoni -->
-  <section id="testimoni" class="py-5">
+  </section>  <!-- Testimoni -->  <section id="testimoni" class="py-5">
     <div class="container">
-      <h2 class="text-center text-light mb-4">Testimoni Pelanggan</h2>
+      <h2 class="text-center mb-4">Testimoni Pelanggan</h2>
       <div id="carouselTestimoni" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
           <div class="carousel-item active">
@@ -186,64 +158,48 @@
         </button>
       </div>
     </div>
-  </section>
-
-  <!-- Galeri Armada - SwiperJS -->
-  <section id="galeri" class="py-5">
+  </section>  <!-- Galeri Armada - SwiperJS -->  <section id="galeri" class="py-5">
     <div class="container">
-      <h2 class="text-center text-light mb-4">Armada & Dokumentasi</h2>
+      <h2 class="text-center mb-4">Armada & Dokumentasi</h2>
       <div class="swiper mySwiper">
         <div class="swiper-wrapper">
           <div class="swiper-slide text-center">
-            <img src="assets/armada-1.jpeg" class="galeri-img mx-auto" alt="Armada 1" style="max-width: 350px;">
+            <img src="assets/armada-1.jpeg" class="galeri-img mx-auto" alt="Armada 1">
           </div>
           <div class="swiper-slide text-center">
-            <img src="assets/armada-2.jpeg" class="galeri-img mx-auto" alt="Armada 2" style="max-width: 350px;">
+            <img src="assets/armada-2.jpeg" class="galeri-img mx-auto" alt="Armada 2">
           </div>
           <div class="swiper-slide text-center">
-            <img src="assets/armada-3.jpeg" class="galeri-img mx-auto" alt="Armada 3" style="max-width: 350px;">
+            <img src="assets/armada-3.jpeg" class="galeri-img mx-auto" alt="Armada 3">
           </div>
           <div class="swiper-slide text-center">
-            <img src="assets/armada-4.jpeg" class="galeri-img mx-auto" alt="Armada 3" style="max-width: 350px;">
+            <img src="assets/armada-4.jpeg" class="galeri-img mx-auto" alt="Armada 4">
           </div>
           <div class="swiper-slide text-center">
-            <img src="assets/armada-5.jpg" class="galeri-img mx-auto" alt="Armada 3" style="max-width: 350px;">
+            <img src="assets/armada-5.jpg" class="galeri-img mx-auto" alt="Armada 5">
           </div>
         </div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
       </div>
     </div>
-  </section>
-
-  <!-- Artikel -->
-  <section class="artikel" id="artikel">
+  </section>  <!-- Artikel -->  <section class="artikel" id="artikel">
     <div class="container">
       <h2 class="text-center mb-5">Artikel & Tips Logistik</h2>
       <div id="artikel-list" class="row"></div>
     </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
+  </section>  <!-- Footer -->  <footer>
     <div class="container">
       <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
       <div class="social-icons mt-3">
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/555555/instagram-new.png" alt="Instagram"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/555555/whatsapp.png" alt="WhatsApp"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/555555/facebook-new.png" alt="Facebook"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/555555/youtube-play.png" alt="YouTube"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/555555/tiktok.png" alt="TikTok"></a>
       </div>
     </div>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-  <script>
-    // Swiper init
+  </footer>  <!-- Scripts -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>  <script>
     const swiper = new Swiper('.mySwiper', {
       effect: 'slide',
       spaceBetween: 20,
@@ -261,10 +217,9 @@
       }
     });
 
-    // Load artikel dari Supabase
     const supabase = supabase.createClient(
       'https://mrghlcedtafomwnznywf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
     );
 
     async function loadArtikel() {
@@ -295,6 +250,5 @@
     }
 
     loadArtikel();
-  </script>
-</body>
+  </script></body>
 </html>
