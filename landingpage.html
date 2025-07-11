@@ -6,12 +6,9 @@
   <title>Logistik Kita - Profesional & Aman</title>
   <link rel="icon" href="logo_logistikkita.png" type="image/png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
     body {
       background-color: #121212;
       color: #f1f1f1;
@@ -26,13 +23,6 @@
     }
     .navbar-toggler {
       background-color: white;
-    }
-    .dropdown-menu {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
     }
     .hero {
       background: url('https://source.unsplash.com/1600x600/?logistics,truck') center/cover no-repeat;
@@ -54,35 +44,22 @@
       background-color: #e4e4e4;
     }
     .fitur-wrapper {
-      padding: 1rem;
+      padding: 2rem 1rem;
       background-color: #1a1a1a;
     }
-    .fitur-title {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    .fitur-toggle {
-      cursor: pointer;
-      background-color: #1f1f1f;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
+    .fitur-boxes {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .fitur-content {
-      display: none;
-      margin-top: 1rem;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
     .fitur-box {
       background: #1f1f1f;
       border: 1px solid #333;
       border-radius: 10px;
       padding: 1rem;
-      margin-bottom: 1rem;
       text-align: center;
+      width: 120px;
     }
     .fitur-box i {
       font-size: 1.8rem;
@@ -90,23 +67,18 @@
       margin-bottom: 0.5rem;
       filter: grayscale(100%) brightness(200%);
     }
-    .fitur-box strong {
-      display: block;
+    .fitur-dropdown {
+      display: none;
+      margin-top: 1rem;
     }
-    .section-slide-left {
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: all 0.8s ease-in-out;
-    }
-    .section-slide-right {
+    .section-slide-left, .section-slide-right {
       opacity: 0;
       transform: translateX(50px);
       transition: all 0.8s ease-in-out;
     }
-    .section-slide-left.show, .section-slide-right.show {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    .section-slide-left.show { transform: translateX(-0); opacity: 1; }
+    .section-slide-right.show { transform: translateX(0); opacity: 1; }
+
     .testimoni-card {
       background: #1e1e1e;
       padding: 20px;
@@ -114,13 +86,19 @@
       box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
       margin-bottom: 20px;
     }
+
     .galeri-img {
       width: 100%;
-      height: 400px;
+      aspect-ratio: 16/9;
       object-fit: cover;
       border-radius: 10px;
       margin-bottom: 1rem;
+      transition: transform 0.5s ease;
     }
+    .galeri-img:hover {
+      transform: scale(1.03);
+    }
+
     footer {
       background-color: #000;
       color: #aaa;
@@ -139,6 +117,7 @@
   </style>
 </head>
 <body onload="window.scrollTo({top: 0, behavior: 'smooth'})">
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href="#"><img src="logo_logistikkita.png" alt="Logo" height="40"> Logistik Kita</a>
@@ -164,27 +143,31 @@
     </div>
   </nav>
 
+  <!-- Hero -->
   <section id="hero" class="hero">
     <div class="container">
       <h1 class="display-5">Pengiriman Cepat, Aman, dan Terpercaya</h1>
     </div>
   </section>
 
-  <div class="fitur-wrapper">
-    <div class="fitur-title">Keunggulan Layanan</div>
-    <div class="fitur-toggle" onclick="toggleFitur()">
-      <span>Lihat Selengkapnya</span>
-      <span>▼</span>
+  <!-- Fitur Keunggulan -->
+  <div class="fitur-wrapper text-center">
+    <h5 class="mb-4">Keunggulan Layanan</h5>
+    <div class="fitur-boxes">
+      <div class="fitur-box"><i>🚚</i><strong>Aman</strong></div>
+      <div class="fitur-box"><i>⚡</i><strong>Cepat</strong></div>
+      <div class="fitur-box"><i>💼</i><strong>Profesional</strong></div>
     </div>
-    <div id="fiturContent" class="fitur-content">
-      <div class="fitur-box"><i>🚚</i><strong>Aman</strong>Barang dijaga</div>
-      <div class="fitur-box"><i>⚡</i><strong>Cepat</strong>Pengiriman tepat</div>
-      <div class="fitur-box"><i>💼</i><strong>Profesional</strong>Tim ahli</div>
-      <div class="fitur-box"><i>🛡️</i><strong>Terpercaya</strong>Klien loyal</div>
-      <div class="fitur-box"><i>📍</i><strong>Tracking</strong>Real-time</div>
+    <button class="btn btn-outline-light btn-sm mt-3" onclick="toggleFitur()">Lihat Selengkapnya ▼</button>
+    <div class="fitur-dropdown" id="fiturDropdown">
+      <div class="fitur-boxes mt-3">
+        <div class="fitur-box"><i>🛡️</i><strong>Terpercaya</strong></div>
+        <div class="fitur-box"><i>📍</i><strong>Tracking</strong></div>
+      </div>
     </div>
   </div>
 
+  <!-- Section Layanan -->
   <section id="layanan" class="py-5 text-center section-slide-left">
     <div class="container">
       <h2 class="text-light">Layanan Kita</h2>
@@ -193,6 +176,7 @@
     </div>
   </section>
 
+  <!-- Section Testimoni -->
   <section id="testimoni" class="py-5 section-slide-right">
     <div class="container">
       <h2 class="text-center text-light mb-4">Testimoni Pelanggan</h2>
@@ -203,21 +187,23 @@
     </div>
   </section>
 
+  <!-- Galeri -->
   <section id="galeri" class="py-5">
     <div class="container">
       <h2 class="text-center text-light mb-4">Armada & Dokumentasi</h2>
       <div class="row">
-        <div class="col-md-4"><img src="logo_logistikkita.png" class="galeri-img" alt="Armada"></div>
-        <div class="col-md-4"><img src="logo_logistikkita.png" class="galeri-img" alt="Dokumentasi"></div>
-        <div class="col-md-4"><img src="logo_logistikkita.png" class="galeri-img" alt="Kegiatan"></div>
+        <div class="col-md-4"><img src="logo_logistikkita.png" class="galeri-img" alt="Armada 1"></div>
+        <div class="col-md-4"><img src="logo_logistikkita.png" class="galeri-img" alt="Armada 2"></div>
+        <div class="col-md-4"><img src="logo_logistikkita.png" class="galeri-img" alt="Armada 3"></div>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <div class="container">
       <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
-      <div class="social-icons">
+      <div class="social-icons mt-3">
         <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram"></a>
         <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp"></a>
         <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook"></a>
@@ -227,13 +213,15 @@
     </div>
   </footer>
 
+  <!-- Script -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     function toggleFitur() {
-      const fitur = document.getElementById('fiturContent');
-      fitur.style.display = fitur.style.display === 'block' ? 'none' : 'block';
+      const dropdown = document.getElementById("fiturDropdown");
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
     }
 
+    // Slide animation
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
