@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
+<!DOCTYPE html><html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admin Panel - Logistik Kita</title>
+  <title>Dashboard Admin - Logistik Kita</title>
   <link rel="icon" href="logo_logistikkita.png" type="image/png">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -13,97 +12,100 @@
       color: #f1f1f1;
       font-family: 'Poppins', sans-serif;
     }
-    .navbar {
-      background-color: #1f1f1f;
-    }
-    .navbar-brand, .nav-link {
-      color: white !important;
-      font-weight: 600;
-    }
     .sidebar {
-      background-color: #1f1f1f;
       height: 100vh;
+      background-color: #1f1f1f;
+      padding-top: 60px;
       position: fixed;
-      width: 250px;
       top: 0;
       left: 0;
-      padding-top: 60px;
-      border-right: 1px solid #333;
+      width: 220px;
     }
     .sidebar a {
-      color: #f1f1f1;
-      padding: 10px 20px;
       display: block;
+      color: #ccc;
+      padding: 15px;
       text-decoration: none;
+      transition: 0.3s;
     }
     .sidebar a:hover {
-      background-color: #dc3545;
-      color: white;
-    }
-    .content {
-      margin-left: 250px;
-      padding: 30px;
-    }
-    .card-custom {
-      background-color: #2a2a2a;
-      border: none;
-      border-radius: 10px;
-      color: white;
-    }
-    .btn-custom {
-      background-color: #dc3545;
+      background-color: #333;
       color: #fff;
     }
-    .btn-custom:hover {
-      background-color: #c82333;
+    .main-content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+    .card-dark {
+      background-color: #2c2c2c;
+      border: none;
+      border-radius: 12px;
+      padding: 20px;
+      color: #eee;
+    }
+    .card-dark h4 {
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .artikel-card {
+      background-color: #2a2a2a;
+      border-radius: 10px;
+      padding: 15px;
+      color: #ccc;
+    }
+    .artikel-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .artikel-card h5 {
+      color: #fff;
+      margin-top: 10px;
+    }
+    .artikel-card small {
+      color: #aaa;
+    }
+    .artikel-card p {
+      color: #ccc;
     }
   </style>
 </head>
 <body>
-
   <!-- Sidebar -->
   <div class="sidebar">
-    <a href="#">Dashboard</a>
-    <a href="#">Input Data</a>
-    <a href="#">Lihat Pengiriman</a>
-    <a href="#">Kelola Tarif</a>
-    <a href="#">Artikel & SEO</a>
-    <a href="#">Keluar</a>
-  </div>
-
-  <!-- Main Content -->
-  <div class="content">
-    <h2 class="mb-4">Dashboard Admin</h2>
-    <div class="row">
-      <div class="col-md-4 mb-4">
-        <div class="card card-custom p-3">
-          <h5>Total Pengiriman Hari Ini</h5>
-          <h3>120</h3>
+    <a href="#">📦 Dashboard</a>
+    <a href="#">📝 Input Pengiriman</a>
+    <a href="#">🚚 Status Kiriman</a>
+    <a href="#">📊 Rekap & Laporan</a>
+    <a href="#">💰 Profit & Tarif</a>
+    <a href="#">📄 Artikel</a>
+    <a href="#">⚙️ Pengaturan</a>
+  </div>  <!-- Main Content -->  <div class="main-content">
+    <h2 class="mb-4">Selamat Datang, Admin</h2>
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card-dark">
+          <h4>Total Kiriman</h4>
+          <p class="fs-3">1.250</p>
         </div>
       </div>
-      <div class="col-md-4 mb-4">
-        <div class="card card-custom p-3">
-          <h5>Profit Kotor</h5>
-          <h3>Rp 7.800.000</h3>
+      <div class="col-md-4">
+        <div class="card-dark">
+          <h4>Pending</h4>
+          <p class="fs-3">37</p>
         </div>
       </div>
-      <div class="col-md-4 mb-4">
-        <div class="card card-custom p-3">
-          <h5>Pending Kiriman</h5>
-          <h3>8</h3>
+      <div class="col-md-4">
+        <div class="card-dark">
+          <h4>Total Profit</h4>
+          <p class="fs-3">Rp 135.450.000</p>
         </div>
       </div>
-    </div>
+    </div><h4 class="mt-4 mb-3">Artikel Terbaru</h4>
+<div class="row" id="artikel-list"></div>
 
-    <div class="card card-custom p-4 mt-4">
-      <h5>Artikel Terbaru</h5>
-      <div id="artikel-list" class="row mt-3"></div>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
-  <script>
+  </div>  <!-- Script -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>  <script>
     const supabase = supabase.createClient(
       'https://mrghlcedtafomwnznywf.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
@@ -119,25 +121,22 @@
       const container = document.getElementById('artikel-list');
       if (data) {
         data.forEach(item => {
-          const col = document.createElement('div');
-          col.className = 'col-md-4';
-          col.innerHTML = `
-            <div class="card card-custom">
-              <img src="${item.thumbnail}" alt="${item.judul}" style="width:100%; height:160px; object-fit:cover; border-radius:10px 10px 0 0">
-              <div class="p-3">
-                <h6>${item.judul}</h6>
-                <small>${new Date(item.tanggal).toLocaleDateString()}</small>
-                <p class="mt-2">${item.konten.substring(0, 80)}...</p>
-              </div>
+          const card = document.createElement('div');
+          card.className = 'col-md-4';
+          card.innerHTML = `
+            <div class="artikel-card">
+              <img src="${item.thumbnail}" alt="${item.judul}">
+              <h5>${item.judul}</h5>
+              <small>${new Date(item.tanggal).toLocaleDateString()}</small>
+              <p>${item.konten.substring(0, 100)}...</p>
+              <a href="#" class="btn btn-sm btn-danger mt-2">Baca Selengkapnya</a>
             </div>`;
-          container.appendChild(col);
+          container.appendChild(card);
         });
       } else {
-        container.innerHTML = "<p class='text-danger'>Gagal memuat artikel.</p>";
+        container.innerHTML = "<p class='text-center'>Gagal memuat artikel.</p>";
       }
     }
-
     loadArtikel();
-  </script>
-</body>
+  </script></body>
 </html>
