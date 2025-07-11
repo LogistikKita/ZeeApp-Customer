@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Logistik Kita - Profesional & Aman</title>
   <link rel="icon" href="logo_logistikkita.png" type="image/png">
+
+  <!-- Bootstrap & Google Fonts -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- SwiperJS CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+
   <style>
     html { scroll-behavior: smooth; }
     body {
@@ -24,7 +30,6 @@
     .navbar-toggler {
       background-color: white;
     }
-
     .banner-img {
       width: 100%;
       height: 600px;
@@ -44,6 +49,11 @@
       aspect-ratio: 9/16;
       object-fit: cover;
       border-radius: 10px;
+      transition: transform 1s ease;
+    }
+
+    .swiper-slide-active .galeri-img {
+      transform: scale(1.05);
     }
 
     .artikel {
@@ -115,19 +125,12 @@
           <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
           <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
           <li class="nav-item"><a class="nav-link" href="#artikel">Artikel</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Cek Tarif</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Cek Tarif Carter</a></li>
-              <li><a class="dropdown-item" href="#">Cek Tarif per Kg</a></li>
-            </ul>
-          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Banner Carousel -->
+  <!-- Hero Banner -->
   <section id="hero">
     <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
       <div class="carousel-inner">
@@ -185,33 +188,29 @@
     </div>
   </section>
 
-  <!-- Galeri -->
+  <!-- Galeri Armada - SwiperJS -->
   <section id="galeri" class="py-5">
     <div class="container">
       <h2 class="text-center text-light mb-4">Armada & Dokumentasi</h2>
-      <div id="carouselGaleri" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
-        <div class="carousel-inner">
-          <div class="carousel-item active text-center">
-            <img src="logo_logistikkita.png" class="galeri-img" alt="Armada 1" style="max-width: 350px;">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide text-center">
+            <img src="assets/armada1.jpg" class="galeri-img mx-auto" alt="Armada 1" style="max-width: 350px;">
           </div>
-          <div class="carousel-item text-center">
-            <img src="logo_logistikkita.png" class="galeri-img" alt="Armada 2" style="max-width: 350px;">
+          <div class="swiper-slide text-center">
+            <img src="assets/armada2.jpg" class="galeri-img mx-auto" alt="Armada 2" style="max-width: 350px;">
           </div>
-          <div class="carousel-item text-center">
-            <img src="logo_logistikkita.png" class="galeri-img" alt="Dokumentasi" style="max-width: 350px;">
+          <div class="swiper-slide text-center">
+            <img src="assets/armada3.jpg" class="galeri-img mx-auto" alt="Armada 3" style="max-width: 350px;">
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselGaleri" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselGaleri" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
     </div>
   </section>
 
-  <!-- Artikel SEO -->
+  <!-- Artikel -->
   <section class="artikel" id="artikel">
     <div class="container">
       <h2 class="text-center mb-5">Artikel & Tips Logistik</h2>
@@ -236,7 +235,27 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script>
+    // Swiper init
+    const swiper = new Swiper('.mySwiper', {
+      effect: 'slide',
+      spaceBetween: 20,
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      grabCursor: true,
+      centeredSlides: true,
+      slidesPerView: 1,
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      }
+    });
+
+    // Load artikel dari Supabase
     const supabase = supabase.createClient(
       'https://mrghlcedtafomwnznywf.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
