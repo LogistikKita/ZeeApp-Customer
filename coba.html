@@ -1,192 +1,77 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Logistik Kita adalah layanan pengiriman dan carter armada terpercaya di Mojokerto dan seluruh Indonesia.">
-  <meta name="keywords" content="jasa kirim mojokerto, logistik mojokerto, pengiriman barang, carter pickup, ekspedisi murah jawa timur">
-  <meta name="author" content="Logistik Kita">
-  <title>Logistik Kita - Kirim Barang Aman, Pikiranpun Tenang</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css" />
-  <script src="https://unpkg.com/lucide@latest"></script>
+<title>Carousel Samping</title>
+<style>
+  .carousel-container {
+    width: 80%;
+    overflow: hidden; /* Menyembunyikan gambar yang di luar container */
+    margin: 20px auto;
+  }
+
+  .carousel-slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Efek transisi */
+  }
+
+  .carousel-slide img {
+    width: 200px; /* Lebar setiap gambar */
+    height: 150px; /* Tinggi setiap gambar */
+    object-fit: cover; /* Menyesuaikan gambar agar pas di dalam kotak */
+    margin-right: 10px; /* Jarak antar gambar */
+  }
+
+  .buttons {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .buttons button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+</style>
 </head>
-<body class="bg-white text-gray-800">
-  <div class="drawer drawer-start">
-    <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content">
-      <!-- Navbar -->
-      <div class="navbar bg-gradient-to-r from-red-700 to-red-500 text-white px-6 py-4 shadow-md">
-        <div class="flex-none md:hidden">
-          <label for="drawer-toggle" class="btn btn-ghost btn-circle">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-          </label>
-        </div>
-        <div class="flex-1 flex items-center gap-3">
-          <img src="logo_logistikkita.png" alt="Logo" class="w-10 h-10" />
-          <span class="text-xl font-bold tracking-wide">Logistik Kita</span>
-        </div>
-        <div class="hidden md:flex gap-6 font-medium">
-          <a href="#tentang" class="hover:text-yellow-200">Tentang</a>
-          <a href="#layanan" class="hover:text-yellow-200">Layanan</a>
-          <a href="#galeri" class="hover:text-yellow-200">Galeri</a>
-          <a href="#kontak" class="hover:text-yellow-200">Kontak</a>
-          <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')" class="hover:text-yellow-200">Cek Tarif (Kg)</a>
-          <a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')" class="hover:text-yellow-200">Cek Tarif Carter</a>
-        </div>
-      </div>
+<body>
 
-      <!-- Hero -->
-      <section class="bg-gradient-to-br from-red-700 to-red-600 text-white py-20 px-6 text-center">
-        <i data-lucide="truck" class="w-20 h-20 mx-auto mb-4"></i>
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Kirim Barang Aman, Pikiranpun Tenang</h1>
-        <p class="text-lg md:text-xl mb-6">Layanan logistik terpercaya, cepat, dan hemat ke seluruh Nusantara</p>
-        <a href="#layanan" class="btn btn-outline text-white border-white">Lihat Layanan</a>
-      </section>
-
-      <!-- Tentang Kita -->
-      <section id="tentang" class="py-16 px-6 max-w-5xl mx-auto">
-        <div class="flex items-center gap-4 mb-4">
-          <i data-lucide="info" class="text-red-700 w-6 h-6"></i>
-          <h2 class="text-3xl font-bold text-red-700">Tentang Kita</h2>
-        </div>
-        <p class="text-lg leading-relaxed">Logistik Kita adalah perusahaan jasa pengiriman dan carter armada terpercaya yang berpusat di Mojokerto, Jawa Timur. Kita berkomitmen memberikan layanan terbaik untuk pengiriman dalam kota maupun ke seluruh penjuru Nusantara. Didukung oleh armada handal dan tim profesional, Kita hadir sebagai solusi logistik aman dan efisien untuk Anda.</p>
-      </section>
-
-      <!-- Layanan Kita -->
-      <section id="layanan" class="bg-gray-100 py-16 px-6">
-        <div class="max-w-6xl mx-auto">
-          <div class="flex items-center gap-3 justify-center mb-10">
-            <i data-lucide="box" class="text-red-700 w-6 h-6"></i>
-            <h2 class="text-3xl font-bold text-red-700">Layanan Kita</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white rounded-lg shadow p-6">
-              <i data-lucide="clock" class="w-10 h-10 mb-3 text-red-600"></i>
-              <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Prioritas</h3>
-              <p>Carter armada pickup (hingga 2,5 Ton) untuk pengiriman cepat, fleksibel, dan langsung ke tujuan.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-              <i data-lucide="scale" class="w-10 h-10 mb-3 text-red-600"></i>
-              <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Reguler</h3>
-              <p>Pengiriman barang dengan tarif per kilogram yang ekonomis dan efisien, cocok untuk bisnis dan personal.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow p-6">
-              <i data-lucide="globe" class="w-10 h-10 mb-3 text-red-600"></i>
-              <h3 class="text-xl font-bold mb-2 text-red-600">Layanan Nusantara</h3>
-              <p>Kita bantu forwarding barang ke ekspedisi terpercaya, menjangkau pelosok Nusantara dari Sabang sampai Merauke.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Galeri -->
-      <section id="galeri" class="py-16 px-6 max-w-6xl mx-auto">
-        <div class="flex items-center gap-3 justify-center mb-10">
-          <i data-lucide="image" class="text-red-700 w-6 h-6"></i>
-          <h2 class="text-3xl font-bold text-red-700">Galeri Armada</h2>
-        </div>
-        <div class="splide" aria-label="Galeri Armada Logistik Kita">
-          <div class="splide__track">
-            <ul class="splide__list">
-              <li class="splide__slide">
-                <img src="https://via.placeholder.com/540x960?text=Armada+9x16" class="mx-auto rounded shadow object-cover h-96" />
-              </li>
-              <li class="splide__slide">
-                <img src="https://via.placeholder.com/960x540?text=Armada+16x9" class="mx-auto rounded shadow object-cover h-96" />
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <!-- Lokasi -->
-      <section class="px-6 py-12 bg-white">
-        <div class="flex items-center gap-3 justify-center mb-6">
-          <i data-lucide="map-pin" class="text-red-700 w-6 h-6"></i>
-          <h2 class="text-3xl font-bold text-red-700">Lokasi Kita</h2>
-        </div>
-        <div class="flex justify-center">
-          <iframe class="w-full max-w-4xl h-72 rounded-lg shadow" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.058346528224!2d112.4370636!3d-7.4853574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e780db14e93fd0d%3A0x6526ffa46cfe50a3!2sLogistik%20Kita%20%26%20Jeng%20Ayu%20Trans%20Rental%20Mobil%20Pickup!5e0!3m2!1sid!2sid!4v1720167640000!5m2!1sid!2sid"></iframe>
-        </div>
-        <p class="text-center mt-4 text-sm text-gray-600">📍 Lokasi: Logistik Kita & Jeng Ayu Trans – Mojokerto, Jawa Timur</p>
-      </section>
-
-      <!-- Kontak -->
-      <section id="kontak" class="bg-gray-100 py-16 px-6">
-        <div class="max-w-4xl mx-auto">
-          <div class="flex items-center gap-3 justify-center mb-6">
-            <i data-lucide="phone" class="text-red-700 w-6 h-6"></i>
-            <h2 class="text-3xl font-bold text-red-700">Kontak Kita</h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <p><i data-lucide="message-circle" class="inline w-4 h-4 me-2"></i><strong>WhatsApp:</strong> <a href="https://wa.me/6285813487753" class="text-red-600">0858-1348-7753</a></p>
-              <p><i data-lucide="mail" class="inline w-4 h-4 me-2"></i><strong>Email:</strong> logistikkita.assist@gmail.com</p>
-              <p><i data-lucide="instagram" class="inline w-4 h-4 me-2"></i><strong>Instagram:</strong> <a href="https://instagram.com/logistikkita.official" class="text-red-600">@logistikkita.official</a></p>
-              <p><i data-lucide="facebook" class="inline w-4 h-4 me-2"></i><strong>Facebook:</strong> <a href="https://www.facebook.com/share/1Ab7aTTn98/" class="text-red-600">Logistik Kita</a></p>
-              <p><i data-lucide="linkedin" class="inline w-4 h-4 me-2"></i><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/puput-wicaksana" class="text-red-600">Puput Wicaksana</a></p>
-            </div>
-            <form class="space-y-4">
-              <input type="text" placeholder="Nama" class="input input-bordered w-full" />
-              <input type="email" placeholder="Email" class="input input-bordered w-full" />
-              <textarea placeholder="Pesan" class="textarea textarea-bordered w-full"></textarea>
-              <button class="btn btn-error w-full">Kirim Pesan</button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer & Visitor -->
-      <section class="py-6 text-center text-sm text-gray-600">
-        <p>👁 Total Pengunjung Hari Ini: <span id="visitorCount">0</span></p>
-      </section>
-
-      <footer class="bg-red-700 text-white text-center py-6 mt-10">
-        <p>&copy; 2025 Logistik Kita. All rights reserved. | Mojokerto - Jawa Timur</p>
-      </footer>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="drawer-side z-50">
-      <label for="drawer-toggle" class="drawer-overlay"></label>
-      <aside class="menu p-4 w-64 bg-white text-base-content">
-        <div class="flex items-center gap-2 mb-6">
-          <img src="logo_logistikkita.png" class="w-10" />
-          <span class="font-bold text-lg text-red-700">Logistik Kita</span>
-        </div>
-        <ul class="menu menu-vertical font-medium">
-          <li><a href="#tentang"><i data-lucide="info" class="w-4 h-4 me-1"></i>Tentang</a></li>
-          <li><a href="#layanan"><i data-lucide="truck" class="w-4 h-4 me-1"></i>Layanan</a></li>
-          <li><a href="#galeri"><i data-lucide="image" class="w-4 h-4 me-1"></i>Galeri</a></li>
-          <li><a href="#kontak"><i data-lucide="phone" class="w-4 h-4 me-1"></i>Kontak</a></li>
-          <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="package" class="w-4 h-4 me-1"></i>Cek Tarif (Kg)</a></li>
-          <li><a href="#" onclick="alert('Fitur ini sedang dalam perbaikan')"><i data-lucide="calculator" class="w-4 h-4 me-1"></i>Cek Tarif Carter</a></li>
-        </ul>
-      </aside>
-    </div>
+<div class="carousel-container">
+  <div class="carousel-slide">
+    <img src="gambar1.jpg" alt="Gambar 1">
+    <img src="gambar2.jpg" alt="Gambar 2">
+    <img src="gambar3.jpg" alt="Gambar 3">
+    <img src="gambar4.jpg" alt="Gambar 4">
+    <img src="gambar5.jpg" alt="Gambar 5">
   </div>
+</div>
 
-  <!-- Script -->
-  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
-  <script>
-    new Splide('.splide', {
-      type: 'loop',
-      perPage: 1,
-      autoplay: true,
-      interval: 3000,
-      pauseOnHover: true
-    }).mount();
+<div class="buttons">
+  <button onclick="prevSlide()">Sebelumnya</button>
+  <button onclick="nextSlide()">Selanjutnya</button>
+</div>
 
-    const today = new Date().toLocaleDateString();
-    let count = localStorage.getItem('visitCount_' + today) || 0;
-    count++;
-    localStorage.setItem('visitCount_' + today, count);
-    document.getElementById('visitorCount').innerText = count;
+<script>
+  let slideIndex = 0;
+  const slides = document.querySelector('.carousel-slide');
+  const totalSlides = document.querySelectorAll('.carousel-slide img').length;
 
-    lucide.createIcons();
-  </script>
+  function nextSlide() {
+    slideIndex = (slideIndex + 1) % totalSlides;
+    updateSlidePosition();
+  }
+
+  function prevSlide() {
+    slideIndex = (slideIndex - 1 + totalSlides) % totalSlides;
+    updateSlidePosition();
+  }
+
+  function updateSlidePosition() {
+    slides.style.transform = `translateX(-${slideIndex * 210}px)`; // 210 = lebar gambar + margin
+  }
+</script>
+
 </body>
 </html>
