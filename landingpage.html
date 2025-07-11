@@ -9,9 +9,7 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
     body {
       background-color: #121212;
       color: #f1f1f1;
@@ -43,7 +41,6 @@
       text-align: center;
       color: white;
       text-shadow: 1px 1px 4px black;
-      position: relative;
     }
     .btn-red {
       background-color: white;
@@ -75,22 +72,6 @@
     .artikel-card:hover {
       transform: translateY(-5px);
     }
-    footer {
-      background-color: #000;
-      color: #aaa;
-      padding: 30px 0;
-      text-align: center;
-    }
-    .social-icons img {
-      width: 30px;
-      margin: 0 10px;
-      filter: drop-shadow(0 0 5px #ff4d4d);
-      transition: transform 0.3s ease;
-    }
-    .social-icons img:hover {
-      transform: scale(1.1);
-    }
-
     .fitur-unggulan {
       display: flex;
       overflow-x: auto;
@@ -98,26 +79,39 @@
       padding: 1rem;
       scroll-snap-type: x mandatory;
     }
-
     .fitur-box {
-      min-width: 220px;
+      min-width: 120px;
       flex-shrink: 0;
       scroll-snap-align: start;
       background: #1f1f1f;
-      border: 1px solid #ff4d4d;
-      border-radius: 15px;
+      border: 1px solid #444;
+      border-radius: 10px;
       padding: 1rem;
       color: #fff;
       text-align: center;
-      box-shadow: 0 0 10px #ff4d4d;
+      box-shadow: inset 0 0 10px #222;
+      font-size: 0.9rem;
     }
-
     .fitur-box i {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
       display: block;
     }
-
+    footer {
+      background-color: #000;
+      color: #aaa;
+      padding: 30px 0;
+      text-align: center;
+    }
+    .social-icons img {
+      width: 28px;
+      margin: 0 8px;
+      filter: grayscale(100%) brightness(200%);
+      transition: transform 0.3s ease;
+    }
+    .social-icons img:hover {
+      transform: scale(1.1);
+    }
     @media (max-width: 767px) {
       .hero {
         height: 300px;
@@ -160,13 +154,13 @@
     </div>
   </section>
 
-  <!-- Fitur Ikon Slide -->
-  <div class="fitur-unggulan my-4">
-    <div class="fitur-box"><i>🚚</i><strong>Aman</strong><br>Barang dijaga dengan baik</div>
-    <div class="fitur-box"><i>⚡</i><strong>Cepat</strong><br>Pengiriman tepat waktu</div>
+  <!-- Fitur Slide -->
+  <div class="fitur-unggulan">
+    <div class="fitur-box"><i>🚚</i><strong>Aman</strong><br>Barang dijaga</div>
+    <div class="fitur-box"><i>⚡</i><strong>Cepat</strong><br>Pengiriman tepat</div>
     <div class="fitur-box"><i>💼</i><strong>Profesional</strong><br>Tim berpengalaman</div>
-    <div class="fitur-box"><i>🛡️</i><strong>Terpercaya</strong><br>Ratusan pelanggan puas</div>
-    <div class="fitur-box"><i>📍</i><strong>Tracking</strong><br>Posisi real-time</div>
+    <div class="fitur-box"><i>🛡️</i><strong>Terpercaya</strong><br>Ratusan pelanggan</div>
+    <div class="fitur-box"><i>📍</i><strong>Tracking</strong><br>Real-time</div>
   </div>
 
   <!-- Layanan -->
@@ -198,12 +192,12 @@
   <footer>
     <div class="container">
       <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
-      <div class="social-icons mt-3">
-        <a href="https://instagram.com/logistikkita.official" target="_blank"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"></a>
-        <a href="https://wa.me/6285813487753" target="_blank"><img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp"></a>
-        <a href="https://facebook.com/logistikkita" target="_blank"><img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="Facebook"></a>
-        <a href="https://youtube.com/@logistikkita" target="_blank"><img src="https://img.icons8.com/fluency/48/youtube-play.png" alt="YouTube"></a>
-        <a href="https://tiktok.com/@logistikkita" target="_blank"><img src="https://img.icons8.com/fluency/48/tiktok.png" alt="TikTok"></a>
+      <div class="social-icons">
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/instagram-new.png" alt="Instagram"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png" alt="WhatsApp"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/facebook-new.png" alt="Facebook"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/youtube-play.png" alt="YouTube"></a>
+        <a href="#"><img src="https://img.icons8.com/ios-filled/50/ffffff/tiktok.png" alt="TikTok"></a>
       </div>
     </div>
   </footer>
