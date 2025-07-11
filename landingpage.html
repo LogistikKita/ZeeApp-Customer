@@ -18,14 +18,16 @@
     .navbar-nav .nav-link, .navbar-brand {
       color: white !important;
       font-weight: 600;
-      transition: all 0.3s ease;
     }
-    .navbar-nav .dropdown-menu {
-      animation: slideDown 0.4s ease forwards;
+    .navbar-toggler {
+      background-color: white;
     }
-    @keyframes slideDown {
-      0% { opacity: 0; transform: translateY(-10px); }
-      100% { opacity: 1; transform: translateY(0); }
+    .dropdown-menu {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .hero {
       background: url('https://source.unsplash.com/1600x600/?logistics,truck') center/cover no-repeat;
@@ -38,12 +40,13 @@
       text-shadow: 1px 1px 4px black;
     }
     .btn-red {
-      background-color: #ff4b5c;
-      color: white;
+      background-color: white;
+      color: #121212;
       border-radius: 25px;
+      font-weight: 600;
     }
     .btn-red:hover {
-      background-color: #e03e4e;
+      background-color: #e4e4e4;
     }
     .carousel-item img {
       object-fit: cover;
@@ -66,6 +69,12 @@
       width: 30px;
       margin: 0 10px;
     }
+    @media (max-width: 767px) {
+      .hero {
+        height: 300px;
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head><body>
   <!-- Navbar -->
@@ -75,24 +84,24 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item" data-aos="fade-down"><a class="nav-link" href="#">Beranda</a></li>
-          <li class="nav-item" data-aos="fade-down" data-aos-delay="100"><a class="nav-link" href="#">Layanan</a></li>
-          <li class="nav-item" data-aos="fade-down" data-aos-delay="200"><a class="nav-link" href="#">Galeri</a></li>
-          <li class="nav-item dropdown" data-aos="fade-down" data-aos-delay="300">
+      <div class="collapse navbar-collapse justify-content-end animate__animated animate__fadeInRight" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="#">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Layanan</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Galeri</a></li>
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Cek Tarif</a>
-            <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item text-light" href="#">Cek Tarif Carter</a></li>
-              <li><a class="dropdown-item text-light" href="#">Cek Tarif per Kg</a></li>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Cek Tarif Carter</a></li>
+              <li><a class="dropdown-item" href="#">Cek Tarif per Kg</a></li>
             </ul>
           </li>
-          <li class="nav-item" data-aos="fade-down" data-aos-delay="400"><a class="nav-link" href="#">Form Kirim</a></li>
-          <li class="nav-item" data-aos="fade-down" data-aos-delay="500"><a class="nav-link" href="#">Hubungi</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Form Kirim</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Hubungi</a></li>
         </ul>
       </div>
     </div>
-  </nav>  <!-- Hero -->  <section class="hero" data-aos="zoom-in">
+  </nav>  <!-- Hero -->  <section class="hero" data-aos="fade-up">
     <div class="container">
       <h1 class="display-5">Pengiriman Cepat, Aman, dan Terpercaya</h1>
     </div>
@@ -149,25 +158,20 @@
         </div>
       </div>
     </div>
-  </section>  <!-- Social Section Sebelum Footer -->  <section class="py-4 text-center" data-aos="fade-up">
+  </section>  <!-- Footer -->  <footer>
     <div class="container">
-      <h5>Ikuti Sosial Media Kami</h5>
-      <div class="social-icons mt-3">
-        <a href="#"><img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="Facebook"></a>
+      <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
+      <div class="social-icons">
         <a href="#"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"></a>
         <a href="#"><img src="https://img.icons8.com/fluency/48/whatsapp.png" alt="WhatsApp"></a>
+        <a href="#"><img src="https://img.icons8.com/fluency/48/facebook-new.png" alt="Facebook"></a>
         <a href="#"><img src="https://img.icons8.com/fluency/48/youtube-play.png" alt="YouTube"></a>
         <a href="#"><img src="https://img.icons8.com/fluency/48/tiktok.png" alt="TikTok"></a>
       </div>
     </div>
-  </section>  <!-- Footer -->  <footer>
-    <div class="container">
-      <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
-    </div>
   </footer>  <!-- Scripts -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>  <script>
     AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
+      duration: 800,
+      once: true
     });
   </script></body></html>
