@@ -46,13 +46,21 @@
 </head>
 <body>
 
-  <div class="container py-5">
-    <h2 class="text-center mb-4">Artikel Terbaru</h2>
-    <div id="artikel-container" class="row"></div>
-    <nav>
-      <ul id="pagination" class="pagination mt-4"></ul>
-    </nav>
-  </div>
+  <!-- Struktur asli index.html -->
+  <header class="py-3 text-center bg-danger text-white">
+    <h1>Selamat Datang di Logistik Kita</h1>
+    <p>Solusi Pengiriman Aman dan Cepat</p>
+  </header>
+
+  <main class="container py-5">
+    <section class="mb-5">
+      <h2 class="text-center mb-4">Artikel Terbaru</h2>
+      <div id="artikel-container" class="row"></div>
+      <nav>
+        <ul id="pagination" class="pagination mt-4"></ul>
+      </nav>
+    </section>
+  </main>
 
   <!-- Modal Preview Artikel -->
   <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
@@ -70,6 +78,7 @@
     </div>
   </div>
 
+  <!-- Script Artikel -->
   <script>
     const dataArtikel = [
       {
