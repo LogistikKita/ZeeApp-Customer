@@ -1,59 +1,103 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin - Logistik Kita</title>
   <link rel="icon" href="logo_logistikkita.png" type="image/png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
       background-color: #121212;
       color: #f1f1f1;
       font-family: 'Poppins', sans-serif;
-      overflow-x: hidden;
     }
+
     .navbar {
       background-color: #1f1f1f;
     }
-    .navbar-brand, .nav-link {
+
+    .navbar-brand,
+    .nav-link {
       color: #fff !important;
       font-weight: 600;
     }
-    .navbar-toggler {
-      background-color: white;
+
+    .sidebar {
+      width: 240px;
+      height: 100vh;
+      background-color: #1c1c1c;
+      position: fixed;
+      top: 0;
+      left: -240px;
+      transition: left 0.3s;
+      z-index: 999;
     }
+
+    .sidebar.show {
+      left: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 20px;
+    }
+
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .toggle-btn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background-color: #dc3545;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      color: white;
+      z-index: 1000;
+    }
+
     .hero {
-      padding: 60px 20px;
+      padding: 80px 20px 40px;
       background: linear-gradient(135deg, #dc3545, #721c24);
       color: #fff;
       text-align: center;
     }
-    .hero h1 {
-      font-size: 2.5rem;
-      font-weight: 600;
-    }
-    .hero p {
-      font-size: 1.2rem;
-    }
+
     .card {
       background-color: #1f1f1f;
       border: 1px solid #dc3545;
       border-radius: 12px;
       transition: transform 0.3s ease;
     }
+
     .card:hover {
       transform: scale(1.03);
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
     }
+
     .card-title {
       color: #dc3545;
       font-weight: 600;
     }
+
     .card-text {
       color: #ccc;
     }
+
+    .infografis {
+      margin-top: 40px;
+    }
+
     footer {
       background-color: #000;
       color: #aaa;
@@ -61,142 +105,95 @@
       text-align: center;
       font-size: 14px;
     }
-    a.text-decoration-none:hover {
-      text-decoration: none;
+
+    .btn-danger-outline {
+      border: 1px solid #dc3545;
+      color: #dc3545;
+      background: transparent;
     }
-    /* Sidebar */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: #1f1f1f;
-      padding-top: 60px;
-      transition: left 0.3s;
-      z-index: 1050;
-    }
-    .sidebar a {
-      display: block;
-      padding: 12px 20px;
-      color: #f1f1f1;
-      text-decoration: none;
-    }
-    .sidebar a:hover {
+
+    .btn-danger-outline:hover {
       background-color: #dc3545;
-    }
-    .sidebar.show {
-      left: 0;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: none;
-      z-index: 1040;
-    }
-    .overlay.show {
-      display: block;
+      color: white;
     }
   </style>
 </head>
+
 <body>
-  <div class="overlay" onclick="toggleSidebar()"></div>
+  <button class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
   <div class="sidebar" id="sidebar">
-    <a href="#">🏠 Dashboard</a>
-    <a href="customer.html">📦 Form Customer</a>
-    <a href="data-pengiriman.html">📊 Data Pengiriman</a>
-    <a href="carter.html">🚚 Carter</a>
-    <a href="mitra-driver.html">👷 Mitra Driver</a>
-    <a href="laporan-dan-rekap.html">🧾 Laporan & Rekap</a>
-    <a href="buat-db-baru.html">🗃 Buat DB Baru</a>
-    <a href="pengaturan.html">⚙️ Pengaturan</a>
+    <ul>
+      <li><a href="#">🏠 Dashboard</a></li>
+      <li><a href="customer.html">📦 Form Customer</a></li>
+      <li><a href="data-pengiriman.html">📊 Data Pengiriman</a></li>
+      <li><a href="carter.html">🚚 Carter</a></li>
+      <li><a href="mitra-driver.html">👷 Mitra Driver</a></li>
+      <li><a href="laporan-dan-rekap.html">📑 Laporan & Rekap</a></li>
+      <li><a href="buat-db-baru.html">🗃 Buat DB Baru</a></li>
+      <li><a href="pengaturan.html">⚙️ Pengaturan</a></li>
+    </ul>
   </div>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container d-flex justify-content-between">
-      <button class="btn btn-outline-light me-2" onclick="toggleSidebar()">☰</button>
+  <nav class="navbar sticky-top">
+    <div class="container">
       <a class="navbar-brand" href="#">
-        <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" />
-        Logistik Kita - Admin
+        <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" /> Logistik Kita - Admin
       </a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <h1>Selamat Datang, Admin!</h1>
       <p>Kelola pengiriman barang, armada, mitra, dan laporan dengan mudah.</p>
+
+      <!-- Filter Buttons -->
+      <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+        <button class="btn btn-danger-outline">Hari Ini</button>
+        <button class="btn btn-danger-outline">Minggu Ini</button>
+        <button class="btn btn-danger-outline">Bulan Ini</button>
+        <button class="btn btn-danger-outline">Semua</button>
+        <input type="text" class="form-control w-auto" placeholder="Cari Nomor SJ...">
+        <button class="btn btn-light">Cari</button>
+        <button class="btn btn-outline-success">Download Excel</button>
+        <button class="btn btn-outline-warning">Cetak</button>
+      </div>
     </div>
   </section>
 
-  <!-- Infografis Section -->
-  <div class="container my-5" id="infografis">
-    <div class="row text-center" id="infobox">
-      <div class="col-md-3 mb-3">
-        <div class="card p-3">
-          <h5 class="card-title">📦 Total Order</h5>
-          <p class="card-text" id="totalOrder">-</p>
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <div class="card p-3">
+  <div class="container infografis">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card p-3 text-center">
           <h5 class="card-title">💰 Tarif Masuk</h5>
-          <p class="card-text" id="tarifFinal">-</p>
+          <p class="card-text">Rp -</p>
         </div>
       </div>
-      <div class="col-md-3 mb-3">
-        <div class="card p-3">
+      <div class="col-md-4">
+        <div class="card p-3 text-center">
           <h5 class="card-title">📈 Estimasi Profit</h5>
-          <p class="card-text" id="profit">-</p>
+          <p class="card-text">Rp -</p>
         </div>
       </div>
-      <div class="col-md-3 mb-3">
-        <div class="card p-3">
+      <div class="col-md-4">
+        <div class="card p-3 text-center">
           <h5 class="card-title">🛣️ Rata-rata Jarak</h5>
-          <p class="card-text" id="avgJarak">-</p>
+          <p class="card-text">- km</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
     © 2025 Logistik Kita. All rights reserved.
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.5/dist/umd/supabase.min.js"></script>
   <script>
-    const supabase = supabase.createClient(
-      'https://mrghlcedtafomwnznywf.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
-    );
-
-    async function loadSummary() {
-      const { data, error } = await supabase.from('tarif_carter_admin').select('*');
-      if (data) {
-        document.getElementById('totalOrder').textContent = data.length;
-        document.getElementById('tarifFinal').textContent = 'Rp ' + data.reduce((sum, d) => sum + (d.tarif_final || 0), 0).toLocaleString();
-        document.getElementById('profit').textContent = 'Rp ' + data.reduce((sum, d) => sum + (d.estimasi_profit || 0), 0).toLocaleString();
-        const avgJarak = data.reduce((sum, d) => sum + (d.jarak_total_km || 0), 0) / data.length;
-        document.getElementById('avgJarak').textContent = avgJarak.toFixed(2) + ' km';
-      } else {
-        console.error(error);
-      }
-    }
-
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('show');
-      document.querySelector('.overlay').classList.toggle('show');
     }
-
-    loadSummary();
   </script>
 </body>
+
 </html>
