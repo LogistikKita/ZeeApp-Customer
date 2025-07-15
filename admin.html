@@ -14,13 +14,17 @@
       font-family: 'Poppins', sans-serif;
       overflow-x: hidden;
     }
+
     .navbar {
       background-color: #1f1f1f;
+      z-index: 1050;
     }
+
     .navbar-brand, .nav-link {
       color: #fff !important;
       font-weight: 600;
     }
+
     .sidebar {
       position: fixed;
       top: 0;
@@ -33,9 +37,11 @@
       transition: transform 0.3s ease;
       z-index: 1040;
     }
+
     .sidebar.show {
       transform: translateX(0);
     }
+
     .sidebar a {
       display: block;
       color: #fff;
@@ -43,42 +49,52 @@
       text-decoration: none;
       border-bottom: 1px solid #333;
     }
+
     .sidebar a:hover {
       background-color: #dc3545;
     }
+
     .menu-toggle {
       background-color: #fff;
       border: none;
       font-size: 1.5rem;
       padding: 5px 10px;
+      z-index: 1051;
     }
+
     .hero {
       padding: 60px 20px;
       background: linear-gradient(135deg, #dc3545, #721c24);
       color: #fff;
       text-align: center;
     }
+
     .card {
       background-color: #1f1f1f;
       border: 1px solid #dc3545;
       border-radius: 12px;
       transition: transform 0.3s ease;
     }
+
     .card:hover {
       transform: scale(1.03);
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
     }
+
     .card-title {
       color: #dc3545;
       font-weight: 600;
     }
+
     .card-text {
       color: #ccc;
     }
+
     .infografis {
       padding: 40px 0;
       background-color: #181818;
     }
+
     .infografis .info-card {
       border: 1px solid #333;
       border-radius: 12px;
@@ -86,9 +102,11 @@
       padding: 20px;
       color: #fff;
     }
+
     .infografis h5 {
       color: #ff4d4f;
     }
+
     footer {
       background-color: #000;
       color: #aaa;
@@ -96,9 +114,33 @@
       text-align: center;
       font-size: 14px;
     }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      z-index: 1039;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    #overlay.show {
+      display: block;
+    }
+
+    @media (min-width: 992px) {
+      .menu-toggle {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Overlay -->
+  <div id="overlay" onclick="toggleSidebar()"></div>
 
   <!-- Sidebar -->
   <div id="sidebar" class="sidebar">
@@ -114,7 +156,7 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container d-flex justify-content-between">
+    <div class="container d-flex justify-content-between align-items-center">
       <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
       <a class="navbar-brand mx-auto" href="#">
         <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" />
@@ -143,7 +185,7 @@
             <option value="semua">📂 Semua</option>
           </select>
         </div>
-        <div class="d-flex gap-2">
+        <div class="d-flex flex-wrap gap-2">
           <input type="text" class="form-control bg-dark text-white border-danger" placeholder="🔍 Cari data..." />
           <button class="btn btn-danger">🔎 Cari</button>
           <button class="btn btn-outline-light">📄 Export</button>
@@ -245,7 +287,9 @@
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
       sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
     }
   </script>
 </body>
