@@ -12,6 +12,7 @@
       background-color: #121212;
       color: #f1f1f1;
       font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
     }
     .navbar {
       background-color: #1f1f1f;
@@ -20,11 +21,21 @@
       color: #fff !important;
       font-weight: 600;
     }
+    .navbar-toggler {
+      background-color: white;
+    }
     .hero {
       padding: 60px 20px;
       background: linear-gradient(135deg, #dc3545, #721c24);
       color: #fff;
       text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+    .hero p {
+      font-size: 1.2rem;
     }
     .card {
       background-color: #1f1f1f;
@@ -40,7 +51,9 @@
       color: #dc3545;
       font-weight: 600;
     }
-    .card-text { color: #ccc; }
+    .card-text {
+      color: #ccc;
+    }
     footer {
       background-color: #000;
       color: #aaa;
@@ -48,12 +61,65 @@
       text-align: center;
       font-size: 14px;
     }
+    a.text-decoration-none:hover {
+      text-decoration: none;
+    }
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #1f1f1f;
+      padding-top: 60px;
+      transition: left 0.3s;
+      z-index: 1050;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: #f1f1f1;
+      text-decoration: none;
+    }
+    .sidebar a:hover {
+      background-color: #dc3545;
+    }
+    .sidebar.show {
+      left: 0;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1040;
+    }
+    .overlay.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
+  <div class="overlay" onclick="toggleSidebar()"></div>
+  <div class="sidebar" id="sidebar">
+    <a href="#">🏠 Dashboard</a>
+    <a href="customer.html">📦 Form Customer</a>
+    <a href="data-pengiriman.html">📊 Data Pengiriman</a>
+    <a href="carter.html">🚚 Carter</a>
+    <a href="mitra-driver.html">👷 Mitra Driver</a>
+    <a href="laporan-dan-rekap.html">🧾 Laporan & Rekap</a>
+    <a href="buat-db-baru.html">🗃 Buat DB Baru</a>
+    <a href="pengaturan.html">⚙️ Pengaturan</a>
+  </div>
 
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
+    <div class="container d-flex justify-content-between">
+      <button class="btn btn-outline-light me-2" onclick="toggleSidebar()">☰</button>
       <a class="navbar-brand" href="#">
         <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" />
         Logistik Kita - Admin
@@ -61,6 +127,7 @@
     </div>
   </nav>
 
+  <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <h1>Selamat Datang, Admin!</h1>
@@ -68,75 +135,37 @@
     </div>
   </section>
 
-  <!-- Ringkasan Infografis -->
-  <div class="container mt-5">
-    <div class="row text-center g-4" id="dashboard-summary">
-      <!-- Data akan dimuat oleh JS -->
-    </div>
-  </div>
-
-  <!-- Menu Cards -->
-  <div class="container my-5">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <a href="customer.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">📦 Form Customer</h5>
-            <p class="card-text">Input pengiriman dari customer</p>
-          </div>
-        </a>
+  <!-- Infografis Section -->
+  <div class="container my-5" id="infografis">
+    <div class="row text-center" id="infobox">
+      <div class="col-md-3 mb-3">
+        <div class="card p-3">
+          <h5 class="card-title">📦 Total Order</h5>
+          <p class="card-text" id="totalOrder">-</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <a href="data-pengiriman.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">📊 Data Pengiriman</h5>
-            <p class="card-text">Lihat dan kelola pengiriman</p>
-          </div>
-        </a>
+      <div class="col-md-3 mb-3">
+        <div class="card p-3">
+          <h5 class="card-title">💰 Tarif Masuk</h5>
+          <p class="card-text" id="tarifFinal">-</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <a href="carter.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">🚚 Carter</h5>
-            <p class="card-text">Simulasi dan input carter</p>
-          </div>
-        </a>
+      <div class="col-md-3 mb-3">
+        <div class="card p-3">
+          <h5 class="card-title">📈 Estimasi Profit</h5>
+          <p class="card-text" id="profit">-</p>
+        </div>
       </div>
-      <div class="col-md-4">
-        <a href="mitra-driver.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">👷 Mitra Driver</h5>
-            <p class="card-text">Manajemen mitra pengemudi</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="laporan-dan-rekap.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">🧾 Laporan & Rekap</h5>
-            <p class="card-text">Rekap dan analisis laporan</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="buat-db-baru.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">🗃 Buat DB Baru</h5>
-            <p class="card-text">Inisiasi database baru</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="pengaturan.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">⚙️ Pengaturan</h5>
-            <p class="card-text">Atur konfigurasi sistem</p>
-          </div>
-        </a>
+      <div class="col-md-3 mb-3">
+        <div class="card p-3">
+          <h5 class="card-title">🛣️ Rata-rata Jarak</h5>
+          <p class="card-text" id="avgJarak">-</p>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
   <footer>
     © 2025 Logistik Kita. All rights reserved.
   </footer>
@@ -149,54 +178,25 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
     );
 
-    async function formatRp(value) {
-      return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
-    }
-
-    async function loadDashboardSummary() {
+    async function loadSummary() {
       const { data, error } = await supabase.from('tarif_carter_admin').select('*');
-      if (error || !data) return;
-
-      const totalOrder = data.length;
-      const totalTarif = data.reduce((sum, item) => sum + (item.tarif_final || 0), 0);
-      const totalProfit = data.reduce((sum, item) => sum + (item.estimasi_profit || 0), 0);
-      const avgJarak = data.length > 0 ? (data.reduce((sum, item) => sum + (item.jarak_total_km || 0), 0) / data.length).toFixed(1) : 0;
-      const orderTerbaru = data.sort((a, b) => new Date(b.jadwal_pengiriman) - new Date(a.jadwal_pengiriman))[0];
-
-      document.getElementById('dashboard-summary').innerHTML = `
-        <div class="col-md-3">
-          <div class="card p-3">
-            <h5 class="card-title">📦 Total Order Carter</h5>
-            <p class="card-text fs-4">${totalOrder}</p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card p-3">
-            <h5 class="card-title">💰 Total Tarif Masuk</h5>
-            <p class="card-text fs-5">${await formatRp(totalTarif)}</p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card p-3">
-            <h5 class="card-title">📈 Estimasi Profit</h5>
-            <p class="card-text fs-5">${await formatRp(totalProfit)}</p>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="card p-3">
-            <h5 class="card-title">🛣️ Rata-rata Jarak</h5>
-            <p class="card-text fs-5">${avgJarak} km</p>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="card p-3">
-            <h5 class="card-title">🧾 Order Terbaru</h5>
-            <p class="card-text">${new Date(orderTerbaru.jadwal_pengiriman).toLocaleString('id-ID')} → <strong>${orderTerbaru.tujuan}</strong></p>
-          </div>
-        </div>`;
+      if (data) {
+        document.getElementById('totalOrder').textContent = data.length;
+        document.getElementById('tarifFinal').textContent = 'Rp ' + data.reduce((sum, d) => sum + (d.tarif_final || 0), 0).toLocaleString();
+        document.getElementById('profit').textContent = 'Rp ' + data.reduce((sum, d) => sum + (d.estimasi_profit || 0), 0).toLocaleString();
+        const avgJarak = data.reduce((sum, d) => sum + (d.jarak_total_km || 0), 0) / data.length;
+        document.getElementById('avgJarak').textContent = avgJarak.toFixed(2) + ' km';
+      } else {
+        console.error(error);
+      }
     }
 
-    loadDashboardSummary();
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+      document.querySelector('.overlay').classList.toggle('show');
+    }
+
+    loadSummary();
   </script>
 </body>
 </html>
