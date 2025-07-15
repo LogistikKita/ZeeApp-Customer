@@ -1,103 +1,94 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Admin - Logistik Kita</title>
   <link rel="icon" href="logo_logistikkita.png" type="image/png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       background-color: #121212;
       color: #f1f1f1;
       font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
     }
-
     .navbar {
       background-color: #1f1f1f;
     }
-
-    .navbar-brand,
-    .nav-link {
+    .navbar-brand, .nav-link {
       color: #fff !important;
       font-weight: 600;
     }
-
     .sidebar {
-      width: 240px;
-      height: 100vh;
-      background-color: #1c1c1c;
       position: fixed;
       top: 0;
-      left: -240px;
-      transition: left 0.3s;
-      z-index: 999;
-    }
-
-    .sidebar.show {
       left: 0;
+      height: 100%;
+      width: 220px;
+      background-color: #1f1f1f;
+      padding-top: 70px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1040;
     }
-
-    .sidebar ul {
-      list-style: none;
-      padding: 20px;
+    .sidebar.show {
+      transform: translateX(0);
     }
-
-    .sidebar ul li {
-      margin: 15px 0;
-    }
-
-    .sidebar ul li a {
-      color: white;
+    .sidebar a {
+      display: block;
+      color: #fff;
+      padding: 12px 20px;
       text-decoration: none;
+      border-bottom: 1px solid #333;
     }
-
-    .toggle-btn {
-      position: fixed;
-      top: 10px;
-      left: 10px;
+    .sidebar a:hover {
       background-color: #dc3545;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 4px;
-      color: white;
-      z-index: 1000;
     }
-
+    .menu-toggle {
+      background-color: #fff;
+      border: none;
+      font-size: 1.5rem;
+      padding: 5px 10px;
+    }
     .hero {
-      padding: 80px 20px 40px;
+      padding: 60px 20px;
       background: linear-gradient(135deg, #dc3545, #721c24);
       color: #fff;
       text-align: center;
     }
-
     .card {
       background-color: #1f1f1f;
       border: 1px solid #dc3545;
       border-radius: 12px;
       transition: transform 0.3s ease;
     }
-
     .card:hover {
       transform: scale(1.03);
       box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
     }
-
     .card-title {
       color: #dc3545;
       font-weight: 600;
     }
-
     .card-text {
       color: #ccc;
     }
-
     .infografis {
-      margin-top: 40px;
+      padding: 40px 0;
+      background-color: #181818;
     }
-
+    .infografis .info-card {
+      border: 1px solid #333;
+      border-radius: 12px;
+      background-color: #2a2a2a;
+      padding: 20px;
+      color: #fff;
+    }
+    .infografis h5 {
+      color: #ff4d4f;
+    }
     footer {
       background-color: #000;
       color: #aaa;
@@ -105,95 +96,157 @@
       text-align: center;
       font-size: 14px;
     }
-
-    .btn-danger-outline {
-      border: 1px solid #dc3545;
-      color: #dc3545;
-      background: transparent;
-    }
-
-    .btn-danger-outline:hover {
-      background-color: #dc3545;
-      color: white;
-    }
   </style>
 </head>
-
 <body>
-  <button class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 
-  <div class="sidebar" id="sidebar">
-    <ul>
-      <li><a href="#">🏠 Dashboard</a></li>
-      <li><a href="customer.html">📦 Form Customer</a></li>
-      <li><a href="data-pengiriman.html">📊 Data Pengiriman</a></li>
-      <li><a href="carter.html">🚚 Carter</a></li>
-      <li><a href="mitra-driver.html">👷 Mitra Driver</a></li>
-      <li><a href="laporan-dan-rekap.html">📑 Laporan & Rekap</a></li>
-      <li><a href="buat-db-baru.html">🗃 Buat DB Baru</a></li>
-      <li><a href="pengaturan.html">⚙️ Pengaturan</a></li>
-    </ul>
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="#">🏠 Dashboard</a>
+    <a href="customer.html">📦 Form Customer</a>
+    <a href="data-pengiriman.html">📊 Data Pengiriman</a>
+    <a href="carter.html">🚚 Carter</a>
+    <a href="mitra-driver.html">👷 Mitra Driver</a>
+    <a href="laporan-dan-rekap.html">🧾 Laporan & Rekap</a>
+    <a href="buat-db-baru.html">🗃 Buat DB Baru</a>
+    <a href="pengaturan.html">⚙️ Pengaturan</a>
   </div>
 
-  <nav class="navbar sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" /> Logistik Kita - Admin
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container d-flex justify-content-between">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <a class="navbar-brand mx-auto" href="#">
+        <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" />
+        Logistik Kita - Admin
       </a>
     </div>
   </nav>
 
+  <!-- Hero -->
   <section class="hero">
     <div class="container">
       <h1>Selamat Datang, Admin!</h1>
       <p>Kelola pengiriman barang, armada, mitra, dan laporan dengan mudah.</p>
+    </div>
+  </section>
 
-      <!-- Filter Buttons -->
-      <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
-        <button class="btn btn-danger-outline">Hari Ini</button>
-        <button class="btn btn-danger-outline">Minggu Ini</button>
-        <button class="btn btn-danger-outline">Bulan Ini</button>
-        <button class="btn btn-danger-outline">Semua</button>
-        <input type="text" class="form-control w-auto" placeholder="Cari Nomor SJ...">
-        <button class="btn btn-light">Cari</button>
-        <button class="btn btn-outline-success">Download Excel</button>
-        <button class="btn btn-outline-warning">Cetak</button>
+  <!-- Infografis -->
+  <section class="infografis">
+    <div class="container">
+      <div class="d-flex flex-wrap justify-content-between mb-4">
+        <div class="mb-3">
+          <select class="form-select bg-dark text-white border-danger" id="filter">
+            <option value="bulan" selected>📅 Bulan Ini</option>
+            <option value="minggu">📆 Minggu Ini</option>
+            <option value="hari">📍 Hari Ini</option>
+            <option value="semua">📂 Semua</option>
+          </select>
+        </div>
+        <div class="d-flex gap-2">
+          <input type="text" class="form-control bg-dark text-white border-danger" placeholder="🔍 Cari data..." />
+          <button class="btn btn-danger">🔎 Cari</button>
+          <button class="btn btn-outline-light">📄 Export</button>
+          <button class="btn btn-outline-light">🖨️ Cetak</button>
+        </div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="info-card text-center">
+            <h5>💰 Tarif Masuk</h5>
+            <h3>Rp 0</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="info-card text-center">
+            <h5>📈 Estimasi Profit</h5>
+            <h3>Rp 0</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="info-card text-center">
+            <h5>📊 Rata-rata Jarak</h5>
+            <h3>0 KM</h3>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <div class="container infografis">
+  <!-- Menu Cards -->
+  <div class="container my-5">
     <div class="row g-4">
       <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <h5 class="card-title">💰 Tarif Masuk</h5>
-          <p class="card-text">Rp -</p>
-        </div>
+        <a href="customer.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">📦 Form Customer</h5>
+            <p class="card-text">Input pengiriman dari customer</p>
+          </div>
+        </a>
       </div>
       <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <h5 class="card-title">📈 Estimasi Profit</h5>
-          <p class="card-text">Rp -</p>
-        </div>
+        <a href="data-pengiriman.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">📊 Data Pengiriman</h5>
+            <p class="card-text">Lihat dan kelola pengiriman</p>
+          </div>
+        </a>
       </div>
       <div class="col-md-4">
-        <div class="card p-3 text-center">
-          <h5 class="card-title">🛣️ Rata-rata Jarak</h5>
-          <p class="card-text">- km</p>
-        </div>
+        <a href="carter.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">🚚 Carter</h5>
+            <p class="card-text">Simulasi dan input carter</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="mitra-driver.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">👷 Mitra Driver</h5>
+            <p class="card-text">Manajemen mitra pengemudi</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="laporan-dan-rekap.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">🧾 Laporan & Rekap</h5>
+            <p class="card-text">Rekap dan analisis laporan</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="buat-db-baru.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">🗃 Buat DB Baru</h5>
+            <p class="card-text">Inisiasi database baru</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a href="pengaturan.html" class="text-decoration-none">
+          <div class="card p-3 text-center">
+            <h5 class="card-title">⚙️ Pengaturan</h5>
+            <p class="card-text">Atur konfigurasi sistem</p>
+          </div>
+        </a>
       </div>
     </div>
   </div>
 
+  <!-- Footer -->
   <footer>
     © 2025 Logistik Kita. All rights reserved.
   </footer>
 
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('show');
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('show');
     }
   </script>
 </body>
-
 </html>
