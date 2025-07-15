@@ -3,293 +3,172 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Logistik Kita - Profesional & Aman</title>
-  <link rel="icon" href="logo_logistikkita.png" type="image/png">
+  <title>Beranda - Logistik Kita</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #fff;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
     }
-    .navbar {
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
-    }
-    .navbar-brand img { height: 40px; }
-    .nav-link { color: #333 !important; font-weight: 600; }
-
-    .banner-img {
-      width: 100%;
-      height: 600px;
-      object-fit: cover;
-    }
-
-    .testimoni-card {
-      background: #f7f7f7;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    .thumbnail-grid {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .thumb-item {
-      width: 160px;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-    .thumb-item img {
-      width: 100%;
-      border-radius: 10px;
-      object-fit: cover;
-      aspect-ratio: 1/1;
-    }
-    .thumb-item:hover {
-      transform: scale(1.05);
-    }
-
-    /* Lightbox */
-    #lightboxOverlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .lightbox-content {
-      background: #fff;
-      color: #333;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 600px;
-      width: 90%;
-      text-align: center;
-    }
-    .lightbox-content img {
-      max-width: 100%;
-      border-radius: 10px;
-    }
-    .close-lightbox {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 2rem;
-      color: #fff;
-      cursor: pointer;
-    }
-
     .artikel-card {
-      background-color: #fafafa;
-      border: 1px solid #eee;
+      background: #fff;
+      border: 1px solid #ddd;
       border-radius: 10px;
       padding: 15px;
       margin-bottom: 20px;
-      text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .artikel-card:hover {
+      transform: scale(1.02);
     }
     .artikel-card img {
       width: 100%;
-      height: 180px;
+      height: 200px;
       object-fit: cover;
       border-radius: 8px;
     }
     .btn-artikel {
-      background-color: #dc3545;
+      display: inline-block;
+      margin-top: 10px;
       color: #fff;
-      border: none;
+      background-color: #dc3545;
       padding: 6px 12px;
-      border-radius: 6px;
+      border-radius: 5px;
+      text-decoration: none;
     }
-
-    footer {
-      background: #f5f5f5;
-      color: #555;
-      padding: 20px 0;
-      text-align: center;
-      border-top: 1px solid #ddd;
+    .btn-artikel:hover {
+      background-color: #bb2d3b;
     }
-    .social-icons img {
-      width: 24px;
-      margin: 0 6px;
-      filter: grayscale(100%);
-      transition: 0.3s;
-    }
-    .social-icons img:hover {
-      transform: scale(1.2);
-      filter: grayscale(0%);
+    .pagination {
+      justify-content: center;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="#"><img src="logo_logistikkita.png" alt="Logo"> Logistik Kita</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#hero">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
-          <li class="nav-item"><a class="nav-link" href="#testimoni">Testimoni</a></li>
-          <li class="nav-item"><a class="nav-link" href="#artikel">Artikel</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <div class="container py-5">
+    <h2 class="text-center mb-4">Artikel Terbaru</h2>
+    <div id="artikel-container" class="row"></div>
+    <nav>
+      <ul id="pagination" class="pagination mt-4"></ul>
+    </nav>
+  </div>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="assets/banner-1.png" class="d-block w-100 banner-img" alt="Banner 1">
+  <!-- Modal Preview Artikel -->
+  <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="previewModalLabel">Judul Artikel</h5>
+          <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="carousel-item">
-          <img src="assets/banner-2.png" class="d-block w-100 banner-img" alt="Banner 2">
-        </div>
-        <div class="carousel-item">
-          <img src="assets/banner-3.png" class="d-block w-100 banner-img" alt="Banner 3">
+        <div class="modal-body">
+          <img id="previewImage" class="img-fluid rounded mb-3" src="" alt="">
+          <p id="previewContent"></p>
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </section>
-
-  <!-- Testimoni -->
-  <section id="testimoni" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4">Testimoni Pelanggan</h2>
-      <div class="testimoni-card mx-auto text-center" style="max-width:600px;">
-        <p>"Pengiriman cepat dan pelayanan luar biasa!"</p>
-        <strong>- Pak Ahmad, Sidoarjo</strong>
-      </div>
-    </div>
-  </section>
-
-  <!-- Galeri Armada -->
-  <section id="galeri" class="py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Armada & Dokumentasi</h2>
-      <div class="thumbnail-grid">
-        <div class="thumb-item" data-title="Armada Granmax" data-desc="Armada siap kirim" data-img="assets/armada-1.jpeg">
-          <img src="assets/armada-1.jpeg" alt="Armada 1">
-        </div>
-        <div class="thumb-item" data-title="L300 Box" data-desc="Pengiriman Mojokerto-Surabaya" data-img="assets/armada-2.jpeg">
-          <img src="assets/armada-2.jpeg" alt="Armada 2">
-        </div>
-        <div class="thumb-item" data-title="Delivery Barang" data-desc="Dokumentasi lapangan" data-img="assets/armada-3.jpeg">
-          <img src="assets/armada-3.jpeg" alt="Armada 3">
-        </div>
-        <div class="thumb-item" data-title="Armada Besar" data-desc="Untuk volume besar" data-img="assets/armada-4.jpeg">
-          <img src="assets/armada-4.jpeg" alt="Armada 4">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Lightbox -->
-  <div id="lightboxOverlay" class="d-flex">
-    <div class="close-lightbox" onclick="closeLightbox()">×</div>
-    <div class="lightbox-content">
-      <img id="lb-image" src="" alt="">
-      <h4 id="lb-title" class="mt-3"></h4>
-      <p id="lb-desc"></p>
-      <a href="#" class="btn btn-artikel">Baca Selengkapnya</a>
     </div>
   </div>
 
-  <!-- Artikel -->
-  <section id="artikel" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-5">Artikel & Tips Logistik</h2>
-      <div class="row" id="artikel-list"></div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>© 2025 Logistik Kita. Semua hak dilindungi.</p>
-      <div class="social-icons mt-3">
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/instagram-new.png" alt="Instagram"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/whatsapp.png" alt="WhatsApp"></a>
-        <a href="#"><img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" alt="Facebook"></a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Script -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const thumbItems = document.querySelectorAll('.thumb-item');
-    const overlay = document.getElementById('lightboxOverlay');
-    const lbImage = document.getElementById('lb-image');
-    const lbTitle = document.getElementById('lb-title');
-    const lbDesc = document.getElementById('lb-desc');
-
-    thumbItems.forEach(item => {
-      item.addEventListener('click', () => {
-        lbImage.src = item.dataset.img;
-        lbTitle.textContent = item.dataset.title;
-        lbDesc.textContent = item.dataset.desc;
-        overlay.style.display = 'flex';
-      });
-    });
-
-    function closeLightbox() {
-      overlay.style.display = 'none';
-    }
-
-    // Dummy artikel loader
-    const artikelList = document.getElementById('artikel-list');
-    const dummyArtikel = [
+    const dataArtikel = [
       {
-        title: "Tips Packing Barang",
-        img: "assets/artikel-1.jpg",
-        date: "2025-06-10",
-        content: "Packing yang baik menjaga barang tetap aman..."
+        id: 1,
+        judul: "Tips Pengiriman Barang Aman",
+        tanggal: "2025-07-10",
+        konten: "Berikut adalah beberapa tips agar pengiriman barang Anda lebih aman dan terpercaya...",
+        thumbnail: "https://via.placeholder.com/600x400?text=Artikel+1"
       },
       {
-        title: "Apa Itu Surat Jalan?",
-        img: "assets/artikel-2.jpg",
-        date: "2025-06-12",
-        content: "Surat jalan adalah dokumen penting dalam pengiriman..."
+        id: 2,
+        judul: "Cara Cek Ongkir Logistik Kita",
+        tanggal: "2025-07-12",
+        konten: "Ingin tahu berapa ongkir pengiriman Anda? Cek di halaman tarif carter kami dengan cepat!",
+        thumbnail: "https://via.placeholder.com/600x400?text=Artikel+2"
       },
       {
-        title: "Cek Tarif Lebih Mudah",
-        img: "assets/artikel-3.jpg",
-        date: "2025-06-15",
-        content: "Kini kamu bisa cek tarif langsung dari web..."
+        id: 3,
+        judul: "Keuntungan Gunakan Layanan Carter",
+        tanggal: "2025-07-14",
+        konten: "Layanan carter sangat menguntungkan untuk pengiriman dalam jumlah besar atau sensitif...",
+        thumbnail: ""
+      },
+      {
+        id: 4,
+        judul: "Armada Logistik Kita Diperbarui!",
+        tanggal: "2025-07-15",
+        konten: "Kami baru saja memperbarui armada kami untuk memberikan pelayanan lebih baik kepada Anda...",
+        thumbnail: "https://via.placeholder.com/600x400?text=Artikel+4"
+      },
+      {
+        id: 5,
+        judul: "Perbedaan Layanan Reguler dan Prioritas",
+        tanggal: "2025-07-15",
+        konten: "Logistik Kita memiliki dua layanan utama: Reguler dan Prioritas. Apa bedanya dan mana yang cocok untuk Anda?",
+        thumbnail: "https://via.placeholder.com/600x400?text=Artikel+5"
       }
     ];
-    dummyArtikel.forEach(a => {
-      const col = document.createElement('div');
-      col.className = 'col-md-4';
-      col.innerHTML = `
-        <div class="artikel-card">
-          <img src="${a.img}" alt="${a.title}">
-          <h5 class="mt-2">${a.title}</h5>
-          <small>${new Date(a.date).toLocaleDateString()}</small>
-          <p class="mt-2">${a.content}</p>
-          <a href="#" class="btn-artikel">Baca Selengkapnya</a>
-        </div>`;
-      artikelList.appendChild(col);
-    });
+
+    const artikelPerHalaman = 3;
+    let halamanSaatIni = 1;
+
+    function tampilkanArtikel() {
+      const container = document.getElementById('artikel-container');
+      container.innerHTML = '';
+
+      const awal = (halamanSaatIni - 1) * artikelPerHalaman;
+      const akhir = awal + artikelPerHalaman;
+      const artikelTampil = dataArtikel.slice(awal, akhir);
+
+      artikelTampil.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4';
+        card.innerHTML = `
+          <div class="artikel-card shadow-sm">
+            <img src="${item.thumbnail || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${item.judul}">
+            <h5 class="mt-3">${item.judul}</h5>
+            <small class="text-muted">${new Date(item.tanggal).toLocaleDateString('id-ID')}</small>
+            <p>${item.konten.substring(0, 100)}...</p>
+            <a href="#" class="btn-artikel" onclick="bukaPreview(${item.id})">Baca Selengkapnya</a>
+          </div>`;
+        container.appendChild(card);
+      });
+
+      buatPagination();
+    }
+
+    function buatPagination() {
+      const jumlahHalaman = Math.ceil(dataArtikel.length / artikelPerHalaman);
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+
+      for (let i = 1; i <= jumlahHalaman; i++) {
+        const li = document.createElement('li');
+        li.className = `page-item ${i === halamanSaatIni ? 'active' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#" onclick="gantiHalaman(${i})">${i}</a>`;
+        pagination.appendChild(li);
+      }
+    }
+
+    function gantiHalaman(nomor) {
+      halamanSaatIni = nomor;
+      tampilkanArtikel();
+    }
+
+    function bukaPreview(id) {
+      const artikel = dataArtikel.find(item => item.id === id);
+      if (artikel) {
+        document.getElementById('previewModalLabel').textContent = artikel.judul;
+        document.getElementById('previewImage').src = artikel.thumbnail || 'https://via.placeholder.com/600x400?text=No+Image';
+        document.getElementById('previewContent').textContent = artikel.konten;
+        const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+        modal.show();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", tampilkanArtikel);
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
