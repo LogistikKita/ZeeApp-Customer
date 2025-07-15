@@ -1,149 +1,124 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin - Logistik Kita</title>
-  <link rel="icon" href="logo_logistikkita.png" type="image/png" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="icon" href="logo_logistikkita.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    /* Global Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background-color: #121212;
-      color: #f1f1f1;
-      font-family: 'Poppins', sans-serif;
-      overflow-x: hidden;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1a1a;
+      line-height: 1.6;
     }
-
+    a { text-decoration: none; color: inherit; }
+    /* Navbar */
     .navbar {
-      background-color: #1f1f1f;
-      z-index: 1050;
-    }
-
-    .navbar-brand, .nav-link {
-      color: #fff !important;
-      font-weight: 600;
-    }
-
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 220px;
-      background-color: #1f1f1f;
-      padding-top: 70px;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      z-index: 1040;
-    }
-
-    .sidebar.show {
-      transform: translateX(0);
-    }
-
-    .sidebar a {
-      display: block;
+      background-color: #0071c5;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       color: #fff;
-      padding: 12px 20px;
-      text-decoration: none;
-      border-bottom: 1px solid #333;
     }
-
-    .sidebar a:hover {
-      background-color: #dc3545;
-    }
-
-    .menu-toggle {
-      background-color: #fff;
-      border: none;
+    .navbar h1 {
       font-size: 1.5rem;
-      padding: 5px 10px;
-      z-index: 1051;
-    }
-
-    .hero {
-      padding: 60px 20px;
-      background: linear-gradient(135deg, #dc3545, #721c24);
-      color: #fff;
-      text-align: center;
-    }
-
-    .card {
-      background-color: #1f1f1f;
-      border: 1px solid #dc3545;
-      border-radius: 12px;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-    }
-
-    .card-title {
-      color: #dc3545;
       font-weight: 600;
     }
-
-    .card-text {
-      color: #ccc;
+    /* Sidebar */
+    .sidebar {
+      position: fixed; top: 0; left: -260px;
+      width: 260px; height: 100vh;
+      background: #f2f2f2; padding-top: 60px;
+      transition: left 0.3s ease;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+      z-index: 1001;
     }
-
-    .infografis {
-      padding: 40px 0;
-      background-color: #181818;
+    .sidebar.show { left: 0; }
+    .sidebar a {
+      display: block; padding: 14px 24px;
+      color: #1a1a1a; font-weight: 500;
     }
-
-    .infografis .info-card {
-      border: 1px solid #333;
-      border-radius: 12px;
-      background-color: #2a2a2a;
-      padding: 20px;
-      color: #fff;
-    }
-
-    .infografis h5 {
-      color: #ff4d4f;
-    }
-
-    footer {
-      background-color: #000;
-      color: #aaa;
-      padding: 20px 0;
-      text-align: center;
-      font-size: 14px;
-    }
-
+    .sidebar a:hover { background: #e0e0e0; }
+    /* Overlay */
     #overlay {
-      display: none;
-      position: fixed;
-      z-index: 1039;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.3); display: none;
+      z-index: 1000;
     }
-
-    #overlay.show {
-      display: block;
+    #overlay.show { display: block; }
+    /* Toggle button */
+    .menu-toggle {
+      position: fixed; top: 16px; left: 16px;
+      background: #0071c5; border: none; color: white;
+      padding: 8px 12px; font-size: 1.2rem;
+      border-radius: 4px; z-index: 1002;
     }
-
-    @media (min-width: 992px) {
-      .menu-toggle {
-        display: none;
-      }
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #0071c5, #005a9e);
+      color: white; text-align: center;
+      padding: 80px 16px;
+    }
+    .hero h2 { font-size: 2rem; font-weight: 600; margin-bottom: 8px; }
+    .hero p { font-size: 1rem; max-width: 600px; margin: auto; }
+    /* Infografis */
+    .infografis {
+      padding: 40px 16px;
+    }
+    .infografis .info-item {
+      background: #f7f9fc; border-radius: 8px;
+      padding: 24px; text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .info-item h3 { font-size: 1.5rem; color: #0071c5; margin-bottom: 4px; }
+    .info-item p { font-size: 1.2rem; color: #333; }
+    /* Filter & Buttons */
+    .controls {
+      display: flex; flex-wrap: wrap;
+      gap: 8px; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .controls select, .controls input, .controls button {
+      padding: 8px 12px; border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+    .controls button.primary { background: #0071c5; color: #fff; border: none; }
+    .controls button.outline { background: transparent; color: #0071c5; border: 1px solid #0071c5; }
+    /* Menu cards */
+    .menu-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: 16px; padding: 24px 16px;
+    }
+    .menu-card {
+      background: #f7f9fc; border-radius: 8px;
+      padding: 20px; text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+    .menu-card:hover { transform: translateY(-4px); }
+    .menu-card h4 { font-size: 1.1rem; color: #0071c5; }
+    .menu-card p { font-size: 0.95rem; color: #555; margin-top: 4px; }
+    /* Footer */
+    footer {
+      background: #f2f2f2; color: #555;
+      text-align: center; padding: 24px 16px;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Overlay -->
   <div id="overlay" onclick="toggleSidebar()"></div>
+  <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
 
-  <!-- Sidebar -->
-  <div id="sidebar" class="sidebar">
+  <div class="sidebar" id="sidebar">
     <a href="#">🏠 Dashboard</a>
     <a href="customer.html">📦 Form Customer</a>
     <a href="data-pengiriman.html">📊 Data Pengiriman</a>
@@ -154,140 +129,64 @@
     <a href="pengaturan.html">⚙️ Pengaturan</a>
   </div>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container d-flex justify-content-between align-items-center">
-      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-      <a class="navbar-brand mx-auto" href="#">
-        <img src="logo_logistikkita.png" alt="Logo" height="30" class="me-2" />
-        Logistik Kita - Admin
-      </a>
-    </div>
+  <nav class="navbar">
+    <h1>Logistik Kita – Admin</h1>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
-    <div class="container">
-      <h1>Selamat Datang, Admin!</h1>
-      <p>Kelola pengiriman barang, armada, mitra, dan laporan dengan mudah.</p>
-    </div>
+    <h2>Selamat Datang, Admin!</h2>
+    <p>Kelola pengiriman barang, armada, mitra, dan laporan dengan mudah.</p>
   </section>
 
-  <!-- Infografis -->
-  <section class="infografis">
-    <div class="container">
-      <div class="d-flex flex-wrap justify-content-between mb-4">
-        <div class="mb-3">
-          <select class="form-select bg-dark text-white border-danger" id="filter">
-            <option value="bulan" selected>📅 Bulan Ini</option>
-            <option value="minggu">📆 Minggu Ini</option>
-            <option value="hari">📍 Hari Ini</option>
-            <option value="semua">📂 Semua</option>
-          </select>
-        </div>
-        <div class="d-flex flex-wrap gap-2">
-          <input type="text" class="form-control bg-dark text-white border-danger" placeholder="🔍 Cari data..." />
-          <button class="btn btn-danger">🔎 Cari</button>
-          <button class="btn btn-outline-light">📄 Export</button>
-          <button class="btn btn-outline-light">🖨️ Cetak</button>
-        </div>
-      </div>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="info-card text-center">
-            <h5>💰 Tarif Masuk</h5>
-            <h3>Rp 0</h3>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="info-card text-center">
-            <h5>📈 Estimasi Profit</h5>
-            <h3>Rp 0</h3>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="info-card text-center">
-            <h5>📊 Rata-rata Jarak</h5>
-            <h3>0 KM</h3>
-          </div>
-        </div>
-      </div>
+  <div class="container infografis">
+    <div class="controls">
+      <select id="filter">
+        <option value="bulan" selected>Bulan Ini</option>
+        <option value="minggu">Minggu Ini</option>
+        <option value="hari">Hari Ini</option>
+        <option value="semua">Semua Data</option>
+      </select>
+      <input type="text" placeholder="Cari Nomor Surat Jalan...">
+      <button class="primary">Cari</button>
+      <button class="outline">Download Excel</button>
+      <button class="outline">Cetak</button>
     </div>
-  </section>
-
-  <!-- Menu Cards -->
-  <div class="container my-5">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <a href="customer.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">📦 Form Customer</h5>
-            <p class="card-text">Input pengiriman dari customer</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="data-pengiriman.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">📊 Data Pengiriman</h5>
-            <p class="card-text">Lihat dan kelola pengiriman</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="carter.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">🚚 Carter</h5>
-            <p class="card-text">Simulasi dan input carter</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="mitra-driver.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">👷 Mitra Driver</h5>
-            <p class="card-text">Manajemen mitra pengemudi</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="laporan-dan-rekap.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">🧾 Laporan & Rekap</h5>
-            <p class="card-text">Rekap dan analisis laporan</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="buat-db-baru.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">🗃 Buat DB Baru</h5>
-            <p class="card-text">Inisiasi database baru</p>
-          </div>
-        </a>
-      </div>
-      <div class="col-md-4">
-        <a href="pengaturan.html" class="text-decoration-none">
-          <div class="card p-3 text-center">
-            <h5 class="card-title">⚙️ Pengaturan</h5>
-            <p class="card-text">Atur konfigurasi sistem</p>
-          </div>
-        </a>
+    <div class="grid">
+      <div class="row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+        <div class="info-item">
+          <p>Total Order: <strong id="totalOrder">0</strong></p>
+        </div>
+        <div class="info-item">
+          <p>Tarif Masuk: <strong id="tarifFinal">Rp 0</strong></p>
+        </div>
+        <div class="info-item">
+          <p>Estimasi Profit: <strong id="profit">Rp 0</strong></p>
+        </div>
+        <div class="info-item">
+          <p>Rata‑rata Jarak: <strong id="avgJarak">0 km</strong></p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
+  <div class="menu-cards">
+    <a href="customer.html"><div class="menu-card"><h4>📦 Form Customer</h4><p>Input pengiriman customer</p></div></a>
+    <a href="data-pengiriman.html"><div class="menu-card"><h4>📊 Data Pengiriman</h4><p>Lihat dan kelola pengiriman</p></div></a>
+    <a href="carter.html"><div class="menu-card"><h4>🚚 Carter</h4><p>Simulasi & input carter</p></div></a>
+    <a href="mitra-driver.html"><div class="menu-card"><h4>👷 Mitra Driver</h4><p>Manajemen mitra pengemudi</p></div></a>
+    <a href="laporan-dan-rekap.html"><div class="menu-card"><h4>🧾 Laporan & Rekap</h4><p>Rekap & analisis laporan</p></div></a>
+    <a href="buat-db-baru.html"><div class="menu-card"><h4>🗃 Buat DB Baru</h4><p>Inisiasi database baru</p></div></a>
+    <a href="pengaturan.html"><div class="menu-card"><h4>⚙️ Pengaturan</h4><p>Atur konfigurasi sistem</p></div></a>
+  </div>
+
   <footer>
-    © 2025 Logistik Kita. All rights reserved.
+    © 2025 Logistik Kita. All rights reserved.
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
       sidebar.classList.toggle('show');
       overlay.classList.toggle('show');
     }
