@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrasi - Logistik Kita</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs/dist/bcrypt.min.js"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-secondary via-gray-800 to-primary flex items-center justify-center relative">
+  <!-- Animasi background -->
+  <div class="absolute inset-0 bg-white opacity-5 blur-xl animate-pulse"></div>
+
+  <!-- Card -->
+  <div class="z-10 w-full max-w-md">
+    <div class="card bg-white shadow-2xl">
+      <div class="card-body">
+        <h2 class="text-2xl font-bold text-center text-primary mb-4">Registrasi Pengguna</h2>
+        <form id="registerForm" class="space-y-3">
+          <input type="text" id="username" placeholder="Username" class="input input-bordered w-full" required />
+          <div class="relative">
+            <input type="password" id="password" placeholder="Password" class="input input-bordered w-full pr-10" required />
+            <button type="button" onclick="togglePassword()" class="absolute right-2 top-2 btn btn-xs btn-outline">👁️</button>
+          </div>
+          <input type="text" id="nama" placeholder="Nama Lengkap" class="input input-bordered w-full" required />
+          <select id="role" class="select select-bordered w-full" required>
+            <option disabled selected>Pilih Kategori</option>
+            <option value="customer">Customer</option>
+            <option value="driver">Mitra Driver</option>
+            <option value="admin">Admin</option>
+            <option value="superadmin">Super Admin</option>
+          </select>
+          <button type="submit" class="btn btn-primary w-full">Daftar</button>
+        </form>
+        <p class="text-center text-sm text-gray-500 mt-4">© Logistik Kita 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal sukses -->
+  <dialog id="modalSuccess" class="modal">
+    <form method="dialog" class="modal-box text-center">
+      <h3 class="text-green-600 font-bold text-lg">Registrasi Berhasil 🎉</h3>
+      <p class="py-2">Silakan lanjut ke halaman login.</p>
+      <button onclick="window.location.href='login.html'" class="btn btn-success mt-2">Login</button>
+    </form>
+  </dialog>
+
+  <!-- Modal gagal -->
+  <dialog id="modalExist" class="modal">
+    <form method="dialog" class="modal-box text-center">
+      <h3 class="text-red-600 font-bold text-lg">Username Sudah Dipakai!</h3>
+      <p class="py-2">Silakan gunakan username lain.</p>
+      <button class="btn btn-error mt-2">Tutup</button>
+    </form>
+  </dialog>
+
+  <!-- Script -->
+  <script>
+    const supabase = supabase.createClient(
+      'https://mrghlcedtafomwnznywf.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1yZ2hsY2VkdGFmb213bnpueXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAzMTAwMTcsImV4cCI6MjA2NTg4NjAxN30.vCLC9w8sT0-4uMLFt9c-3BsFeLVco68ajtsu2ZQUiWs'
+    );
+
+    const form = document.getElementById('registerForm');
+    const modalSuccess = document.getElementById('modalSuccess');
+    const modalExist = document.getElementById('modalExist');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const nama = document.getElementById('nama').value.trim();
+      const role = document.getElementById('role').value;
+
+      // cek username
+      const { data: existing } = await supabase
+        .from('users')
+        .select('id')
+        .eq('username', username)
+        .single();
+
+      if (existing) {
+        modalExist.showModal();
+        return;
+      }
+
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(password, salt);
+
+      const { error } = await supabase
+        .from('users')
+        .insert([{ username, password_hash: hash, nama, role }]);
+
+      if (!error) {
+        form.reset();
+        modalSuccess.showModal();
+      } else {
+        alert("Gagal: " + error.message);
+      }
+    });
+
+    function togglePassword() {
+      const pw = document.getElementById('password');
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    }
+  </script>
+</body>
+</html>
