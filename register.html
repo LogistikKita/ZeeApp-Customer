@@ -48,11 +48,11 @@
     </div>
   </dialog>
 
-  <!-- Modal error -->
+  <!-- Modal username sudah ada -->
   <dialog id="modalExist" class="modal">
     <div class="modal-box">
       <h3 class="font-bold text-lg text-red-600">Gagal!</h3>
-      <p class="py-2">Username sudah digunakan. 😣</p>
+      <p class="py-2">Username sudah digunakan 😣</p>
       <div class="modal-action">
         <form method="dialog">
           <button class="btn bg-red-600 text-white">Tutup</button>
@@ -61,11 +61,11 @@
     </div>
   </dialog>
 
-  <!-- Modal gagal -->
+  <!-- Modal gagal umum -->
   <dialog id="modalError" class="modal">
     <div class="modal-box">
-      <h3 class="font-bold text-lg text-yellow-600">Gagal!</h3>
-      <p class="py-2" id="errorMsg">Terjadi kesalahan.</p>
+      <h3 class="font-bold text-lg text-yellow-600">Terjadi Kesalahan</h3>
+      <p class="py-2" id="errorMsg">Gagal menyimpan data.</p>
       <div class="modal-action">
         <form method="dialog">
           <button class="btn bg-yellow-600 text-white">Tutup</button>
@@ -89,34 +89,44 @@
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const username = document.getElementById("username").value;
+      const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value;
-      const nama = document.getElementById("nama").value;
+      const nama = document.getElementById("nama").value.trim();
       const role = document.getElementById("role").value;
 
-      const { data: existing } = await supabase
-        .from('users')
-        .select('id')
-        .eq('username', username)
-        .single();
+      try {
+        const { data: existing, error: existErr } = await supabase
+          .from('users')
+          .select('id')
+          .eq('username', username)
+          .maybeSingle();
 
-      if (existing) {
-        modalExist.showModal();
-        return;
-      }
+        if (existErr) {
+          throw existErr;
+        }
 
-      const salt = bcrypt.genSaltSync(10);
-      const hash = bcrypt.hashSync(password, salt);
+        if (existing) {
+          modalExist.showModal();
+          return;
+        }
 
-      const { error } = await supabase
-        .from('users')
-        .insert([{ username, password_hash: hash, nama, role }]);
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
 
-      if (!error) {
-        form.reset();
-        modalSuccess.showModal();
-      } else {
-        errorMsg.textContent = "Gagal menyimpan: " + error.message;
+        const { data, error } = await supabase
+          .from('users')
+          .insert([{ username, password_hash: hash, nama, role }]);
+
+        if (error) {
+          errorMsg.textContent = "Gagal menyimpan data: " + error.message;
+          modalError.showModal();
+        } else {
+          form.reset();
+          modalSuccess.showModal();
+        }
+
+      } catch (err) {
+        errorMsg.textContent = "Kesalahan: " + err.message;
         modalError.showModal();
       }
     });
