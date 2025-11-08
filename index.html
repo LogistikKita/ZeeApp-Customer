@@ -1,28 +1,34 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistik Kita | Beranda</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- Header otomatis -->
-  <div id="header"></div>
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo-link">
+      <img src="assets/logo/Logistik-Kita.png" alt="Logo Logistik Kita" class="logo-img" />
+      <span class="logo-text">LOGISTIK KITA</span>
+    </a>
 
-  <main class="content">
-    <section class="hero">
-      <h1>Selamat Datang di 🚚 Logistik Kita</h1>
-      <p>Layanan pengiriman cepat, aman, dan terpercaya dari Mojokerto ke seluruh Indonesia.</p>
-      <a href="layanan.html" class="btn-primary">Lihat Layanan Kami</a>
-    </section>
-  </main>
+    <nav class="nav-menu">
+      <a href="index.html">Beranda</a>
+      <a href="layanan.html">Layanan</a>
+      <a href="cektarif.html">Cek Tarif</a>
+      <a href="galerikita.html">Galeri</a>
+      <a href="klienkita.html">Klien</a>
+      <a href="tentangkita.html">Tentang</a>
+      <a href="kontakkita.html">Kontak</a>
+    </nav>
 
-  <!-- Footer otomatis -->
-  <div id="footer"></div>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
 
-  <script src="assets/js/include.js"></script>
-  <script src="assets/js/script.js"></script>
-</body>
-</html>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Beranda</a>
+    <a href="layanan.html">Layanan</a>
+    <a href="cektarif.html">Cek Tarif</a>
+    <a href="galerikita.html">Galeri</a>
+    <a href="klienkita.html">Klien</a>
+    <a href="tentangkita.html">Tentang</a>
+    <a href="kontakkita.html">Kontak</a>
+  </div>
+</header>
