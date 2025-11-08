@@ -15,13 +15,18 @@
       <nav class="navbar">
         <div class="logo">
           <img src="assets/logo/Logistik-Kita.png" alt="Logo Logistik Kita" class="logo-img">
-          🚚 LOGISTIK KITA
+          LOGISTIK KITA
         </div>
-        <button class="hamburger" id="hamburger">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        
+        <div class="header-controls">
+            <button id="dark-mode-toggle" class="mode-toggle">☀️</button>
+            <button class="hamburger" id="hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+        </div>
+
         <ul class="nav-links" id="nav-links">
           <li><a href="#home">Beranda</a></li>
           <li><a href="#layanan">Layanan</a></li>
@@ -39,21 +44,36 @@
       <a href="#layanan" class="cta-btn">Mulai Sekarang</a>
     </section>
 
-    <section id="layanan" class="content-section scroll-fade-in">
-      <h2>Layanan Kami</h2>
-      <p>
-        Kami menyediakan layanan Reguler, Prioritas, dan Carter dengan perhitungan tarif transparan.
-      </p>
+    <section id="layanan" class="content-section two-column scroll-fade-in">
+      <div class="content-wrapper">
+        <div class="text-content">
+          <h2>Layanan Kami yang Cepat</h2>
+          <p>
+            Kami menyediakan layanan Reguler, Prioritas, dan Carter dengan perhitungan tarif transparan. Pelacakan real-time memastikan Anda selalu tahu lokasi barang Anda.
+          </p>
+          <a href="#tarif" class="cta-btn small-btn">Cek Tarif Sekarang</a>
+        </div>
+        <div class="media-content">
+          <img src="https://via.placeholder.com/600x400?text=Peta+Pelacakan" alt="Peta Pelacakan" class="section-image">
+        </div>
+      </div>
     </section>
 
-    <section id="tarif" class="content-section scroll-fade-in">
-      <h2>Cek Tarif Pengiriman</h2>
-      <p>Masukkan asal, tujuan, dan berat barang untuk estimasi biaya.</p>
+    <section id="tarif" class="content-section two-column reverse scroll-fade-in">
+      <div class="content-wrapper">
+        <div class="media-content">
+          <img src="https://via.placeholder.com/600x400?text=Ilustrasi+Harga+Murah" alt="Ilustrasi Harga Murah" class="section-image">
+        </div>
+        <div class="text-content">
+          <h2>Cek Tarif Pengiriman Instan</h2>
+          <p>Masukkan asal, tujuan, dan berat barang Anda untuk mendapatkan estimasi biaya dalam hitungan detik.</p>
+          </div>
+      </div>
     </section>
 
     <section id="hubungi" class="content-section scroll-fade-in">
       <h2>Hubungi Kami</h2>
-      <p>Hubungi tim kami untuk konsultasi dan penawaran terbaik.</p>
+      <p>Hubungi tim kami untuk konsultasi dan penawaran terbaik. Kami siap melayani 24/7.</p>
     </section>
     
     <footer>
