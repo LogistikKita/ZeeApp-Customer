@@ -35,6 +35,24 @@ a {
   font-size: 1.3rem;
 }
 
+/* ====== LOGO IMAGE ====== */
+.logo-img {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 38px;
+  }
+}
+
+.nav-menu {
+  display: flex;
+  gap: 1.5rem;
+}
+
 .nav-menu {
   display: flex;
   gap: 1.5rem;
