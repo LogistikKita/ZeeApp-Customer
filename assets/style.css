@@ -1,123 +1,113 @@
-/* ========== GLOBAL STYLE ========== */
-body {
-  font-family: "Poppins", sans-serif;
-}
-
-/* ========== HEADER STYLE ========== */
-.site-header {
+/* ===== NAVBAR STYLE ===== */
+.navbar {
+  background-color: #fff;
+  border-bottom: 2px solid #e5e5e5;
   position: fixed;
-  top: 0;
   width: 100%;
-  z-index: 50;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e5e7eb;
-  transition: all 0.4s ease;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
 }
 
-.site-header.scrolled {
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-}
-
-/* Container utama header */
-.site-header .container {
+.nav-container {
   max-width: 1200px;
-  margin: auto;
-  padding: 0.75rem 1.25rem;
+  margin: 0 auto;
+  padding: 1rem 2rem;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
-/* Logo */
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.logo-icon {
-  background-color: #dc2626;
-  color: #fff;
-  font-weight: bold;
-  width: 40px;
-  height: 40px;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.logo-title {
   font-weight: 700;
-  font-size: 1.1rem;
-}
-.logo-sub {
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: 1.25rem;
+  color: #e60000;
+  text-decoration: none;
 }
 
-/* Menu navigasi */
 .nav-menu {
-  display: none;
+  display: flex;
+  gap: 1.5rem;
 }
+
 .nav-menu a {
   text-decoration: none;
-  color: #374151;
+  color: #333;
   font-weight: 500;
   transition: color 0.2s ease;
 }
+
 .nav-menu a:hover {
-  color: #dc2626;
+  color: #e60000;
 }
 
-/* Tombol Aksi */
-.nav-action {
+/* ===== HAMBURGER BUTTON ===== */
+.hamburger {
   display: none;
-}
-
-/* Tombol Menu Mobile */
-.menu-btn {
-  background: transparent;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: none;
   border: none;
   cursor: pointer;
-  padding: 0.4rem;
 }
 
-/* Menu Mobile */
+.hamburger span {
+  height: 3px;
+  width: 100%;
+  background: #333;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+/* ===== MOBILE MENU ===== */
 .mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 100vh;
+  width: 70%;
   background-color: #fff;
-  border-top: 1px solid #e5e7eb;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-.mobile-menu a {
-  padding: 0.5rem 0;
-  color: #374151;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-.mobile-menu a:hover {
-  color: #dc2626;
+  padding: 5rem 2rem;
+  gap: 1.5rem;
+  transition: right 0.3s ease;
 }
 
-/* Responsive untuk layar lebar */
-@media (min-width: 768px) {
+.mobile-menu a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.mobile-menu.show {
+  right: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
   .nav-menu {
-    display: flex;
-    gap: 1.5rem;
-  }
-  .nav-action {
-    display: flex;
-    gap: 0.75rem;
-  }
-  .menu-btn {
     display: none;
   }
-  .mobile-menu {
-    display: none !important;
+  .hamburger {
+    display: flex;
   }
+}
+
+/* ===== ANIMATION FOR MENU BTN ===== */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
 }
