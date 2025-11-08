@@ -1,16 +1,15 @@
-// Memuat header dan footer otomatis
-document.addEventListener("DOMContentLoaded", () => {
-  const loadPartials = async () => {
-    const header = await fetch("assets/partials/header.html").then(res => res.text());
-    document.getElementById("header").innerHTML = header;
+// include.js – Memuat header & footer otomatis
+document.addEventListener("DOMContentLoaded", async () => {
+  async function loadHTML(id, file) {
+    const element = document.getElementById(id);
+    if (element) {
+      const response = await fetch(`assets/partials/${file}`);
+      if (response.ok) {
+        element.innerHTML = await response.text();
+      }
+    }
+  }
 
-    const footer = await fetch("assets/partials/footer.html").then(res => res.text());
-    document.getElementById("footer").innerHTML = footer;
-  };
-
-  loadPartials().then(() => {
-    const script = document.createElement("script");
-    script.src = "assets/js/script.js";
-    document.body.appendChild(script);
-  });
+  await loadHTML("header", "header.html");
+  await loadHTML("footer", "footer.html");
 });
