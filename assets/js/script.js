@@ -1,15 +1,19 @@
-// Script untuk hamburger & mobile menu
-document.addEventListener("click", (e) => {
-  const menuBtn = document.getElementById("menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
+// ====== NAVBAR MOBILE MENU ======
+const menuBtn = document.getElementById("menu-btn");
+const mobileMenu = document.getElementById("mobile-menu");
 
-  if (!menuBtn || !mobileMenu) return;
+menuBtn.addEventListener("click", () => {
+  menuBtn.classList.toggle("active");
+  mobileMenu.classList.toggle("show");
+  document.body.classList.toggle("menu-open");
+});
 
-  if (menuBtn.contains(e.target)) {
-    menuBtn.classList.toggle("active");
-    mobileMenu.classList.toggle("show");
-  } else if (!mobileMenu.contains(e.target)) {
-    menuBtn.classList.remove("active");
-    mobileMenu.classList.remove("show");
+// ====== NAVBAR SCROLL EFFECT ======
+window.addEventListener("scroll", () => {
+  const navbar = document.getElementById("navbar");
+  if (window.scrollY > 30) {
+    navbar.classList.add("scrolled");
+  } else {
+    navbar.classList.remove("scrolled");
   }
 });
