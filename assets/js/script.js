@@ -1,16 +1,15 @@
-// ===== MOBILE MENU TOGGLE =====
-const menuBtn = document.getElementById('menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
+// Script untuk hamburger & mobile menu
+document.addEventListener("click", (e) => {
+  const menuBtn = document.getElementById("menu-btn");
+  const mobileMenu = document.getElementById("mobile-menu");
 
-menuBtn.addEventListener('click', () => {
-  menuBtn.classList.toggle('active');
-  mobileMenu.classList.toggle('show');
-});
+  if (!menuBtn || !mobileMenu) return;
 
-// Optional: Close menu saat klik di luar
-document.addEventListener('click', (e) => {
-  if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-    menuBtn.classList.remove('active');
-    mobileMenu.classList.remove('show');
+  if (menuBtn.contains(e.target)) {
+    menuBtn.classList.toggle("active");
+    mobileMenu.classList.toggle("show");
+  } else if (!mobileMenu.contains(e.target)) {
+    menuBtn.classList.remove("active");
+    mobileMenu.classList.remove("show");
   }
 });
