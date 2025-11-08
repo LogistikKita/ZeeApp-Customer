@@ -1,27 +1,54 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistik Kita | Beranda</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- Header otomatis -->
-  <div id="header"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logistik Kita</title>
+    <link href="style.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <div class="logo">🚚 LOGISTIK KITA</div>
+        <button class="hamburger" id="hamburger">&#9776;</button>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#home">Beranda</a></li>
+          <li><a href="#layanan">Layanan</a></li>
+          <li><a href="#tarif">Cek Tarif</a></li>
+          <li><a href="#hubungi">Hubungi Kami</a></li>
+        </ul>
+      </nav>
+    </header>
 
-  <main class="content">
-    <section class="hero">
-      <h1>Selamat Datang di 🚚 Logistik Kita</h1>
-      <p>Layanan pengiriman cepat, aman, dan terpercaya dari Mojokerto ke seluruh Indonesia.</p>
-      <a href="layanan.html" class="btn-primary">Lihat Layanan Kami</a>
+    <section id="home" class="hero-section">
+      <h1>Solusi Pengiriman Andal</h1>
+      <p>
+        Layanan logistik cepat, aman, dan terpercaya dari Mojokerto ke seluruh Indonesia.
+      </p>
+      <a href="#layanan" class="cta-btn">Mulai Sekarang</a>
     </section>
-  </main>
 
-  <!-- Footer otomatis -->
-  <div id="footer"></div>
+    <section id="layanan" class="content-section">
+      <h2>Layanan Kami</h2>
+      <p>
+        Kami menyediakan layanan Reguler, Prioritas, dan Carter dengan perhitungan tarif transparan.
+      </p>
+    </section>
 
-  <script src="assets/js/include.js"></script>
-</body>
+    <section id="tarif" class="content-section">
+      <h2>Cek Tarif Pengiriman</h2>
+      <p>Masukkan asal, tujuan, dan berat barang untuk estimasi biaya.</p>
+    </section>
+
+    <section id="hubungi" class="content-section">
+      <h2>Hubungi Kami</h2>
+      <p>Hubungi tim kami untuk konsultasi dan penawaran terbaik.</p>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
 </html>
