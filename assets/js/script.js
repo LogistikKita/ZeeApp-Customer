@@ -9,12 +9,42 @@ document.addEventListener("DOMContentLoaded", function () {
       hamburger.classList.toggle("active"); // Mengaktifkan animasi hamburger
     });
 
-    // Tutup menu ketika link di klik (untuk navigasi one-page scroll)
+    // Tutup menu ketika link di klik
     document.querySelectorAll(".nav-links a").forEach(link => {
       link.addEventListener("click", () => {
         navLinks.classList.remove("active"); 
-        hamburger.classList.remove("active"); // Menutup animasi hamburger juga
+        hamburger.classList.remove("active"); // Menutup animasi hamburger
       });
+    });
+  }
+
+  // --- Logika Dark Mode ---
+  const toggleButton = document.getElementById("dark-mode-toggle");
+  
+  // 1. Cek preferensi yang tersimpan atau sistem
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const currentTheme = localStorage.getItem('theme');
+
+  if (currentTheme === 'dark' || (!currentTheme && prefersDark)) {
+    document.body.classList.add('dark-mode');
+    if (toggleButton) toggleButton.textContent = '🌙';
+  } else {
+    if (toggleButton) toggleButton.textContent = '☀️';
+  }
+
+  // 2. Listener untuk mengaktifkan toggle
+  if (toggleButton) {
+    toggleButton.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      
+      // Simpan preferensi
+      if (document.body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+        toggleButton.textContent = '🌙';
+      } else {
+        localStorage.setItem('theme', 'light');
+        toggleButton.textContent = '☀️';
+      }
     });
   }
 
