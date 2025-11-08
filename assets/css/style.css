@@ -21,7 +21,7 @@ a {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 9999; /* pastikan di atas semuanya */
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -62,7 +62,7 @@ a {
   transition: color 0.2s ease;
 }
 
-/* Hilangkan underline dan tambahkan efek hover elegan */
+/* Hover elegan */
 .nav-menu a::after {
   content: "";
   position: absolute;
@@ -91,7 +91,8 @@ a {
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 1100;
+  z-index: 10000; /* pastikan di atas mobile-menu */
+  position: relative;
 }
 
 .hamburger span {
@@ -111,10 +112,15 @@ a {
   padding: 1rem;
   backdrop-filter: blur(6px);
   animation: slideDown 0.3s ease;
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 60px; /* agar muncul tepat di bawah navbar */
   left: 0;
   width: 100%;
+  z-index: 9998; /* di bawah tombol hamburger */
+}
+
+.mobile-menu.show {
+  display: flex;
 }
 
 .mobile-menu a {
@@ -125,7 +131,6 @@ a {
   position: relative;
 }
 
-/* Hover elegan di mobile menu */
 .mobile-menu a::after {
   content: "";
   position: absolute;
@@ -158,10 +163,6 @@ a {
   }
 
   .hamburger {
-    display: flex;
-  }
-
-  .mobile-menu.show {
     display: flex;
   }
 
