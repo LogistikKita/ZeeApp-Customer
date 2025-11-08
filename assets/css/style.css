@@ -1,19 +1,29 @@
-/* ===== NAVBAR STYLE ===== */
+/* ====== STYLE UMUM ====== */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #fff;
+  color: #111;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ====== NAVBAR ====== */
 .navbar {
   background-color: #fff;
-  border-bottom: 2px solid #e5e5e5;
-  position: fixed;
-  width: 100%;
+  border-bottom: 2px solid #e11d48;
+  position: sticky;
   top: 0;
-  left: 0;
-  z-index: 100;
-  transition: all 0.3s ease;
+  z-index: 1000;
 }
 
 .nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
+  max-width: 1100px;
+  margin: auto;
+  padding: 0.7rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,9 +31,8 @@
 
 .logo {
   font-weight: 700;
-  font-size: 1.25rem;
-  color: #e60000;
-  text-decoration: none;
+  color: #e11d48;
+  font-size: 1.3rem;
 }
 
 .nav-menu {
@@ -32,82 +41,117 @@
 }
 
 .nav-menu a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.2s ease;
+  color: #111;
+  transition: color 0.2s;
 }
 
 .nav-menu a:hover {
-  color: #e60000;
+  color: #e11d48;
 }
 
-/* ===== HAMBURGER BUTTON ===== */
+/* ====== HAMBURGER ====== */
 .hamburger {
   display: none;
   flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  background: none;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
   border: none;
   cursor: pointer;
 }
 
 .hamburger span {
+  width: 25px;
   height: 3px;
-  width: 100%;
-  background: #333;
+  background: #111;
   border-radius: 3px;
   transition: all 0.3s ease;
 }
 
-/* ===== MOBILE MENU ===== */
+/* ====== MOBILE MENU ====== */
 .mobile-menu {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  height: 100vh;
-  width: 70%;
-  background-color: #fff;
-  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-  display: flex;
+  display: none;
   flex-direction: column;
-  padding: 5rem 2rem;
-  gap: 1.5rem;
-  transition: right 0.3s ease;
+  background: #fff;
+  border-top: 2px solid #e11d48;
+  padding: 1rem;
+  animation: slideDown 0.3s ease;
 }
 
 .mobile-menu a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #f2f2f2;
+  color: #111;
 }
 
-.mobile-menu.show {
-  right: 0;
+.mobile-menu a:last-child {
+  border-bottom: none;
 }
 
-/* ===== RESPONSIVE ===== */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ====== RESPONSIVE ====== */
 @media (max-width: 768px) {
   .nav-menu {
     display: none;
   }
+
   .hamburger {
     display: flex;
   }
+
+  .mobile-menu.show {
+    display: flex;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(8px);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+  }
 }
 
-/* ===== ANIMATION FOR MENU BTN ===== */
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+/* ====== FOOTER ====== */
+.footer {
+  background: #111;
+  color: #fff;
+  padding: 1.5rem 0;
+  text-align: center;
+  margin-top: 2rem;
 }
 
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
+.footer-container p {
+  margin: 5px 0;
 }
 
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+/* ====== HERO SECTION ====== */
+.hero {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.hero h1 {
+  color: #e11d48;
+  font-size: 2rem;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #e11d48;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #be123c;
 }
