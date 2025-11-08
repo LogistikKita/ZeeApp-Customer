@@ -1,21 +1,15 @@
-// ==== SCRIPT UNTUK MENU HAMBURGER ====
-document.addEventListener("DOMContentLoaded", () => {
-  const menuBtn = document.getElementById("menu-btn");
-  const mobileMenu = document.getElementById("mobile-menu");
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburger = document.getElementById("hamburger");
+  const navLinks = document.getElementById("nav-links");
 
-  if (menuBtn && mobileMenu) {
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); // cegah klik dari tertutup overlay
-      menuBtn.classList.toggle("active");
-      mobileMenu.classList.toggle("show");
-    });
+  hamburger.addEventListener("click", function () {
+    navLinks.classList.toggle("active");
+  });
 
-    // Klik di luar menu menutup menu
-    document.addEventListener("click", (e) => {
-      if (!menuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-        menuBtn.classList.remove("active");
-        mobileMenu.classList.remove("show");
-      }
+  // Tutup menu ketika link di klik
+  document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("active");
     });
-  }
+  });
 });
