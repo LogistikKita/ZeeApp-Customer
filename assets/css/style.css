@@ -1,40 +1,28 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap");
+/* ====== STYLE UMUM ====== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
-:root {
-  --red: #fe0120;
-  --gray: #3d413c;
-  --cream: #fcaf66;
-  --black: #200d00;
-  --bg1: #e8f3f5;
-  --bg2: #dbe9ea;
-}
-
-/* BODY */
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background: linear-gradient(180deg, var(--bg1), var(--bg2));
-  color: var(--black);
-  transition: background 0.3s ease;
+  background: linear-gradient(to bottom right, #e8f3f5, #dbe9ea);
+  color: #200d00;
 }
 
-body.menu-open::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  z-index: 500;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-/* NAVBAR */
+/* ====== NAVBAR ====== */
 .navbar {
   background-color: #fff;
-  border-bottom: 3px solid var(--red);
-  position: sticky;
+  border-bottom: 2px solid #fe0120;
+  position: fixed;
+  width: 100%;
   top: 0;
+  left: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .nav-container {
@@ -46,41 +34,55 @@ body.menu-open::before {
   align-items: center;
 }
 
-.logo-link {
+.logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  color: #fe0120;
+  font-size: 1.3rem;
 }
 
-.logo-img {
-  height: 40px;
+.logo img {
+  height: 38px;
   width: auto;
 }
 
-.logo-text {
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  color: var(--red);
-  font-size: 1.2rem;
-}
-
-/* MENU DESKTOP */
+/* ====== MENU DESKTOP ====== */
 .nav-menu {
   display: flex;
   gap: 1.5rem;
 }
 
 .nav-menu a {
-  color: var(--black);
   font-weight: 500;
-  transition: color 0.3s;
+  position: relative;
+  color: #3d413c;
+  transition: color 0.2s ease;
+}
+
+/* Hilangkan underline dan tambahkan efek hover elegan */
+.nav-menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background-color: #fe0120;
+  transition: width 0.3s ease;
 }
 
 .nav-menu a:hover {
-  color: var(--red);
+  color: #fe0120;
 }
 
-/* HAMBURGER */
+.nav-menu a:hover::after {
+  width: 100%;
+}
+
+/* ====== HAMBURGER ====== */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -89,106 +91,128 @@ body.menu-open::before {
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 1001;
+  z-index: 1100;
 }
 
 .hamburger span {
   width: 25px;
   height: 3px;
-  background: var(--black);
+  background: #200d00;
   border-radius: 3px;
   transition: all 0.3s ease;
 }
 
-.hamburger.active span:nth-child(1) {
-  transform: rotate(45deg) translateY(8px);
-}
-.hamburger.active span:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.active span:nth-child(3) {
-  transform: rotate(-45deg) translateY(-8px);
-}
-
-/* MOBILE MENU */
+/* ====== MOBILE MENU ====== */
 .mobile-menu {
   display: none;
   flex-direction: column;
-  background: #fff;
-  border-top: 3px solid var(--red);
+  background: rgba(255, 255, 255, 0.97);
+  border-top: 2px solid #fe0120;
   padding: 1rem;
-  animation: slideDown 0.3s ease forwards;
-  z-index: 1000;
-}
-
-.mobile-menu.show {
-  display: flex;
+  backdrop-filter: blur(6px);
+  animation: slideDown 0.3s ease;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
 }
 
 .mobile-menu a {
   padding: 0.8rem 0;
   border-bottom: 1px solid #f2f2f2;
-  color: var(--black);
-  transition: color 0.2s;
+  color: #3d413c;
+  font-weight: 500;
+  position: relative;
+}
+
+/* Hover elegan di mobile menu */
+.mobile-menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #fe0120;
+  transition: width 0.3s ease;
+}
+
+.mobile-menu a:hover::after {
+  width: 100%;
 }
 
 .mobile-menu a:last-child {
   border-bottom: none;
 }
 
-.mobile-menu a:hover {
-  color: var(--red);
+/* Animasi */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* HERO */
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .mobile-menu.show {
+    display: flex;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(8px);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-8px);
+  }
+}
+
+/* ====== HERO SECTION ====== */
 .hero {
   text-align: center;
-  padding: 3rem 1rem;
-  animation: fadeIn 1s ease;
+  padding: 6rem 1rem 3rem;
 }
 
 .hero h1 {
-  color: var(--red);
+  color: #fe0120;
   font-family: "Poppins", sans-serif;
   font-size: 2rem;
 }
 
 .btn-primary {
   display: inline-block;
-  background: var(--red);
-  color: #fff;
+  background: #fcaf66;
+  color: #200d00;
+  font-weight: 600;
   padding: 0.7rem 1.2rem;
   border-radius: 6px;
   margin-top: 1rem;
-  transition: background 0.3s;
+  transition: background 0.2s;
 }
 
 .btn-primary:hover {
-  background: #d4001a;
+  background: #fe0120;
+  color: #fff;
 }
 
-/* FOOTER */
+/* ====== FOOTER ====== */
 .footer {
-  background: var(--black);
+  background: #3d413c;
   color: #fff;
   padding: 1.5rem 0;
   text-align: center;
   margin-top: 2rem;
 }
 
-/* ANIMATIONS */
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .nav-menu { display: none; }
-  .hamburger { display: flex; }
+.footer-container p {
+  margin: 5px 0;
 }
