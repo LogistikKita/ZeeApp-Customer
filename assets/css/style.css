@@ -1,21 +1,19 @@
-/* ====== FONT IMPORT ====== */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap");
 
-/* ====== ROOT COLORS ====== */
 :root {
   --red: #fe0120;
   --gray: #3d413c;
   --cream: #fcaf66;
   --black: #200d00;
-  --bg-light: #e8f3f5;
-  --bg-light2: #dbe9ea;
+  --bg1: #e8f3f5;
+  --bg2: #dbe9ea;
 }
 
-/* ====== BODY ====== */
+/* BODY */
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background: linear-gradient(180deg, var(--bg-light), var(--bg-light2));
+  background: linear-gradient(180deg, var(--bg1), var(--bg2));
   color: var(--black);
   transition: background 0.3s ease;
 }
@@ -27,17 +25,16 @@ body.menu-open::before {
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   z-index: 500;
-  transition: opacity 0.3s ease;
 }
 
-/* ====== NAVBAR ====== */
+/* NAVBAR */
 .navbar {
   background-color: #fff;
   border-bottom: 3px solid var(--red);
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .nav-container {
@@ -49,7 +46,6 @@ body.menu-open::before {
   align-items: center;
 }
 
-/* LOGO */
 .logo-link {
   display: flex;
   align-items: center;
@@ -66,18 +62,17 @@ body.menu-open::before {
   font-weight: 700;
   color: var(--red);
   font-size: 1.2rem;
-  letter-spacing: 0.5px;
 }
 
-/* MENU */
+/* MENU DESKTOP */
 .nav-menu {
   display: flex;
   gap: 1.5rem;
 }
 
 .nav-menu a {
-  font-weight: 500;
   color: var(--black);
+  font-weight: 500;
   transition: color 0.3s;
 }
 
@@ -123,7 +118,6 @@ body.menu-open::before {
   border-top: 3px solid var(--red);
   padding: 1rem;
   animation: slideDown 0.3s ease forwards;
-  position: relative;
   z-index: 1000;
 }
 
@@ -146,21 +140,11 @@ body.menu-open::before {
   color: var(--red);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* HERO SECTION */
+/* HERO */
 .hero {
   text-align: center;
   padding: 3rem 1rem;
+  animation: fadeIn 1s ease;
 }
 
 .hero h1 {
@@ -190,4 +174,21 @@ body.menu-open::before {
   padding: 1.5rem 0;
   text-align: center;
   margin-top: 2rem;
+}
+
+/* ANIMATIONS */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-menu { display: none; }
+  .hamburger { display: flex; }
 }
