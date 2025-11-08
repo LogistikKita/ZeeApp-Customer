@@ -17,7 +17,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* agar selalu di atas section */
+  z-index: 1000;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
@@ -35,11 +35,13 @@ header {
   color: #d32f2f;
 }
 
-/* Nav links */
+/* Nav links (Default: Desktop View) */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 20px;
+  margin: 0; /* Tambahkan ini agar tidak ada margin default */
+  padding: 0; /* Tambahkan ini agar tidak ada padding default */
 }
 
 .nav-links li a {
@@ -54,9 +56,9 @@ header {
   transform: scale(1.08);
 }
 
-/* Hamburger */
+/* Hamburger (Sembunyikan di Desktop) */
 .hamburger {
-  display: none;
+  display: none; /* Default disembunyikan */
   font-size: 26px;
   background: none;
   border: none;
@@ -65,16 +67,18 @@ header {
   z-index: 1100;
 }
 
-/* Mobile View */
+/* Mobile View: Kunci Perbaikan Hamburger */
 @media (max-width: 768px) {
+  /* Munculkan Hamburger */
   .hamburger {
     display: block;
   }
 
+  /* Styling Nav Links di Mobile */
   .nav-links {
     position: fixed;
-    top: 60px;
-    right: -100%;
+    top: 60px; /* Di bawah header */
+    right: -100%; /* Sembunyikan ke kanan */
     background-color: #fff;
     flex-direction: column;
     align-items: center;
@@ -87,7 +91,7 @@ header {
   }
 
   .nav-links.active {
-    right: 0;
+    right: 0; /* Munculkan menu */
   }
 
   .nav-links li {
@@ -110,8 +114,10 @@ header {
   align-items: center;
   text-align: center;
   padding: 0 20px;
-  transition: all 0.3s ease;
+  padding-top: 60px; /* Kompensasi untuk fixed header */
 }
+
+/* ... CSS Hero Section lainnya ... */
 
 .hero-section h1 {
   font-size: 2.5rem;
@@ -154,4 +160,14 @@ header {
 .content-section p {
   max-width: 600px;
   margin: 0 auto;
+}
+
+/* Footer Style */
+footer {
+    padding: 20px;
+    text-align: center;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    color: #555;
+    font-size: 0.9rem;
 }
