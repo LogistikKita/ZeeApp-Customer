@@ -1,24 +1,24 @@
-/* --- Variabel Warna Global (Intel Theme) --- */
+/* --- Variabel Warna Global (Logistik Kita - Elegan) --- */
 :root {
   /* Mode Terang (Default) */
-  --color-primary: #0071c5; /* Biru khas Intel */
-  --color-secondary: #005f99;
-  --color-text-main: #1a1a1a;
-  --color-text-light: #555555;
-  --color-background: #ffffff;
-  --color-surface: #f5f5f5; 
+  --color-primary: #A8203B; /* Merah Burgundy Elegan */
+  --color-secondary: #C83C50; /* Merah Aksen/Gradasi */
+  --color-text-main: #1C1C1C; /* Hitam Gelap yang lembut */
+  --color-text-light: #666666;
+  --color-background: #FAFAFA; /* Latar Belakang Off-White Premium */
+  --color-surface: #ffffff; /* Untuk form, card, dan footer */
   --color-shadow: rgba(0, 0, 0, 0.1);
 }
 
-/* Mode Gelap */
+/* Mode Gelap (Dark Mode Elegan) */
 .dark-mode {
-  --color-primary: #1994e6; 
-  --color-secondary: #0071c5;
-  --color-text-main: #ffffff;
-  --color-text-light: #aaaaaa;
-  --color-background: #121212;
-  --color-surface: #1e1e1e;
-  --color-shadow: rgba(255, 255, 255, 0.1);
+  --color-primary: #FF5E74; /* Merah Burgundy yang cerah di gelap */
+  --color-secondary: #A8203B;
+  --color-text-main: #EFEFEF;
+  --color-text-light: #AAAAAA;
+  --color-background: #0D0D0D; /* Sangat Gelap */
+  --color-surface: #1C1C1C;
+  --color-shadow: rgba(255, 255, 255, 0.08);
 }
 
 /* Font setup */
@@ -28,7 +28,7 @@ body {
   padding: 0;
   color: var(--color-text-main); 
   background-color: var(--color-background); 
-  transition: background-color 0.3s, color 0.3s; /* Transisi Dark Mode */
+  transition: background-color 0.3s, color 0.3s;
 }
 
 h1, h2 {
@@ -58,7 +58,7 @@ header {
 .logo {
   font-weight: 700;
   font-size: 1.2rem;
-  color: var(--color-primary);
+  color: var(--color-primary); 
   display: flex; 
   align-items: center; 
   gap: 8px; 
@@ -69,14 +69,13 @@ header {
   width: auto;
 }
 
-/* Header Controls (Untuk menampung Hamburger dan Dark Mode Toggle) */
+/* Header Controls & Mode Toggle */
 .header-controls {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* Gaya Tombol Mode Toggle */
 .mode-toggle {
     background: none;
     border: none;
@@ -87,7 +86,7 @@ header {
     transition: color 0.3s;
 }
 
-/* Nav links (Desktop View) */
+/* Nav links */
 .nav-links {
   list-style: none;
   display: flex;
@@ -108,7 +107,7 @@ header {
   transform: scale(1.08);
 }
 
-/* Hamburger Base Style */
+/* Hamburger */
 .hamburger {
   display: none; 
   flex-direction: column; 
@@ -126,7 +125,7 @@ header {
   display: block;
   width: 100%;
   height: 3px;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary); 
   border-radius: 3px;
   transition: all 0.3s ease; 
 }
@@ -146,17 +145,10 @@ header {
 
 /* Mobile View */
 @media (max-width: 768px) {
-  /* Pindahkan mode toggle ke dalam nav links saat mobile jika diinginkan */
-  .mode-toggle {
-    /* ... styling mobile jika diperlukan ... */
-  }
-  
-  /* Tampilkan Hamburger */
   .hamburger {
     display: flex; 
   }
 
-  /* Sembunyikan Nav Links di desktop, kecuali di mobile */
   .nav-links {
     position: fixed;
     top: 60px;
@@ -188,8 +180,8 @@ header {
 /* Hero Section */
 .hero-section {
   height: 100vh;
-  /* Menggunakan skema warna Intel (Biru) */
-  background: linear-gradient(120deg, var(--color-primary), var(--color-secondary)); 
+  /* Gradien Merah Burgundy yang elegan */
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); 
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -203,7 +195,7 @@ header {
 .hero-section h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
-  color: #fff; /* Teks putih di Hero */
+  color: #fff;
 }
 
 .hero-section p {
@@ -212,9 +204,10 @@ header {
   max-width: 500px;
 }
 
+/* CTA Button */
 .cta-btn {
   background-color: #fff;
-  color: var(--color-primary);
+  color: var(--color-primary); 
   padding: 12px 24px;
   border-radius: 50px;
   text-decoration: none;
@@ -223,7 +216,7 @@ header {
 }
 
 .cta-btn:hover {
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary); /* Hover dengan warna sekunder */
   color: #fff;
   transform: scale(1.05);
 }
@@ -235,7 +228,7 @@ header {
     margin-top: 15px;
 }
 
-/* Section lainnya */
+/* Content Section */
 .content-section {
   padding: 100px 20px;
   text-align: center;
@@ -243,11 +236,11 @@ header {
 }
 
 .content-section h2 {
-  color: var(--color-primary);
+  color: var(--color-primary); 
   margin-bottom: 20px;
 }
 
-/* --- Gaya Dua Kolom (Modular seperti Intel.com) --- */
+/* --- Gaya Dua Kolom (Modular) --- */
 .content-wrapper {
   max-width: 1200px; 
   margin: 0 auto;
@@ -257,7 +250,7 @@ header {
 
 .two-column .content-wrapper {
   display: flex;
-  flex-direction: column; /* Default: Tumpuk di Mobile */
+  flex-direction: column;
   gap: 40px;
   align-items: center; 
 }
@@ -278,18 +271,87 @@ header {
   box-shadow: 0 4px 15px var(--color-shadow);
 }
 
-/* Mengubah urutan kolom (Teks Kanan, Gambar Kiri) */
 .two-column.reverse .content-wrapper {
   flex-direction: row-reverse;
 }
 
-/* --- Mobile Responsiveness untuk Dua Kolom --- */
+/* --- Gaya Form Cek Tarif --- */
+.rate-form {
+  max-width: 450px;
+  margin: 30px auto 20px 0; 
+  padding: 20px;
+  background-color: var(--color-surface); 
+  border-radius: 8px;
+  box-shadow: 0 4px 10px var(--color-shadow);
+  text-align: left;
+}
 
+.form-group {
+  margin-bottom: 15px;
+}
+
+.rate-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  font-size: 0.95rem;
+}
+
+.rate-form input[type="text"],
+.rate-form input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--color-text-light);
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  transition: border-color 0.3s;
+}
+
+.rate-form input:focus {
+  border-color: var(--color-primary); 
+  outline: none;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-primary); 
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-secondary);
+  transform: translateY(-1px);
+}
+
+.rate-result-area {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px dashed var(--color-primary);
+    border-radius: 4px;
+    background-color: var(--color-surface);
+    color: var(--color-text-main);
+    display: none;
+    text-align: center;
+}
+
+/* --- Mobile Responsiveness --- */
 @media (max-width: 992px) {
   .two-column .content-wrapper,
   .two-column.reverse .content-wrapper {
-    flex-direction: column; /* Tumpukan vertikal */
+    flex-direction: column;
     text-align: center; 
+  }
+  .rate-form {
+      margin: 30px auto 20px auto; /* Pusatkan form di mobile */
   }
 }
 
