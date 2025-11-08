@@ -1,10 +1,34 @@
+/* --- Variabel Warna Global (Intel Theme) --- */
+:root {
+  /* Mode Terang (Default) */
+  --color-primary: #0071c5; /* Biru khas Intel */
+  --color-secondary: #005f99;
+  --color-text-main: #1a1a1a;
+  --color-text-light: #555555;
+  --color-background: #ffffff;
+  --color-surface: #f5f5f5; 
+  --color-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Mode Gelap */
+.dark-mode {
+  --color-primary: #1994e6; 
+  --color-secondary: #0071c5;
+  --color-text-main: #ffffff;
+  --color-text-light: #aaaaaa;
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-shadow: rgba(255, 255, 255, 0.1);
+}
+
 /* Font setup */
 body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #fff;
-  color: #1a1a1a;
+  color: var(--color-text-main); 
+  background-color: var(--color-background); 
+  transition: background-color 0.3s, color 0.3s; /* Transisi Dark Mode */
 }
 
 h1, h2 {
@@ -18,8 +42,9 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background-color: var(--color-background);
+  box-shadow: 0 2px 8px var(--color-shadow);
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .navbar {
@@ -33,7 +58,7 @@ header {
 .logo {
   font-weight: 700;
   font-size: 1.2rem;
-  color: #d32f2f;
+  color: var(--color-primary);
   display: flex; 
   align-items: center; 
   gap: 8px; 
@@ -42,6 +67,24 @@ header {
 .logo-img {
   height: 30px; 
   width: auto;
+}
+
+/* Header Controls (Untuk menampung Hamburger dan Dark Mode Toggle) */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Gaya Tombol Mode Toggle */
+.mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--color-text-main);
+    padding: 0;
+    transition: color 0.3s;
 }
 
 /* Nav links (Desktop View) */
@@ -55,13 +98,13 @@ header {
 
 .nav-links li a {
   text-decoration: none;
-  color: #1a1a1a;
+  color: var(--color-text-light);
   font-weight: 500;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-links li a:hover {
-  color: #d32f2f;
+  color: var(--color-primary);
   transform: scale(1.08);
 }
 
@@ -83,7 +126,7 @@ header {
   display: block;
   width: 100%;
   height: 3px;
-  background-color: #d32f2f;
+  background-color: var(--color-primary);
   border-radius: 3px;
   transition: all 0.3s ease; 
 }
@@ -103,22 +146,27 @@ header {
 
 /* Mobile View */
 @media (max-width: 768px) {
+  /* Pindahkan mode toggle ke dalam nav links saat mobile jika diinginkan */
+  .mode-toggle {
+    /* ... styling mobile jika diperlukan ... */
+  }
+  
   /* Tampilkan Hamburger */
   .hamburger {
     display: flex; 
   }
 
-  /* Styling Nav Links di Mobile */
+  /* Sembunyikan Nav Links di desktop, kecuali di mobile */
   .nav-links {
     position: fixed;
     top: 60px;
     right: -100%; 
-    background-color: #fff;
+    background-color: var(--color-background);
     flex-direction: column;
     align-items: center;
     width: 70%;
     height: calc(100vh - 60px);
-    box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+    box-shadow: -2px 0 10px var(--color-shadow);
     transition: right 0.3s ease;
     padding-top: 30px;
     z-index: 1001;
@@ -140,7 +188,8 @@ header {
 /* Hero Section */
 .hero-section {
   height: 100vh;
-  background: linear-gradient(120deg, #d32f2f, #ff6659);
+  /* Menggunakan skema warna Intel (Biru) */
+  background: linear-gradient(120deg, var(--color-primary), var(--color-secondary)); 
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -148,13 +197,13 @@ header {
   align-items: center;
   text-align: center;
   padding: 0 20px;
-  /* Kompensasi padding-top agar tidak tertutup fixed header */
   padding-top: 60px; 
 }
 
 .hero-section h1 {
   font-size: 2.5rem;
   margin-bottom: 10px;
+  color: #fff; /* Teks putih di Hero */
 }
 
 .hero-section p {
@@ -165,7 +214,7 @@ header {
 
 .cta-btn {
   background-color: #fff;
-  color: #d32f2f;
+  color: var(--color-primary);
   padding: 12px 24px;
   border-radius: 50px;
   text-decoration: none;
@@ -174,25 +223,74 @@ header {
 }
 
 .cta-btn:hover {
-  background-color: #d32f2f;
+  background-color: var(--color-primary);
   color: #fff;
   transform: scale(1.05);
+}
+
+.cta-btn.small-btn {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: 15px;
 }
 
 /* Section lainnya */
 .content-section {
   padding: 100px 20px;
   text-align: center;
+  background-color: var(--color-background);
 }
 
 .content-section h2 {
-  color: #d32f2f;
-  margin-bottom: 10px;
+  color: var(--color-primary);
+  margin-bottom: 20px;
 }
 
-.content-section p {
-  max-width: 600px;
+/* --- Gaya Dua Kolom (Modular seperti Intel.com) --- */
+.content-wrapper {
+  max-width: 1200px; 
   margin: 0 auto;
+  padding: 40px 0; 
+  text-align: left;
+}
+
+.two-column .content-wrapper {
+  display: flex;
+  flex-direction: column; /* Default: Tumpuk di Mobile */
+  gap: 40px;
+  align-items: center; 
+}
+
+.text-content {
+  flex: 1; 
+  padding: 20px 0;
+}
+
+.media-content {
+  flex: 1; 
+}
+
+.section-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px; 
+  box-shadow: 0 4px 15px var(--color-shadow);
+}
+
+/* Mengubah urutan kolom (Teks Kanan, Gambar Kiri) */
+.two-column.reverse .content-wrapper {
+  flex-direction: row-reverse;
+}
+
+/* --- Mobile Responsiveness untuk Dua Kolom --- */
+
+@media (max-width: 992px) {
+  .two-column .content-wrapper,
+  .two-column.reverse .content-wrapper {
+    flex-direction: column; /* Tumpukan vertikal */
+    text-align: center; 
+  }
 }
 
 /* --- Animasi Scroll Fade In --- */
@@ -211,8 +309,9 @@ header {
 footer {
     padding: 20px;
     text-align: center;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
-    color: #555;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-shadow);
+    color: var(--color-text-light);
     font-size: 0.9rem;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
