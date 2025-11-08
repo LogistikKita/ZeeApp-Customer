@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistik Kita - Menggerakkan Bisnis Anda</title>
+    <!-- Memuat Tailwind CSS CDN untuk styling yang modern dan responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ======================================================= */
+        /* == PALET WARNA DIADOP dari LOGO (Merah dan Kuning) == */
+        /* ======================================================= */
+        :root {
+            --color-primary: #E51D2A; /* Merah Menyala - Warna Utama Logo */
+            --color-secondary: #B00F1A; /* Merah Tua - Untuk Efek Hover */
+            --color-accent: #FFC72C; /* Kuning Cerah - Warna Aksen untuk CTA */
+            --color-dark: #1f2937;
+        }
+
+        /* Konfigurasi Font Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--color-dark);
+            background-color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        /* Styling Kustom */
+        .primary-bg { background-color: var(--color-primary); }
+        .primary-text { color: var(--color-primary); }
+        .accent-bg { background-color: var(--color-accent); }
+        .accent-text { color: var(--color-accent); }
+        .hover-primary-bg:hover { background-color: var(--color-secondary); }
+        .hover-primary-text:hover { color: var(--color-secondary); }
+        
+        /* Efek Overlay Hero */
+        .hero-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Dibuat lebih gelap agar teks Putih (Merah di logo) lebih menonjol */
+            background: rgba(0, 0, 0, 0.55); 
+            z-index: 10;
+        }
+
+        /* Kustomisasi Slider Image */
+        .slider-image {
+            transition: opacity 1.5s ease-in-out;
+            opacity: 0;
+            /* Pastikan gambar mengisi penuh container */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .slider-image.active {
+            opacity: 1;
+        }
+
+        /* CSS untuk Animasi Entrance saat Scroll */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Kustomisasi Slider Testimoni */
+        #testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .testimonial-card {
+            min-width: 100%; /* Setiap kartu mengambil lebar penuh container */
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- 0. Header & Navigasi (Sticky Top) - REUSABLE BLOCK -->
+    <header id="main-header" class="sticky top-0 z-50 bg-white shadow-md transition duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <!-- Logo - MENGGUNAKAN IMAGE LOKAL -->
+            <a href="#" class="text-2xl font-extrabold primary-text flex items-center">
+                 <img src="assets/logo/Logistik-Kita.png" alt="Logo Logistik Kita" class="h-8 w-auto mr-2">
+                 <span class="hidden sm:inline">Logistik Kita</span>
+            </a>
+            
+            <!-- Navigasi Desktop -->
+            <nav class="hidden md:flex space-x-6 text-gray-600 font-medium">
+                <a href="#layanan" class="hover-primary-text transition">Layanan Kami</a>
+                <a href="#armada" class="hover-primary-text transition">Armada Kami</a>
+                <a href="#testimoni" class="hover-primary-text transition">Testimoni</a>
+                <a href="#wawasan" class="hover-primary-text transition">Wawasan SEO</a>
+                <a href="#about" class="hover-primary-text transition">Tentang Kami</a>
+            </nav>
+
+            <!-- CTA/Lacak Kiriman & Menu Mobile -->
+            <div class="flex items-center space-x-4">
+                <button class="flex items-center px-4 py-2 primary-bg text-white font-semibold rounded-lg shadow-lg hover-primary-bg transition duration-300 transform hover:scale-[1.05]">
+                    <span data-lucide="compass" class="w-5 h-5 mr-2"></span>
+                    Lacak Kiriman
+                </button>
+                <button id="menu-button" class="md:hidden text-gray-600 hover-primary-text transition">
+                    <span data-lucide="menu" class="w-7 h-7"></span>
+                </button>
+            </div>
+        </div>
+        <!-- Menu Mobile Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 bg-white shadow-xl z-40">
+            <nav class="flex flex-col p-4 space-y-2 text-gray-700">
+                <a href="#layanan" class="p-2 rounded hover:bg-red-50 transition">Layanan Kami</a>
+                <a href="#armada" class="p-2 rounded hover:bg-red-50 transition">Armada Kami</a>
+                <a href="#testimoni" class="p-2 rounded hover:bg-red-50 transition">Testimoni</a>
+                <a href="#wawasan" class="p-2 rounded hover:bg-red-50 transition">Wawasan SEO</a>
+                <a href="#about" class="p-2 rounded hover:bg-red-50 transition">Tentang Kami</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 1. Hero Section (Dengan Slider Gambar Transparan) -->
+    <section class="relative h-[600px] md:h-[700px] flex items-center justify-center overflow-hidden hero-overlay">
+        <!-- Kontainer Slider Gambar (Z-index 5) - Menggunakan assets/armada-X.jpeg -->
+        <div id="image-slider" class="absolute inset-0 w-full h-full z-0">
+            <!-- Gambar-gambar akan dimasukkan di sini oleh JavaScript -->
+        </div>
+
+        <!-- Konten Utama (Z-index 20) -->
+        <div class="relative z-20 text-center text-white p-6 md:p-10 max-w-4xl animate-on-scroll">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+                Menggerakkan Bisnis Anda. Logistik Cerdas untuk Kecepatan Maksimal.
+            </h1>
+            <p class="text-xl md:text-2xl font-light mb-8 opacity-90">
+                Jaringan terluas dan teknologi real-time kami memastikan kiriman Anda aman, cepat, dan efisien.
+            </p>
+            <!-- CTA Utama dengan warna Aksen (Kuning Cerah) -->
+            <a href="#" class="inline-block px-10 py-4 accent-bg text-gray-900 font-bold rounded-full text-lg shadow-2xl hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
+                Dapatkan Penawaran Cepat Sekarang
+            </a>
+        </div>
+    </section>
+
+    <!-- 2. Solusi Utama (Feature Tiles - Animasi Entrance) -->
+    <section id="layanan" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 primary-text animate-on-scroll">Layanan Inti Logistik Kita</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Tile 1 -->
+                <div class="p-8 border-t-4 border-primary rounded-lg shadow-xl bg-gray-50 transition duration-300 hover:shadow-2xl hover:bg-white animate-on-scroll" style="transition-delay: 0.1s;">
+                    <span data-lucide="ship" class="w-10 h-10 primary-text mb-4"></span>
+                    <h3 class="text-xl font-semibold mb-3">Ekspedisi Multimoda</h3>
+                    <p class="text-gray-600 mb-4">Solusi pengiriman FCL & LCL via Darat, Laut, dan Udara dengan integrasi penuh. Jangkauan ke seluruh Indonesia.</p>
+                    <a href="#" class="font-medium primary-text flex items-center hover:underline">
+                        Lihat Rincian
+                        <span data-lucide="arrow-right" class="w-4 h-4 ml-2"></span>
+                    </a>
+                </div>
+
+                <!-- Tile 2 -->
+                <div class="p-8 border-t-4 border-primary rounded-lg shadow-xl bg-gray-50 transition duration-300 hover:shadow-2xl hover:bg-white animate-on-scroll" style="transition-delay: 0.2s;">
+                    <span data-lucide="snowflakes" class="w-10 h-10 primary-text mb-4"></span>
+                    <h3 class="text-xl font-semibold mb-3">Logistik Rantai Dingin</h3>
+                    <p class="text-gray-600 mb-4">Memastikan kualitas produk sensitif suhu tetap terjaga melalui armada dan gudang berpendingin.</p>
+                    <a href="#" class="font-medium primary-text flex items-center hover:underline">
+                        Lihat Rincian
+                        <span data-lucide="arrow-right" class="w-4 h-4 ml-2"></span>
+                    </a>
+                </div>
+
+                <!-- Tile 3 -->
+                <div class="p-8 border-t-4 border-primary rounded-lg shadow-xl bg-gray-50 transition duration-300 hover:shadow-2xl hover:bg-white animate-on-scroll" style="transition-delay: 0.3s;">
+                    <span data-lucide="layout-dashboard" class="w-10 h-10 primary-text mb-4"></span>
+                    <h3 class="text-xl font-semibold mb-3">Gudang Pintar & WMS</h3>
+                    <p class="text-gray-600 mb-4">Manajemen Gudang modern dengan Warehouse Management System (WMS) berbasis AI untuk efisiensi.</p>
+                    <a href="#" class="font-medium primary-text flex items-center hover:underline">
+                        Lihat Rincian
+                        <span data-lucide="arrow-right" class="w-4 h-4 ml-2"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Pilihan Layanan (Prioritas vs. Reguler) -->
+    <section class="py-16 md:py-24 bg-gray-100">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 primary-text animate-on-scroll">Pilih Fleksibilitas Pengiriman Anda</h2>
+
+            <div class="flex flex-col md:flex-row gap-8 max-w-5xl mx-auto">
+                <!-- Prioritas / Carter (Border Merah) -->
+                <div class="md:w-1/2 p-8 bg-white border-t-8 border-primary rounded-xl shadow-2xl animate-on-scroll" style="transition-delay: 0.1s;">
+                    <div class="flex items-center mb-4">
+                        <span data-lucide="zap" class="w-8 h-8 primary-text mr-3"></span>
+                        <h3 class="text-2xl font-bold primary-text">Prioritas (Charter)</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Solusi eksklusif untuk kebutuhan mendesak. Satu armada (**Full Truck Load**) khusus untuk barang Anda, memastikan kecepatan, keamanan, dan waktu tiba yang terjamin.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 mb-6">
+                        <li class="flex items-start"><span data-lucide="check-circle" class="w-5 h-5 primary-text mr-2 flex-shrink-0 mt-1"></span> Pengiriman *Full-Truck Load* (FTL)</li>
+                        <li class="flex items-start"><span data-lucide="check-circle" class="w-5 h-5 primary-text mr-2 flex-shrink-0 mt-1"></span> Waktu Transit Tercepat & *Dedicated Route*</li>
+                        <li class="flex items-start"><span data-lucide="check-circle" class="w-5 h-5 primary-text mr-2 flex-shrink-0 mt-1"></span> Keamanan Maksimal & Langsung ke Tujuan</li>
+                    </ul>
+                    <a href="#" class="inline-block px-6 py-3 primary-bg text-white font-semibold rounded-lg hover-primary-bg transition duration-300">
+                        Pelajari Carter Lebih Lanjut
+                    </a>
+                </div>
+
+                <!-- Reguler (Border Kuning Aksen) -->
+                <div class="md:w-1/2 p-8 bg-white border-t-8 border-accent rounded-xl shadow-2xl animate-on-scroll" style="transition-delay: 0.2s;">
+                    <div class="flex items-center mb-4">
+                        <span data-lucide="package-open" class="w-8 h-8 accent-text mr-3"></span>
+                        <h3 class="text-2xl font-bold text-gray-900">Reguler (LTL & Terjangkau)</h3>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Opsi paling ekonomis. Pengiriman barang Anda digabungkan dengan kiriman lain (**Less Than Truck Load**), ideal untuk muatan kecil dan fleksibilitas biaya.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 mb-6">
+                        <li class="flex items-start"><span data-lucide="check-circle" class="w-5 h-5 accent-text mr-2 flex-shrink-0 mt-1"></span> Pengiriman *Less-Than-Truckload* (LTL)</li>
+                        <li class="flex items-start"><span data-lucide="check-circle" class="w-5 h-5 accent-text mr-2 flex-shrink-0 mt-1"></span> Harga yang Paling Kompetitif</li>
+                        <li class="flex items-start"><span data-lucide="check-circle" class="w-5 h-5 accent-text mr-2 flex-shrink-0 mt-1"></span> Solusi untuk Volume Muatan Kecil</li>
+                    </ul>
+                    <a href="#" class="inline-block px-6 py-3 accent-bg text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition duration-300">
+                        Lihat Estimasi Biaya Reguler
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Promotional Banner 1: Fokus Teknologi -->
+    <section class="py-16 md:py-20 primary-bg text-white animate-on-scroll">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Teknologi Lacak Real-Time 24/7</h2>
+                <p class="text-xl font-light opacity-80 mb-6">
+                    Kami memberikan visibilitas penuh pada kiriman Anda. Lacak posisi, status, dan estimasi waktu tiba dengan akurat.
+                </p>
+                <!-- Tombol CTA Sekunder -->
+                <a href="#" class="inline-block px-8 py-3 bg-white text-primary-bg font-semibold rounded-lg hover:bg-gray-100 transition duration-300 transform hover:scale-[1.02]">
+                    Eksplorasi Dashboard
+                </a>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <!-- Placeholder Ilustrasi Dashboard -->
+                <div class="w-full max-w-sm h-48 accent-bg/30 rounded-xl border border-white/50 flex items-center justify-center p-4">
+                    <span data-lucide="monitor" class="w-12 h-12 accent-text mr-2"></span>
+                    <p class="accent-text">Ilustrasi Dashboard Tracking</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Armada & Kapasitas -->
+    <section id="armada" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 primary-text animate-on-scroll">Armada & Kapasitas Pengiriman Kami</h2>
+            <p class="text-center text-gray-600 mb-16 max-w-3xl mx-auto animate-on-scroll">Pilih kendaraan yang paling sesuai dengan volume dan jenis muatan Anda. Kami menjamin ketersediaan di setiap kategori.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Kartu Armada 1: Pickup (1.3 Ton) -->
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center transition hover:shadow-lg hover:border-b-4 border-primary animate-on-scroll" style="transition-delay: 0.1s;">
+                    <span data-lucide="truck" class="w-8 h-8 primary-text mb-3"></span>
+                    <h4 class="font-semibold text-lg">Pickup</h4>
+                    <p class="text-sm font-bold text-gray-700 mb-2">Maks. 1.3 Ton</p>
+                    <p class="text-gray-500 text-xs">Pengiriman cepat, sangat lincah di area perkotaan padat.</p>
+                </div>
+                <!-- Kartu Armada 2: L300 (2.5 Ton) -->
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center transition hover:shadow-lg hover:border-b-4 border-primary animate-on-scroll" style="transition-delay: 0.2s;">
+                    <span data-lucide="van" class="w-8 h-8 primary-text mb-3"></span>
+                    <h4 class="font-semibold text-lg">L300 Box/Bak</h4>
+                    <p class="text-sm font-bold text-gray-700 mb-2">Maks. 2.5 Ton</p>
+                    <p class="text-gray-500 text-xs">Ideal untuk kargo ukuran sedang, efisien untuk antar kota dekat.</p>
+                </div>
+                <!-- Kartu Armada 3: Truk CDD (6 Ton) -->
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center transition hover:shadow-lg hover:border-b-4 border-primary animate-on-scroll" style="transition-delay: 0.3s;">
+                    <span data-lucide="truck-driving" class="w-8 h-8 primary-text mb-3"></span>
+                    <h4 class="font-semibold text-lg">Truk CDD</h4>
+                    <p class="text-sm font-bold text-gray-700 mb-2">Maks. 6 Ton</p>
+                    <p class="text-gray-500 text-xs">Truk coltdiesel, pilihan tepat untuk kargo volume besar.</p>
+                </div>
+                <!-- Kartu Armada 4: Truk Fuso (9 Ton) -->
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center transition hover:shadow-lg hover:border-b-4 border-primary animate-on-scroll" style="transition-delay: 0.4s;">
+                    <span data-lucide="semi-truck" class="w-8 h-8 primary-text mb-3"></span>
+                    <h4 class="font-semibold text-lg">Truk Fuso</h4>
+                    <p class="text-sm font-bold text-gray-700 mb-2">Maks. 9 Ton</p>
+                    <p class="text-gray-500 text-xs">Untuk pengiriman berat dan jarak jauh, antar pulau terjamin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Testimoni Pelanggan (Slider) -->
+    <section id="testimoni" class="py-16 md:py-24 primary-bg text-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-white animate-on-scroll">Kata Mereka Tentang Logistik Kita</h2>
+
+            <div class="relative max-w-4xl mx-auto overflow-hidden rounded-xl shadow-2xl bg-white text-gray-800 p-8 md:p-12 animate-on-scroll">
+                <div id="testimonial-track">
+                    <!-- Testimoni 1 -->
+                    <div class="testimonial-card flex flex-col items-center text-center">
+                        <span data-lucide="quote" class="w-10 h-10 accent-text mb-4"></span>
+                        <p class="text-lg italic mb-6">
+                            "Layanan carter mereka sangat andal. Pengiriman barang konsol game kami selalu tiba tepat waktu, bahkan untuk rute antar pulau yang menantang. Tim support responsif!"
+                        </p>
+                        <div class="font-semibold text-primary">
+                            Budi Santoso
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            CEO, PT. Game Nusantara
+                        </div>
+                    </div>
+                    <!-- Testimoni 2 -->
+                    <div class="testimonial-card flex flex-col items-center text-center">
+                        <span data-lucide="quote" class="w-10 h-10 accent-text mb-4"></span>
+                        <p class="text-lg italic mb-6">
+                            "Logistik Rantai Dingin mereka adalah yang terbaik di kelasnya. Kualitas produk makanan beku kami terjaga sempurna dari gudang hingga tangan retailer. Harga reguler yang sangat terjangkau."
+                        </p>
+                        <div class="font-semibold text-primary">
+                            Dewi Puspita
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            Manajer Distribusi, CV. Pangan Sehat
+                        </div>
+                    </div>
+                    <!-- Testimoni 3 -->
+                    <div class="testimonial-card flex flex-col items-center text-center">
+                        <span data-lucide="quote" class="w-10 h-10 accent-text mb-4"></span>
+                        <p class="text-lg italic mb-6">
+                            "Integrasi WMS mereka memudahkan manajemen inventaris kami. Kami mengurangi *error* hingga 40% sejak beralih ke Logistik Kita. Solusi yang sangat modern."
+                        </p>
+                        <div class="font-semibold text-primary">
+                            Rizky Fauzan
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            Kepala Operasi, PT. E-Commerce Maju
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dots Navigasi (diatur oleh JS) -->
+                <div id="testimonial-dots" class="flex justify-center mt-6 space-x-2">
+                    <!-- Dots akan dimasukkan oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Daftar Klien Kami (Logo Perusahaan) -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-12 text-gray-700 animate-on-scroll">Dipercaya oleh Perusahaan Terkemuka</h2>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-8 items-center justify-center max-w-6xl mx-auto">
+                
+                <!-- Logo 1: Retail -->
+                <div class="flex flex-col items-center justify-center p-4 opacity-80 hover:opacity-100 transition duration-300 animate-on-scroll" style="transition-delay: 0.1s;">
+                    <span data-lucide="shopping-bag" class="w-10 h-10 text-gray-500 mb-2"></span>
+                    <p class="text-sm font-semibold text-gray-600">Retail Cepat</p>
+                </div>
+
+                <!-- Logo 2: Manufaktur -->
+                <div class="flex flex-col items-center justify-center p-4 opacity-80 hover:opacity-100 transition duration-300 animate-on-scroll" style="transition-delay: 0.2s;">
+                    <span data-lucide="factory" class="w-10 h-10 text-gray-500 mb-2"></span>
+                    <p class="text-sm font-semibold text-gray-600">Industri Baja</p>
+                </div>
+
+                <!-- Logo 3: Food & Beverage -->
+                <div class="flex flex-col items-center justify-center p-4 opacity-80 hover:opacity-100 transition duration-300 animate-on-scroll" style="transition-delay: 0.3s;">
+                    <span data-lucide="coffee" class="w-10 h-10 text-gray-500 mb-2"></span>
+                    <p class="text-sm font-semibold text-gray-600">F&B Group</p>
+                </div>
+
+                <!-- Logo 4: Farmasi -->
+                <div class="flex flex-col items-center justify-center p-4 opacity-80 hover:opacity-100 transition duration-300 animate-on-scroll" style="transition-delay: 0.4s;">
+                    <span data-lucide="syringe" class="w-10 h-10 text-gray-500 mb-2"></span>
+                    <p class="text-sm font-semibold text-gray-600">Pharma Sehat</p>
+                </div>
+
+                <!-- Logo 5: Elektronik -->
+                <div class="flex flex-col items-center justify-center p-4 opacity-80 hover:opacity-100 transition duration-300 animate-on-scroll" style="transition-delay: 0.5s;">
+                    <span data-lucide="hard-drive" class="w-10 h-10 text-gray-500 mb-2"></span>
+                    <p class="text-sm font-semibold text-gray-600">Tech Indo</p>
+                </div>
+
+                <!-- Logo 6: Konstruksi -->
+                <div class="flex flex-col items-center justify-center p-4 opacity-80 hover:opacity-100 transition duration-300 animate-on-scroll" style="transition-delay: 0.6s;">
+                    <span data-lucide="building-2" class="w-10 h-10 text-gray-500 mb-2"></span>
+                    <p class="text-sm font-semibold text-gray-600">Kontraktor Jaya</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 animate-on-scroll" style="transition-delay: 0.7s;">
+                <a href="#" class="inline-block px-8 py-3 accent-bg text-gray-900 font-semibold rounded-lg hover:bg-yellow-400 transition duration-300 transform hover:scale-[1.02]">
+                    Lihat Semua Studi Kasus
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 8. Bagian Artikel & Wawasan SEO -->
+    <section id="wawasan" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 primary-text animate-on-scroll">Wawasan & Artikel SEO Terbaru</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto animate-on-scroll">Temukan strategi logistik terkini, analisis pasar, dan tips optimasi rantai pasok dari para ahli kami.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Artikel 1 -->
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition duration-300 hover:shadow-xl animate-on-scroll" style="transition-delay: 0.1s;">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span data-lucide="file-text" class="w-10 h-10 text-gray-400"></span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2 hover-primary-text transition">Integrasi AI: Masa Depan Rute Pengiriman</h3>
+                        <p class="text-gray-500 text-sm mb-4">15 Oktober 2025 | Teknologi</p>
+                        <p class="text-gray-600 mb-4 text-sm">Bagaimana kecerdasan buatan merevolusi efisiensi dan mengurangi biaya operasional dalam logistik...</p>
+                        <a href="#" class="font-medium primary-text flex items-center text-sm hover:underline">
+                            Baca Selengkapnya
+                            <span data-lucide="chevrons-right" class="w-4 h-4 ml-1"></span>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artikel 2 -->
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition duration-300 hover:shadow-xl animate-on-scroll" style="transition-delay: 0.2s;">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span data-lucide="file-text" class="w-10 h-10 text-gray-400"></span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2 hover-primary-text transition">Strategi Rantai Dingin untuk Produk Farmasi</h3>
+                        <p class="text-gray-500 text-sm mb-4">10 Oktober 2025 | Industri</p>
+                        <p class="text-gray-600 mb-4 text-sm">Pentingnya kepatuhan suhu dan regulasi dalam pengiriman vaksin dan obat-obatan sensitif...</p>
+                        <a href="#" class="font-medium primary-text flex items-center text-sm hover:underline">
+                            Baca Selengkapnya
+                            <span data-lucide="chevrons-right" class="w-4 h-4 ml-1"></span>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Artikel 3 -->
+                <article class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition duration-300 hover:shadow-xl animate-on-scroll" style="transition-delay: 0.3s;">
+                    <div class="h-48 bg-gray-200 flex items-center justify-center">
+                        <span data-lucide="file-text" class="w-10 h-10 text-gray-400"></span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl mb-2 hover-primary-text transition">5 Cara Optimasi Biaya Gudang E-commerce</h3>
+                        <p class="text-gray-500 text-sm mb-4">01 Oktober 2025 | Bisnis</p>
+                        <p class="text-gray-600 mb-4 text-sm">Tips praktis untuk mengurangi biaya operasional gudang dan meningkatkan kecepatan *fulfillment*...</p>
+                        <a href="#" class="font-medium primary-text flex items-center text-sm hover:underline">
+                            Baca Selengkapnya
+                            <span data-lucide="chevrons-right" class="w-4 h-4 ml-1"></span>
+                        </a>
+                    </div>
+                </article>
+            </div>
+            
+            <div class="text-center mt-12 animate-on-scroll" style="transition-delay: 0.4s;">
+                <a href="#" class="inline-block px-8 py-3 primary-bg text-white font-semibold rounded-lg hover-primary-bg transition duration-300 transform hover:scale-[1.02]">
+                    Lihat Semua Artikel
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 9. Promotional Banner 2: Bergabung dengan Kami (TENTANG KAMI) -->
+    <section id="about" class="py-20 md:py-28 bg-gray-900 text-center text-white animate-on-scroll">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4">Siap Mengoptimalkan Rantai Pasok Anda?</h2>
+            <p class="text-xl md:text-2xl font-light opacity-80 mb-8 max-w-4xl mx-auto">
+                Hubungi tim ahli kami untuk mendapatkan konsultasi gratis dan penawaran logistik yang paling kompetitif.
+            </p>
+            <!-- CTA Utama dengan warna Aksen (Kuning Cerah) -->
+            <a href="#" class="inline-block px-12 py-4 accent-bg text-gray-900 font-bold rounded-lg text-xl shadow-2xl hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
+                Hubungi Kami Sekarang
+            </a>
+        </div>
+    </section>
+
+    <!-- 10. Footer - REUSABLE BLOCK -->
+    <footer class="bg-gray-800 text-gray-300 pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 border-b border-gray-700 pb-8 mb-8">
+                <!-- Kolom 1: Logo & Slogan -->
+                <div class="col-span-2 md:col-span-1">
+                    <h3 class="text-3xl font-bold text-white mb-2">Logistik Kita</h3>
+                    <p class="text-sm">Inovasi di setiap kilometer.</p>
+                </div>
+                <!-- Kolom 2: Layanan -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Layanan</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#layanan" class="hover-primary-text transition">Ekspedisi</a></li>
+                        <li><a href="#layanan" class="hover-primary-text transition">Rantai Dingin</a></li>
+                        <li><a href="#layanan" class="hover-primary-text transition">Warehousing</a></li>
+                        <li><a href="#armada" class="hover-primary-text transition">Armada Angkutan</a></li>
+                    </ul>
+                </div>
+                <!-- Kolom 3: Perusahaan -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Perusahaan</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#about" class="hover-primary-text transition">Tentang Kami</a></li>
+                        <li><a href="#" class="hover-primary-text transition">Visi & Misi</a></li>
+                        <li><a href="#" class="hover-primary-text transition">Karir</a></li>
+                        <li><a href="#" class="hover-primary-text transition">Berita Pers</a></li>
+                    </ul>
+                </div>
+                <!-- Kolom 4: Bantuan -->
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-4">Bantuan</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover-primary-text transition">FAQ</a></li>
+                        <li><a href="#" class="hover-primary-text transition">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover-primary-text transition">Syarat Pengiriman</a></li>
+                    </ul>
+                </div>
+                <!-- Kolom 5: Kontak -->
+                <div class="col-span-2 md:col-span-1">
+                    <h4 class="text-lg font-semibold text-white mb-4">Kontak</h4>
+                    <p class="text-sm mb-2">Jl. Logistik Cerdas No. 1</p>
+                    <p class="text-sm">Email: info@logistik-kita.co.id</p>
+                </div>
+            </div>
+            
+            <div class="text-center text-sm text-gray-500">
+                &copy; 2025 Logistik Kita. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi Lucide Icons
+        // Ini adalah fungsi yang memastikan semua tag data-lucide="..." diubah menjadi SVG ikon
+        lucide.createIcons();
+
+        // --- Data Gambar Hero Section (Diambil dari Assets Lokal) ---
+        const imageSources = [
+            'assets/armada-1.jpeg',
+            'assets/armada-2.jpeg',
+            'assets/armada-3.jpeg',
+            'assets/armada-4.jpeg',
+            'assets/armada-5.jpeg'
+        ];
+        
+        // --- Data Mockup Testimoni (Akan diganti) ---
+        const testimonials = [
+            { text: "Layanan carter mereka sangat andal. Pengiriman barang konsol game kami selalu tiba tepat waktu, bahkan untuk rute antar pulau yang menantang. Tim support responsif!", name: "Budi Santoso", title: "CEO, PT. Game Nusantara" },
+            { text: "Logistik Rantai Dingin mereka adalah yang terbaik di kelasnya. Kualitas produk makanan beku kami terjaga sempurna dari gudang hingga tangan retailer. Harga reguler yang sangat terjangkau.", name: "Dewi Puspita", title: "Manajer Distribusi, CV. Pangan Sehat" },
+            { text: "Integrasi WMS mereka memudahkan manajemen inventaris kami. Kami mengurangi error hingga 40% sejak beralih ke Logistik Kita. Solusi yang sangat modern.", name: "Rizky Fauzan", title: "Kepala Operasi, PT. E-Commerce Maju" }
+        ];
+
+
+        // --- Logika Slider Gambar di Hero Section ---
+        function initializeSlider() {
+            const sliderContainer = document.getElementById('image-slider');
+            let currentIndex = 0;
+
+            // Membuat elemen gambar dan menangani jika file lokal gagal dimuat
+            imageSources.forEach((src, index) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Slider Image Logistik Kita ${index + 1}`;
+                img.className = 'slider-image absolute inset-0';
+
+                // Fallback jika file lokal assets tidak dapat dimuat
+                img.onerror = function() {
+                    console.error(`Gagal memuat gambar: ${src}. Menggunakan fallback.`);
+                    // Ganti elemen img yang gagal dengan div placeholder
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.className = `absolute inset-0 w-full h-full flex items-center justify-center bg-gray-700/80 text-white text-xl font-bold`;
+                    fallbackDiv.innerHTML = `Foto Armada ${index + 1} (Assets Placeholder)`;
+                    
+                    // Ganti elemen img dengan div fallback di DOM
+                    sliderContainer.replaceChild(fallbackDiv, img);
+                    
+                    // Sesuaikan kelas agar fallback tetap berputar di slider
+                    if (index === 0) {
+                        fallbackDiv.classList.add('active'); 
+                    }
+                    
+                    // Hapus referensi img yang gagal
+                    images[index] = fallbackDiv; 
+                    
+                };
+                
+                if (index === 0) {
+                    img.classList.add('active'); 
+                }
+                sliderContainer.appendChild(img);
+            });
+
+            const images = Array.from(sliderContainer.children); // Ambil semua children (termasuk fallback jika ada)
+            const totalImages = images.length;
+
+            function nextSlide() {
+                images[currentIndex].classList.remove('active');
+                currentIndex = (currentIndex + 1) % totalImages;
+                images[currentIndex].classList.add('active');
+            }
+
+            setInterval(nextSlide, 5000); // Ganti slide setiap 5 detik
+        }
+        
+        // --- Logika Slider Testimoni ---
+        function initializeTestimonialSlider() {
+            const track = document.getElementById('testimonial-track');
+            const dotsContainer = document.getElementById('testimonial-dots');
+            let currentTestimonial = 0;
+            const totalTestimonials = testimonials.length;
+
+            if (!track || !dotsContainer) return;
+
+            // Generate dots
+            for (let i = 0; i < totalTestimonials; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'w-3 h-3 rounded-full bg-white opacity-50 transition duration-300';
+                dot.setAttribute('data-index', i);
+                dot.addEventListener('click', () => showTestimonial(i));
+                dotsContainer.appendChild(dot);
+            }
+
+            function updateDots() {
+                const dots = dotsContainer.querySelectorAll('button');
+                dots.forEach((dot, index) => {
+                    dot.classList.remove('opacity-100', 'bg-accent');
+                    dot.classList.add('opacity-50', 'bg-white');
+                    if (index === currentTestimonial) {
+                        dot.classList.add('opacity-100', 'bg-accent');
+                    }
+                });
+            }
+
+            function showTestimonial(index) {
+                currentTestimonial = index;
+                const offset = -currentTestimonial * 100;
+                track.style.transform = `translateX(${offset}%)`;
+                updateDots();
+            }
+
+            showTestimonial(0);
+            setInterval(() => {
+                currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
+                showTestimonial(currentTestimonial);
+            }, 7000); // Auto-slide setiap 7 detik
+        }
+
+        // --- Logika Navigasi Mobile (Menu Toggle) ---
+        function setupMobileMenu() {
+            const menuButton = document.getElementById('menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const iconContainer = menuButton.querySelector('span');
+                iconContainer.innerHTML = mobileMenu.classList.contains('hidden') 
+                    ? lucide.icons.menu.toSvg({ class: 'w-7 h-7' }) 
+                    : lucide.icons['x'].toSvg({ class: 'w-7 h-7' });
+                lucide.createIcons();
+            });
+
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    const iconContainer = menuButton.querySelector('span');
+                    iconContainer.innerHTML = lucide.icons.menu.toSvg({ class: 'w-7 h-7' });
+                    lucide.createIcons();
+                });
+            });
+        }
+
+        // --- Logika Animasi Entrance saat Scroll (Intersection Observer) ---
+        function setupScrollAnimation() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { 
+                threshold: 0.2, 
+                rootMargin: '0px 0px -50px 0px' 
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Jalankan semua fungsi setelah DOM dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeSlider();
+            initializeTestimonialSlider();
+            setupMobileMenu();
+            setupScrollAnimation();
+        });
+    </script>
+</body>
+</html>
+
