@@ -1,29 +1,24 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const menuBtn = document.getElementById("menu-btn");
+// script.js – kontrol navigasi & efek hamburger
+document.addEventListener("click", (event) => {
+  const hamburger = document.getElementById("hamburger");
   const mobileMenu = document.getElementById("mobile-menu");
-  const overlay = document.getElementById("overlay");
-  const navbar = document.querySelector(".navbar");
 
-  // Efek navbar saat scroll
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-  });
+  // Pastikan elemen sudah dimuat
+  if (!hamburger || !mobileMenu) return;
 
-  // Toggle menu + overlay
-  menuBtn.addEventListener("click", () => {
-    menuBtn.classList.toggle("active");
+  // Klik tombol hamburger
+  if (event.target.closest("#hamburger")) {
+    hamburger.classList.toggle("active");
     mobileMenu.classList.toggle("show");
-    overlay.classList.toggle("show");
-  });
 
-  // Tutup saat overlay diklik
-  overlay.addEventListener("click", () => {
-    menuBtn.classList.remove("active");
+    // Efek latar belakang transparan
+    document.body.classList.toggle("menu-open");
+  }
+
+  // Klik di luar menu → tutup
+  if (!event.target.closest(".navbar") && mobileMenu.classList.contains("show")) {
+    hamburger.classList.remove("active");
     mobileMenu.classList.remove("show");
-    overlay.classList.remove("show");
-  });
+    document.body.classList.remove("menu-open");
+  }
 });
