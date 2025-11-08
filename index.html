@@ -3,61 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistik Kita</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <title>Logistik Kita | Beranda</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="header">
-    <div class="logo-container">
-      <a href="index.html" class="logo-link">
-        <img src="assets/logo/Logistik-Kita.png" alt="Logo Logistik Kita" class="logo" />
-        <span class="logo-text">LOGISTIK KITA</span>
-      </a>
-    </div>
+  <!-- Header otomatis -->
+  <div id="header"></div>
 
-    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
-      ☰
-    </button>
-
-    <nav class="nav" id="navMenu">
-      <ul>
-        <li><a href="index.html">Beranda</a></li>
-        <li><a href="customer.html">Form Customer</a></li>
-        <li><a href="admin.html">Admin</a></li>
-        <li><a href="owner.html">Owner</a></li>
-        <li><a href="laporan.html">Rekap & Laporan</a></li>
-        <li><a href="tarif.html">Cek Tarif</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main class="main-content">
+  <main class="content">
     <section class="hero">
-      <h1>Selamat Datang di <span>Logistik Kita</span></h1>
-      <p>Mitra terpercaya Anda dalam pengiriman barang ke seluruh Indonesia.</p>
-      <a href="customer.html" class="cta-button">Mulai Kirim Sekarang</a>
+      <h1>Selamat Datang di 🚚 Logistik Kita</h1>
+      <p>Layanan pengiriman cepat, aman, dan terpercaya dari Mojokerto ke seluruh Indonesia.</p>
+      <a href="layanan.html" class="btn-primary">Lihat Layanan Kami</a>
     </section>
   </main>
 
-  <div class="overlay" id="overlay"></div>
+  <!-- Footer otomatis -->
+  <div id="footer"></div>
 
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-    const overlay = document.getElementById('overlay');
-
-    menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('active');
-      overlay.classList.toggle('active');
-      menuToggle.classList.toggle('active');
-    });
-
-    overlay.addEventListener('click', () => {
-      navMenu.classList.remove('active');
-      overlay.classList.remove('active');
-      menuToggle.classList.remove('active');
-    });
-  </script>
+  <script src="assets/js/include.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 </html>
