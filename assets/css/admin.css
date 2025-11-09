@@ -3,7 +3,7 @@
 /* ==================================== */
 
 body {
-    background-color: #f4f7f6; /* Warna latar belakang admin yang lembut */
+    background-color: #f4f7f6; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -18,17 +18,16 @@ body {
 }
 
 /* ==================================== */
-/* 2. HEADINGS & TITLES */
+/* 2. HEADINGS, TITLES & BUTTONS */
 /* ==================================== */
 
 h1 {
-    color: #dc3545; /* Merah primary */
+    color: #dc3545; 
     font-weight: 700;
-    margin-bottom: 0.5rem;
 }
 
-.card-header {
-    background-color: #dc3545; /* Merah primary */
+.card-header, .modal-header {
+    background-color: #dc3545; 
     color: white;
     font-weight: 700;
     font-size: 1.25rem;
@@ -39,12 +38,24 @@ h1 {
 h5.text-danger {
     color: #dc3545 !important;
     font-weight: 600;
-    border-bottom: 2px solid #f8d7da; /* Garis bawah tipis */
+    border-bottom: 2px solid #f8d7da; 
     padding-bottom: 5px;
 }
 
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; 
+    border-color: #bd2130;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.4) !important;
+}
+
 /* ==================================== */
-/* 3. FORM STYLES & INPUTS */
+/* 3. FORM & INPUTS */
 /* ==================================== */
 
 .form-label {
@@ -56,29 +67,11 @@ h5.text-danger {
 .form-control, .form-select {
     border-radius: 8px;
     border: 1px solid #ced4da;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus, .form-select:focus {
     border-color: #dc3545;
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25); /* Shadow merah muda */
-}
-
-/* Penyesuaian untuk input dimensi (berdekatan) */
-.input-group input:not(:last-child) {
-    border-right: 1px solid #ced4da;
-}
-
-/* Tombol Hitung */
-.btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    transition: background-color 0.3s;
-}
-
-.btn-danger:hover {
-    background-color: #c82333; /* Sedikit lebih gelap saat hover */
-    border-color: #bd2130;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25); 
 }
 
 /* Tombol +/- lokasi muat/bongkar */
@@ -91,27 +84,20 @@ h5.text-danger {
     background-color: #28a745;
 }
 
-
 /* ==================================== */
-/* 4. RESULT AREA & TABS */
+/* 4. MODAL & RESULT AREA */
 /* ==================================== */
 
-#resultArea {
-    background-color: #ffffff !important;
-    border: 2px solid #dc3545 !important;
+/* Penyesuaian Modal untuk tampilan besar */
+.modal-xl .modal-content {
+    border-radius: 15px;
 }
 
 /* Tabs */
-.nav-tabs .nav-link {
-    color: #495057;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
 .nav-tabs .nav-link.active {
-    color: #dc3545; /* Teks aktif merah */
-    background-color: #f8f9fa; /* Latar belakang tab aktif */
-    border-color: #dc3545 #dc3545 #f8f9fa;
+    color: #dc3545; 
+    background-color: #ffffff; 
+    border-color: #dc3545 #dc3545 #ffffff;
     font-weight: 600;
 }
 
@@ -121,17 +107,9 @@ h5.text-danger {
     font-weight: 900;
 }
 
-/* ==================================== */
-/* 5. MODAL STYLES (Review Data) */
-/* ==================================== */
-
-#reviewModal .modal-header {
-    background-color: #dc3545;
-    color: white;
-}
-
 #reviewDataContent {
-    background-color: #fff9f9; /* Latar belakang pink pucat untuk data review */
+    background-color: #fff9f9; 
     border: 1px solid #dc3545;
     border-radius: 8px;
 }
+
