@@ -20,7 +20,7 @@
     </header>
 
     <main class="py-16 md:py-24 flex items-center justify-center min-h-[calc(100vh-80px)]">
-        <div class="w-full max-w-lg bg-white p-8 md:p-10 rounded-xl shadow-2xl border-t-4 border-primary animate-on-scroll">
+        <div class="w-full max-w-lg bg-white p-8 md:p-10 rounded-xl shadow-2xl border-t-4 border-primary"> 
             
             <h1 class="text-3xl font-extrabold primary-text mb-2 text-center">
                 Akses Portal Pelanggan
@@ -30,10 +30,10 @@
             </p>
 
             <div class="flex border-b border-gray-200 mb-8">
-                <button id="tab-login" class="flex-1 text-center py-3 font-semibold border-b-2 border-primary primary-text transition duration-300">
+                <button id="tab-login" type="button" class="flex-1 text-center py-3 font-semibold border-b-2 border-primary primary-text transition duration-300">
                     MASUK
                 </button>
-                <button id="tab-register" class="flex-1 text-center py-3 font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 transition duration-300">
+                <button id="tab-register" type="button" class="flex-1 text-center py-3 font-semibold text-gray-500 border-b-2 border-transparent hover:text-gray-700 transition duration-300">
                     DAFTAR
                 </button>
             </div>
@@ -147,7 +147,7 @@
              document.getElementById('tab-login').classList.add('border-primary', 'primary-text');
              document.getElementById('tab-login').classList.remove('border-transparent', 'text-gray-500');
              
-             // Tambahkan event listener untuk tombol tab
+             // Tambahkan event listener untuk tombol tab (Penting untuk versi mobile)
              document.getElementById('tab-login').addEventListener('click', () => switchTab('login'));
              document.getElementById('tab-register').addEventListener('click', () => switchTab('register'));
         });
