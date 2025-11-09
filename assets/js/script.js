@@ -20,7 +20,7 @@ function setupMobileMenu() {
                 mobileMenu.classList.add('hidden');
                 menuIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');
-                header.classList.remove('menu-open'); // Untuk memastikan header tidak transparan
+                header.classList.remove('menu-open'); 
             } else {
                 // Buka Menu
                 mobileMenu.classList.add('flex');
@@ -34,58 +34,131 @@ function setupMobileMenu() {
 }
 
 // ===========================================
-// 2. Logic Slider Hero Section
+// 2. Fungsionalitas MODE GELAP/TERANG
+// ===========================================
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+
+    if (!themeToggle || !sunIcon || !moonIcon) return;
+
+    // Cek preferensi tema yang tersimpan di localStorage, atau preferensi sistem
+    const savedTheme = localStorage.getItem('theme') || 
+                       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    
+    // Terapkan tema saat load
+    if (savedTheme === 'dark') {
+        htmlElement.classList.add('dark');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+    } else {
+        htmlElement.classList.remove('dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+    }
+
+    // Listener untuk tombol toggle
+    themeToggle.addEventListener('click', () => {
+        htmlElement.classList.toggle('dark');
+        
+        // Simpan preferensi baru & ubah ikon
+        const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+        localStorage.setItem('theme', currentTheme);
+
+        sunIcon.classList.toggle('hidden');
+        moonIcon.classList.toggle('hidden');
+    });
+}
+
+
+// ===========================================
+// 3. Fungsionalitas TOMBOL SCROLL NAVIGASI
+// ===========================================
+function setupScrollNavigation() {
+    const scrollUpButton = document.getElementById('scroll-up');
+    const scrollDownButton = document.getElementById('scroll-down');
+
+    if (!scrollUpButton || !scrollDownButton) return;
+
+    // Mengontrol visibilitas tombol "scroll up"
+    const toggleScrollUpButton = () => {
+        // Tampilkan tombol saat scroll lebih dari 300px
+        if (window.scrollY > 300) { 
+            scrollUpButton.classList.remove('opacity-0', 'pointer-events-none');
+            scrollUpButton.classList.add('opacity-100');
+        } else {
+            scrollUpButton.classList.remove('opacity-100');
+            scrollUpButton.classList.add('opacity-0', 'pointer-events-none');
+        }
+    };
+
+    window.addEventListener('scroll', toggleScrollUpButton);
+
+    // Scroll ke Paling Atas
+    scrollUpButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Scroll ke Paling Bawah
+    scrollDownButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
+
+    // Inisialisasi awal visibilitas
+    toggleScrollUpButton();
+}
+
+
+// ===========================================
+// 4. Logic Slider Hero Section (Existing)
 // ===========================================
 function initializeSlider() {
-    const slider = document.querySelector('.hero-slider');
-    const slides = document.querySelectorAll('.hero-slide');
+    // Fungsionalitas slider gambar di sini
+    const slider = document.querySelector('#image-slider');
+    const slides = document.querySelectorAll('.hero-slide'); 
     const totalSlides = slides.length;
     let currentIndex = 0;
 
     if (!slider || totalSlides === 0) return;
 
-    // Fungsi untuk menampilkan slide tertentu
     const updateSlider = () => {
         slides.forEach((slide, index) => {
-            slide.classList.add('hidden');
-            slide.classList.remove('block');
+            slide.classList.remove('active');
         });
-        slides[currentIndex].classList.add('block');
-        slides[currentIndex].classList.remove('hidden');
+        slides[currentIndex].classList.add('active');
     };
 
-    // Auto-advance
     setInterval(() => {
         currentIndex = (currentIndex + 1) % totalSlides;
         updateSlider();
-    }, 5000); // Ganti slide setiap 5 detik
+    }, 5000); 
 
-    updateSlider(); // Inisialisasi slide pertama
+    updateSlider(); 
 }
 
 // ===========================================
-// 3. Logic Slider Testimonial
+// 5. Logic Slider Testimonial (Existing)
 // ===========================================
 function initializeTestimonialSlider() {
-    const sliderContainer = document.querySelector('.testimonial-slider-container');
-    const sliderWrapper = document.querySelector('.testimonial-slider-wrapper');
-    const slides = document.querySelectorAll('.testimonial-slide');
+    const track = document.getElementById('testimonial-track');
+    const dotsContainer = document.getElementById('testimonial-dots');
     
-    if (!sliderContainer || slides.length === 0) return;
-
-    // Duplikasi slide untuk efek loop tanpa batas yang mulus (CSS Scroll Snap)
-    slides.forEach(slide => {
-        const clone = slide.cloneNode(true);
-        sliderWrapper.appendChild(clone);
-    });
-
-    // Karena menggunakan CSS scroll-snap, JS hanya perlu mengatur lebar dan auto-scroll dasar (opsional)
-    // Untuk saat ini kita hanya fokus pada tampilan di index.html
+    if (!track || !dotsContainer) return;
+    
+    // Logika lanjutan testimonial di sini
 }
 
 
 // ===========================================
-// 4. Setup Animasi Scroll (Intersection Observer)
+// 6. Setup Animasi Scroll (Intersection Observer) (Existing)
 // ===========================================
 function setupScrollAnimation() {
     const elements = document.querySelectorAll('.animate-on-scroll');
@@ -95,17 +168,16 @@ function setupScrollAnimation() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Tambahkan class untuk memulai animasi
+                // Tambahkan class 'is-visible'
                 entry.target.classList.add('is-visible');
                 // Hentikan pengamatan setelah terlihat
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        // Opsi observer
-        root: null, // viewport
-        threshold: 0.2, // Mulai animasi ketika 20% elemen terlihat
-        rootMargin: '0px 0px -50px 0px' // Mulai sedikit lebih awal dari bagian bawah
+        root: null, 
+        threshold: 0.2, 
+        rootMargin: '0px 0px -50px 0px'
     });
 
     elements.forEach(element => {
@@ -115,25 +187,23 @@ function setupScrollAnimation() {
 
 
 // ===========================================
-// 5. Inisialisasi Utama (Diperbaiki untuk Semua Halaman)
+// 7. Inisialisasi Utama
 // ===========================================
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Fungsi yang selalu dibutuhkan (Header/Navigasi) - HARUS SELALU BERJALAN
+    // Fungsionalitas Global
     setupMobileMenu(); 
+    setupThemeToggle(); 
+    setupScrollNavigation(); 
     
-    // Cek apakah ini halaman Beranda (hanya Beranda yang punya slider/hero utama)
-    const heroSlider = document.querySelector('.hero-slider'); 
+    // Fungsionalitas Khusus Halaman Depan
+    const heroSlider = document.getElementById('image-slider'); 
     
     if (heroSlider) {
         initializeSlider();
         initializeTestimonialSlider(); 
     }
     
-    // Fungsi Animasi Scroll (Berjalan di SEMUA halaman jika ada elemen yang relevan)
-    // Ini memperbaiki masalah 'halaman kosong' karena opacity: 0 tidak dihilangkan.
-    const animatedElements = document.querySelectorAll('.animate-on-scroll');
-    if (animatedElements.length > 0) {
-        setupScrollAnimation();
-    }
+    // Animasi Scroll
+    setupScrollAnimation();
 });
