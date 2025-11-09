@@ -25,6 +25,10 @@ body {
 .hover-primary-text:hover { color: var(--color-secondary); }
 
 /* Efek Overlay Hero */
+.hero-overlay {
+    min-height: 600px;
+    height: 600px;
+}
 .hero-overlay::before {
     content: '';
     position: absolute;
@@ -65,8 +69,8 @@ body {
 #testimonial-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    /* Tambahan: Memastikan lebar track cukup untuk semua kartu testimoni */
-    width: 300%; /* Lebar 3x (jika ada 3 testimoni) */
+    /* Diasumsikan ada 3 testimoni */
+    width: 300%; 
 }
 .testimonial-card {
     min-width: 33.33%; /* Setiap kartu mengambil lebar penuh container (100% / 3) */
