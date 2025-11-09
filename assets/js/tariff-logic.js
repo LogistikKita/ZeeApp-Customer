@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- DATA ARMADA STATIS (Meniru Supabase armada_rates) ---
+    // --- DATA ARMADA STATIS ---
     const ARMADA_RATES = {
         'pickup6': {
             name: 'Pickup (6 Jam)', sewa_rate: 100000, driver_rate: 100000, period: 6, max_weight: 1300, 
@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             meal_driver_rate: 20000, meal_tkbm_rate: 15000, 
             ppn_rate: 0.011, pph_rate: 0.02, margin_rate: 0.20, specs: 'Max Berat: 1.3 Ton | Volume: ~2.5 CBM',
         }
-        // Tambahkan armada lain seperti CDD, Fuso, dll. di sini
     };
 
     // FUNGSI HELPER UNTUK FORMAT RUPIAH
@@ -28,12 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
         style: 'currency', currency: 'IDR', minimumFractionDigits: 0 
     });
 
-    // FUNGSI TAMBAH/HAPUS LOKASI
+    // FUNGSI DINAMIS LOKASI
     let muatCount = 1;
     let bongkarCount = 1;
     
     window.addLocation = function(type) {
-        // Logika fungsi addLocation tetap sama seperti sebelumnya
+        // Logika addLocation tetap sama...
         let containerId = (type === 'Muat') ? 'locationMuatContainer' : 'locationBongkarContainer';
         let container = document.getElementById(containerId);
         let currentCount = (type === 'Muat') ? muatCount : bongkarCount;
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <input type="text" class="form-control location-${type.toLowerCase()}-name" placeholder="Alamat ${type} ${newCount}" required>
             </div>
             <div class="col-md-3">
-                <input type="number" class="form-control location-${type.toLowerCase()}-distance" placeholder="Jarak (Km) ke Titik Selanjutnya" min="1" required>
+                <input type="number" class="form-control location-${type.toLowerCase()}-distance" placeholder="Jarak (Km) Next" min="1" required>
             </div>
             <div class="col-md-1 d-flex align-items-center">
                 <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeLocation(this, '${type}')"><i class="fas fa-minus"></i></button>
@@ -76,18 +75,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- LOGIKA PERHITUNGAN UTAMA (diekstrak ke fungsi) ---
+    // FUNGSI INTI PERHITUNGAN
     function calculateTariff(rates, totalDistance, chargeableWeight, totalWorkingTime, tkbmCost) {
-        // A. Biaya Tetap
         const costSewa = rates.sewa_rate;
         const costDriver = rates.driver_rate;
         const costDriverMeal = (totalWorkingTime <= 8) ? rates.meal_driver_rate : rates.meal_driver_rate * 2; 
         
-        // B. Biaya BBM
         const litersNeeded = totalDistance / rates.fuel_consumption_km_l;
         const costFuel = litersNeeded * rates.fuel_price_per_l;
         
-        // C. Biaya TKBM
         let costTkbm = 0;
         let operationalCost = costSewa + costDriver + costDriverMeal + costFuel;
         
@@ -98,8 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const totalCogs = operationalCost + costTkbm;
-
-        // D. Harga Jual Final
         const costMargin = totalCogs * rates.margin_rate;
         const grossPriceBeforeTax = totalCogs + costMargin;
         
@@ -113,13 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- FUNGSI REVIEW DATA & INITIATE PERHITUNGAN ---
-    let currentCalculationData = {}; // Menyimpan data perhitungan sementara
+    // --- LOGIKA UTAMA SUBMIT FORM & MODAL ---
+    let currentCalculationData = {}; 
 
     document.getElementById('deliveryForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // 1. Ambil Data Form
+        // Sembunyikan Modal Input Utama
+        var inputModal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
+        inputModal.hide();
+
+        // 1. Ambil Data Form & Validasi
         const selectedArmadaKey = document.getElementById('armadaSelect').value;
         const rates = ARMADA_RATES[selectedArmadaKey];
         const clientType = document.getElementById('clientType').value;
@@ -132,28 +130,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const returnToGarage = document.getElementById('returnToGarageCheck').checked;
         const tkbmCost = parseFloat(document.getElementById('tkbmCostSelect').value);
         
-        // 2. Kumpulkan Semua Jarak
+        // 2. Kumpulkan Jarak
         let totalTripDistance = distanceStart;
-        
         document.querySelectorAll('.location-muat-distance, .location-bongkar-distance').forEach(input => {
             totalTripDistance += parseFloat(input.value) || 0;
         });
 
-        // Logika "Kembali ke Garasi"
         if (returnToGarage) {
-            // Asumsi: Jarak dari bongkar terakhir ke Garasi sama dengan jarak dari Garasi ke Muat pertama
-            // Ini adalah penyederhanaan. Dalam kasus nyata, harus ada input jarak balik.
-            // Sesuai permintaan: Jika kembali ke garasi di ceklist maka jarak dikalikan 2.
             totalTripDistance = totalTripDistance * 2; 
         }
 
-        // 3. Berat Tertagih & Validasi
+        // 3. Berat Tertagih & Validasi Kapasitas
         const volumeWeight = (length * width * height) / 4000;
         const chargeableWeight = Math.max(weight, volumeWeight);
         
         if (chargeableWeight > rates.max_weight) {
-             alert(`⚠️ PERINGATAN KAPASITAS! Berat Tertagih (${chargeableWeight.toFixed(1)} Kg) melebihi kapasitas Armada ${rates.name} (${rates.max_weight} Kg). Pilih armada yang lebih besar.`);
-             // Lanjutkan perhitungan, tapi beri alert.
+             alert(`⚠️ PERINGATAN KAPASITAS! Berat Tertagih (${chargeableWeight.toFixed(1)} Kg) melebihi kapasitas Armada ${rates.name} (${rates.max_weight} Kg).`);
+             // Lanjutkan, tapi dengan peringatan
         }
 
         // 4. Waktu Kerja Total
@@ -166,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5. Hitung Tarif
         const tariffResults = calculateTariff(rates, totalTripDistance, chargeableWeight, totalWorkingTime, tkbmCost);
         
-        // Simpan semua data untuk ditampilkan di modal dan hasil
+        // Simpan Data
         currentCalculationData = {
             rates, totalTripDistance, chargeableWeight, totalWorkingTime, drivingTime, loadingTime, restTime, 
             clientName: document.getElementById('clientName').value,
@@ -191,19 +184,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr><th>Nama Barang</th><td>: ${data.itemName}</td></tr>
                 <tr><th>Berat Tertagih</th><td>: ${data.chargeableWeight.toFixed(1)} Kg</td></tr>
                 <tr><th>Total Jarak</th><td>: ${data.totalTripDistance.toFixed(0)} Km</td></tr>
-                <tr><th>TKBM Digunakan</th><td>: ${data.tkbmUsed} (${data.costTkbm > 0 ? formatter.format(data.costTkbm) : ''})</td></tr>
+                <tr><th>Jadwal Kirim</th><td>: ${document.getElementById('scheduleDate').value}</td></tr>
+                <tr><th>TKBM Digunakan</th><td>: ${data.tkbmUsed} (${data.costTkbm > 0 ? formatter.format(data.costTkbm) : 'Tidak Ada'})</td></tr>
             </table>
         `;
         document.getElementById('reviewDataContent').innerHTML = reviewHTML;
     }
 
-    // EVENT KLIK TOMBOL LANJUTKAN PERHITUNGAN DI MODAL
+    // EVENT KLIK TOMBOL LANJUTKAN PERHITUNGAN DI MODAL REVIEW
     document.getElementById('confirmCalculateBtn').addEventListener('click', function() {
         var reviewModal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
         reviewModal.hide();
         displayFinalResults(currentCalculationData);
     });
-
+    
     // FUNGSI TAMPILKAN HASIL AKHIR
     function displayFinalResults(data) {
         // --- CUSTOMER VIEW ---
@@ -212,15 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('custOutputFinalPrice').textContent = formatter.format(data.finalPrice);
         
         let customerReview = `
-            <p><strong>Rute:</strong> Garasi - Muat 1... - Bongkar Akhir ${data.totalTripDistance.toFixed(0)} Km</p>
-            <p><strong>Barang:</strong> ${data.itemName} (${data.chargeableWeight.toFixed(1)} Kg)</p>
-            <p><strong>Armada:</strong> ${data.rates.name}</p>
+            <p class="mb-1"><strong>Rute:</strong> Garasi - Muat... - Bongkar Akhir (${data.totalTripDistance.toFixed(0)} Km)</p>
+            <p class="mb-1"><strong>Barang:</strong> ${data.itemName} (${data.chargeableWeight.toFixed(1)} Kg)</p>
+            <p class="mb-1"><strong>Armada:</strong> ${data.rates.name}</p>
         `;
         document.getElementById('customerReviewData').innerHTML = customerReview;
 
         // --- INTERNAL/COMPANY VIEW ---
-        document.getElementById('companyReviewData').innerHTML = customerReview; // Re-use data review
-        document.getElementById('outputChargeableWeight').textContent = `${data.chargeableWeight.toFixed(1)} Kg (Vol: ${(data.chargeableWeight - data.totalWeight).toFixed(1)} Kg)`;
+        document.getElementById('companyReviewData').innerHTML = customerReview; 
+        document.getElementById('outputChargeableWeight').textContent = `${data.chargeableWeight.toFixed(1)} Kg`;
         document.getElementById('outputCogs').textContent = formatter.format(data.totalCogs);
         document.getElementById('outputGrossPrice').textContent = formatter.format(data.grossPriceBeforeTax);
         document.getElementById('outputTaxes').textContent = formatter.format(data.costPpn + data.costPph);
