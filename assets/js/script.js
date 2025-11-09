@@ -10,7 +10,7 @@ const IMAGE_SOURCES = [
 // Data Mockup Testimoni (Dipisahkan dari HTML untuk kemudahan update)
 const TESTIMONIALS = [
     { text: "Layanan carter mereka sangat andal. Pengiriman barang konsol game kami selalu tiba tepat waktu, bahkan untuk rute antar pulau yang menantang. Tim support responsif!", name: "Budi Santoso", title: "CEO, PT. Game Nusantara" },
-    { text: "Logistik Rantai Dingin mereka adalah yang terbaik di kelasnya. Kualitas produk makanan beku kami terjaga sempurna dari gudang hingga tangan retailer. Harga reguler yang sangat terjangankan.", name: "Dewi Puspita", title: "Manajer Distribusi, CV. Pangan Sehat" },
+    { text: "Logistik Rantai Dingin mereka adalah yang terbaik di kelasnya. Kualitas produk makanan beku kami terjaga sempurna dari gudang hingga tangan retailer. Harga reguler yang sangat terjangkau.", name: "Dewi Puspita", title: "Manajer Distribusi, CV. Pangan Sehat" },
     { text: "Integrasi WMS mereka memudahkan manajemen inventaris kami. Kami mengurangi error hingga 40% sejak beralih ke Logistik Kita. Solusi yang sangat modern.", name: "Rizky Fauzan", title: "Kepala Operasi, PT. E-Commerce Maju" }
 ];
 
@@ -30,14 +30,19 @@ function initializeSlider() {
         img.alt = `Slider Image Logistik Kita ${index + 1}`;
         img.className = 'slider-image absolute inset-0';
 
+        // Penanganan Fallback Gambar
         img.onerror = function() {
-            // Logika Fallback dipindahkan ke JS
             console.error(`Gagal memuat gambar: ${src}. Menggunakan fallback.`);
             const fallbackDiv = document.createElement('div');
-            fallbackDiv.className = `absolute inset-0 w-full h-full flex items-center justify-center bg-gray-700/80 text-white text-xl font-bold slider-image`;
-            fallbackDiv.innerHTML = `Foto Armada ${index + 1} (Assets Placeholder)`;
+            fallbackDiv.className = `absolute inset-0 w-full h-[600px] md:h-[700px] flex items-center justify-center bg-gray-700/80 text-white text-xl font-bold slider-image`;
+            fallbackDiv.innerHTML = `Foto Armada ${index + 1} (Placeholder)`;
             
-            sliderContainer.replaceChild(fallbackDiv, img);
+            if (img.parentNode === sliderContainer) {
+                sliderContainer.replaceChild(fallbackDiv, img);
+            } else {
+                 sliderContainer.appendChild(fallbackDiv);
+            }
+
             if (index === 0) {
                 fallbackDiv.classList.add('active'); 
             }
@@ -48,17 +53,20 @@ function initializeSlider() {
         }
         sliderContainer.appendChild(img);
     });
-
-    const images = Array.from(sliderContainer.children);
+    
+    const images = Array.from(sliderContainer.children).filter(el => el.classList.contains('slider-image')); 
     const totalImages = images.length;
-
+    
     function nextSlide() {
+        if (images.length === 0) return;
         images[currentIndex].classList.remove('active');
         currentIndex = (currentIndex + 1) % totalImages;
         images[currentIndex].classList.add('active');
     }
 
-    setInterval(nextSlide, 5000); // Ganti slide setiap 5 detik
+    if (totalImages > 0) {
+        setInterval(nextSlide, 5000); // Hanya jalankan jika ada gambar
+    }
 }
 
 
@@ -73,19 +81,19 @@ function initializeTestimonialSlider() {
     let currentTestimonial = 0;
     const totalTestimonials = TESTIMONIALS.length;
 
-    // A. Generate Kartu Testimoni
+    // A. Generate Kartu Testimoni (dengan ikon quote SVG inline)
     TESTIMONIALS.forEach(t => {
         const card = document.createElement('div');
         card.className = 'testimonial-card flex flex-col items-center text-center';
         card.innerHTML = `
-            <span data-lucide="quote" class="w-10 h-10 accent-text mb-4"></span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 accent-text mb-4"><path d="M3 21c-2.76 0-5 2.24-5 5s2.24 5 5 5h1c4.42 0 8-3.58 8-8V8a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v12h1zm12-11v10h2c2.76 0 5-2.24 5-5s-2.24-5-5-5h-2"/></svg>
             <p class="text-lg italic mb-6">"${t.text}"</p>
             <div class="font-semibold text-primary">${t.name}</div>
             <div class="text-sm text-gray-500">${t.title}</div>
         `;
         track.appendChild(card);
     });
-
+    
     // B. Generate Dots Navigasi
     for (let i = 0; i < totalTestimonials; i++) {
         const dot = document.createElement('button');
@@ -122,35 +130,35 @@ function initializeTestimonialSlider() {
 
 
 // ===========================================
-// 3. Logika Navigasi Mobile (Menu Toggle)
+// 3. Logika Navigasi Mobile/Universal (Menu Toggle)
 // ===========================================
 function setupMobileMenu() {
     const menuButton = document.getElementById('menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
     
-    if (!menuButton || !mobileMenu) return;
-
-    // Memastikan Lucide Icons terbuat saat DOM dimuat
-    lucide.createIcons();
+    if (!menuButton || !mobileMenu || !menuIcon || !closeIcon) return;
 
     menuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-        const iconContainer = menuButton.querySelector('span');
+        const isHidden = mobileMenu.classList.toggle('hidden');
         
         // Mengganti ikon Menu menjadi ikon Close (X) dan sebaliknya
-        iconContainer.innerHTML = mobileMenu.classList.contains('hidden') 
-            ? lucide.icons.menu.toSvg({ class: 'w-7 h-7' }) 
-            : lucide.icons['x'].toSvg({ class: 'w-7 h-7' });
-        lucide.createIcons();
+        if (isHidden) {
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+        } else {
+            menuIcon.classList.add('hidden');
+            closeIcon.classList.remove('hidden');
+        }
     });
 
-    // Menutup menu mobile saat link diklik
+    // Menutup menu saat link diklik
     mobileMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenu.classList.add('hidden');
-            const iconContainer = menuButton.querySelector('span');
-            iconContainer.innerHTML = lucide.icons.menu.toSvg({ class: 'w-7 h-7' });
-            lucide.createIcons();
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
         });
     });
 }
@@ -189,11 +197,8 @@ function setupScrollAnimation() {
 // 5. Inisialisasi Utama
 // ===========================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Pastikan icon dibuat di awal juga
-    lucide.createIcons(); 
-    
     initializeSlider();
-    initializeTestimonialSlider();
+    initializeTestimonialSlider(); 
     setupMobileMenu();
     setupScrollAnimation();
 });
