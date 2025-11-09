@@ -27,12 +27,32 @@ document.addEventListener('DOMContentLoaded', () => {
         style: 'currency', currency: 'IDR', minimumFractionDigits: 0 
     });
 
-    // FUNGSI DINAMIS LOKASI
+    // VARIABEL GLOBAL UNTUK HITUNGAN LOKASI DINAMIS
     let muatCount = 1;
     let bongkarCount = 1;
+
+    // ----------------------------------------------------
+    // 1. FITUR DINAMIS: ARMADA SPEC DISPLAY
+    // ----------------------------------------------------
+    document.getElementById('armadaSelect').addEventListener('change', function() {
+        const selectedArmadaKey = this.value;
+        const rates = ARMADA_RATES[selectedArmadaKey];
+        const specsElement = document.getElementById('armadaSpecs');
+
+        if (rates) {
+            specsElement.innerHTML = `
+                <span class="text-danger fw-bold">Armada Aktif: ${rates.name}</span><br>
+                <span class="small text-muted">${rates.specs} | Maks. Waktu Kerja: ${rates.period} Jam</span>
+            `;
+        } else {
+            specsElement.textContent = '';
+        }
+    });
     
+    // ----------------------------------------------------
+    // 2. FITUR DINAMIS: ADD/REMOVE LOCATION
+    // ----------------------------------------------------
     window.addLocation = function(type) {
-        // Logika addLocation tetap sama...
         let containerId = (type === 'Muat') ? 'locationMuatContainer' : 'locationBongkarContainer';
         let container = document.getElementById(containerId);
         let currentCount = (type === 'Muat') ? muatCount : bongkarCount;
@@ -68,10 +88,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.removeLocation = function(button, type) {
         let row = button.closest('.row');
         row.remove();
+        
+        // Update the counter
         if (type === 'Muat') {
             muatCount--;
+            // Perbarui placeholder agar urutan tetap rapi
+            document.querySelectorAll('#locationMuatContainer .location-muat-name').forEach((input, index) => {
+                 input.placeholder = `Alamat Muat ${index + 1}`;
+            });
         } else {
             bongkarCount--;
+            // Perbarui placeholder agar urutan tetap rapi
+             document.querySelectorAll('#locationBongkarContainer .location-bongkar-name').forEach((input, index) => {
+                 input.placeholder = `Alamat Bongkar ${index + 1}`;
+            });
         }
     }
 
@@ -79,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateTariff(rates, totalDistance, chargeableWeight, totalWorkingTime, tkbmCost) {
         const costSewa = rates.sewa_rate;
         const costDriver = rates.driver_rate;
+        // Asumsi makan driver 1x jika <= 8 jam, 2x jika > 8 jam
         const costDriverMeal = (totalWorkingTime <= 8) ? rates.meal_driver_rate : rates.meal_driver_rate * 2; 
         
         const litersNeeded = totalDistance / rates.fuel_consumption_km_l;
@@ -89,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (tkbmCost > 0) {
             const numTkbm = 2; // Asumsi 2 orang TKBM
+            // Asumsi makan tkbm 1x jika <= 8 jam, 2x jika > 8 jam
             const costTkbmMeal = (totalWorkingTime <= 8) ? rates.meal_tkbm_rate : rates.meal_tkbm_rate * 2;
             costTkbm = (tkbmCost + costTkbmMeal) * numTkbm;
         }
@@ -114,8 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         
         // Sembunyikan Modal Input Utama
-        var inputModal = bootstrap.Modal.getInstance(document.getElementById('inputModal'));
-        inputModal.hide();
+        var inputModalElement = document.getElementById('inputModal');
+        var inputModal = bootstrap.Modal.getInstance(inputModalElement);
+        if (inputModal) inputModal.hide();
+
 
         // 1. Ambil Data Form & Validasi
         const selectedArmadaKey = document.getElementById('armadaSelect').value;
@@ -137,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (returnToGarage) {
-            totalTripDistance = totalTripDistance * 2; 
+            totalTripDistance = totalTripDistance * 2; // Asumsi jarak balik sama dengan jarak tempuh
         }
 
         // 3. Berat Tertagih & Validasi Kapasitas
@@ -145,15 +179,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const chargeableWeight = Math.max(weight, volumeWeight);
         
         if (chargeableWeight > rates.max_weight) {
-             alert(`⚠️ PERINGATAN KAPASITAS! Berat Tertagih (${chargeableWeight.toFixed(1)} Kg) melebihi kapasitas Armada ${rates.name} (${rates.max_weight} Kg).`);
-             // Lanjutkan, tapi dengan peringatan
+             alert(`⚠️ PERINGATAN KAPASITAS! Berat Tertagih (${chargeableWeight.toFixed(1)} Kg) melebihi kapasitas Armada ${rates.name} (${rates.max_weight} Kg). Perhitungan tetap dilanjutkan.`);
         }
 
         // 4. Waktu Kerja Total
         const avgSpeed = 50; 
         const drivingTime = totalTripDistance / avgSpeed;
-        const loadingTime = 1.0; 
-        const restTime = Math.floor(drivingTime / 4) * 1.0; 
+        const loadingTime = (muatCount + bongkarCount) * 0.5; // Asumsi 30 menit per titik
+        const restTime = Math.floor(drivingTime / 4) * 1.0; // Asumsi istirahat 1 jam setiap 4 jam mengemudi
         const totalWorkingTime = drivingTime + loadingTime + restTime;
 
         // 5. Hitung Tarif
@@ -193,8 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // EVENT KLIK TOMBOL LANJUTKAN PERHITUNGAN DI MODAL REVIEW
     document.getElementById('confirmCalculateBtn').addEventListener('click', function() {
-        var reviewModal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
-        reviewModal.hide();
+        var reviewModalElement = document.getElementById('reviewModal');
+        var reviewModal = bootstrap.Modal.getInstance(reviewModalElement);
+        if (reviewModal) reviewModal.hide();
+        
         displayFinalResults(currentCalculationData);
     });
     
