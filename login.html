@@ -138,7 +138,7 @@
             }
         }
 
-        // Set tab default saat halaman dimuat
+        // Inisialisasi: Set tab default (Login)
         document.addEventListener('DOMContentLoaded', () => {
              // Pastikan tab default adalah login saat pertama kali dimuat
              document.getElementById('form-register').classList.add('hidden');
@@ -146,6 +146,10 @@
              document.getElementById('tab-register').classList.add('border-transparent', 'text-gray-500');
              document.getElementById('tab-login').classList.add('border-primary', 'primary-text');
              document.getElementById('tab-login').classList.remove('border-transparent', 'text-gray-500');
+             
+             // Tambahkan event listener untuk tombol tab
+             document.getElementById('tab-login').addEventListener('click', () => switchTab('login'));
+             document.getElementById('tab-register').addEventListener('click', () => switchTab('register'));
         });
     </script>
 </body>
