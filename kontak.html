@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/css/style.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 </head>
-<body class="overflow-x-hidden">
+<body class="overflow-x-hidden bg-gray-50">
 
     <header id="main-header" class="sticky top-0 z-50 bg-white shadow-md transition duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
@@ -123,7 +123,18 @@
                 <h2 class="text-3xl font-bold primary-text mb-6 text-center">Kantor Pusat Kami</h2>
                 
                 <div class="bg-white p-6 rounded-xl shadow-2xl border-t-4 border-accent">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="h-96 w-full rounded-lg overflow-hidden mb-6">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=-7.4844245,112.4369813&hl=id&z=17&output=embed" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                         <div>
                             <div class="flex items-start mb-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 primary-text mt-1 flex-shrink-0 mr-3"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="3"/></svg>
@@ -137,14 +148,11 @@
                             </div>
                         </div>
                         
-                        <div class="h-64 bg-gray-200 rounded-lg overflow-hidden relative">
-                            <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
-                                <p class="text-center text-gray-500 mb-4">Klik tautan di bawah untuk melihat lokasi di peta interaktif.</p>
-                                <a href="https://maps.app.goo.gl/ZEtypCCcuzM8es3K8" target="_blank" class="inline-flex items-center px-6 py-3 primary-bg text-white font-semibold rounded-lg shadow-lg hover-primary-bg transition duration-300">
-                                    Buka Google Maps
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                </a>
-                            </div>
+                        <div class="flex md:justify-end">
+                            <a href="https://www.google.com/maps/search/?api=1&query=-7.4844245,112.4369813" target="_blank" class="inline-flex items-center px-6 py-3 primary-bg text-white font-semibold rounded-lg shadow-lg hover-primary-bg transition duration-300">
+                                Buka Google Maps (Navigasi)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
                         </div>
                     </div>
                 </div>
