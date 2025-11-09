@@ -18,79 +18,84 @@
 
                 <div class="card shadow-lg">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <i class="fas fa-truck me-2"></i> DETAIL ORDER & ARMADA
+                        <i class="fas fa-box-open me-2"></i> DATA PENGIRIMAN
                     </div>
                     
-                    <div class="card-body">
+                    <div class="card-body p-4">
                         <form id="deliveryForm">
 
-                            <div class="mb-4 p-3 border rounded bg-light">
-                                <label for="armadaSelect" class="form-label fs-5 text-dark">Pilih Jenis Armada</label>
-                                <select class="form-select form-select-lg" id="armadaSelect" required>
-                                    <option value="" selected disabled>Pilih Armada (Akan memuat spek)</option>
-                                    <option value="pickup6">Pickup (6 Jam) - Max 1.3 Ton</option>
-                                    <option value="pickup12">Pickup (12 Jam) - Max 1.3 Ton</option>
-                                    <option value="pickup24">Pickup (24 Jam) - Max 1.3 Ton</option>
-                                    </select>
-                                <small id="armadaSpecs" class="form-text text-muted mt-2 d-block"></small>
-                            </div>
-                            <hr>
-
-                            <h5 class="mt-4 mb-3 text-danger"><i class="fas fa-user-tag me-2"></i> Data Petugas & Klien</h5>
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-6">
-                                    <label for="petugasName" class="form-label">1. Nama Petugas</label>
-                                    <input type="text" class="form-control" id="petugasName" required>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="clientName" class="form-label">2. Nama Client/Customer</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="clientName" required>
-                                        <select class="form-select" style="max-width: 150px;" id="clientType">
+                            <h5 class="mt-2 mb-3 text-danger"><i class="fas fa-people-carry me-2"></i> Informasi Dasar</h5>
+                            <div class="p-3 mb-4 border rounded">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="armadaSelect" class="form-label fs-6 text-dark">1. Pilih Jenis Armada</label>
+                                        <select class="form-select form-select-lg" id="armadaSelect" required>
+                                            <option value="" selected disabled>Pilih Armada (Cek Spek)</option>
+                                            <option value="pickup6">Pickup (6 Jam) - Max 1.3 Ton</option>
+                                            <option value="pickup12">Pickup (12 Jam) - Max 1.3 Ton</option>
+                                            <option value="pickup24">Pickup (24 Jam) - Max 1.3 Ton</option>
+                                        </select>
+                                        <small id="armadaSpecs" class="form-text text-muted mt-2 d-block"></small>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="petugasName" class="form-label">2. Nama Petugas</label>
+                                        <input type="text" class="form-control" id="petugasName" required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="clientType" class="form-label">3. Tipe Client</label>
+                                        <select class="form-select" id="clientType">
                                             <option value="Perorangan" selected>Perorangan</option>
                                             <option value="Perusahaan">Perusahaan</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-12">
+                                        <label for="clientName" class="form-label">4. Nama Client/Customer</label>
+                                        <input type="text" class="form-control" id="clientName" required>
+                                    </div>
                                 </div>
                             </div>
+                            
+                            <hr class="mb-5">
 
-                            <h5 class="mt-4 mb-3 text-danger"><i class="fas fa-box me-2"></i> Detail Barang & Berat</h5>
+                            <h5 class="mb-3 text-danger"><i class="fas fa-weight-hanging me-2"></i> Detail Kargo & Berat</h5>
                             <div class="row g-3 mb-4">
                                 <div class="col-md-4">
-                                    <label for="itemName" class="form-label">3. Nama Barang</label>
+                                    <label for="itemName" class="form-label">5. Nama Barang</label>
                                     <input type="text" class="form-control" id="itemName" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="totalWeight" class="form-label">4. Total Berat Barang (Kg)</label>
+                                    <label for="totalWeight" class="form-label">6. Berat Aktual (Kg)</label>
                                     <input type="number" class="form-control" id="totalWeight" min="1" required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="dimension" class="form-label">Dimensi Kargo (P x L x T - Cm)</label>
+                                    <label class="form-label">7. Dimensi (P x L x T - Cm)</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" id="length" placeholder="P" min="1" required>
                                         <input type="number" class="form-control" id="width" placeholder="L" min="1" required>
                                         <input type="number" class="form-control" id="height" placeholder="T" min="1" required>
                                     </div>
-                                    <small class="form-text text-muted">Akan di cek terhadap kapasitas armada.</small>
+                                    <small class="form-text text-muted">Untuk penentuan Berat Volume (Chargeable Weight).</small>
                                 </div>
                             </div>
                             
-                            <hr>
+                            <hr class="mb-5">
 
-                            <h5 class="mt-4 mb-3 text-danger"><i class="fas fa-map-marked-alt me-2"></i> Lokasi & Jarak</h5>
+                            <h5 class="mb-3 text-danger"><i class="fas fa-route me-2"></i> Rute & Jarak Tempuh</h5>
                             
-                            <div class="row g-3 mb-4">
-                                <div class="col-md-8">
-                                    <label for="garageOrigin" class="form-label">Garasi Logistik Kita (Lokasi Awal)</label>
+                            <div class="row g-3 mb-4 p-3 border rounded">
+                                <div class="col-md-7">
+                                    <label for="garageOrigin" class="form-label">8. Titik Awal (Garasi)</label>
                                     <input type="text" class="form-control" id="garageOrigin" value="Garasi Logistik Kita - Mojokerto (0 Km)" disabled>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <label for="distanceStart" class="form-label">Jarak ke Lokasi Muat 1 (Km)</label>
                                     <input type="number" class="form-control" id="distanceStart" placeholder="Contoh: 35" min="0" required>
                                 </div>
                             </div>
                             
-                            <label class="form-label fw-bold">6. Lokasi Muat</label>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold mt-3">9. Lokasi Muat</label>
+                            </div>
                             <div id="locationMuatContainer" class="mb-4">
                                 <div class="row g-3 mb-2 location-muat-item">
                                     <div class="col-md-8">
@@ -105,7 +110,9 @@
                                 </div>
                             </div>
 
-                            <label class="form-label fw-bold">7. Lokasi Bongkar</label>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">10. Lokasi Bongkar</label>
+                            </div>
                             <div id="locationBongkarContainer" class="mb-4">
                                 <div class="row g-3 mb-2 location-bongkar-item">
                                     <div class="col-md-8">
@@ -120,23 +127,23 @@
                                 </div>
                             </div>
                             
-                            <hr>
+                            <hr class="mb-5">
 
-                            <h5 class="mt-4 mb-3 text-danger"><i class="fas fa-sliders-h me-2"></i> Layanan Tambahan & Jadwal</h5>
+                            <h5 class="mb-3 text-danger"><i class="fas fa-cogs me-2"></i> Opsi Tambahan</h5>
                             <div class="row g-3 mb-4">
                                 
                                 <div class="col-md-4">
-                                    <label class="form-label">8. Kembali ke Garasi?</label>
+                                    <label class="form-label">11. Kembali ke Garasi?</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="returnToGarageCheck" checked>
                                         <label class="form-check-label" for="returnToGarageCheck">
-                                            Ya (Jarak total dihitung kembali ke Garasi)
+                                            Ya (Jarak balik ditambahkan)
                                         </label>
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label class="form-label">9. Gunakan TKBM (Tenaga Bongkar Muat)</label>
+                                    <label class="form-label">12. Gunakan TKBM</label>
                                     <select class="form-select" id="tkbmCostSelect">
                                         <option value="0" selected>Tidak Menggunakan TKBM</option>
                                         <option value="50000">Rp 50.000 / orang</option>
@@ -146,7 +153,7 @@
                                 </div>
                                 
                                 <div class="col-md-4">
-                                    <label for="scheduleDate" class="form-label">10. Jadwal Pengiriman</label>
+                                    <label for="scheduleDate" class="form-label">13. Jadwal Pengiriman</label>
                                     <input type="date" class="form-control" id="scheduleDate" required>
                                 </div>
 
@@ -162,21 +169,25 @@
                         <div id="resultArea" class="mt-5 p-4 bg-white border rounded d-none">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer" type="button" role="tab" aria-controls="customer" aria-selected="true"><i class="fas fa-shopping-cart me-1"></i> Customer View</button>
+                                    <button class="nav-link active" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer" type="button" role="tab" aria-controls="customer" aria-selected="true"><i class="fas fa-receipt me-1"></i> Customer View</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="company-tab" data-bs-toggle="tab" data-bs-target="#company" type="button" role="tab" aria-controls="company" aria-selected="false"><i class="fas fa-sitemap me-1"></i> Internal/Company View</button>
+                                    <button class="nav-link" id="company-tab" data-bs-toggle="tab" data-bs-target="#company" type="button" role="tab" aria-controls="company" aria-selected="false"><i class="fas fa-chart-bar me-1"></i> Internal/Company View</button>
                                 </li>
                             </ul>
                             <div class="tab-content pt-3" id="myTabContent">
                                 
                                 <div class="tab-pane fade show active" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-                                    <h4 class="text-success border-bottom pb-2">REVIEW DATA & TOTAL BIAYA (Customer)</h4>
+                                    <h4 class="text-success border-bottom pb-2">ESTIMASI BIAYA & PENGIRIMAN</h4>
                                     <div id="customerReviewData" class="mb-4"></div>
-                                    <div class="row">
+                                    <div class="row pt-2">
                                         <div class="col-md-6">
-                                            <p class="mb-1"><strong>Estimasi Waktu Kirim:</strong> <span id="custOutputTime" class="fw-bold text-dark">0 Jam</span></p>
-                                            <p class="mb-1"><strong>Total Jarak Tempuh:</strong> <span id="custOutputDistance" class="fw-bold text-dark">0 Km</span></p>
+                                            <div class="p-3 bg-light rounded">
+                                                <p class="mb-1 small text-muted">Total Jarak Tempuh</p>
+                                                <p class="mb-1 fw-bold fs-5 text-dark" id="custOutputDistance">0 Km</p>
+                                                <p class="mb-0 small text-muted">Estimasi Waktu Kirim</p>
+                                                <p class="mb-0 fw-bold fs-6 text-dark" id="custOutputTime">0 Jam</p>
+                                            </div>
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <h3 class="text-success mb-1">TOTAL BIAYA KIRIM</h3>
@@ -187,21 +198,22 @@
                                 </div>
 
                                 <div class="tab-pane fade" id="company" role="tabpanel" aria-labelledby="company-tab">
-                                    <h4 class="text-danger border-bottom pb-2">REVIEW DATA & DETAIL PERHITUNGAN (Internal)</h4>
+                                    <h4 class="text-danger border-bottom pb-2">DETAIL PROFITABILITAS TRIP</h4>
                                     <div id="companyReviewData" class="mb-4"></div>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <p class="mb-1"><strong>Berat Tertagih:</strong> <span id="outputChargeableWeight" class="fw-bold">0 Kg</span></p>
-                                            <p class="mb-1"><strong>Total COGS (Biaya Langsung):</strong> <span id="outputCogs" class="fw-bold text-dark">Rp 0</span></p>
-                                            <p class="mb-1"><strong>Harga Jual Kotor (sebelum pajak):</strong> <span id="outputGrossPrice" class="fw-bold text-dark">Rp 0</span></p>
-                                            <p class="mb-1"><strong>Total Pajak (PPN & PPh):</strong> <span id="outputTaxes" class="fw-bold text-dark">Rp 0</span></p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <h5 class="text-primary mt-2 mb-1">DETAIL PEMBAGIAN</h5>
-                                            <p class="mb-1 small">Margin Perusahaan (20%): <span id="outputMargin" class="fw-bold text-success">Rp 0</span></p>
+                                        <div class="col-md-6 border-end">
+                                            <h5 class="text-danger mt-2 mb-1">DETAIL COGS</h5>
+                                            <p class="mb-1 small">Total COGS (Biaya Langsung): <span id="outputCogs" class="fw-bold text-dark">Rp 0</span></p>
                                             <p class="mb-1 small">Biaya Armada/Driver/BBM: <span id="outputOperationalCost" class="fw-bold text-success">Rp 0</span></p>
                                             <p class="mb-1 small">Biaya TKBM: <span id="outputTkbmCost" class="fw-bold text-success">Rp 0</span></p>
-                                            <h4 class="text-danger mt-2">TOTAL BIAYA CUSTOMER: <span id="compOutputFinalPrice">Rp 0</span></h4>
+                                            <p class="mt-3 mb-1 small text-muted">Berat Tertagih: <span id="outputChargeableWeight" class="fw-bold">0 Kg</span></p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="text-success mt-2 mb-1">PEMBAGIAN HARGA JUAL</h5>
+                                            <p class="mb-1 small">Harga Jual Kotor: <span id="outputGrossPrice" class="fw-bold text-dark">Rp 0</span></p>
+                                            <p class="mb-1 small">Margin Perusahaan (20%): <span id="outputMargin" class="fw-bold text-success">Rp 0</span></p>
+                                            <p class="mb-1 small">Total Pajak (PPN & PPh): <span id="outputTaxes" class="fw-bold text-dark">Rp 0</span></p>
+                                            <h4 class="text-danger mt-3">TOTAL BIAYA CUSTOMER: <span id="compOutputFinalPrice">Rp 0</span></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -234,7 +246,7 @@
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr-net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/tariff-logic.js"></script>
 </body>
 </html>
