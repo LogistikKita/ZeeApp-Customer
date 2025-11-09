@@ -1,64 +1,74 @@
-/* 🌈 Variabel warna */
+/* ======================================================= */
+/* == PALET WARNA DIADOP dari LOGO (Merah dan Kuning) == */
+/* ======================================================= */
 :root {
-  --red-primary: #d62828;
-  --black-primary: #1a1a1a;
-  --gray-bg: #f9f9f9;
+    --color-primary: #E51D2A; /* Merah Menyala - Warna Utama Logo */
+    --color-secondary: #B00F1A; /* Merah Tua - Untuk Efek Hover */
+    --color-accent: #FFC72C; /* Kuning Cerah - Warna Aksen untuk CTA */
+    --color-dark: #1f2937;
 }
 
+/* Konfigurasi Global */
 body {
-  font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif; /* Font Inter sudah di-import di index.html */
+    color: var(--color-dark);
+    background-color: #ffffff;
+    scroll-behavior: smooth;
 }
 
-/* 🌟 Hero Section Overlay */
+/* Styling Kustom */
+.primary-bg { background-color: var(--color-primary); }
+.primary-text { color: var(--color-primary); }
+.accent-bg { background-color: var(--color-accent); }
+.accent-text { color: var(--color-accent); }
+.hover-primary-bg:hover { background-color: var(--color-secondary); }
+.hover-primary-text:hover { color: var(--color-secondary); }
+
+/* Efek Overlay Hero */
 .hero-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Dibuat lebih gelap agar teks Putih (Merah di logo) lebih menonjol */
+    background: rgba(0, 0, 0, 0.55); 
+    z-index: 10;
 }
 
-/* 🎬 Slider Gambar */
+/* Kustomisasi Slider Image */
 .slider-image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1.5s ease;
+    transition: opacity 1.5s ease-in-out;
+    opacity: 0;
+    /* Pastikan gambar mengisi penuh container */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-
 .slider-image.active {
-  opacity: 1;
+    opacity: 1;
 }
 
-/* 🔥 Tombol Aksen */
-.accent-bg {
-  background-color: var(--red-primary);
-  color: white;
-}
-
-/* 🌿 Animasi Scroll */
+/* CSS untuk Animasi Entrance saat Scroll */
 .animate-on-scroll {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.7s ease-out;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
-.animate-on-scroll.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* 📱 Mobile menu */
-#mobile-menu a {
-  color: var(--black-primary);
-  font-weight: 500;
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
-/* 🖼️ Responsif */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2rem;
-  }
+/* Kustomisasi Slider Testimoni */
+#testimonial-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    /* Tambahan: Memastikan lebar track cukup untuk semua kartu testimoni */
+    width: 300%; /* Lebar 3x (jika ada 3 testimoni) */
+}
+.testimonial-card {
+    min-width: 33.33%; /* Setiap kartu mengambil lebar penuh container (100% / 3) */
+    padding: 1rem;
 }
