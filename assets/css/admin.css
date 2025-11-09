@@ -1,0 +1,137 @@
+/* ==================================== */
+/* 1. GLOBAL STYLES & LAYOUT */
+/* ==================================== */
+
+body {
+    background-color: #f4f7f6; /* Warna latar belakang admin yang lembut */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+/* ==================================== */
+/* 2. HEADINGS & TITLES */
+/* ==================================== */
+
+h1 {
+    color: #dc3545; /* Merah primary */
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.card-header {
+    background-color: #dc3545; /* Merah primary */
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+}
+
+h5.text-danger {
+    color: #dc3545 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #f8d7da; /* Garis bawah tipis */
+    padding-bottom: 5px;
+}
+
+/* ==================================== */
+/* 3. FORM STYLES & INPUTS */
+/* ==================================== */
+
+.form-label {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25); /* Shadow merah muda */
+}
+
+/* Penyesuaian untuk input dimensi (berdekatan) */
+.input-group input:not(:last-child) {
+    border-right: 1px solid #ced4da;
+}
+
+/* Tombol Hitung */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333; /* Sedikit lebih gelap saat hover */
+    border-color: #bd2130;
+}
+
+/* Tombol +/- lokasi muat/bongkar */
+.btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+}
+.btn-outline-success:hover {
+    color: white;
+    background-color: #28a745;
+}
+
+
+/* ==================================== */
+/* 4. RESULT AREA & TABS */
+/* ==================================== */
+
+#resultArea {
+    background-color: #ffffff !important;
+    border: 2px solid #dc3545 !important;
+}
+
+/* Tabs */
+.nav-tabs .nav-link {
+    color: #495057;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #dc3545; /* Teks aktif merah */
+    background-color: #f8f9fa; /* Latar belakang tab aktif */
+    border-color: #dc3545 #dc3545 #f8f9fa;
+    font-weight: 600;
+}
+
+/* Hasil Harga Final */
+#custOutputFinalPrice, #compOutputFinalPrice {
+    font-size: 2.5rem;
+    font-weight: 900;
+}
+
+/* ==================================== */
+/* 5. MODAL STYLES (Review Data) */
+/* ==================================== */
+
+#reviewModal .modal-header {
+    background-color: #dc3545;
+    color: white;
+}
+
+#reviewDataContent {
+    background-color: #fff9f9; /* Latar belakang pink pucat untuk data review */
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+}
