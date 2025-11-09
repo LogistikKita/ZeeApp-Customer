@@ -1,19 +1,36 @@
+/* assets/css/style.css */
+
 /* ======================================================= */
 /* == PALET WARNA DIADOP dari LOGO (Merah dan Kuning) == */
 /* ======================================================= */
+
 :root {
-    --color-primary: #E51D2A; /* Merah Menyala - Warna Utama Logo */
-    --color-secondary: #B00F1A; /* Merah Tua - Untuk Efek Hover */
-    --color-accent: #FFC72C; /* Kuning Cerah - Warna Aksen untuk CTA */
-    --color-dark: #1f2937;
+    /* --- Light Mode Default --- */
+    --color-primary: #E51D2A;    /* Merah Menyala - Warna Utama Logo */
+    --color-secondary: #B00F1A;  /* Merah Tua - Untuk Efek Hover */
+    --color-accent: #FFC72C;     /* Kuning Cerah - Warna Aksen untuk CTA */
+    --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
+    --color-light: #ffffff;      /* Putih - Latar Belakang */
+    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section */
 }
 
-/* Konfigurasi Global */
+/* --- Dark Mode Overrides --- */
+html.dark {
+    --color-primary: #f87171;    /* Merah Lebih Terang (Red 400) */
+    --color-secondary: #dc2626;  /* Red 600 */
+    --color-accent: #fcd34d;     /* Kuning Lebih Terang (Amber 300) */
+    --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama di Dark Mode */
+    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama */
+    --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section */
+}
+
+/* Konfigurasi Global & Transisi Tema */
 body {
-    font-family: 'Inter', sans-serif; /* Font Inter sudah di-import di index.html */
-    color: var(--color-dark);
-    background-color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    color: var(--color-dark); /* Teks Body mengikuti Dark/Light mode */
+    background-color: var(--color-light); /* Background Body mengikuti Dark/Light mode */
     scroll-behavior: smooth;
+    transition: background-color 0.5s, color 0.5s; /* Transisi untuk perubahan tema */
 }
 
 /* Styling Kustom */
@@ -23,6 +40,30 @@ body {
 .accent-text { color: var(--color-accent); }
 .hover-primary-bg:hover { background-color: var(--color-secondary); }
 .hover-primary-text:hover { color: var(--color-secondary); }
+
+/* --- Penyesuaian Dark Mode Tailwind Class --- */
+/* Override BG & Text yang didefinisikan dengan Tailwind di HTML */
+.dark .bg-white { 
+    background-color: var(--color-light); /* Menggunakan Gray 900 */
+}
+.dark .bg-gray-50 {
+    background-color: var(--color-bg-light); /* Menggunakan Gray 800 */
+}
+.dark .bg-gray-100 {
+    background-color: var(--color-bg-light); /* Menggunakan Gray 800 */
+}
+.dark .text-gray-900 {
+    color: var(--color-dark); /* Menggunakan Gray 100 */
+}
+.dark .text-gray-600, .dark .text-gray-700 {
+    color: #d1d5db; /* Gray 300 untuk teks sekunder */
+}
+
+/* Override Header Shadow untuk Dark Mode */
+.dark #main-header {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+}
+
 
 /* Efek Overlay Hero */
 .hero-overlay {
@@ -36,16 +77,17 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    /* Dibuat lebih gelap agar teks Putih (Merah di logo) lebih menonjol */
     background: rgba(0, 0, 0, 0.55); 
     z-index: 10;
+}
+.dark .hero-overlay::before {
+    background: rgba(0, 0, 0, 0.65); 
 }
 
 /* Kustomisasi Slider Image */
 .slider-image {
     transition: opacity 1.5s ease-in-out;
     opacity: 0;
-    /* Pastikan gambar mengisi penuh container */
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -69,10 +111,9 @@ body {
 #testimonial-track {
     display: flex;
     transition: transform 0.5s ease-in-out;
-    /* Diasumsikan ada 3 testimoni */
     width: 300%; 
 }
 .testimonial-card {
-    min-width: 33.33%; /* Setiap kartu mengambil lebar penuh container (100% / 3) */
+    min-width: 33.33%; 
     padding: 1rem;
 }
