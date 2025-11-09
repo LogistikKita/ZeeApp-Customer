@@ -194,11 +194,17 @@ function setupScrollAnimation() {
 
 
 // ===========================================
-// 5. Inisialisasi Utama
+// 5. Inisialisasi Utama (Dipisahkan Berdasarkan Halaman)
 // ===========================================
 document.addEventListener('DOMContentLoaded', () => {
-    initializeSlider();
-    initializeTestimonialSlider(); 
-    setupMobileMenu();
-    setupScrollAnimation();
+    // Fungsi yang selalu dibutuhkan (Header/Navigasi)
+    setupMobileMenu(); 
+    
+    // Fungsi yang spesifik untuk halaman Beranda
+    const isHomepage = document.querySelector('.hero-overlay') !== null; // Cek jika Hero Section ada
+    if (isHomepage) {
+        initializeSlider();
+        initializeTestimonialSlider(); 
+        setupScrollAnimation();
+    }
 });
