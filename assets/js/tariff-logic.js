@@ -92,15 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update the counter
         if (type === 'Muat') {
             muatCount--;
-            // Perbarui placeholder agar urutan tetap rapi
+            // Perbarui placeholder
             document.querySelectorAll('#locationMuatContainer .location-muat-name').forEach((input, index) => {
-                 input.placeholder = `Alamat Muat ${index + 1}`;
+                 input.placeholder = `Nama Perusahaan/Alamat Muat ${index + 1}`;
             });
         } else {
             bongkarCount--;
-            // Perbarui placeholder agar urutan tetap rapi
+            // Perbarui placeholder
              document.querySelectorAll('#locationBongkarContainer .location-bongkar-name').forEach((input, index) => {
-                 input.placeholder = `Alamat Bongkar ${index + 1}`;
+                 input.placeholder = `Nama Perusahaan/Alamat Bongkar ${index + 1}`;
             });
         }
     }
@@ -139,23 +139,19 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- LOGIKA UTAMA SUBMIT FORM & MODAL ---
-    let currentCalculationData = {}; 
-
+    // --- LOGIKA UTAMA SUBMIT FORM ---
     document.getElementById('deliveryForm').addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Sembunyikan Modal Input Utama
-        var inputModalElement = document.getElementById('inputModal');
-        var inputModal = bootstrap.Modal.getInstance(inputModalElement);
-        if (inputModal) inputModal.hide();
-
-
         // 1. Ambil Data Form & Validasi
         const selectedArmadaKey = document.getElementById('armadaSelect').value;
         const rates = ARMADA_RATES[selectedArmadaKey];
-        const clientType = document.getElementById('clientType').value;
         
+        if (!rates) {
+            alert("Mohon pilih jenis Armada terlebih dahulu.");
+            return;
+        }
+
         const weight = parseFloat(document.getElementById('totalWeight').value);
         const length = parseFloat(document.getElementById('length').value);
         const width = parseFloat(document.getElementById('width').value);
@@ -171,96 +167,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (returnToGarage) {
-            totalTripDistance = totalTripDistance * 2; // Asumsi jarak balik sama dengan jarak tempuh
+            // Asumsi jarak kembali ke garasi sama dengan jarak tempuh dari muat terakhir
+            // Jarak yang ditambahkan adalah jarak dari bongkar terakhir ke garasi
+            // Karena kita hanya menyimpan jarak NEXT, kita asumsikan jarak dari bongkar terakhir ke garasi sama dengan jarak START (Garasi ke Muat 1)
+            totalTripDistance += distanceStart; 
         }
 
         // 3. Berat Tertagih & Validasi Kapasitas
+        // CBM (Cubic Meter) = P x L x T / 1.000.000
+        // Berat Volume = CBM * 4000 (standard cargo)
         const volumeWeight = (length * width * height) / 4000;
         const chargeableWeight = Math.max(weight, volumeWeight);
         
         if (chargeableWeight > rates.max_weight) {
-             alert(`⚠️ PERINGATAN KAPASITAS! Berat Tertagih (${chargeableWeight.toFixed(1)} Kg) melebihi kapasitas Armada ${rates.name} (${rates.max_weight} Kg). Perhitungan tetap dilanjutkan.`);
+             alert(`⚠️ PERINGATAN KAPASITAS! Berat Tertagih (${chargeableWeight.toFixed(1)} Kg) melebihi kapasitas Armada ${rates.name} (${rates.max_weight} Kg).`);
         }
 
         // 4. Waktu Kerja Total
         const avgSpeed = 50; 
         const drivingTime = totalTripDistance / avgSpeed;
-        const loadingTime = (muatCount + bongkarCount) * 0.5; // Asumsi 30 menit per titik
+        const totalLocations = document.querySelectorAll('.location-muat-item').length + document.querySelectorAll('.location-bongkar-item').length;
+        const loadingTime = totalLocations * 0.5; // Asumsi 30 menit per titik
         const restTime = Math.floor(drivingTime / 4) * 1.0; // Asumsi istirahat 1 jam setiap 4 jam mengemudi
         const totalWorkingTime = drivingTime + loadingTime + restTime;
 
         // 5. Hitung Tarif
         const tariffResults = calculateTariff(rates, totalTripDistance, chargeableWeight, totalWorkingTime, tkbmCost);
         
-        // Simpan Data
-        currentCalculationData = {
-            rates, totalTripDistance, chargeableWeight, totalWorkingTime, drivingTime, loadingTime, restTime, 
-            clientName: document.getElementById('clientName').value,
-            clientType,
-            itemName: document.getElementById('itemName').value,
-            tkbmUsed: tkbmCost > 0 ? 'Ya' : 'Tidak',
-            ...tariffResults
-        };
-
-        // 6. Tampilkan Modal Review
-        displayReviewData(currentCalculationData);
-        var reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
-        reviewModal.show();
-    });
-
-    // FUNGSI TAMPILKAN DATA REVIEW DI MODAL
-    function displayReviewData(data) {
-        let reviewHTML = `
-            <table class="table table-sm table-borderless">
-                <tr><th>Armada Dipilih</th><td>: ${data.rates.name}</td></tr>
-                <tr><th>Client</th><td>: ${data.clientName} (${data.clientType})</td></tr>
-                <tr><th>Nama Barang</th><td>: ${data.itemName}</td></tr>
-                <tr><th>Berat Tertagih</th><td>: ${data.chargeableWeight.toFixed(1)} Kg</td></tr>
-                <tr><th>Total Jarak</th><td>: ${data.totalTripDistance.toFixed(0)} Km</td></tr>
-                <tr><th>Jadwal Kirim</th><td>: ${document.getElementById('scheduleDate').value}</td></tr>
-                <tr><th>TKBM Digunakan</th><td>: ${data.tkbmUsed} (${data.costTkbm > 0 ? formatter.format(data.costTkbm) : 'Tidak Ada'})</td></tr>
-            </table>
-        `;
-        document.getElementById('reviewDataContent').innerHTML = reviewHTML;
-    }
-
-    // EVENT KLIK TOMBOL LANJUTKAN PERHITUNGAN DI MODAL REVIEW
-    document.getElementById('confirmCalculateBtn').addEventListener('click', function() {
-        var reviewModalElement = document.getElementById('reviewModal');
-        var reviewModal = bootstrap.Modal.getInstance(reviewModalElement);
-        if (reviewModal) reviewModal.hide();
-        
-        displayFinalResults(currentCalculationData);
+        // 6. Tampilkan Hasil
+        displayFinalResults(tariffResults, totalTripDistance, chargeableWeight, totalWorkingTime);
     });
     
     // FUNGSI TAMPILKAN HASIL AKHIR
-    function displayFinalResults(data) {
-        // --- CUSTOMER VIEW ---
-        document.getElementById('custOutputDistance').textContent = `${data.totalTripDistance.toFixed(0)} Km`;
-        document.getElementById('custOutputTime').textContent = `${data.totalWorkingTime.toFixed(2)} Jam (Est. Tiba)`;
-        document.getElementById('custOutputFinalPrice').textContent = formatter.format(data.finalPrice);
+    function displayFinalResults(data, totalDistance, chargeableWeight, totalWorkingTime) {
         
-        let customerReview = `
-            <p class="mb-1"><strong>Rute:</strong> Garasi - Muat... - Bongkar Akhir (${data.totalTripDistance.toFixed(0)} Km)</p>
-            <p class="mb-1"><strong>Barang:</strong> ${data.itemName} (${data.chargeableWeight.toFixed(1)} Kg)</p>
-            <p class="mb-1"><strong>Armada:</strong> ${data.rates.name}</p>
-        `;
-        document.getElementById('customerReviewData').innerHTML = customerReview;
-
-        // --- INTERNAL/COMPANY VIEW ---
-        document.getElementById('companyReviewData').innerHTML = customerReview; 
-        document.getElementById('outputChargeableWeight').textContent = `${data.chargeableWeight.toFixed(1)} Kg`;
+        // Update data di area hasil
+        document.getElementById('outputDistance').textContent = `${totalDistance.toFixed(0)} Km`;
+        document.getElementById('outputTime').textContent = `${totalWorkingTime.toFixed(2)} Jam`;
+        document.getElementById('outputChargeableWeight').textContent = `${chargeableWeight.toFixed(1)} Kg`;
+        
         document.getElementById('outputCogs').textContent = formatter.format(data.totalCogs);
-        document.getElementById('outputGrossPrice').textContent = formatter.format(data.grossPriceBeforeTax);
-        document.getElementById('outputTaxes').textContent = formatter.format(data.costPpn + data.costPph);
-        
-        document.getElementById('outputMargin').textContent = formatter.format(data.costMargin);
         document.getElementById('outputOperationalCost').textContent = formatter.format(data.operationalCost);
         document.getElementById('outputTkbmCost').textContent = formatter.format(data.costTkbm);
-        document.getElementById('compOutputFinalPrice').textContent = formatter.format(data.finalPrice);
+        
+        document.getElementById('outputGrossPrice').textContent = formatter.format(data.grossPriceBeforeTax);
+        document.getElementById('outputMargin').textContent = formatter.format(data.costMargin);
+        document.getElementById('outputTaxes').textContent = formatter.format(data.costPpn + data.costPph);
+        document.getElementById('outputFinalPrice').textContent = formatter.format(data.finalPrice);
 
-
-        document.getElementById('resultArea').classList.remove('d-none');
-        document.getElementById('resultArea').scrollIntoView({ behavior: 'smooth' });
+        // Tampilkan area hasil dan scroll ke sana
+        const resultArea = document.getElementById('resultArea');
+        resultArea.classList.remove('d-none');
+        resultArea.scrollIntoView({ behavior: 'smooth' });
     }
 });
