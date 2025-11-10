@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Project for testing Gemini API with Netlify Functions.",
   "main": "index.js",
+  "type": "module",  <-- TAMBAHKAN BARIS INI
   "dependencies": {
     "@google/genai": "*" 
   },
