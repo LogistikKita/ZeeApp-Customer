@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uji Coba Gemini Chat</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .chat-container { max-width: 600px; margin: auto; padding: 20px; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        #chat-output { min-height: 150px; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; overflow-y: scroll; background-color: #e9e9e9; border-radius: 4px; }
+        .user-msg { text-align: right; color: #007bff; }
+        .ai-msg { text-align: left; color: #28a745; border-top: 1px dashed #ccc; padding-top: 5px; margin-top: 5px; }
+        input[type="text"] { width: 80%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { width: 18%; padding: 8px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .loader { display: none; margin-top: 10px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>🤖 Uji Coba Chat Gemini (Netlify Function)</h2>
+        <div id="chat-output">Halo! Silakan ketik pesan Anda untuk diuji coba.</div>
+        <input type="text" id="user-input" placeholder="Tulis pesan..." onkeypress="if(event.keyCode == 13) sendMessage()">
+        <button onclick="sendMessage()">Kirim</button>
+        <div class="loader" id="loader">Sedang memproses...</div>
+    </div>
+
+    <script>
+        // PENTING: Ganti dengan nama Netlify Function Anda
+        const NETLIFY_FUNCTION_URL = '/.netlify/functions/gemini-chat';
+
+        async function sendMessage() {
+            const inputElement = document.getElementById('user-input');
+            const outputElement = document.getElementById('chat-output');
+            const loaderElement = document.getElementById('loader');
+            const message = inputElement.value.trim();
+
+            if (message === '') return;
+
+            // 1. Tampilkan pesan user
+            outputElement.innerHTML += `<div class="user-msg">Anda: ${message}</div>`;
+            inputElement.value = ''; // Kosongkan input
+            loaderElement.style.display = 'block'; // Tampilkan loader
+            outputElement.scrollTop = outputElement.scrollHeight; // Scroll ke bawah
+
+            try {
+                // 2. Panggil Netlify Function
+                const response = await fetch(NETLIFY_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: message })
+                });
+
+                const data = await response.json();
+
+                // 3. Tampilkan respon AI
+                if (response.ok && data.text) {
+                    outputElement.innerHTML += `<div class="ai-msg">Gemini: ${data.text}</div>`;
+                } else {
+                    outputElement.innerHTML += `<div class="ai-msg" style="color: red;">[ERROR]: Gagal mendapatkan respon dari server. ${data.error || 'Cek logs Netlify Function.'}</div>`;
+                }
+            } catch (error) {
+                outputElement.innerHTML += `<div class="ai-msg" style="color: red;">[ERROR]: Koneksi Gagal. Cek URL Function. (${error.message})</div>`;
+            } finally {
+                loaderElement.style.display = 'none'; // Sembunyikan loader
+                outputElement.scrollTop = outputElement.scrollHeight; // Scroll ke bawah lagi
+            }
+        }
+    </script>
+</body>
+</html>
