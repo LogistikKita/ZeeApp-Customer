@@ -117,3 +117,63 @@ body {
     min-width: 33.33%; 
     padding: 1rem;
 }
+
+/* ======================================================= */
+/* == PENAMBAHAN STYLING KHUSUS UNTUK FORMULIR MITRA == */
+/* ======================================================= */
+
+/* REQUIRED INDICATOR (Tanda Bintang) */
+.required label::after {
+    content: " *";
+    color: var(--color-primary); 
+    font-weight: bold;
+}
+
+/* RADIO BUTTON GROUP (untuk pilihan Individu/Perusahaan) */
+.radio-group input[type="radio"] {
+    display: none;
+}
+
+.radio-group label {
+    font-weight: normal;
+    background: var(--color-bg-light); 
+    padding: 12px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid #d1d5db; /* Gray 300 */
+}
+
+.dark .radio-group label {
+    border-color: #4b5563; /* Gray 600 untuk border di Dark Mode */
+}
+
+.radio-group input[type="radio"]:checked + label {
+    /* Tampilan saat radio dipilih */
+    background: #FFEDED; /* Merah sangat terang */
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.dark .radio-group input[type="radio"]:checked + label {
+    background: #374151; /* Gray 700 di Dark Mode */
+}
+
+
+/* VALIDASI ERROR (Diaktifkan oleh register-mitra.js) */
+
+/* Highlight input/select yang error */
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+    /* Menggunakan Primary Color untuk Error */
+    border: 2px solid var(--color-primary) !important; 
+    box-shadow: 0 0 5px rgba(229, 29, 42, 0.4); /* Shadow sesuai primary color */
+}
+
+/* Mengubah warna label field yang error */
+.form-group.error label {
+    color: var(--color-primary);
+    font-weight: bold;
+}
