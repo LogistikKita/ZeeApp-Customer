@@ -1,0 +1,11 @@
+[build]
+  # Jika Anda menggunakan NPM untuk build (misalnya instalasi library), 
+  # ubah command ini. Jika tidak, Anda bisa menghapusnya atau membiarkannya kosong.
+  # command = ""
+  
+  # Asumsi file HTML Anda langsung di root repositori
+  publish = "." 
+
+# Konfigurasi Netlify Functions
+[functions]
+  directory = "netlify" 
