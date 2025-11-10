@@ -1,3 +1,9 @@
 [build]
-  # Menentukan folder tempat Netlify Function Anda berada
+  # Tentukan folder Netlify Functions Anda
   functions = "netlify" 
+  
+# Atur Redirects untuk fallback jika diperlukan
+[[redirects]]
+  from = "/*"
+  to = "/index3.html"
+  status = 200
