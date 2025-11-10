@@ -1,5 +1,5 @@
-// File: netlify/gemini-chat.js
-import { GoogleGenAI } from '@google/genai';
+// File: netlify/gemini-chat.js (Ubah ini!)
+const { GoogleGenAI } = require('@google/genai'); // DIUBAH!
 
 const ai = new GoogleGenAI({}); 
 
@@ -29,7 +29,6 @@ exports.handler = async (event) => {
         };
 
     } catch (error) {
-        // Ini akan menangkap dan mencatat error API Key atau error lainnya
         console.error('Gemini API Error:', error);
         
         let errorMessage = 'Internal Server Error';
