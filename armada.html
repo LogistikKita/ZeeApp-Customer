@@ -3,165 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Armada Kita - Logistik Kita</title>
+    <title>Armada Kami - Logistik Kita</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css"> 
 </head>
 <body class="overflow-x-hidden">
 
-    <header id="main-header" class="sticky top-0 z-50 bg-white shadow-md transition duration-300">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-            <a href="index.html" class="text-2xl font-extrabold primary-text flex items-center">
-                 <img src="assets/logo/Logistik-Kita.png" alt="Logo Logistik Kita" class="h-8 w-auto mr-2">
-                 <span>Logistik Kita</span>
-            </a>
-            <div class="flex items-center space-x-4">
-                <button class="flex items-center px-4 py-2 primary-bg text-white font-semibold rounded-lg shadow-lg hover-primary-bg transition duration-300 transform hover:scale-[1.05]">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2"><path d="M16 20l4-4M4 20l4-4M12 2l-2 5l2 2l2-2l-2-5zM12 22l-2-5l2-2l2 2l-2 5zM12 12c-2.76 0-5 2.24-5 5s2.24 5 5 5s5-2.24 5-5s-2.24-5-5-5z"/></svg>
-                    Lacak Kiriman
-                </button>
-                <button id="menu-button" class="text-gray-600 hover-primary-text transition">
-                    <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-                    <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 hidden"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
-                </button>
-            </div>
-        </div>
-        <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white shadow-xl z-40">
-            <nav class="flex flex-col p-4 space-y-2 text-gray-700">
-                <a href="index.html" class="p-2 rounded hover:bg-red-50 transition">Beranda</a>
-                <a href="layanan.html" class="p-2 rounded hover:bg-red-50 transition">Layanan Kita</a>
-                <a href="armada.html" class="p-2 rounded hover:bg-red-50 transition">Armada Kita</a>
-                <a href="blog.html" class="p-2 rounded hover:bg-red-50 transition">Wawasan Kita</a>
-                <a href="about.html" class="p-2 rounded hover:bg-red-50 transition">Tentang Kita</a>
-                <a href="kontak.html" class="p-2 rounded hover:bg-red-50 transition">Hubungi Kita</a>
-                <a href="login.html" class="mt-4 px-4 py-2 primary-bg text-white font-semibold text-center rounded-lg shadow-lg hover-primary-bg transition">
-                    Masuk / Daftar
-                </a>
-            </nav>
-        </div>
-    </header>
+    <div id="header-placeholder"></div>
 
-    <main class="py-16 md:py-24 bg-gray-50">
+    <main class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 transition duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             
             <h1 class="text-4xl md:text-5xl font-extrabold primary-text mb-6 text-center animate-on-scroll">
                 Armada Kami: Detail Kendaraan & Kapasitas
             </h1>
-            <p class="text-xl text-gray-600 mb-16 text-center max-w-4xl mx-auto animate-on-scroll" data-delay="0.1">
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-16 text-center max-w-4xl mx-auto animate-on-scroll" data-delay="0.1">
                 Pilih kendaraan yang tepat. Jaminan pengiriman aman dan efisien untuk setiap jenis kargo Anda.
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div id="armada-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.2">
-                    <img src="assets/img/armada-pickup-bak.jpg" alt="Armada Mobil Pickup Bak Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Pickup Bak Terbuka</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Cepat dan ideal untuk kargo domestik ringan atau distribusi dalam kota.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">± 1.300 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">± 2 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">2.4m x 1.4m x 1.4m</span></li>
-                        </ul>
+                <div class="group bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden 
+                            transform hover:shadow-primary-lg transition duration-500 
+                            hover:scale-[1.03] border border-gray-100 dark:border-gray-700 animate-on-scroll">
+                    
+                    <div class="relative">
+                        <img src="assets/img/armada-pickup-bak.jpg" 
+                             alt="Armada Mobil Pickup Bak Logistik" 
+                             class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
+                        
+                        <div class="absolute top-4 right-4 primary-bg text-white 
+                                    px-4 py-2 rounded-full text-sm font-bold shadow-xl 
+                                    transform group-hover:scale-105 transition duration-300">
+                            MAX: 1.3 Ton
+                        </div>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.25">
-                    <img src="assets/img/armada-pickup-box.jpg" alt="Armada Mobil Pickup Box Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
+                    
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Pickup Box</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Proteksi maksimal untuk barang berharga dan sensitif cuaca.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">± 1.000 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">± 3 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">2.4m x 1.4m x 1.4m</span></li>
+                        <h3 class="text-2xl font-extrabold primary-text mb-2">Pickup Bak Terbuka</h3>
+                        <p class="text-gray-500 dark:text-gray-400 mb-6 text-sm italic">
+                            Cepat dan ideal untuk kargo domestik ringan atau distribusi dalam kota.
+                        </p>
+                        
+                        <ul class="space-y-3 text-gray-700 dark:text-gray-300 text-base">
+                            <li class="flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <svg class="w-5 h-5 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zM12 21a9 9 0 100-18 9 9 0 000 18z"/></svg>
+                                    Kapasitas Maks:
+                                </span>
+                                <span class="font-bold text-lg primary-text">± 1.300 Kg</span>
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <svg class="w-5 h-5 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7V4m0 0H4m16 0L4 20m0 0V20m0-4h16m-4 4L4 4"/></svg>
+                                    Volume Maks:
+                                </span>
+                                <span class="font-semibold">± 2 CBM</span>
+                            </li>
+                            <li class="flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <svg class="w-5 h-5 mr-3 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10H21M7 6v12M17 6v12M12 6v12"/></svg>
+                                    Dimensi (P x L x T):
+                                </span>
+                                <span class="font-semibold">2.4m x 1.4m x 1.4m</span>
+                            </li>
                         </ul>
+                        
+                        <div class="mt-8">
+                            <a href="pemesanan.html?armada=pickup-bak" 
+                               class="accent-bg text-gray-900 font-bold w-full text-center block 
+                                      py-3 rounded-lg shadow-md hover-accent-bg transition duration-300 
+                                      transform hover:scale-[0.98]">
+                                Hitung Estimasi Harga
+                            </a>
+                        </div>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.3">
-                    <img src="assets/img/armada-pickup-blindvan.jpg" alt="Armada Mobil Blind Van Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Blind Van</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Kendaraan ramping untuk pengiriman cepat di area padat.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">± 600 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">± 3 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">± 2.0m x 1.3m x 1.3m</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.35">
-                    <img src="assets/img/armada-cdd-box.jpg" alt="Armada CDD Box Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">CDD (Box/Bak)</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Andalan untuk distribusi massal jarak menengah (FTL/LTL).</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">4.000 - 5.000 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">15 - 20 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">± 4.5m x 2.0m x 2.0m</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.4">
-                    <img src="assets/img/armada-fuso-box.jpg" alt="Armada Fuso Box Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Fuso (Box/Bak)</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Kapasitas angkut besar untuk proyek dan kargo FTL jarak jauh.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">7.000 - 8.000 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">25 - 30 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">± 7.5m x 2.4m x 2.4m</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.45">
-                    <img src="assets/img/armada-tronton-bak.jpg" alt="Armada Tronton Bak Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Tronton Bak</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Angkutan super berat dan kargo dimensi besar yang tidak memerlukan penutup.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">10.000 - 15.000 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">35 - 50 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">± 9.5m x 2.4m x 2.4m</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.5">
-                    <img src="assets/img/armada-tronton-wingbox.jpg" alt="Armada Tronton Wingbox Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Tronton Wingbox</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Akses bongkar muat 3 sisi (atas/samping) untuk kecepatan logistik.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">10.000 - 15.000 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Volume Maks:<span class="font-semibold">40 - 55 CBM</span></li>
-                            <li class="flex justify-between pb-1">Dimensi (P x L x T):<span class="font-semibold">± 9.5m x 2.5m x 2.5m</span></li>
-                        </ul>
-                    </div>
-                </div>
+                </div> 
                 
-                <div class="bg-white rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.02] transition duration-300 animate-on-scroll" data-delay="0.55">
-                    <img src="assets/img/armada-trailer-flatbed.jpg" alt="Armada Trailer Flatbed Logistik" class="w-full h-48 object-cover object-center bg-gray-200" loading="lazy">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-3 primary-text">Trailer Flatbed / Container</h3>
-                        <p class="text-gray-600 mb-4 text-sm italic">Solusi angkutan terberat dan kontainer (20ft & 40ft) antar pelabuhan.</p>
-                        <ul class="space-y-2 text-gray-700 text-sm">
-                            <li class="flex justify-between border-b pb-1">Kapasitas Maks:<span class="font-semibold text-red-600">20.000 - 30.000 Kg</span></li>
-                            <li class="flex justify-between border-b pb-1">Tipe Kontainer:<span class="font-semibold">20ft / 40ft</span></li>
-                            <li class="flex justify-between pb-1">Panjang Maks:<span class="font-semibold">± 12.0m</span></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div> <div class="mt-20 text-center py-16 primary-bg rounded-xl shadow-2xl text-white animate-on-scroll" data-delay="0.6">
+                </div> 
+            
+            <div class="mt-20 text-center py-16 primary-bg rounded-xl shadow-2xl text-white animate-on-scroll" data-delay="0.6">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4">Tidak Yakin Armada Mana yang Cocok?</h2>
                 <p class="text-xl font-light opacity-90 mb-8">Hubungi tim konsultan kami, dan kami akan mencarikan solusi armada yang paling efisien.</p>
-                <a href="kontak.html" class="inline-block px-10 py-4 accent-bg text-gray-900 font-bold rounded-full text-lg shadow-2xl hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
+                <a href="kontak.html" class="inline-block px-10 py-4 accent-bg text-gray-900 font-bold rounded-full text-lg shadow-2xl hover-accent-bg transition duration-300 transform hover:scale-105">
                     Konsultasi Kebutuhan Armada
                 </a>
             </div>
@@ -169,51 +94,7 @@
         </div>
     </main>
 
-    <footer class="bg-gray-800 text-gray-300 pt-16 pb-8">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 border-b border-gray-700 pb-8 mb-8">
-                <div class="col-span-2 md:col-span-1">
-                    <h3 class="text-3xl font-bold text-white mb-2">Logistik Kita</h3>
-                    <p class="text-sm">Inovasi di setiap kilometer.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Layanan</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="layanan.html" class="hover-primary-text transition">Ekspedisi</a></li>
-                        <li><a href="layanan.html" class="hover-primary-text transition">Rantai Dingin</a></li>
-                        <li><a href="layanan.html" class="hover-primary-text transition">Warehousing</a></li>
-                        <li><a href="armada.html" class="hover-primary-text transition">Armada Angkutan</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Perusahaan</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="about.html" class="hover-primary-text transition">Tentang Kami</a></li>
-                        <li><a href="#" class="hover-primary-text transition">Visi & Misi</a></li>
-                        <li><a href="#" class="hover-primary-text transition">Karir</a></li>
-                        <li><a href="#" class="hover-primary-text transition">Berita Pers</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold text-white mb-4">Bantuan</h4>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="hover-primary-text transition">FAQ</a></li>
-                        <li><a href="#" class="hover-primary-text transition">Kebijakan Privasi</a></li>
-                        <li><a href="#" class="hover-primary-text transition">Syarat Pengiriman</a></li>
-                    </ul>
-                </div>
-                <div class="col-span-2 md:col-span-1">
-                    <h4 class="text-lg font-semibold text-white mb-4">Kontak</h4>
-                    <p class="text-sm mb-2">Jl. Logistik Cerdas No. 1</p>
-                    <p class="text-sm">Email: info@logistik-kita.co.id</p>
-                </div>
-            </div>
-            
-            <div class="text-center text-sm text-gray-500">
-                &copy; 2025 Logistik Kita. All rights reserved.
-            </div>
-        </div>
-    </footer>
+    <div id="footer-placeholder"></div>
 
     <script src="assets/js/script.js"></script>
 </body>
