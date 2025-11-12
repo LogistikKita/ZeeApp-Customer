@@ -12,7 +12,7 @@
 
     <div id="header-placeholder"></div>
 
-    <main class="py-16 md:py-24 bg-gray-50 dark:bg-gray-800 transition duration-300">
+    <main class="py-16 md:py-24 bg-white dark:bg-gray-800 transition duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             
             <h1 class="text-4xl md:text-5xl font-extrabold primary-text mb-6 text-center animate-on-scroll">
@@ -80,8 +80,7 @@
                         </div>
                     </div>
                 </div> 
-                
-                </div> 
+            </div> 
             
             <div class="mt-20 text-center py-16 primary-bg rounded-xl shadow-2xl text-white animate-on-scroll" data-delay="0.6">
                 <h2 class="text-3xl md:text-4xl font-bold mb-4">Tidak Yakin Armada Mana yang Cocok?</h2>
@@ -96,6 +95,24 @@
 
     <div id="footer-placeholder"></div>
 
+    <div id="gemini-chat-modal" class="hidden">
+        <div class="chat-header">
+            <h4 class="text-xl font-semibold">🤖 Tanya Logistik Kita</h4>
+            <button id="close-chat-button" class="p-1 rounded-full hover:bg-red-600 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="chat-body dark:bg-gray-800" id="chat-messages">
+            <div class="text-center text-sm text-gray-400 mt-4">
+                👋 Halo! Saya asisten AI Logistik Kita. Ada yang bisa saya bantu terkait pengiriman atau armada?
+            </div>
+            </div>
+        <div class="chat-input dark:bg-gray-900">
+            <input type="text" id="chat-input-field" placeholder="Ketik pesan Anda..."
+                   class="w-full p-3 border rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+        </div>
+    </div>
+    
     <div class="fab-container flex flex-col items-center space-y-4">
         
         <button id="gemini-chatbot-button" class="fab-button accent-bg text-gray-900 hover-accent-bg transition duration-300 transform hover:scale-110">
