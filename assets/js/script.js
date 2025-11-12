@@ -1,262 +1,212 @@
 // assets/js/script.js
 
-// ===========================================
-// X. Fungsionalitas HTML Include (untuk Header/Footer)
-// ===========================================
+// =======================================================
+// 1. FUNGSI UTAMA UNTUK INJEKSI HTML DAN INISIALISASI
+// =======================================================
 
-let componentsLoaded = 0;
-const totalComponents = 2; // header.html dan footer.html
-
-function includeHTML(elementId, filePath) {
-    fetch(filePath)
-        .then(response => {
-            if (!response.ok) {
-                console.error(`Gagal memuat file ${filePath}: Status ${response.status}`);
-                componentsLoaded++; 
-                return ''; 
-            }
-            return response.text();
-        })
-        .then(htmlContent => {
-            const placeholder = document.getElementById(elementId);
-            if (placeholder) {
-                placeholder.innerHTML = htmlContent;
-                
-                if (elementId === 'header-placeholder') {
-                    setupMobileMenu(); 
-                    setupThemeToggle(); 
-                }
-            }
-        })
-        .finally(() => {
-            componentsLoaded++;
-            if (componentsLoaded >= totalComponents) {
-                hidePreloader();
-            }
-        })
-        .catch(error => {
-            console.error(error);
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Injeksi Header dan Footer (Menggantikan placeholder)
+    loadHTML('header.html', 'header-placeholder')
+        .then(() => {
+            // INISIALISASI SETELAH HEADER DIMUAT
+            initializeThemeToggle();
+            // FIX MASALAH HAMBURGER MENU
+            initializeMobileMenu(); 
         });
-}
 
-// ===========================================
-// Y. Fungsionalitas PRELOADER
-// ===========================================
+    loadHTML('footer.html', 'footer-placeholder');
 
-function hidePreloader() {
-    const preloader = document.getElementById('preloader');
-    const body = document.body;
+    // 2. Inisialisasi fungsi lain
+    initializeScrollFunctions();
+    initializeChatbot();
+    initializeScrollAnimation();
+    
+    // 3. Menghilangkan Preloader setelah semua dimuat
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.classList.add('hidden-fade');
+            // Hapus setelah transisi
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                document.body.classList.remove('overflow-x-hidden', 'hidden');
+            }, 600); 
+        } else {
+            document.body.classList.remove('overflow-x-hidden', 'hidden');
+        }
+    });
+});
 
-    // 1. Tampilkan body
-    body.classList.remove('hidden');
-
-    // 2. Transisikan preloader untuk menghilang
-    if (preloader) {
-        setTimeout(() => {
-             preloader.classList.add('hidden-fade');
-        }, 50); 
-       
-        // Hapus preloader dari DOM setelah selesai transisi
-        setTimeout(() => {
-            preloader.remove();
-        }, 700); 
+/**
+ * Memuat file HTML eksternal ke dalam placeholder.
+ * @param {string} url - Path ke file HTML.
+ * @param {string} elementId - ID dari elemen placeholder.
+ * @returns {Promise<void>}
+ */
+function loadHTML(url, elementId) {
+    const placeholder = document.getElementById(elementId);
+    if (placeholder) {
+        return fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Gagal memuat ${url}: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(html => {
+                placeholder.innerHTML = html;
+            })
+            .catch(error => {
+                console.error(`Error memuat ${url}:`, error);
+                placeholder.innerHTML = `<p style="color: red;">Gagal memuat ${url}</p>`;
+            });
     }
+    return Promise.resolve();
 }
 
+// =======================================================
+// 2. FIX: FUNGSI HAMBURGER MENU
+// =======================================================
 
-// ===========================================
-// 1. Setup Mobile Menu (Hamburger)
-// ===========================================
-function setupMobileMenu() {
+function initializeMobileMenu() {
     const menuButton = document.getElementById('menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
     const closeIcon = document.getElementById('close-icon');
-    const header = document.getElementById('main-header');
 
     if (menuButton && mobileMenu && menuIcon && closeIcon) {
         menuButton.addEventListener('click', () => {
-            const isMenuOpen = mobileMenu.classList.contains('flex');
+            // Toggle menu visibility
+            mobileMenu.classList.toggle('hidden');
+            
+            // Toggle icons (hamburger <-> close)
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+    }
+}
 
-            if (isMenuOpen) {
-                mobileMenu.classList.remove('flex');
-                mobileMenu.classList.add('hidden');
-                menuIcon.classList.remove('hidden');
-                closeIcon.classList.add('hidden');
-                header.classList.remove('menu-open'); 
-            } else {
-                mobileMenu.classList.add('flex');
-                mobileMenu.classList.remove('hidden');
-                menuIcon.classList.add('hidden');
-                closeIcon.classList.remove('hidden');
-                header.classList.add('menu-open');
+
+// =======================================================
+// 3. FUNGSI THEME TOGGLE (DARK/LIGHT MODE)
+// =======================================================
+
+function initializeThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const sunIcon = document.getElementById('sun-icon');
+    const moonIcon = document.getElementById('moon-icon');
+    const html = document.documentElement;
+
+    // Load saved theme or prefer system theme
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        html.classList.add('dark');
+        if (sunIcon && moonIcon) {
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        }
+    } else {
+        html.classList.remove('dark');
+        if (sunIcon && moonIcon) {
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            if (sunIcon && moonIcon) {
+                sunIcon.classList.toggle('hidden', !isDark);
+                moonIcon.classList.toggle('hidden', isDark);
             }
         });
     }
 }
 
-// ===========================================
-// 2. Fungsionalitas MODE GELAP/TERANG
-// ===========================================
-function setupThemeToggle() {
-    const themeToggle = document.getElementById('theme-toggle');
-    const htmlElement = document.documentElement;
-    const sunIcon = document.getElementById('sun-icon');
-    const moonIcon = document.getElementById('moon-icon');
+// =======================================================
+// 4. FUNGSI SCROLL UP/DOWN & VISIBILITY
+// =======================================================
 
-    if (!themeToggle || !sunIcon || !moonIcon) return;
-
-    const savedTheme = localStorage.getItem('theme') || 
-                       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+function initializeScrollFunctions() {
+    const scrollUp = document.getElementById('scroll-up');
+    const scrollDown = document.getElementById('scroll-down');
     
-    if (savedTheme === 'dark') {
-        htmlElement.classList.add('dark');
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
-    } else {
-        htmlElement.classList.remove('dark');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
+    // Tombol Scroll Down
+    if (scrollDown) {
+        scrollDown.addEventListener('click', () => {
+            window.scrollBy({ top: window.innerHeight / 2, behavior: 'smooth' });
+        });
     }
 
-    themeToggle.addEventListener('click', () => {
-        htmlElement.classList.toggle('dark');
-        
-        const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
-        localStorage.setItem('theme', currentTheme);
-
-        sunIcon.classList.toggle('hidden');
-        moonIcon.classList.toggle('hidden');
+    // Tampilkan/Sembunyikan Scroll Up
+    window.addEventListener('scroll', () => {
+        if (scrollUp) {
+            if (window.scrollY > 300) {
+                scrollUp.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                scrollUp.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
     });
+
+    // Fungsi Scroll Up
+    if (scrollUp) {
+        scrollUp.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
 }
 
+// =======================================================
+// 5. FUNGSI CHATBOT GEMINI
+// =======================================================
 
-// ===========================================
-// 3. Fungsionalitas TOMBOL SCROLL NAVIGASI
-// ===========================================
-function setupScrollNavigation() {
-    const scrollUpButton = document.getElementById('scroll-up');
-    const scrollDownButton = document.getElementById('scroll-down');
-
-    if (!scrollUpButton || !scrollDownButton) return;
-
-    const toggleScrollUpButton = () => {
-        if (window.scrollY > 300) { 
-            scrollUpButton.classList.remove('opacity-0', 'pointer-events-none');
-            scrollUpButton.classList.add('opacity-100');
-        } else {
-            scrollUpButton.classList.remove('opacity-100');
-            scrollUpButton.classList.add('opacity-0', 'pointer-events-none');
-        }
-        
-        const scrollHeight = document.documentElement.scrollHeight;
-        const clientHeight = document.documentElement.clientHeight;
-        const scrollBottom = Math.ceil(window.scrollY + clientHeight);
-
-        if (scrollBottom >= scrollHeight - 50) { 
-             scrollDownButton.classList.add('opacity-0', 'pointer-events-none');
-        } else {
-             scrollDownButton.classList.remove('opacity-0', 'pointer-events-none');
-        }
-    };
-
-    window.addEventListener('scroll', toggleScrollUpButton);
-
-    scrollUpButton.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    scrollDownButton.addEventListener('click', () => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    });
-
-    toggleScrollUpButton();
-}
-
-
-// ===========================================
-// 4. SETUP CHATBOT GEMINI POPUP
-// ===========================================
-function setupGeminiChatbot() {
+function initializeChatbot() {
     const chatButton = document.getElementById('gemini-chatbot-button');
     const chatModal = document.getElementById('gemini-chat-modal');
     const closeButton = document.getElementById('close-chat-button');
-    const chatInputField = document.getElementById('chat-input-field');
+    // const chatInput = document.getElementById('chat-input-field'); // Akan digunakan di tahap Supabase
 
-    if (!chatButton || !chatModal || !closeButton) return;
+    if (chatButton && chatModal && closeButton) {
+        chatButton.addEventListener('click', () => {
+            chatModal.classList.toggle('active');
+            chatModal.style.display = chatModal.classList.contains('active') ? 'flex' : 'none';
+        });
 
-    const toggleChat = () => {
-        chatModal.classList.toggle('active');
-        if (chatModal.classList.contains('active')) {
-            chatInputField.focus();
-        }
-    };
-
-    chatButton.addEventListener('click', toggleChat);
-    closeButton.addEventListener('click', toggleChat);
-
-    chatModal.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-
-    chatInputField.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && chatInputField.value.trim() !== '') {
-            console.log("Pesan dikirim: " + chatInputField.value);
-            chatInputField.value = '';
-        }
-    });
+        closeButton.addEventListener('click', () => {
+            chatModal.classList.remove('active');
+            chatModal.style.display = 'none';
+        });
+    }
 }
 
+// =======================================================
+// 6. FUNGSI ANIMASI (Akan digunakan pada halaman lain)
+// =======================================================
 
-// ===========================================
-// 8. Inisialisasi Utama
-// ===========================================
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 8.1 MEMUAT HEADER & FOOTER DARI FILE TERPISAH ---
-    includeHTML('header-placeholder', 'header.html');
-    includeHTML('footer-placeholder', 'footer.html');
-
-    // Fungsionalitas Global Lainnya
-    setupScrollNavigation(); 
-    setupGeminiChatbot(); 
-    
-    // Fungsionalitas Khusus Halaman Depan (Placeholder)
-    const heroSlider = document.getElementById('image-slider'); 
-    if (heroSlider) {
-        // initializeSlider();
-        // initializeTestimonialSlider(); 
-    }
-    
-    // Animasi Scroll
-    setupScrollAnimation();
-});
-
-
-// (Tambahkan fungsi-fungsi lain yang ada di file Anda di sini, jika ada)
-// ... initializeSlider, initializeTestimonialSlider, setupScrollAnimation ...
-function setupScrollAnimation() {
+function initializeScrollAnimation() {
     const elements = document.querySelectorAll('.animate-on-scroll');
-
-    if (elements.length === 0) return;
-
+    
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const delay = entry.target.getAttribute('data-delay') || '0';
-                entry.target.style.transitionDelay = delay;
-
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
+                const delay = entry.target.dataset.delay || 0;
+                setTimeout(() => {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }, parseFloat(delay) * 1000);
             }
         });
     }, {
-        root: null, 
-        threshold: 0.2, 
-        rootMargin: '0px 0px -50px 0px'
+        rootMargin: '0px',
+        threshold: 0.1 
     });
 
-    elements.forEach(element => {
-        observer.observe(element);
-    });
+    elements.forEach(el => observer.observe(el));
 }
