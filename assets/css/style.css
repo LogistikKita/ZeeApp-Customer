@@ -12,10 +12,6 @@
     --color-dark: #1f2937;       /* Gray 800 - Teks Utama Body */
     --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body/Main Section */
     
-    /* BARU: Warna Header & Footer (Dark Blue/Gray seperti PosIND) */
-    --color-header-light: #374151; /* Gray 700 - Latar Belakang Header/Footer */
-    --color-text-light: #f3f4f6;   /* Gray 100 - Warna teks di Header/Footer Light Mode */
-
     /* Warna Background Section (Untuk kontras ringan) */
     --color-bg-light: #f3f4f6;   /* Gray 100 */
 }
@@ -28,10 +24,6 @@ html.dark {
     --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama di Dark Mode */
     --color-light: #111827;      /* Gray 900 - Latar Belakang Utama Body/Main Section */
     
-    /* Warna Header & Footer di Dark Mode (Lebih gelap dari Body) */
-    --color-header-light: #1f2937; /* Gray 800 - Latar Belakang Header/Footer */
-    --color-text-light: #d1d5db;   /* Gray 300 - Warna teks di Dark Mode Header/Footer */
-
     --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Elemen */
 }
 
@@ -52,19 +44,6 @@ body {
 .hover-primary-bg:hover { background-color: var(--color-secondary); }
 .hover-accent-bg:hover { background-color: #fbbd23; } 
 
-/* BARU: Styling untuk Header/Footer Gelap di Light Mode */
-.header-bg-dark { background-color: var(--color-header-light); }
-.header-text-light { color: var(--color-text-light); }
-
-/* REVISI: Override teks logo di header */
-.logo-text { 
-    color: var(--color-primary); /* Default di body (tapi ini tidak terpakai di header) */
-}
-.header-bg-dark .logo-text { 
-    color: var(--color-light); /* Putih di header gelap */
-}
-
-
 /* --- Penyesuaian Dark Mode Tailwind Class --- */
 /* Override BG & Text yang didefinisikan dengan Tailwind di HTML */
 .dark .bg-white { 
@@ -81,6 +60,10 @@ body {
 }
 .dark .text-gray-600, .dark .text-gray-700 {
     color: #d1d5db; /* Gray 300 untuk teks sekunder */
+}
+/* Kustomisasi Footer: Teks di footer dark mode harus terlihat baik */
+.dark footer .text-gray-300 {
+    color: #e5e7eb; /* Gray 200 */
 }
 
 /* Override Header Shadow untuk Dark Mode */
@@ -111,7 +94,6 @@ body {
 /* ======================================================= */
 /* == STYLING PRELOADER == */
 /* ======================================================= */
-
 #preloader {
     position: fixed;
     top: 0;
