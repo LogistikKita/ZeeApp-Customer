@@ -17,10 +17,9 @@ function includeHTML(elementId, filePath) {
             if (placeholder) {
                 placeholder.innerHTML = htmlContent;
                 
-                // Setelah header dimuat, inisialisasi menu mobile dan theme toggle
                 if (elementId === 'header-placeholder') {
                     setupMobileMenu(); 
-                    setupThemeToggle(); // Dipanggil di sini karena theme toggle ada di header.html
+                    setupThemeToggle(); 
                 }
             }
         })
@@ -34,7 +33,6 @@ function includeHTML(elementId, filePath) {
 // 1. Setup Mobile Menu (Hamburger)
 // ===========================================
 function setupMobileMenu() {
-    // Dipastikan elemen-elemen ini ada setelah header.html dimuat
     const menuButton = document.getElementById('menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
@@ -66,7 +64,6 @@ function setupMobileMenu() {
 // 2. Fungsionalitas MODE GELAP/TERANG
 // ===========================================
 function setupThemeToggle() {
-    // Dipastikan elemen-elemen ini ada setelah header.html dimuat
     const themeToggle = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
     const sunIcon = document.getElementById('sun-icon');
@@ -100,15 +97,19 @@ function setupThemeToggle() {
 
 
 // ===========================================
-// 3. Fungsionalitas TOMBOL SCROLL NAVIGASI
+// 3. Fungsionalitas TOMBOL SCROLL NAVIGASI BARU
 // ===========================================
 function setupScrollNavigation() {
     const scrollUpButton = document.getElementById('scroll-up');
     const scrollDownButton = document.getElementById('scroll-down');
+    // Tombol Chatbot juga ada di container, tapi tidak memiliki fungsi scroll di sini.
+    const geminiChatbotButton = document.getElementById('gemini-chatbot-button'); 
 
     if (!scrollUpButton || !scrollDownButton) return;
 
+    // Mengontrol visibilitas tombol "scroll up"
     const toggleScrollUpButton = () => {
+        // Tampilkan tombol saat scroll lebih dari 300px
         if (window.scrollY > 300) { 
             scrollUpButton.classList.remove('opacity-0', 'pointer-events-none');
             scrollUpButton.classList.add('opacity-100');
@@ -116,10 +117,23 @@ function setupScrollNavigation() {
             scrollUpButton.classList.remove('opacity-100');
             scrollUpButton.classList.add('opacity-0', 'pointer-events-none');
         }
+        
+        // Mengontrol visibilitas tombol "scroll down"
+        // Sembunyikan tombol 'scroll down' jika sudah di bawah atau dekat bagian bawah halaman
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollBottom = Math.ceil(window.scrollY + clientHeight);
+
+        if (scrollBottom >= scrollHeight - 50) { // 50px buffer
+             scrollDownButton.classList.add('opacity-0', 'pointer-events-none');
+        } else {
+             scrollDownButton.classList.remove('opacity-0', 'pointer-events-none');
+        }
     };
 
     window.addEventListener('scroll', toggleScrollUpButton);
 
+    // Scroll ke Paling Atas
     scrollUpButton.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
@@ -127,13 +141,23 @@ function setupScrollNavigation() {
         });
     });
 
+    // Scroll ke Paling Bawah
     scrollDownButton.addEventListener('click', () => {
         window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth'
         });
     });
+    
+    // Placeholder function for Gemini Chatbot (akan diisi nanti)
+    if (geminiChatbotButton) {
+        geminiChatbotButton.addEventListener('click', () => {
+            console.log('Gemini Chatbot opened!');
+            // Logika untuk membuka jendela chat atau modal di sini
+        });
+    }
 
+    // Inisialisasi awal visibilitas
     toggleScrollUpButton();
 }
 
@@ -188,7 +212,6 @@ function setupScrollAnimation() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Ambil delay dari data-delay attribute
                 const delay = entry.target.getAttribute('data-delay') || '0';
                 entry.target.style.transitionDelay = delay;
 
@@ -214,11 +237,10 @@ function setupScrollAnimation() {
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- 7.1 MEMUAT HEADER & FOOTER DARI FILE TERPISAH ---
-    // (Jalankan pertama kali)
     includeHTML('header-placeholder', 'header.html');
     includeHTML('footer-placeholder', 'footer.html');
 
-    // Fungsionalitas Global Lainnya
+    // Fungsionalitas Global Lainnya (Dipanggil setelah header dimuat)
     setupScrollNavigation(); 
     
     // Fungsionalitas Khusus Halaman Depan
