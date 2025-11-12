@@ -1,9 +1,40 @@
 // assets/js/script.js
 
 // ===========================================
+// X. Fungsionalitas HTML Include (untuk Header/Footer)
+// ===========================================
+function includeHTML(elementId, filePath) {
+    fetch(filePath)
+        .then(response => {
+            if (!response.ok) {
+                console.error(`Gagal memuat file ${filePath}: Status ${response.status}`);
+                throw new Error(`Gagal memuat file: ${filePath}`);
+            }
+            return response.text();
+        })
+        .then(htmlContent => {
+            const placeholder = document.getElementById(elementId);
+            if (placeholder) {
+                placeholder.innerHTML = htmlContent;
+                
+                // Setelah header dimuat, inisialisasi menu mobile dan theme toggle
+                if (elementId === 'header-placeholder') {
+                    setupMobileMenu(); 
+                    setupThemeToggle(); // Dipanggil di sini karena theme toggle ada di header.html
+                }
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+
+// ===========================================
 // 1. Setup Mobile Menu (Hamburger)
 // ===========================================
 function setupMobileMenu() {
+    // Dipastikan elemen-elemen ini ada setelah header.html dimuat
     const menuButton = document.getElementById('menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuIcon = document.getElementById('menu-icon');
@@ -15,14 +46,12 @@ function setupMobileMenu() {
             const isMenuOpen = mobileMenu.classList.contains('flex');
 
             if (isMenuOpen) {
-                // Tutup Menu
                 mobileMenu.classList.remove('flex');
                 mobileMenu.classList.add('hidden');
                 menuIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');
                 header.classList.remove('menu-open'); 
             } else {
-                // Buka Menu
                 mobileMenu.classList.add('flex');
                 mobileMenu.classList.remove('hidden');
                 menuIcon.classList.add('hidden');
@@ -37,6 +66,7 @@ function setupMobileMenu() {
 // 2. Fungsionalitas MODE GELAP/TERANG
 // ===========================================
 function setupThemeToggle() {
+    // Dipastikan elemen-elemen ini ada setelah header.html dimuat
     const themeToggle = document.getElementById('theme-toggle');
     const htmlElement = document.documentElement;
     const sunIcon = document.getElementById('sun-icon');
@@ -44,11 +74,9 @@ function setupThemeToggle() {
 
     if (!themeToggle || !sunIcon || !moonIcon) return;
 
-    // Cek preferensi tema yang tersimpan di localStorage, atau preferensi sistem
     const savedTheme = localStorage.getItem('theme') || 
                        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     
-    // Terapkan tema saat load
     if (savedTheme === 'dark') {
         htmlElement.classList.add('dark');
         sunIcon.classList.remove('hidden');
@@ -59,11 +87,9 @@ function setupThemeToggle() {
         moonIcon.classList.remove('hidden');
     }
 
-    // Listener untuk tombol toggle
     themeToggle.addEventListener('click', () => {
         htmlElement.classList.toggle('dark');
         
-        // Simpan preferensi baru & ubah ikon
         const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
         localStorage.setItem('theme', currentTheme);
 
@@ -82,9 +108,7 @@ function setupScrollNavigation() {
 
     if (!scrollUpButton || !scrollDownButton) return;
 
-    // Mengontrol visibilitas tombol "scroll up"
     const toggleScrollUpButton = () => {
-        // Tampilkan tombol saat scroll lebih dari 300px
         if (window.scrollY > 300) { 
             scrollUpButton.classList.remove('opacity-0', 'pointer-events-none');
             scrollUpButton.classList.add('opacity-100');
@@ -96,7 +120,6 @@ function setupScrollNavigation() {
 
     window.addEventListener('scroll', toggleScrollUpButton);
 
-    // Scroll ke Paling Atas
     scrollUpButton.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
@@ -104,7 +127,6 @@ function setupScrollNavigation() {
         });
     });
 
-    // Scroll ke Paling Bawah
     scrollDownButton.addEventListener('click', () => {
         window.scrollTo({
             top: document.body.scrollHeight,
@@ -112,16 +134,14 @@ function setupScrollNavigation() {
         });
     });
 
-    // Inisialisasi awal visibilitas
     toggleScrollUpButton();
 }
 
 
 // ===========================================
-// 4. Logic Slider Hero Section (Existing)
+// 4. Logic Slider Hero Section (Placeholder)
 // ===========================================
 function initializeSlider() {
-    // Fungsionalitas slider gambar di sini
     const slider = document.querySelector('#image-slider');
     const slides = document.querySelectorAll('.hero-slide'); 
     const totalSlides = slides.length;
@@ -145,7 +165,7 @@ function initializeSlider() {
 }
 
 // ===========================================
-// 5. Logic Slider Testimonial (Existing)
+// 5. Logic Slider Testimonial (Placeholder)
 // ===========================================
 function initializeTestimonialSlider() {
     const track = document.getElementById('testimonial-track');
@@ -158,7 +178,7 @@ function initializeTestimonialSlider() {
 
 
 // ===========================================
-// 6. Setup Animasi Scroll (Intersection Observer) (Existing)
+// 6. Setup Animasi Scroll (Intersection Observer)
 // ===========================================
 function setupScrollAnimation() {
     const elements = document.querySelectorAll('.animate-on-scroll');
@@ -168,9 +188,11 @@ function setupScrollAnimation() {
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Tambahkan class 'is-visible'
+                // Ambil delay dari data-delay attribute
+                const delay = entry.target.getAttribute('data-delay') || '0';
+                entry.target.style.transitionDelay = delay;
+
                 entry.target.classList.add('is-visible');
-                // Hentikan pengamatan setelah terlihat
                 observer.unobserve(entry.target);
             }
         });
@@ -191,9 +213,12 @@ function setupScrollAnimation() {
 // ===========================================
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Fungsionalitas Global
-    setupMobileMenu(); 
-    setupThemeToggle(); 
+    // --- 7.1 MEMUAT HEADER & FOOTER DARI FILE TERPISAH ---
+    // (Jalankan pertama kali)
+    includeHTML('header-placeholder', 'header.html');
+    includeHTML('footer-placeholder', 'footer.html');
+
+    // Fungsionalitas Global Lainnya
     setupScrollNavigation(); 
     
     // Fungsionalitas Khusus Halaman Depan
