@@ -8,13 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css"> 
 </head>
-<body class="overflow-x-hidden hidden"> 
-    
-    <div id="preloader">
+<body class="overflow-x-hidden"> <div id="preloader">
         <img src="assets/logo/Logistik-Kita.png" alt="Loading Logistik Kita" class="preloader-logo">
     </div>
-
-    <div id="header-placeholder"></div>
 
     <main class="py-16 md:py-24 bg-white dark:bg-gray-800 transition duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,13 +93,11 @@
         </div>
     </main>
 
-    <div id="footer-placeholder"></div>
-
     <div id="gemini-chat-modal" class="hidden">
-        <div class="chat-header">
+        <div class="chat-header primary-bg text-white">
             <h4 class="text-xl font-semibold">🤖 Tanya Logistik Kita</h4>
             <button id="close-chat-button" class="p-1 rounded-full hover:bg-red-600 transition">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="text-white"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
         <div class="chat-body dark:bg-gray-800" id="chat-messages">
