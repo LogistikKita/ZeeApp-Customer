@@ -9,9 +9,15 @@
     --color-primary: #E51D2A;    /* Merah Menyala - Warna Utama Logo */
     --color-secondary: #B00F1A;  /* Merah Tua - Untuk Efek Hover */
     --color-accent: #FFC72C;     /* Kuning Cerah - Warna Aksen untuk CTA */
-    --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
+    --color-dark: #1f2937;       /* Gray 800 - Teks Utama Body */
     --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body/Main Section */
-    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section (Untuk kontras ringan, jika diperlukan) */
+    
+    /* BARU: Warna Header & Footer (Dark Blue/Gray seperti PosIND) */
+    --color-header-light: #374151; /* Gray 700 - Latar Belakang Header/Footer */
+    --color-text-light: #f3f4f6;   /* Gray 100 - Warna teks di Header/Footer Light Mode */
+
+    /* Warna Background Section (Untuk kontras ringan) */
+    --color-bg-light: #f3f4f6;   /* Gray 100 */
 }
 
 /* --- Dark Mode Overrides --- */
@@ -21,6 +27,11 @@ html.dark {
     --color-accent: #fcd34d;     /* Kuning Lebih Terang (Amber 300) */
     --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama di Dark Mode */
     --color-light: #111827;      /* Gray 900 - Latar Belakang Utama Body/Main Section */
+    
+    /* Warna Header & Footer di Dark Mode (Lebih gelap dari Body) */
+    --color-header-light: #1f2937; /* Gray 800 - Latar Belakang Header/Footer */
+    --color-text-light: #d1d5db;   /* Gray 300 - Warna teks di Dark Mode Header/Footer */
+
     --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Elemen */
 }
 
@@ -41,21 +52,35 @@ body {
 .hover-primary-bg:hover { background-color: var(--color-secondary); }
 .hover-accent-bg:hover { background-color: #fbbd23; } 
 
+/* BARU: Styling untuk Header/Footer Gelap di Light Mode */
+.header-bg-dark { background-color: var(--color-header-light); }
+.header-text-light { color: var(--color-text-light); }
+
+/* REVISI: Override teks logo di header */
+.logo-text { 
+    color: var(--color-primary); /* Default di body (tapi ini tidak terpakai di header) */
+}
+.header-bg-dark .logo-text { 
+    color: var(--color-light); /* Putih di header gelap */
+}
+
+
 /* --- Penyesuaian Dark Mode Tailwind Class --- */
+/* Override BG & Text yang didefinisikan dengan Tailwind di HTML */
 .dark .bg-white { 
-    background-color: var(--color-light); 
+    background-color: var(--color-light); /* Menggunakan Gray 900 */
 }
 .dark .bg-gray-50 {
-    background-color: var(--color-bg-light); 
+    background-color: var(--color-bg-light); /* Menggunakan Gray 800 */
 }
 .dark .bg-gray-100 {
-    background-color: var(--color-bg-light); 
+    background-color: var(--color-bg-light); /* Menggunakan Gray 800 */
 }
 .dark .text-gray-900 {
-    color: var(--color-dark); 
+    color: var(--color-dark); /* Menggunakan Gray 100 */
 }
 .dark .text-gray-600, .dark .text-gray-700 {
-    color: #d1d5db; 
+    color: #d1d5db; /* Gray 300 untuk teks sekunder */
 }
 
 /* Override Header Shadow untuk Dark Mode */
