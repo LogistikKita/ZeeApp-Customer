@@ -1,16 +1,19 @@
 // assets/js/script.js
 
-// ... (Fungsi includeHTML, setupMobileMenu, dan setupThemeToggle TIDAK BERUBAH) ...
-
 // ===========================================
 // X. Fungsionalitas HTML Include (untuk Header/Footer)
 // ===========================================
+
+let componentsLoaded = 0;
+const totalComponents = 2; // header.html dan footer.html
+
 function includeHTML(elementId, filePath) {
     fetch(filePath)
         .then(response => {
             if (!response.ok) {
                 console.error(`Gagal memuat file ${filePath}: Status ${response.status}`);
-                throw new Error(`Gagal memuat file: ${filePath}`);
+                componentsLoaded++; 
+                return ''; 
             }
             return response.text();
         })
@@ -25,9 +28,39 @@ function includeHTML(elementId, filePath) {
                 }
             }
         })
+        .finally(() => {
+            componentsLoaded++;
+            if (componentsLoaded >= totalComponents) {
+                hidePreloader();
+            }
+        })
         .catch(error => {
             console.error(error);
         });
+}
+
+// ===========================================
+// Y. Fungsionalitas PRELOADER
+// ===========================================
+
+function hidePreloader() {
+    const preloader = document.getElementById('preloader');
+    const body = document.body;
+
+    // 1. Tampilkan body
+    body.classList.remove('hidden');
+
+    // 2. Transisikan preloader untuk menghilang
+    if (preloader) {
+        setTimeout(() => {
+             preloader.classList.add('hidden-fade');
+        }, 50); 
+       
+        // Hapus preloader dari DOM setelah selesai transisi
+        setTimeout(() => {
+            preloader.remove();
+        }, 700); 
+    }
 }
 
 
@@ -104,11 +137,9 @@ function setupThemeToggle() {
 function setupScrollNavigation() {
     const scrollUpButton = document.getElementById('scroll-up');
     const scrollDownButton = document.getElementById('scroll-down');
-    // Tombol Chatbot dihandle di fungsi terpisah, namun tetap diperhatikan di sini jika perlu.
 
     if (!scrollUpButton || !scrollDownButton) return;
 
-    // Mengontrol visibilitas tombol "scroll up"
     const toggleScrollUpButton = () => {
         if (window.scrollY > 300) { 
             scrollUpButton.classList.remove('opacity-0', 'pointer-events-none');
@@ -118,7 +149,6 @@ function setupScrollNavigation() {
             scrollUpButton.classList.add('opacity-0', 'pointer-events-none');
         }
         
-        // Mengontrol visibilitas tombol "scroll down"
         const scrollHeight = document.documentElement.scrollHeight;
         const clientHeight = document.documentElement.clientHeight;
         const scrollBottom = Math.ceil(window.scrollY + clientHeight);
@@ -132,12 +162,10 @@ function setupScrollNavigation() {
 
     window.addEventListener('scroll', toggleScrollUpButton);
 
-    // Scroll ke Paling Atas
     scrollUpButton.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Scroll ke Paling Bawah
     scrollDownButton.addEventListener('click', () => {
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     });
@@ -147,7 +175,7 @@ function setupScrollNavigation() {
 
 
 // ===========================================
-// 4. SETUP CHATBOT GEMINI POPUP (BARU)
+// 4. SETUP CHATBOT GEMINI POPUP
 // ===========================================
 function setupGeminiChatbot() {
     const chatButton = document.getElementById('gemini-chatbot-button');
@@ -159,26 +187,21 @@ function setupGeminiChatbot() {
 
     const toggleChat = () => {
         chatModal.classList.toggle('active');
-        // Fokuskan input field saat dibuka
         if (chatModal.classList.contains('active')) {
             chatInputField.focus();
         }
     };
 
-    // Listener untuk membuka/menutup chat
     chatButton.addEventListener('click', toggleChat);
     closeButton.addEventListener('click', toggleChat);
 
-    // Mencegah penutupan saat klik di dalam modal (opsional)
     chatModal.addEventListener('click', (e) => {
         e.stopPropagation();
     });
 
-    // Placeholder untuk logic kirim pesan (akan diisi nanti dengan Gemini API)
     chatInputField.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' && chatInputField.value.trim() !== '') {
             console.log("Pesan dikirim: " + chatInputField.value);
-            // Tambahkan logic kirim ke Gemini API di sini
             chatInputField.value = '';
         }
     });
@@ -186,47 +209,32 @@ function setupGeminiChatbot() {
 
 
 // ===========================================
-// 5. Logic Slider Hero Section (Placeholder)
+// 8. Inisialisasi Utama
 // ===========================================
-function initializeSlider() {
-    const slider = document.querySelector('#image-slider');
-    const slides = document.querySelectorAll('.hero-slide'); 
-    const totalSlides = slides.length;
-    let currentIndex = 0;
-
-    if (!slider || totalSlides === 0) return;
-
-    const updateSlider = () => {
-        slides.forEach((slide, index) => {
-            slide.classList.remove('active');
-        });
-        slides[currentIndex].classList.add('active');
-    };
-
-    setInterval(() => {
-        currentIndex = (currentIndex + 1) % totalSlides;
-        updateSlider();
-    }, 5000); 
-
-    updateSlider(); 
-}
-
-// ===========================================
-// 6. Logic Slider Testimonial (Placeholder)
-// ===========================================
-function initializeTestimonialSlider() {
-    const track = document.getElementById('testimonial-track');
-    const dotsContainer = document.getElementById('testimonial-dots');
+document.addEventListener('DOMContentLoaded', () => {
     
-    if (!track || !dotsContainer) return;
+    // --- 8.1 MEMUAT HEADER & FOOTER DARI FILE TERPISAH ---
+    includeHTML('header-placeholder', 'header.html');
+    includeHTML('footer-placeholder', 'footer.html');
+
+    // Fungsionalitas Global Lainnya
+    setupScrollNavigation(); 
+    setupGeminiChatbot(); 
     
-    // Logika lanjutan testimonial di sini
-}
+    // Fungsionalitas Khusus Halaman Depan (Placeholder)
+    const heroSlider = document.getElementById('image-slider'); 
+    if (heroSlider) {
+        // initializeSlider();
+        // initializeTestimonialSlider(); 
+    }
+    
+    // Animasi Scroll
+    setupScrollAnimation();
+});
 
 
-// ===========================================
-// 7. Setup Animasi Scroll (Intersection Observer)
-// ===========================================
+// (Tambahkan fungsi-fungsi lain yang ada di file Anda di sini, jika ada)
+// ... initializeSlider, initializeTestimonialSlider, setupScrollAnimation ...
 function setupScrollAnimation() {
     const elements = document.querySelectorAll('.animate-on-scroll');
 
@@ -252,29 +260,3 @@ function setupScrollAnimation() {
         observer.observe(element);
     });
 }
-
-
-// ===========================================
-// 8. Inisialisasi Utama
-// ===========================================
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 8.1 MEMUAT HEADER & FOOTER DARI FILE TERPISAH ---
-    includeHTML('header-placeholder', 'header.html');
-    includeHTML('footer-placeholder', 'footer.html');
-
-    // Fungsionalitas Global Lainnya
-    setupScrollNavigation(); 
-    setupGeminiChatbot(); // Panggil fungsi chatbot
-    
-    // Fungsionalitas Khusus Halaman Depan
-    const heroSlider = document.getElementById('image-slider'); 
-    
-    if (heroSlider) {
-        initializeSlider();
-        initializeTestimonialSlider(); 
-    }
-    
-    // Animasi Scroll
-    setupScrollAnimation();
-});
