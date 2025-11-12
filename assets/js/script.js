@@ -25,10 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const preloader = document.getElementById('preloader');
         if (preloader) {
             preloader.classList.add('hidden-fade');
-            // Hapus setelah transisi
             setTimeout(() => {
                 preloader.style.display = 'none';
-                // Menghilangkan kelas hidden/overflow dari BODY
                 document.body.classList.remove('overflow-x-hidden', 'hidden');
             }, 600); 
         } else {
@@ -36,11 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // 4. FALLBACK KRITIS: Hapus kelas 'hidden' dari body setelah 3 detik
-    // Ini memastikan user tidak terjebak di preloader jika ada error fatal fetch atau load
+    // 4. FALLBACK KRITIS (3 DETIK)
     setTimeout(() => {
         if (document.body.classList.contains('hidden')) {
-             console.warn("FALLBACK: Script gagal loading konten atau load terlalu lama. Menghapus kelas 'hidden' pada body secara paksa. Cek F12 Console untuk error 404.");
+             console.warn("FALLBACK: Script gagal loading konten atau load terlalu lama (3s). Menghapus kelas 'hidden' pada body secara paksa. Cek F12 Console untuk error 404.");
              document.body.classList.remove('overflow-x-hidden', 'hidden');
         }
     }, 3000); 
