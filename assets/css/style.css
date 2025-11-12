@@ -9,8 +9,8 @@
     --color-primary: #E51D2A;    /* Merah Menyala - Warna Utama Logo */
     --color-secondary: #B00F1A;  /* Merah Tua - Untuk Efek Hover */
     --color-accent: #FFC72C;     /* Kuning Cerah - Warna Aksen untuk CTA */
-    --color-dark: #1f2937;       /* Gray 800 - Teks Utama Body */
-    --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body/Main Section */
+    --color-dark: #1f2937;       /* Gray 800 - Teks Utama Body (Di Light Mode) */
+    --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body/Main Section (Di Light Mode) */
     
     /* Warna Background Section (Untuk kontras ringan) */
     --color-bg-light: #f3f4f6;   /* Gray 100 */
@@ -22,7 +22,7 @@ html.dark {
     --color-secondary: #dc2626;  /* Red 600 */
     --color-accent: #fcd34d;     /* Kuning Lebih Terang (Amber 300) */
     --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama di Dark Mode */
-    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama Body/Main Section */
+    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama Body/Main Section (Di Dark Mode) */
     
     --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Elemen */
 }
@@ -30,8 +30,8 @@ html.dark {
 /* Konfigurasi Global & Transisi Tema */
 body {
     font-family: 'Inter', sans-serif;
-    color: var(--color-dark); 
-    background-color: var(--color-light); 
+    color: var(--color-dark); /* Light Mode: Gray 800 */
+    background-color: var(--color-light); /* Light Mode: Putih */
     scroll-behavior: smooth;
     transition: background-color 0.5s, color 0.5s; 
 }
@@ -45,7 +45,6 @@ body {
 .hover-accent-bg:hover { background-color: #fbbd23; } 
 
 /* --- Penyesuaian Dark Mode Tailwind Class --- */
-/* Override BG & Text yang didefinisikan dengan Tailwind di HTML */
 .dark .bg-white { 
     background-color: var(--color-light); /* Menggunakan Gray 900 */
 }
@@ -61,7 +60,6 @@ body {
 .dark .text-gray-600, .dark .text-gray-700 {
     color: #d1d5db; /* Gray 300 untuk teks sekunder */
 }
-/* Kustomisasi Footer: Teks di footer dark mode harus terlihat baik */
 .dark footer .text-gray-300 {
     color: #e5e7eb; /* Gray 200 */
 }
