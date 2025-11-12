@@ -6,11 +6,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Injeksi Header dan Footer (Menggantikan placeholder)
+    // Pastikan path header.html dan footer.html benar
     loadHTML('header.html', 'header-placeholder')
         .then(() => {
             // INISIALISASI SETELAH HEADER DIMUAT
             initializeThemeToggle();
-            // FIX MASALAH HAMBURGER MENU
             initializeMobileMenu(); 
         });
 
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeScrollAnimation();
     
     // 3. Menghilangkan Preloader setelah semua dimuat
+    // Gunakan window.addEventListener('load') untuk memastikan semua aset (gambar, css, dll) sudah di load
     window.addEventListener('load', () => {
         const preloader = document.getElementById('preloader');
         if (preloader) {
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Hapus setelah transisi
             setTimeout(() => {
                 preloader.style.display = 'none';
+                // Menghilangkan kelas hidden/overflow dari BODY
                 document.body.classList.remove('overflow-x-hidden', 'hidden');
             }, 600); 
         } else {
@@ -39,17 +41,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Memuat file HTML eksternal ke dalam placeholder.
- * @param {string} url - Path ke file HTML.
- * @param {string} elementId - ID dari elemen placeholder.
- * @returns {Promise<void>}
  */
 function loadHTML(url, elementId) {
     const placeholder = document.getElementById(elementId);
     if (placeholder) {
+        // Karena file Anda ada di root, path fetch harus relatif dari root.
+        // Contoh: Jika file .html Anda di root, fetch('header.html') akan berhasil.
         return fetch(url)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`Gagal memuat ${url}: ${response.statusText}`);
+                    // Jika gagal, log error di console
+                    console.error(`Gagal memuat ${url}: ${response.statusText}`);
+                    // Coba lagi dengan path relatif (Jika Anda menaruh file HTML di folder 'assets')
+                    return fetch(`assets/${url}`);
                 }
                 return response.text();
             })
@@ -58,14 +62,14 @@ function loadHTML(url, elementId) {
             })
             .catch(error => {
                 console.error(`Error memuat ${url}:`, error);
-                placeholder.innerHTML = `<p style="color: red;">Gagal memuat ${url}</p>`;
+                placeholder.innerHTML = `<p style="color: red;">[Gagal memuat ${url}. Cek path file di fungsi loadHTML]</p>`;
             });
     }
     return Promise.resolve();
 }
 
 // =======================================================
-// 2. FIX: FUNGSI HAMBURGER MENU
+// 2. FUNGSI HAMBURGER MENU (FIX)
 // =======================================================
 
 function initializeMobileMenu() {
@@ -76,10 +80,7 @@ function initializeMobileMenu() {
 
     if (menuButton && mobileMenu && menuIcon && closeIcon) {
         menuButton.addEventListener('click', () => {
-            // Toggle menu visibility
             mobileMenu.classList.toggle('hidden');
-            
-            // Toggle icons (hamburger <-> close)
             menuIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
         });
@@ -97,7 +98,6 @@ function initializeThemeToggle() {
     const moonIcon = document.getElementById('moon-icon');
     const html = document.documentElement;
 
-    // Load saved theme or prefer system theme
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -137,14 +137,12 @@ function initializeScrollFunctions() {
     const scrollUp = document.getElementById('scroll-up');
     const scrollDown = document.getElementById('scroll-down');
     
-    // Tombol Scroll Down
     if (scrollDown) {
         scrollDown.addEventListener('click', () => {
             window.scrollBy({ top: window.innerHeight / 2, behavior: 'smooth' });
         });
     }
 
-    // Tampilkan/Sembunyikan Scroll Up
     window.addEventListener('scroll', () => {
         if (scrollUp) {
             if (window.scrollY > 300) {
@@ -155,7 +153,6 @@ function initializeScrollFunctions() {
         }
     });
 
-    // Fungsi Scroll Up
     if (scrollUp) {
         scrollUp.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -171,7 +168,6 @@ function initializeChatbot() {
     const chatButton = document.getElementById('gemini-chatbot-button');
     const chatModal = document.getElementById('gemini-chat-modal');
     const closeButton = document.getElementById('close-chat-button');
-    // const chatInput = document.getElementById('chat-input-field'); // Akan digunakan di tahap Supabase
 
     if (chatButton && chatModal && closeButton) {
         chatButton.addEventListener('click', () => {
@@ -187,7 +183,7 @@ function initializeChatbot() {
 }
 
 // =======================================================
-// 6. FUNGSI ANIMASI (Akan digunakan pada halaman lain)
+// 6. FUNGSI ANIMASI
 // =======================================================
 
 function initializeScrollAnimation() {
