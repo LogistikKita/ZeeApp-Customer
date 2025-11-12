@@ -5,8 +5,7 @@
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Injeksi Header dan Footer (Menggantikan placeholder)
-    // Pastikan path header.html dan footer.html benar
+    // 1. Injeksi Header dan Footer
     loadHTML('header.html', 'header-placeholder')
         .then(() => {
             // INISIALISASI SETELAH HEADER DIMUAT
@@ -21,8 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeChatbot();
     initializeScrollAnimation();
     
-    // 3. Menghilangkan Preloader setelah semua dimuat
-    // Gunakan window.addEventListener('load') untuk memastikan semua aset (gambar, css, dll) sudah di load
+    // 3. Menghilangkan Preloader setelah semua aset (gambar, css, dll) sudah di load
     window.addEventListener('load', () => {
         const preloader = document.getElementById('preloader');
         if (preloader) {
@@ -37,35 +35,44 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('overflow-x-hidden', 'hidden');
         }
     });
+    
+    // 4. FALLBACK KRITIS: Hapus kelas 'hidden' dari body setelah 3 detik
+    // Ini memastikan user tidak terjebak di preloader jika ada error fatal fetch atau load
+    setTimeout(() => {
+        if (document.body.classList.contains('hidden')) {
+             console.warn("FALLBACK: Script gagal loading konten atau load terlalu lama. Menghapus kelas 'hidden' pada body secara paksa. Cek F12 Console untuk error 404.");
+             document.body.classList.remove('overflow-x-hidden', 'hidden');
+        }
+    }, 3000); 
 });
 
 /**
- * Memuat file HTML eksternal ke dalam placeholder.
+ * Memuat file HTML eksternal ke dalam placeholder dengan 2x coba path.
  */
 function loadHTML(url, elementId) {
     const placeholder = document.getElementById(elementId);
-    if (placeholder) {
-        // Karena file Anda ada di root, path fetch harus relatif dari root.
-        // Contoh: Jika file .html Anda di root, fetch('header.html') akan berhasil.
-        return fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    // Jika gagal, log error di console
-                    console.error(`Gagal memuat ${url}: ${response.statusText}`);
-                    // Coba lagi dengan path relatif (Jika Anda menaruh file HTML di folder 'assets')
-                    return fetch(`assets/${url}`);
-                }
-                return response.text();
-            })
-            .then(html => {
-                placeholder.innerHTML = html;
-            })
-            .catch(error => {
-                console.error(`Error memuat ${url}:`, error);
-                placeholder.innerHTML = `<p style="color: red;">[Gagal memuat ${url}. Cek path file di fungsi loadHTML]</p>`;
-            });
-    }
-    return Promise.resolve();
+    if (!placeholder) return Promise.resolve();
+
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                // Coba path kedua: di folder 'partials/'
+                console.warn(`[FETCH FAILED] ${url} di root. Mencoba path: partials/${url}`);
+                return fetch(`partials/${url}`)
+                    .then(r2 => {
+                        if (!r2.ok) throw new Error(`404: File ${url} tidak ditemukan di root atau /partials/`);
+                        return r2.text();
+                    });
+            }
+            return response.text();
+        })
+        .then(html => {
+            placeholder.innerHTML = html;
+        })
+        .catch(error => {
+            console.error(`ERROR KRITIS loadHTML (${url}):`, error);
+            placeholder.innerHTML = `<p style="color: red; padding: 10px; border: 1px dashed red;">[Gagal memuat ${url}. Cek Console (F12) untuk detail error.]</p>`;
+        });
 }
 
 // =======================================================
