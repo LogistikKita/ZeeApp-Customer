@@ -10,8 +10,8 @@
     --color-secondary: #B00F1A;  /* Merah Tua - Untuk Efek Hover */
     --color-accent: #FFC72C;     /* Kuning Cerah - Warna Aksen untuk CTA */
     --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
-    --color-light: #ffffff;      /* Putih Bersih - Latar Belakang */
-    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section */
+    --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body */
+    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section (Digunakan untuk kontras ringan) */
 }
 
 /* --- Dark Mode Overrides --- */
@@ -20,8 +20,8 @@ html.dark {
     --color-secondary: #dc2626;  /* Red 600 */
     --color-accent: #fcd34d;     /* Kuning Lebih Terang (Amber 300) */
     --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama di Dark Mode */
-    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama */
-    --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section */
+    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama Body */
+    --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Elemen */
 }
 
 /* Konfigurasi Global & Transisi Tema */
@@ -39,9 +39,7 @@ body {
 .accent-bg { background-color: var(--color-accent); }
 .accent-text { color: var(--color-accent); }
 .hover-primary-bg:hover { background-color: var(--color-secondary); }
-
-/* BARU: Hover Aksen */
-.hover-accent-bg:hover { background-color: #fbbd23; } /* Kuning sedikit gelap */
+.hover-accent-bg:hover { background-color: #fbbd23; } 
 
 /* --- Penyesuaian Dark Mode Tailwind Class --- */
 /* Override BG & Text yang didefinisikan dengan Tailwind di HTML */
@@ -66,12 +64,12 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
 }
 
-/* BARU: Styling Tombol Melayang (Fab) */
+/* Styling Tombol Melayang (Fab) */
 .fab-container {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    z-index: 900; /* Di bawah Header (950) tapi di atas konten */
+    z-index: 900; 
 }
 
 .fab-button {
@@ -86,14 +84,59 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Styling Tambahan (Tetap Sama) */
-.hero-overlay {
-    min-height: 600px;
-    height: 600px;
-}
-/* ... (Bagian Hero Overlay, Slider, Animasi Scroll, dan Formulir Mitra lainnya tetap sama) ... */
+/* ======================================================= */
+/* == STYLING CHATBOT GEMINI (MODAL/POPUP) == */
+/* ======================================================= */
 
-/* CSS untuk Animasi Entrance saat Scroll */
+#gemini-chat-modal {
+    position: fixed;
+    bottom: 90px; /* Di atas tombol FAB */
+    right: 20px;
+    width: 100%;
+    max-width: 380px; /* Ukuran yang bagus untuk chat */
+    height: 80vh; 
+    max-height: 550px;
+    z-index: 900;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    display: none; /* Sembunyikan secara default, di-toggle oleh JS */
+    flex-direction: column;
+    transform: scale(0.9);
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+#gemini-chat-modal.active {
+    display: flex;
+    transform: scale(1);
+    opacity: 1;
+}
+
+.chat-header {
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chat-body {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    background-color: var(--color-light); /* Body chat mengikuti mode terang/gelap */
+    color: var(--color-dark);
+}
+
+.chat-input {
+    padding: 1rem;
+    border-top: 1px solid var(--color-bg-light);
+    background-color: var(--color-light);
+}
+
+/* Styling Tambahan (Tetap Sama) */
 .animate-on-scroll {
     opacity: 0;
     transform: translateY(20px);
@@ -103,12 +146,4 @@ body {
     opacity: 1;
     transform: translateY(0);
 }
-
 /* ... (Bagian Testimonial dan Formulir Mitra lainnya) ... */
-
-/* REQUIRED INDICATOR (Tanda Bintang) */
-.required label::after {
-    content: " *";
-    color: var(--color-primary); 
-    font-weight: bold;
-}
