@@ -1,60 +1,94 @@
 /* assets/css/style.css */
 
 /* ======================================================= */
-/* == PALET WARNA DIADOP dari LOGO (Merah dan Kuning) == */
+/* == PALET WARNA LOGISTIK KITA (MERAH-KUNING) == */
 /* ======================================================= */
 
 :root {
-    /* --- Light Mode Default (WHITE ELEGANT) --- */
-    --color-primary: #E51D2A;    /* Merah Menyala - Warna Utama Logo */
-    --color-secondary: #B00F1A;  /* Merah Tua - Untuk Efek Hover */
-    --color-accent: #FFC72C;     /* Kuning Cerah - Warna Aksen untuk CTA */
-    --color-dark: #1f2937;       /* Gray 800 - Teks Utama Body */
-    --color-light: #ffffff;      /* 💡 Putih Bersih - Latar Belakang Body/Main Section (Elegan) */
-    
-    /* Warna Background Section (Untuk kontras ringan) */
-    --color-bg-light: #f9fafb;   /* 💡 Gray 50 (Sangat Cerah) */
+    /* --- Light Mode Default --- */
+    --color-primary: #E51D2A;    /* Merah Menyala */
+    --color-secondary: #B00F1A;  /* Merah Tua (Hover) */
+    --color-accent: #FFC72C;     /* Kuning Cerah */
+    --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
+    --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body */
+    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section/Header Border */
+    --color-text-secondary: #6b7280; /* Gray 500/600 */
 }
 
-/* --- Dark Mode Overrides --- */
+/* --- Dark Mode Overrides (Ala Intel Dark Mode) --- */
 html.dark {
-    --color-primary: #f87171;    /* Merah Lebih Terang (Red 400) */
+    --color-primary: #f87171;    /* Merah Lebih Terang */
     --color-secondary: #dc2626;  /* Red 600 */
-    --color-accent: #fcd34d;     /* Kuning Lebih Terang (Amber 300) */
-    --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama di Dark Mode */
-    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama Body/Main Section */
-    
-    --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Elemen */
+    --color-accent: #fcd34d;     /* Kuning Lebih Terang */
+    --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama */
+    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama */
+    --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Card */
+    --color-text-secondary: #9ca3af; /* Gray 400 */
 }
 
-/* Konfigurasi Global & Transisi Tema */
+/* Konfigurasi Global & Font (Intel Style: Bold & Clean) */
 body {
     font-family: 'Inter', sans-serif;
-    color: var(--color-dark); 
-    background-color: var(--color-light); 
-    scroll-behavior: smooth;
+    color: var(--color-dark);
+    background-color: var(--color-light);
     transition: background-color 0.5s, color 0.5s; 
+    scroll-behavior: smooth;
 }
 
-/* Styling Kustom */
-.primary-bg { background-color: var(--color-primary); }
-.primary-text { color: var(--color-primary); }
-.accent-bg { background-color: var(--color-accent); }
-/* ... (Custom Utilities lainnya) ... */
+/* HEADER STYLE (Ala Intel.com) */
+.main-header {
+    background-color: var(--color-light);
+    border-bottom: 1px solid var(--color-bg-light);
+    box-shadow: none; /* Bersih, tanpa shadow */
+}
+.dark .main-header {
+    border-bottom: 1px solid var(--color-bg-light); 
+}
 
-/* --- Penyesuaian Dark Mode Tailwind Class --- */
-/* Disinkronkan dengan variabel baru agar mode terang tetap cerah */
-.dark .bg-white { 
-    background-color: var(--color-light) !important; 
+/* FOOTER STYLE (Ala PosIND) */
+.main-footer {
+    background-color: var(--color-bg-light);
 }
-.dark .bg-gray-50, .dark .bg-gray-100 {
-    background-color: var(--color-bg-light) !important; 
+
+.dark .main-footer {
+    background-color: var(--color-bg-light); /* Gray 800 */
 }
-/* ... (Dark Mode CSS lainnya) ... */
+
+/* HERO SECTION (Tipografi Tebal ala Intel) */
+.hero-title {
+    font-weight: 900; /* Extra Black */
+    line-height: 1.1;
+}
+
+/* CARD/BUTTON STYLE (Minimalis dan Bold) */
+.card-clean {
+    background-color: var(--color-light);
+    border: 1px solid var(--color-bg-light);
+    transition: all 0.3s ease;
+}
+.card-clean:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* SECTION KHUSUS (PosIND Style - Dark Block) */
+.section-dark-block {
+    background-color: var(--color-dark); /* Gray 800/900 */
+    color: var(--color-dark); /* Teks putih/light */
+}
+.dark .section-dark-block {
+    background-color: #0d121c; /* Lebih gelap dari dark body */
+}
+.section-dark-block * {
+    color: var(--color-light) !important;
+}
+.section-dark-block .text-sm, .section-dark-block .text-base {
+    color: #e5e7eb !important;
+}
 
 
 /* ======================================================= */
-/* == STYLING PRELOADER == */
+/* == PRELOADER, FAB, ANIMASI (Revisi) == */
 /* ======================================================= */
 #preloader {
     position: fixed;
@@ -62,7 +96,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--color-light); /* Menggunakan warna light body */
+    background-color: var(--color-light); 
     z-index: 9999; 
     display: flex;
     justify-content: center;
@@ -77,10 +111,5 @@ body {
     visibility: hidden;
     transition-delay: 0.2s; 
 }
+/* ... (Tambahkan kembali FAB, Chatbot, dan animasi dari kode sebelumnya) ... */
 
-.preloader-logo {
-    width: 120px;
-    height: 120px;
-    animation: pulse-logo 2s infinite ease-in-out;
-}
-/* ... (Animation dan Chatbot CSS lainnya) ... */
