@@ -3,43 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logistik Kita | Solusi Pengiriman Anda (Intel Style)</title>
+    <title>Logistik Kita | Solusi Pengiriman Anda (Poppins Style)</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Intel+One+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel-stylesheet">
     
     <style>
-        /* assets/css/style.css */
-        
         /* ======================================================= */
         /* == PALET WARNA LOGISTIK KITA (MERAH-KUNING) == */
+        /* == Teks & Background: Mode Gelap/Terang Fix == */
         /* ======================================================= */
         
         :root {
             /* --- Light Mode Default --- */
             --color-primary: #E51D2A;    /* Merah Menyala */
             --color-accent: #FFC72C;     /* Kuning Cerah */
-            --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
+            --color-dark: #1f2937;       /* Gray 800 - Teks Utama (Dark Grey) */
             --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body */
-            --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section/Card */
+            --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section/Border */
             --color-text-secondary: #6b7280; /* Gray 500/600 */
         }
 
-        /* --- Dark Mode Overrides (Deep Dark Gray ala Intel) --- */
+        /* --- Dark Mode Overrides (Deep Dark Gray) --- */
         html.dark {
             --color-primary: #f87171;    /* Merah Lebih Terang */
             --color-accent: #fcd34d;     /* Kuning Lebih Terang */
-            --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama */
-            --color-light: #18181B;      /* Gray 900 (Zinc 900) - Latar Belakang Utama */
-            --color-bg-light: #27272A;   /* Gray 800 (Zinc 800) - Latar Belakang Section/Card */
+            --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama (Putih) */
+            --color-light: #18181B;      /* Zinc 900 - Latar Belakang Utama (Dark Grey) */
+            --color-bg-light: #27272A;   /* Zinc 800 - Latar Belakang Section/Card (Darker Grey) */
             --color-text-secondary: #a1a1aa; /* Gray 400 */
         }
 
         /* Konfigurasi Global & Font */
         body {
-            font-family: 'Intel One Mono', monospace; /* FONT KHUSUS */
-            color: var(--color-dark);
+            font-family: 'Poppins', sans-serif; /* FONT BARU: POPPINS */
+            color: var(--color-dark); /* Mengikuti mode gelap/terang */
             background-color: var(--color-light);
             transition: background-color 0.5s, color 0.5s; 
             scroll-behavior: smooth;
@@ -48,7 +47,6 @@
         /* Kelas Utility */
         .primary-text { color: var(--color-primary); }
         .accent-bg { background-color: var(--color-accent); }
-        .hover-accent-bg:hover { background-color: #fbbd23; } 
         
         /* HEADER STYLE (Ala Intel.com) */
         .main-header {
@@ -57,7 +55,7 @@
             transition: background-color 0.5s, border-color 0.5s;
         }
 
-        /* FOOTER STYLE (Ala PosIND) */
+        /* FOOTER STYLE */
         .main-footer {
             background-color: var(--color-bg-light);
             transition: background-color 0.5s;
@@ -65,13 +63,13 @@
 
         /* HERO SECTION */
         .hero-title {
-            font-weight: 900; 
+            font-weight: 900; /* Extra Bold Poppins */
             line-height: 1.1;
         }
 
-        /* CARD/BUTTON STYLE (Minimalis dan Bold) */
+        /* CARD/PINTASAN (FIXED: Dark Mode Card BG) */
         .card-clean {
-            background-color: var(--color-light);
+            background-color: var(--color-light); /* Light Mode: Putih */
             border: 1px solid var(--color-bg-light);
             transition: all 0.3s ease;
         }
@@ -80,8 +78,9 @@
             transform: translateY(-2px);
             border-color: var(--color-primary);
         }
+        /* Override untuk Dark Mode */
         .dark .card-clean {
-            background-color: var(--color-bg-light);
+            background-color: var(--color-bg-light); /* Dark Mode: Dark Gray */
             border: 1px solid var(--color-bg-light);
         }
         .dark .card-clean:hover {
@@ -91,14 +90,15 @@
         
         /* Dark Block (Lacak Kiriman) */
         .section-dark-block {
-            background-color: var(--color-dark); /* Dark Gray di Light Mode */
+            background-color: var(--color-dark); 
             color: var(--color-light);
             transition: background-color 0.5s;
         }
         .dark .section-dark-block {
-            background-color: #09090b; /* Lebih gelap dari dark body */
+            background-color: #09090b; 
         }
-        .section-dark-block .text-sm, .section-dark-block .text-base {
+        .section-dark-block * {
+             /* Memaksa teks di dark block selalu putih/light */
             color: var(--color-light) !important;
         }
         
@@ -134,29 +134,29 @@
     <header id="main-header" class="main-header sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             
-            <div class="flex items-center space-x-8">
+            <div class="flex items-center space-x-4">
                 <a href="#" class="text-xl font-extrabold flex items-center">
-                    <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="h-8 w-auto mr-2">
-                    <span class="text-lg font-bold">LOGISTIK KITA</span>
+                    <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="h-10 w-10 mr-2"> 
+                    <span class="text-xl font-bold">LOGISTIK KITA</span>
                 </a>
             </div>
 
             <div class="flex items-center space-x-4">
                 
-                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </button>
                 
-                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14c-4.418 0-8 2.239-8 5v2h16v-2c0-2.761-3.582-5-8-5z"/></svg>
                 </button>
 
-                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
                     <svg id="sun-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     <svg id="moon-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
                 </button>
                 
-                <button id="menu-button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <button id="menu-button" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 transition">
                     <svg id="menu-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
@@ -173,18 +173,18 @@
 
     <main>
         
-        <section class="py-24 bg-white dark:bg-zinc-900 transition duration-500">
+        <section class="py-24 bg-[var(--color-light)] transition duration-500">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 class="hero-title text-4xl md:text-6xl mb-6 text-center max-w-4xl mx-auto">
                     Memaksimalkan Distribusi dengan Teknologi Canggih
                 </h1>
-                <p class="text-lg md:text-xl text-center text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-12">
+                <p class="text-lg md:text-xl text-center text-[var(--color-text-secondary)] max-w-3xl mx-auto mb-12">
                     Skalakan bisnis Anda dengan lancar di seluruh rantai pasok, kargo, dan pusat distribusi dengan inovasi hebat dari Logistik Kita.
                 </p>
                 
                 <div class="section-dark-block rounded-xl shadow-xl overflow-hidden max-w-4xl mx-auto">
                     <div class="p-8 md:p-12 text-center">
-                        <p class="text-sm font-semibold tracking-wider opacity-80 mb-2" style="color: var(--color-accent) !important;">LACAK KIRIMAN CEPAT</p>
+                        <p class="text-sm font-semibold tracking-wider mb-2" style="color: var(--color-accent) !important;">LACAK KIRIMAN CEPAT</p>
                         <h2 class="text-3xl font-extrabold mb-6" style="color: var(--color-light) !important;">
                             Masukkan Nomor Resi Anda
                         </h2>
@@ -205,35 +205,35 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl font-bold mb-10 text-center">Jelajahi Solusi Kami</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10H21M7 6v12M17 6v12M12 6v12"/></svg>
                         <span class="text-sm font-medium">Armada Darat</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-4m0 0l-3 3M9 13l3 3m3-3v4m0 0l3-3m-3 3l-3-3M3 8l9-5 9 5-9 5-9-5z"/></svg>
                         <span class="text-sm font-medium">Gudang & Logistik</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/></svg>
                         <span class="text-sm font-medium">Jaringan</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 1.343 3 3s-1.343 3-3 3-3-1.343-3-3 1.343-3 3-3zM12 21a9 9 0 100-18 9 9 0 000 18z"/></svg>
                         <span class="text-sm font-medium">Lacak Resi</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                         <span class="text-sm font-medium">FAQ</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z"/></svg>
                         <span class="text-sm font-medium">Chat AI</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zM12 14v7m0-7v-3"/></svg>
                         <span class="text-sm font-medium">Mitra Bisnis</span>
                     </a>
-                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-700">
+                    <a href="#" class="card-clean p-6 flex flex-col items-center justify-center h-40 text-center rounded-lg">
                         <svg class="w-8 h-8 mb-2 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         <span class="text-sm font-medium">Peta Situs</span>
                     </a>
@@ -241,28 +241,28 @@
             </div>
         </section>
         
-        <section class="py-20 bg-white dark:bg-zinc-900 transition duration-500">
+        <section class="py-20 bg-[var(--color-light)] transition duration-500">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 class="text-4xl font-extrabold text-center mb-16">Apa Kata Pelanggan Kami?</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     
-                    <div class="card-clean p-6 rounded-lg bg-[var(--color-bg-light)] border-l-4 border-l-[var(--color-primary)]">
-                        <p class="italic text-lg text-gray-700 dark:text-gray-300 mb-4">"Logistik Kita memberikan layanan tercepat yang pernah saya gunakan. Pengiriman kargo berat selalu tepat waktu dan aman!"</p>
+                    <div class="card-clean p-6 rounded-lg border-l-4 border-l-[var(--color-primary)]">
+                        <p class="italic text-lg text-[var(--color-text-secondary)] mb-4">"Logistik Kita memberikan layanan tercepat yang pernah saya gunakan. Pengiriman kargo berat selalu tepat waktu dan aman!"</p>
                         <p class="font-bold text-base primary-text">- Budi Santoso</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">CEO, PT Maju Jaya</p>
+                        <p class="text-sm text-[var(--color-text-secondary)]">CEO, PT Maju Jaya</p>
                     </div>
                     
-                    <div class="card-clean p-6 rounded-lg bg-[var(--color-bg-light)] border-l-4 border-l-[var(--color-primary)]">
-                        <p class="italic text-lg text-gray-700 dark:text-gray-300 mb-4">"Sistem pelacakan mereka sangat akurat. Tidak perlu khawatir tentang status paket. Sangat direkomendasikan untuk e-commerce."</p>
+                    <div class="card-clean p-6 rounded-lg border-l-4 border-l-[var(--color-primary)]">
+                        <p class="italic text-lg text-[var(--color-text-secondary)] mb-4">"Sistem pelacakan mereka sangat akurat. Tidak perlu khawatir tentang status paket. Sangat direkomendasikan untuk e-commerce."</p>
                         <p class="font-bold text-base primary-text">- Siti Aminah</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Owner, Toko Kembang</p>
+                        <p class="text-sm text-[var(--color-text-secondary)]">Owner, Toko Kembang</p>
                     </div>
                     
-                    <div class="card-clean p-6 rounded-lg bg-[var(--color-bg-light)] border-l-4 border-l-[var(--color-primary)]">
-                        <p class="italic text-lg text-gray-700 dark:text-gray-300 mb-4">"Dukungan pelanggan mereka cepat dan responsif. Mereka membantu saya menyelesaikan masalah pengiriman ke daerah terpencil dengan mudah."</p>
+                    <div class="card-clean p-6 rounded-lg border-l-4 border-l-[var(--color-primary)]">
+                        <p class="italic text-lg text-[var(--color-text-secondary)] mb-4">"Dukungan pelanggan mereka cepat dan responsif. Mereka membantu saya menyelesaikan masalah pengiriman ke daerah terpencil dengan mudah."</p>
                         <p class="font-bold text-base primary-text">- Taufik Hidayat</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Manager Logistik, CV Sumber Rezeki</p>
+                        <p class="text-sm text-[var(--color-text-secondary)]">Manager Logistik, CV Sumber Rezeki</p>
                     </div>
 
                 </div>
@@ -278,7 +278,7 @@
                 
                 <div>
                     <h4 class="font-bold mb-4 text-lg">Hubungi Kami / Informasi</h4>
-                    <ul class="space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                    <ul class="space-y-3 text-sm text-[var(--color-text-secondary)]">
                         <li class="flex items-center space-x-2"><svg class="w-5 h-5 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.5l1 4h5l1-4H19a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"/></svg><span>Hallo LK: 1500XXX</span></li>
                         <li class="flex items-center space-x-2"><svg class="w-5 h-5 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>FAQ</span></li>
                         <li class="flex items-center space-x-2"><svg class="w-5 h-5 primary-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><span>halo@logistikkita.co.id</span></li>
@@ -287,7 +287,7 @@
 
                 <div>
                     <h4 class="font-bold mb-4 text-lg">Layanan & Produk</h4>
-                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <ul class="space-y-2 text-sm text-[var(--color-text-secondary)]">
                         <li><a href="#" class="hover:text-red-500">LK Sameday</a></li>
                         <li><a href="#" class="hover:text-red-500">LK Reguler</a></li>
                         <li><a href="#" class="hover:text-red-500">Kargo</a></li>
@@ -297,7 +297,7 @@
 
                 <div>
                     <h4 class="font-bold mb-4 text-lg">Perusahaan & Karir</h4>
-                    <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <ul class="space-y-2 text-sm text-[var(--color-text-secondary)]">
                         <li><a href="#" class="hover:text-red-500">Tentang Kami</a></li>
                         <li><a href="#" class="hover:text-red-500">Komitmen Kami</a></li>
                         <li><a href="#" class="hover:text-red-500">Hubungi Investor</a></li>
@@ -308,12 +308,12 @@
                 <div>
                     <h4 class="font-bold mb-4 text-lg">Download App</h4>
                     <div class="flex flex-col space-y-2">
-                        <div class="w-32 h-10 bg-gray-300 dark:bg-zinc-700 rounded-lg flex items-center justify-center text-xs text-gray-800 dark:text-gray-200">App Store</div>
-                        <div class="w-32 h-10 bg-gray-300 dark:bg-zinc-700 rounded-lg flex items-center justify-center text-xs text-gray-800 dark:text-gray-200">Google Play</div>
+                        <div class="w-32 h-10 bg-gray-300 dark:bg-zinc-700 rounded-lg flex items-center justify-center text-xs text-[var(--color-dark)]">App Store</div>
+                        <div class="w-32 h-10 bg-gray-300 dark:bg-zinc-700 rounded-lg flex items-center justify-center text-xs text-[var(--color-dark)]">Google Play</div>
                     </div>
                     
                     <h4 class="font-bold mb-4 mt-6 text-lg">Ikuti Kami</h4>
-                    <div class="flex space-x-4 text-gray-600 dark:text-gray-400">
+                    <div class="flex space-x-4 text-[var(--color-text-secondary)]">
                         <a href="#" class="hover:text-red-500"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 5.084 3.738 9.317 8.618 10.096v-6.988H7.135V12h2.483V9.452c0-2.463 1.45-3.81 3.696-3.81 1.053 0 2.158.188 2.158.188v2.37h-1.21c-1.202 0-1.574.747-1.574 1.517V12h3.04l-.487 3.008h-2.553v6.988C18.262 21.317 22 17.084 22 12 22 6.477 17.523 2 12 2z"/></svg></a>
                         <a href="#" class="hover:text-red-500"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16.98 2H7.02C4.28 2 2 4.28 2 7.02v9.96C2 19.72 4.28 22 7.02 22h9.96C19.72 22 22 19.72 22 16.98V7.02C22 4.28 19.72 2 16.98 2zm-.238 2.05h.494c.83 0 1.503.673 1.503 1.504v.494c0 .83-.673 1.503-1.504 1.503h-.494a1.504 1.504 0 01-1.503-1.504v-.493c0-.83.673-1.503 1.504-1.503zm-5.02 2.374c2.81 0 5.093 2.283 5.093 5.093S14.773 17.61 11.963 17.61 6.87 15.327 6.87 12.517s2.283-5.093 5.093-5.093zM12 15.61a3.093 3.093 0 100-6.186 3.093 3.093 0 000 6.186z"/></svg></a>
                         <a href="#" class="hover:text-red-500"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11.5 20h-3v-11h3v11zm-1.5-12.75c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5 1.5.672 1.5 1.5-.672 1.5-1.5 1.5zm12 12.75h-3v-5.632c0-3.364-4-3.356-4 0v5.632h-3v-11h3v1.742c1.233-2.189 4-2.43 4 2.258v7.001z"/></svg></a>
@@ -321,7 +321,7 @@
                 </div>
             </div>
 
-            <div class="border-t border-gray-300 dark:border-zinc-700 pt-6 text-sm text-gray-500 dark:text-gray-400 text-center">
+            <div class="border-t border-gray-300 dark:border-zinc-700 pt-6 text-sm text-[var(--color-text-secondary)] text-center">
                 © 2025 Logistik Kita. Hak Cipta Dilindungi. | Syarat Penggunaan | Privasi
             </div>
         </div>
@@ -340,7 +340,7 @@
             const menuIcon = document.getElementById('menu-icon');
             const closeIcon = document.getElementById('close-icon');
 
-            // --- 1. THEME TOGGLE LOGIC (FIXED) ---
+            // --- 1. THEME TOGGLE LOGIC ---
             function updateThemeUI(isDark) {
                 if (sunIcon && moonIcon) {
                     sunIcon.classList.toggle('hidden', !isDark);
@@ -372,9 +372,8 @@
                 });
             }
             
-            // --- 3. PRELOADER & BODY DISPLAY LOGIC (FIXED) ---
+            // --- 3. PRELOADER & BODY DISPLAY LOGIC ---
             
-            // Event 'load' memastikan semua aset (gambar, font) telah dimuat
             window.addEventListener('load', () => {
                 if (preloader) {
                     preloader.classList.add('hidden-fade');
@@ -387,10 +386,10 @@
                 }
             });
             
-            // FALLBACK KRITIS (3 DETIK): Memastikan konten muncul jika ada masalah loading
+            // FALLBACK KRITIS (3 DETIK)
             setTimeout(() => {
                 if (body.classList.contains('hidden')) {
-                    console.warn("FALLBACK KRITIS: Konten dimuat paksa setelah 3 detik. Cek aset gambar/CSS.");
+                    console.warn("FALLBACK KRITIS: Konten dimuat paksa setelah 3 detik.");
                     if (preloader) {
                         preloader.classList.add('hidden-fade');
                         preloader.style.display = 'none';
