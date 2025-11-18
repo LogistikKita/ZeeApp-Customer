@@ -16,8 +16,8 @@
     --color-text-secondary: #6b7280; /* Gray 500/600 */
     
     /* Variable Warna Overlay untuk Background Image */
-    /* Transparansi 90% (Jelas) */
-    --image-overlay: rgba(255, 255, 255, 0.9); 
+    /* Light Mode Overlay: Putih 95% opacity. Lebih buram agar teks terlihat jelas */
+    --image-overlay: rgba(255, 255, 255, 0.95); 
 }
 
 /* --- Dark Mode Overrides (Deep Dark Gray) --- */
@@ -27,8 +27,8 @@ html.dark {
     --color-accent: #fcd34d;     
     --color-accent-dark: #fbbf24; 
     --color-dark: #f3f4f6;       /* Teks Utama (Putih) */
-    --color-light: #18181B;      /* Background Utama (Dark Grey) */
-    --color-bg-light: #27272A;   /* Border/Shadow Ringan (Darker Grey) */
+    --color-light: #18181B;      /* Background Utama */
+    --color-bg-light: #27272A;   /* Border/Shadow Ringan */
     --color-text-secondary: #a1a1aa; 
     
     /* Dark Mode Overlay: Hampir Hitam 90% opacity */
@@ -43,16 +43,12 @@ body {
     scroll-behavior: smooth; 
     scroll-snap-type: y proximity; 
     
-    /* ======================================= */
     /* == IMPLEMENTASI BACKGROUND DENGAN IMAGE DAN OVERLAY == */
-    /* ======================================= */
     background-image: 
-        /* Layer 1: Overlay untuk mengatur opacity */
         linear-gradient(to bottom, var(--image-overlay), var(--image-overlay)),
-        /* Layer 2: Gambar Utama */
         url('../img/background-lk.jpg'); 
         
-    background-attachment: fixed; /* Gambar tidak bergerak saat discroll */
+    background-attachment: fixed;
     background-size: cover;
     background-position: center center;
 }
@@ -63,7 +59,11 @@ body {
     transition: background-color 0.5s;
 }
 
+/* Poin 1: Header dibuat Sticky */
 .main-header {
+    position: sticky; 
+    top: 0;
+    z-index: 50;
     border-bottom: 1px solid var(--color-bg-light);
 }
 
@@ -89,7 +89,6 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Menggunakan color-light (Putih/Dark Grey pekat) agar preloader menutupi gambar */
     background-color: var(--color-light); 
     z-index: 9999; 
     display: flex;
@@ -124,6 +123,18 @@ body {
 .fade-in-up {
     opacity: 0;
     animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Poin 2: Animasi Smooth untuk Menu Mobile (Hamburger) */
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+#mobile-menu.active {
+    max-height: 500px; 
+    opacity: 1;
 }
 
 /* Chatbot & FAB Button Styles */
