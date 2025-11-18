@@ -1,95 +1,74 @@
 /* assets/css/style.css */
 
 /* ======================================================= */
-/* == PALET WARNA LOGISTIK KITA (MERAH-KUNING) == */
+/* == PALET WARNA LOGISTIK KITA (MERAH-KUNING) & FONT == */
 /* ======================================================= */
 
 :root {
     /* --- Light Mode Default --- */
     --color-primary: #E51D2A;    /* Merah Menyala */
-    --color-secondary: #B00F1A;  /* Merah Tua (Hover) */
+    --color-primary-dark: #b91c1c; /* Merah Hover */
     --color-accent: #FFC72C;     /* Kuning Cerah */
-    --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
+    --color-accent-dark: #f5b91b; /* Kuning Hover */
+    --color-dark: #1f2937;       /* Gray 800 - Teks Utama (Dark Grey) */
     --color-light: #ffffff;      /* Putih Bersih - Latar Belakang Body */
-    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section/Header Border */
+    --color-bg-light: #f3f4f6;   /* Gray 100 - Latar Belakang Section/Border */
     --color-text-secondary: #6b7280; /* Gray 500/600 */
 }
 
-/* --- Dark Mode Overrides (Ala Intel Dark Mode) --- */
+/* --- Dark Mode Overrides (Deep Dark Gray) --- */
 html.dark {
     --color-primary: #f87171;    /* Merah Lebih Terang */
-    --color-secondary: #dc2626;  /* Red 600 */
+    --color-primary-dark: #ef4444; /* Merah Hover */
     --color-accent: #fcd34d;     /* Kuning Lebih Terang */
-    --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama */
-    --color-light: #111827;      /* Gray 900 - Latar Belakang Utama */
-    --color-bg-light: #1f2937;   /* Gray 800 - Latar Belakang Section/Card */
-    --color-text-secondary: #9ca3af; /* Gray 400 */
+    --color-accent-dark: #fbbf24; /* Kuning Hover */
+    --color-dark: #f3f4f6;       /* Gray 100 - Teks Utama (Putih) */
+    --color-light: #18181B;      /* Zinc 900 - Latar Belakang Utama (Dark Grey) */
+    --color-bg-light: #27272A;   /* Zinc 800 - Latar Belakang Section/Card (Darker Grey) */
+    --color-text-secondary: #a1a1aa; /* Gray 400 */
 }
 
-/* Konfigurasi Global & Font (Intel Style: Bold & Clean) */
+/* Konfigurasi Global & Font */
 body {
-    font-family: 'Inter', sans-serif;
-    color: var(--color-dark);
+    font-family: 'Poppins', sans-serif; /* FONT BARU: POPPINS */
+    color: var(--color-dark); 
     background-color: var(--color-light);
     transition: background-color 0.5s, color 0.5s; 
-    scroll-behavior: smooth;
+    /* SCROLL HALUS & SNAP SCROLL */
+    scroll-behavior: smooth; 
+}
+.snap-scroll-section {
+    scroll-snap-align: start; /* Titik penanda snap scroll */
+    min-height: 100vh;
+}
+.scroll-snap-container {
+    scroll-snap-type: y proximity; /* Mengaktifkan snap scroll pada sumbu Y */
 }
 
-/* HEADER STYLE (Ala Intel.com) */
+
+/* Kelas Utility Khusus */
+.primary-text { color: var(--color-primary); }
+.primary-bg { background-color: var(--color-primary); }
+.accent-bg { background-color: var(--color-accent); }
+
+.hover-primary-text:hover { color: var(--color-primary); }
+.hover-primary-bg:hover { background-color: var(--color-primary-dark); }
+.hover-accent-bg:hover { background-color: var(--color-accent-dark); }
+
+
+/* HEADER & FOOTER STYLE */
 .main-header {
     background-color: var(--color-light);
     border-bottom: 1px solid var(--color-bg-light);
-    box-shadow: none; /* Bersih, tanpa shadow */
+    transition: background-color 0.5s, border-color 0.5s;
 }
-.dark .main-header {
-    border-bottom: 1px solid var(--color-bg-light); 
-}
-
-/* FOOTER STYLE (Ala PosIND) */
 .main-footer {
     background-color: var(--color-bg-light);
-}
-
-.dark .main-footer {
-    background-color: var(--color-bg-light); /* Gray 800 */
-}
-
-/* HERO SECTION (Tipografi Tebal ala Intel) */
-.hero-title {
-    font-weight: 900; /* Extra Black */
-    line-height: 1.1;
-}
-
-/* CARD/BUTTON STYLE (Minimalis dan Bold) */
-.card-clean {
-    background-color: var(--color-light);
-    border: 1px solid var(--color-bg-light);
-    transition: all 0.3s ease;
-}
-.card-clean:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-}
-
-/* SECTION KHUSUS (PosIND Style - Dark Block) */
-.section-dark-block {
-    background-color: var(--color-dark); /* Gray 800/900 */
-    color: var(--color-dark); /* Teks putih/light */
-}
-.dark .section-dark-block {
-    background-color: #0d121c; /* Lebih gelap dari dark body */
-}
-.section-dark-block * {
-    color: var(--color-light) !important;
-}
-.section-dark-block .text-sm, .section-dark-block .text-base {
-    color: #e5e7eb !important;
+    transition: background-color 0.5s;
 }
 
 
-/* ======================================================= */
-/* == PRELOADER, FAB, ANIMASI (Revisi) == */
-/* ======================================================= */
+/* PRELOADER */
 #preloader {
     position: fixed;
     top: 0;
@@ -105,11 +84,114 @@ body {
     visibility: visible;
     transition: opacity 0.5s ease, visibility 0.5s ease;
 }
-
 #preloader.hidden-fade {
     opacity: 0;
     visibility: hidden;
     transition-delay: 0.2s; 
 }
-/* ... (Tambahkan kembali FAB, Chatbot, dan animasi dari kode sebelumnya) ... */
+.preloader-logo {
+    width: 6rem;
+    height: 6rem;
+    animation: pulse 1.5s infinite;
+}
 
+/* Animasi Fade In Up (untuk .animate-on-scroll) */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.fade-in-up {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Chatbot & FAB Button Styles */
+.fab-container {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 50;
+}
+.fab-button {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+
+#gemini-chat-modal {
+    position: fixed;
+    right: 20px;
+    bottom: 84px;
+    width: 100%;
+    max-width: 380px;
+    height: 480px;
+    background-color: var(--color-light);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    transform: scale(0.95);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-out;
+}
+#gemini-chat-modal.active {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+}
+/* Tambahkan lebih banyak style untuk Chatbot di sini jika diperlukan */
+
+
+/* GAYA KHUSUS ACCORDION MOBILE (Untuk Header/Menu) */
+.mobile-accordion summary {
+    list-style: none; /* Hilangkan default arrow */
+    position: relative;
+    padding-right: 2rem; 
+}
+.mobile-accordion summary::-webkit-details-marker {
+    display: none;
+}
+.mobile-accordion summary::after {
+    content: '+'; /* Custom plus icon */
+    position: absolute;
+    right: 1rem;
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.3s;
+}
+.mobile-accordion[open] summary::after {
+    content: '-'; /* Custom minus icon ketika terbuka */
+    transform: rotate(180deg);
+}
+
+.mobile-accordion[open] > div {
+    /* Gaya untuk konten submenu yang terbuka */
+    border-top: 1px solid var(--color-bg-light);
+}
+
+/* Media Query untuk Mobile */
+@media (max-width: 640px) {
+    #gemini-chat-modal {
+        right: 10px;
+        bottom: 70px;
+        max-width: calc(100% - 20px);
+        height: 80vh;
+    }
+    .fab-container {
+        right: 10px;
+        bottom: 10px;
+    }
+}
