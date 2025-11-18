@@ -50,7 +50,10 @@ function initializeMobileMenu() {
 
     if (menuButton && mobileMenu) {
         menuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+            // Poin 2: Menggunakan kelas 'active' untuk transisi CSS smooth
+            mobileMenu.classList.toggle('active');
+            
+            // Toggle ikon tetap sama
             menuIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
         });
@@ -123,11 +126,12 @@ function initializeChatbot() {
     
     if (chatButton && chatModal && closeButton) {
         chatButton.addEventListener('click', () => {
-            if (chatModal.classList.contains('hidden')) {
-                chatModal.classList.remove('hidden');
-                setTimeout(() => chatModal.classList.add('active'), 10); 
+            if (!chatModal.classList.contains('active')) {
+                chatModal.classList.add('active');
+                chatModal.classList.remove('hidden'); 
             } else {
                 chatModal.classList.remove('active');
+                // Hapus kelas hidden setelah transisi selesai
                 setTimeout(() => chatModal.classList.add('hidden'), 350); 
             }
         });
@@ -144,17 +148,23 @@ function initializeChatbot() {
 // =======================================================
 
 async function includeHTML() {
-    // Fungsi untuk memuat header dan footer dari file partials
     const headerPlaceholder = document.getElementById('header-placeholder');
     const footerPlaceholder = document.getElementById('footer-placeholder');
     
+    // Load Header
     if (headerPlaceholder) {
         try {
             const response = await fetch('partials/header.html');
             if (response.ok) headerPlaceholder.innerHTML = await response.text();
+            
+            // Inisialisasi menu setelah header dimuat (Penting!)
+            initializeMobileMenu(); 
+            initializeThemeToggle();
+            
         } catch (error) { console.error('Error loading header:', error); }
     }
     
+    // Load Footer
     if (footerPlaceholder) {
         try {
             const response = await fetch('partials/footer.html');
@@ -190,8 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await includeHTML(); 
     
     // 2. Inisialisasi Fungsi Global
-    initializeThemeToggle();
-    initializeMobileMenu(); 
+    // Catatan: ThemeToggle & MobileMenu dipanggil di includeHTML()
     initializeScrollFunctions();
     initializeChatbot(); 
     initializeScrollAnimation();
