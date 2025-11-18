@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Armada Kami - Logistik Kita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css"> 
+</head>
+<body class="overflow-x-hidden"> 
+    
+    <div id="preloader">
+        <img src="assets/logo/Logistik-Kita.png" alt="Loading Logistik Kita" class="preloader-logo">
+    </div>
+
+    <div id="header-placeholder"></div>
+
+    <main class="py-16 md:py-24 bg-white dark:bg-gray-800 transition duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold primary-text mb-6 text-center animate-on-scroll">
+                Armada Kami: Kategori Kendaraan
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-16 text-center max-w-4xl mx-auto animate-on-scroll" data-delay="0.1">
+                Jelajahi kategori armada kami. Klik kartu untuk melihat detail dan spesifikasi lengkap setiap jenis unit.
+            </p>
+            
+            <div id="armada-categories" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="category-card" onclick="showArmadaDetail('pickup')">
+                    <img src="assets/img/icon-pickup.png" alt="Icon Pickup" class="w-20 h-20 mb-4 mx-auto">
+                    <h2 class="text-2xl font-bold primary-text">Mobil Pickup</h2>
+                    <p class="text-gray-500 dark:text-gray-400">1 - 1,5 Ton | Ringan & Cepat</p>
+                </div>
+
+                <div class="category-card" onclick="showArmadaDetail('cdd')">
+                    <img src="assets/img/icon-cdd.png" alt="Icon CDD" class="w-20 h-20 mb-4 mx-auto">
+                    <h2 class="text-2xl font-bold primary-text">Truk CDD</h2>
+                    <p class="text-gray-500 dark:text-gray-400">5 - 6 Ton | Muatan Menengah</p>
+                </div>
+                
+                <div class="category-card" onclick="showArmadaDetail('fuso')">
+                    <img src="assets/img/icon-fuso.png" alt="Icon Fuso" class="w-20 h-20 mb-4 mx-auto">
+                    <h2 class="text-2xl font-bold primary-text">Truk Fuso</h2>
+                    <p class="text-gray-500 dark:text-gray-400">8 - 16 Ton | Tugas Menengah-Berat</p>
+                </div>
+                
+                <div class="category-card" onclick="showArmadaDetail('tronton')">
+                    <img src="assets/img/icon-tronton.png" alt="Icon Tronton" class="w-20 h-20 mb-4 mx-auto">
+                    <h2 class="text-2xl font-bold primary-text">Truk Tronton</h2>
+                    <p class="text-gray-500 dark:text-gray-400">15 - 20 Ton | Tugas Berat</p>
+                </div>
+
+                <div class="category-card" onclick="showArmadaDetail('trailer')">
+                    <img src="assets/img/icon-trailer.png" alt="Icon Trailer" class="w-20 h-20 mb-4 mx-auto">
+                    <h2 class="text-2xl font-bold primary-text">Truk Trailer</h2>
+                    <p class="text-gray-500 dark:text-gray-400">20 - 30 Ton | Super Berat</p>
+                </div>
+                
+            </div> 
+
+
+            <div class="mt-20 text-center py-16 primary-bg rounded-xl shadow-2xl text-white animate-on-scroll" data-delay="1.2">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Butuh Kapasitas Khusus atau Jumlah Banyak?</h2>
+                <p class="text-xl font-light opacity-90 mb-8">Langsung kirim Request for Quote (RFQ) untuk penawaran harga terbaik.</p>
+                <a href="kontak.html" class="inline-block px-10 py-4 accent-bg text-gray-900 font-bold rounded-full text-lg shadow-2xl hover-accent-bg transition duration-300 transform hover:scale-105">
+                    Kirim RFQ Sekarang
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <div id="armada-modal" class="fixed inset-0 z-[100] bg-black bg-opacity-50 hidden items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300">
+        <div id="armada-modal-content" class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300">
+            
+            <div class="sticky top-0 p-4 border-b border-gray-200 dark:border-gray-700 primary-bg rounded-t-xl flex justify-between items-center z-10">
+                <h3 id="modal-category-title" class="text-2xl font-bold text-white">Detail Kategori</h3>
+                <button id="close-armada-modal" class="p-2 text-white hover:bg-primary-dark rounded-full transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <div id="modal-body-details" class="p-6 md:p-8">
+                </div>
+
+        </div>
+    </div>
+
+    <div id="gemini-chat-modal" class="hidden"> 
+        <div class="chat-header primary-bg text-white">
+            <h4 class="text-xl font-semibold">🤖 Tanya Logistik Kita</h4>
+            <button id="close-chat-button" class="p-1 rounded-full hover:bg-red-600 transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" class="text-white"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="chat-body dark:bg-gray-800" id="chat-messages">
+            <div class="text-center text-sm text-gray-400 mt-4">
+                👋 Halo! Saya asisten AI Logistik Kita. Ada yang bisa saya bantu terkait pengiriman atau armada?
+            </div>
+        </div>
+        <div class="chat-input dark:bg-gray-900">
+            <input type="text" id="chat-input-field" placeholder="Ketik pesan Anda..."
+                   class="w-full p-3 border rounded-lg focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+        </div>
+    </div>
+    
+    <div class="fab-container flex flex-col items-center space-y-4">
+        <button id="gemini-chatbot-button" class="fab-button accent-bg text-gray-900 hover-accent-bg transition duration-300 transform hover:scale-110">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z"/></svg>
+        </button>
+
+        <button id="scroll-up" class="fab-button primary-bg text-white opacity-0 pointer-events-none hover-primary-bg transition duration-300 transform hover:scale-110">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+        </button>
+
+        <button id="scroll-down" class="fab-button primary-bg text-white hover-primary-bg transition duration-300 transform hover:scale-110">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </button>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
