@@ -1,113 +1,195 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Armada - Logistik Kita</title>
-  <link rel="stylesheet" href="css/templatemo-style.css" />
-  <link rel="stylesheet" href="css/font-awesome.min.css" />
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <style>
+<meta charset="UTF-8">
+<title>Armada - Logistik Kita</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- INLINE CSS -->
+<style>
     body {
-      background: #f2f2f2;
-      font-family: "Segoe UI", sans-serif;
-    }.armada-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
-  transition: 0.2s;
-}
+        margin: 0;
+        font-family: "Open Sans", Arial, sans-serif;
+        background: #f5f5f5;
+        color: #333;
+    }
 
-.armada-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0px 6px 16px rgba(0,0,0,0.15);
-}
+    /* Header */
+    .header {
+        width: 100%;
+        background: #111;
+        color: #fff;
+        padding: 20px 40px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 99;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .header h1 {
+        margin: 0;
+        font-size: 24px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+    .header a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+    }
 
-.btn-red {
-  background: #c40000;
-  color: #fff;
-  border-radius: 8px;
-  padding: 10px 18px;
-  border: none;
-}
+    /* Hero Section */
+    .hero {
+        width: 100%;
+        height: 320px;
+        background: url('img/header-bg.jpg') center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+    }
+    .hero h2 {
+        font-size: 48px;
+        text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
 
-.btn-red:hover {
-  background: #a00000;
-}
+    /* Armada Grid */
+    .armada-section {
+        padding: 50px 40px;
+    }
+    .armada-title {
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        border-left: 6px solid #c40000;
+        padding-left: 12px;
+    }
 
-.header {
-  background: #fff;
-  padding: 20px 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 40px;
-}
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 25px;
+    }
 
-  </style>
+    .card {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+    }
+
+    .card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .card-body h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+        color: #c40000;
+    }
+    .card-body p {
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+        background: #111;
+        padding: 25px;
+        color: #ddd;
+        text-align: center;
+        margin-top: 50px;
+    }
+</style>
 </head>
-<body>  <header class="header text-center">
-    <h1 class="text-danger" style="font-weight: bold;">Armada Logistik Kita</h1>
-    <p style="margin-top: -5px; color: #555;">Daftar Armada • Kapasitas • Status</p>
-  </header>  <div class="container mb-5"><div class="text-end mb-3">
-  <button class="btn-red">+ Tambah Armada</button>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>LOGISTIK KITA</h1>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="armada.html">Armada</a>
+        <a href="contact.html">Kontak</a>
+    </div>
 </div>
 
-<div class="row g-4">
-
-  <!-- SAMPLE ARMADA CARD -->
-  <div class="col-md-4">
-    <div class="armada-card">
-      <img src="images/templatemo-493-01.jpg" class="img-fluid rounded mb-3" alt="Armada" />
-
-      <h4 class="text-danger"><b>Pickup Box</b></h4>
-      <p class="mb-1"><b>Kapasitas:</b> 800 kg</p>
-      <p class="mb-1"><b>Dimensi:</b> 200 × 130 × 120 cm</p>
-      <p class="mb-1"><b>Plat:</b> W 1234 AB</p>
-      <p class="mb-2"><b>Status:</b> <span class="text-success">Aktif</span></p>
-
-      <div class="d-flex gap-2 mt-3">
-        <button class="btn btn-sm btn-primary">Edit</button>
-        <button class="btn btn-sm btn-danger">Hapus</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SAMPLE ARMADA CARD 2 -->
-  <div class="col-md-4">
-    <div class="armada-card">
-      <img src="images/templatemo-493-02.jpg" class="img-fluid rounded mb-3" alt="Armada" />
-
-      <h4 class="text-danger"><b>CDE (Engkel)</b></h4>
-      <p class="mb-1"><b>Kapasitas:</b> 2.000 kg</p>
-      <p class="mb-1"><b>Dimensi:</b> 300 × 150 × 160 cm</p>
-      <p class="mb-1"><b>Plat:</b> L 8812 XY</p>
-      <p class="mb-2"><b>Status:</b> <span class="text-warning">Dalam Perjalanan</span></p>
-
-      <div class="d-flex gap-2 mt-3">
-        <button class="btn btn-sm btn-primary">Edit</button>
-        <button class="btn btn-sm btn-danger">Hapus</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SAMPLE ARMADA CARD 3 -->
-  <div class="col-md-4">
-    <div class="armada-card">
-      <img src="images/templatemo-493-03.jpg" class="img-fluid rounded mb-3" alt="Armada" />
-
-      <h4 class="text-danger"><b>CDD (Double)</b></h4>
-      <p class="mb-1"><b>Kapasitas:</b> 4.000 kg</p>
-      <p class="mb-1"><b>Dimensi:</b> 420 × 180 × 200 cm</p>
-      <p class="mb-1"><b>Plat:</b> M 5577 ZZ</p>
-      <p class="mb-2"><b>Status:</b> <span class="text-danger">Maintenance</span></p>
-
-      <div class="d-flex gap-2 mt-3">
-        <button class="btn btn-sm btn-primary">Edit</button>
-        <button class="btn btn-sm btn-danger">Hapus</button>
-      </div>
-    </div>
-  </div>
-
+<!-- HERO -->
+<div class="hero">
+    <h2>Armada Kami</h2>
 </div>
 
-  </div></body>
+<!-- ARMADA LIST -->
+<div class="armada-section">
+    <h2 class="armada-title">Daftar Armada Operasional</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <img src="img/armada1.jpg">
+            <div class="card-body">
+                <h3>Pickup Box</h3>
+                <p>
+                    Kapasitas: 1 Ton<br>
+                    Cocok untuk pengiriman barang kecil–sedang.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="img/armada2.jpg">
+            <div class="card-body">
+                <h3>Engkel Box</h3>
+                <p>
+                    Kapasitas: 2–3 Ton<br>
+                    Digunakan untuk pengiriman antar kota.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="img/armada3.jpg">
+            <div class="card-body">
+                <h3>CDD Box</h3>
+                <p>
+                    Kapasitas: 4–5 Ton<br>
+                    Cocok untuk rute jarak jauh dan muatan besar.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <img src="img/armada4.jpg">
+            <div class="card-body">
+                <h3>Fuso</h3>
+                <p>
+                    Kapasitas: 7–8 Ton<br>
+                    Spare untuk pengiriman industri & pabrik.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 Logistik Kita — Template based on Templatemo Snapshot
+</footer>
+
+</body>
 </html>
