@@ -2,193 +2,187 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Armada - Logistik Kita</title>
+<title>Armada – Logistik Kita</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- INLINE CSS -->
 <style>
     body {
-        margin: 0;
         font-family: "Open Sans", Arial, sans-serif;
+        margin: 0; padding: 0;
         background: #f5f5f5;
         color: #333;
     }
 
-    /* Header */
-    .header {
-        width: 100%;
+    /* HEADER */
+    header {
+        background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&w=1600') center/cover no-repeat;
+        height: 60vh;
+        position: relative;
+        display: flex; justify-content: center; align-items: center;
+    }
+    header::before {
+        content:""; position:absolute;
+        top:0; left:0; right:0; bottom:0;
+        background: rgba(0,0,0,0.45);
+    }
+    header h1 {
+        color: white; font-size: 48px; 
+        z-index: 2; text-align: center;
+        letter-spacing: 2px;
+        text-shadow: 0px 0px 10px rgba(0,0,0,0.7);
+    }
+
+    /* NAVBAR */
+    nav {
         background: #111;
-        color: #fff;
-        padding: 20px 40px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 99;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        padding: 15px 20px;
+        text-align: right;
     }
-    .header h1 {
-        margin: 0;
-        font-size: 24px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-    .header a {
-        color: #fff;
-        text-decoration: none;
-        margin-left: 20px;
-    }
-
-    /* Hero Section */
-    .hero {
-        width: 100%;
-        height: 320px;
-        background: url('img/header-bg.jpg') center/cover no-repeat;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+    nav a {
         color: white;
-        margin-top: 80px;
+        margin-left: 15px;
+        text-decoration: none;
+        font-weight: 600;
     }
-    .hero h2 {
-        font-size: 48px;
-        text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    nav a:hover { color: #ff3333; }
+
+    /* SECTION TITLE */
+    .section-title {
+        text-align: center;
+        padding: 60px 20px 20px;
+    }
+    .section-title h2 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        color: #111;
+    }
+    .section-title p {
+        color: #666;
+        font-size: 15px;
     }
 
-    /* Armada Grid */
-    .armada-section {
-        padding: 50px 40px;
-    }
-    .armada-title {
-        font-size: 32px;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        border-left: 6px solid #c40000;
-        padding-left: 12px;
-    }
-
+    /* GRID ARMADA */
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+        gap: 20px;
+        padding: 30px;
     }
-
     .card {
-        background: #fff;
-        border-radius: 10px;
+        background: white;
+        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         transition: 0.3s;
     }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 22px rgba(0,0,0,0.18);
-    }
+    .card:hover { transform: translateY(-5px); }
+    .card img { width:100%; height:180px; object-fit:cover; }
+    .card-info { padding:20px; }
+    .card-info h3 { margin:0; font-size:20px; color:#111; }
+    .card-info p { margin:8px 0; font-size:14px; color:#555; }
 
-    .card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
+    .btn-detail {
+        display:inline-block;
+        margin-top:10px; padding:8px 15px;
+        background:#e60000; color:white;
+        border-radius:4px; text-decoration:none;
+        font-size:14px;
     }
-    .card-body {
-        padding: 20px;
-    }
-    .card-body h3 {
-        margin: 0 0 10px;
-        font-size: 20px;
-        color: #c40000;
-    }
-    .card-body p {
-        margin: 0;
-        line-height: 1.6;
-    }
+    .btn-detail:hover { background:#cc0000; }
 
-    /* Footer */
+    /* FOOTER */
     footer {
-        background: #111;
-        padding: 25px;
-        color: #ddd;
-        text-align: center;
-        margin-top: 50px;
+        background:#111; color:white;
+        text-align:center; padding:25px 10px;
+        margin-top:40px;
     }
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <h1>LOGISTIK KITA</h1>
-    <div>
-        <a href="index.html">Home</a>
-        <a href="armada.html">Armada</a>
-        <a href="contact.html">Kontak</a>
-    </div>
-</div>
+<!-- NAVIGATION -->
+<nav>
+    <a href="index.html">Home</a>
+    <a href="customer.html">Customer</a>
+    <a href="admin.html">Admin</a>
+    <a href="armada.html">Armada</a>
+</nav>
 
 <!-- HERO -->
-<div class="hero">
-    <h2>Armada Kami</h2>
+<header>
+    <h1>Armada Logistik Kita</h1>
+</header>
+
+<!-- TITLE -->
+<div class="section-title">
+    <h2>Daftar Armada</h2>
+    <p>Pilihan armada terpercaya untuk kebutuhan distribusi Anda</p>
 </div>
 
-<!-- ARMADA LIST -->
-<div class="armada-section">
-    <h2 class="armada-title">Daftar Armada Operasional</h2>
+<!-- GRID ARMADA -->
+<div class="grid">
 
-    <div class="grid">
-
-        <div class="card">
-            <img src="img/armada1.jpg">
-            <div class="card-body">
-                <h3>Pickup Box</h3>
-                <p>
-                    Kapasitas: 1 Ton<br>
-                    Cocok untuk pengiriman barang kecil–sedang.
-                </p>
-            </div>
+    <!-- ARMADA 1 -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1597007513430-208d756c50aa?auto=format&w=1600" alt="">
+        <div class="card-info">
+            <h3>Pickup Box</h3>
+            <p>Muatan: 500kg – 1 Ton</p>
+            <p>Cocok untuk pengiriman barang kecil & menengah.</p>
+            <a href="#" class="btn-detail">Detail</a>
         </div>
-
-        <div class="card">
-            <img src="img/armada2.jpg">
-            <div class="card-body">
-                <h3>Engkel Box</h3>
-                <p>
-                    Kapasitas: 2–3 Ton<br>
-                    Digunakan untuk pengiriman antar kota.
-                </p>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="img/armada3.jpg">
-            <div class="card-body">
-                <h3>CDD Box</h3>
-                <p>
-                    Kapasitas: 4–5 Ton<br>
-                    Cocok untuk rute jarak jauh dan muatan besar.
-                </p>
-            </div>
-        </div>
-
-        <div class="card">
-            <img src="img/armada4.jpg">
-            <div class="card-body">
-                <h3>Fuso</h3>
-                <p>
-                    Kapasitas: 7–8 Ton<br>
-                    Spare untuk pengiriman industri & pabrik.
-                </p>
-            </div>
-        </div>
-
     </div>
+
+    <!-- ARMADA 2 -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1617814061473-756ded1df33e?auto=format&w=1600" alt="">
+        <div class="card-info">
+            <h3>Grandmax Box</h3>
+            <p>Muatan: 800kg</p>
+            <p>Efisien untuk area dalam kota & antar kota dekat.</p>
+            <a href="#" class="btn-detail">Detail</a>
+        </div>
+    </div>
+
+    <!-- ARMADA 3 -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&w=1600" alt="">
+        <div class="card-info">
+            <h3>Colt Diesel Engkel (CDE)</h3>
+            <p>Muatan: 2 – 3 Ton</p>
+            <p>Paling populer untuk distribusi skala menengah.</p>
+            <a href="#" class="btn-detail">Detail</a>
+        </div>
+    </div>
+
+    <!-- ARMADA 4 -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1581091870622-1e7e2bb2a0d7?auto=format&w=1600" alt="">
+        <div class="card-info">
+            <h3>Colt Diesel Double (CDD)</h3>
+            <p>Muatan: 4 – 6 Ton</p>
+            <p>Cocok untuk pengiriman besar & jarak jauh.</p>
+            <a href="#" class="btn-detail">Detail</a>
+        </div>
+    </div>
+
+    <!-- ARMADA 5 -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&w=1600" alt="">
+        <div class="card-info">
+            <h3>Fuso</h3>
+            <p>Muatan: 8 – 14 Ton</p>
+            <p>Ideal untuk pengiriman volume besar antar provinsi.</p>
+            <a href="#" class="btn-detail">Detail</a>
+        </div>
+    </div>
+
 </div>
 
 <!-- FOOTER -->
 <footer>
-    © 2025 Logistik Kita — Template based on Templatemo Snapshot
+    © 2025 Logistik Kita • Armada & Distribusi Terpercaya
 </footer>
 
 </body>
