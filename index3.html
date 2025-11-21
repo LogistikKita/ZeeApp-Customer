@@ -1,439 +1,640 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Nusantara Logistics – Velocity Flow</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Nusantara Logistics — Velocity Flow (Futuristic)</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-/* ------------------------- */
-/* GLOBAL STYLE 2025 */
-/* ------------------------- */
-body {
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #f5f6fa;
-  color: #0a0d14;
-  overflow-x: hidden;
-}
+  /* ---------------------
+     Reset & Base
+     --------------------- */
+  :root{
+    --bg:#0b1020;            /* deep navy */
+    --panel:#0f1724;         /* slightly lighter */
+    --muted:#9aa7c7;
+    --accent:#1e8cff;        /* electric blue */
+    --accent-2:#39ff88;      /* neon lime */
+    --glass: rgba(255,255,255,0.04);
+    --glass-2: rgba(255,255,255,0.02);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background: linear-gradient(180deg,var(--bg) 0%, #071026 60%, #060716 100%);
+    color:#e6eef8;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
 
-h1, h2, h3, h4 {
-  font-weight: 800;
-}
+  /* ---------------------
+     Header / Nav
+     --------------------- */
+  header{
+    position:fixed;top:12px;left:12px;right:12px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 18px;border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    backdrop-filter: blur(8px) saturate(120%);
+    z-index:9999;
+    transition:transform .28s ease, padding .25s ease, background .3s ease;
+  }
+  header.shrink{ transform: translateY(-6px); padding:8px 14px; opacity:0.98 }
+  .brand{display:flex;gap:12px;align-items:center}
+  .brand img{
+    width:44px;height:44px;border-radius:10px;object-fit:contain;
+    filter: drop-shadow(0 6px 18px rgba(30,140,255,0.12));
+  }
+  .brand .title{
+    font-weight:800;font-size:16px;letter-spacing:0.2px;color:#fff;
+    line-height:1;
+  }
+  .nav-actions{display:flex;gap:12px;align-items:center}
+  .icon-btn{
+    display:inline-grid;place-items:center;width:44px;height:44px;border-radius:10px;
+    background:var(--glass); cursor:pointer; color:var(--muted); font-size:18px;
+    transition: transform .18s ease, background .18s ease, color .18s ease;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .icon-btn:hover{ transform: translateY(-4px); color:var(--accent); background: linear-gradient(180deg, rgba(30,140,255,0.06), rgba(57,255,136,0.02)) }
 
-a { text-decoration: none; }
+  /* hamburger */
+  .hamb{
+    width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  }
+  .hamb .bar{width:20px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));position:relative}
+  .hamb .bar:before,.hamb .bar:after{content:"";position:absolute;left:0;width:20px;height:2px;background:inherit}
+  .hamb .bar:before{top:-6px}
+  .hamb .bar:after{top:6px}
 
-/* Accent Colors */
-:root {
-  --primary: #0f1b32;
-  --accent: #1e8cff;
-  --accent2: #39ff88;
-}
+  /* OFFCANVAS MENU */
+  .offcanvas{
+    position:fixed;top:0;right:-420px;width:420px;height:100vh;
+    background:linear-gradient(180deg, rgba(10,13,22,0.9), rgba(7,9,14,0.95));
+    box-shadow: -30px 0 60px rgba(2,6,23,0.6);
+    padding:36px;border-radius:20px 0 0 20px;z-index:9998;
+    transition:right .36s cubic-bezier(.2,.9,.25,1);
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .offcanvas.open{ right:0 }
+  .offcanvas h4{ margin:0;color:#cfe2ff; font-weight:700 }
+  .offcanvas nav a{display:block;padding:12px 0;border-bottom:1px dashed rgba(255,255,255,0.02); color:var(--muted)}
 
-/* Smooth Animations */
-* {
-  transition: 0.3s ease;
-}
+  /* ---------------------
+     HERO (3D parallax + mouse)
+     --------------------- */
+  .hero{
+    position:relative; height:92vh; min-height:640px;
+    margin-top:28px; /* keep under header */
+    perspective:1200px;
+    overflow:visible;
+    display:flex;align-items:center;justify-content:center;
+  }
 
-/* ------------------------- */
-/* HEADER NAVBAR */
-/* ------------------------- */
+  /* video background layer */
+  .hero .bg-layer{
+    position:absolute;inset:0;z-index:1;overflow:hidden;border-radius:24px;
+    transform: translateZ(-120px) scale(1.05);
+  }
+  .hero video{
+    width:110%;height:110%;object-fit:cover;filter:brightness(.38) contrast(1.1) saturate(1.05);
+    transform:scale(1.02);
+  }
+  /* subtle gradient overlay */
+  .hero:after{
+    content:"";position:absolute;inset:0;border-radius:24px;
+    background: linear-gradient(180deg, rgba(10,18,30,0.2), rgba(3,6,10,0.6));
+    z-index:2;mix-blend-mode:overlay;
+  }
 
-header {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%;
-  padding: 20px 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 999;
-  backdrop-filter: blur(12px);
-}
+  /* main card floating (3d) */
+  .hero .card {
+    position:relative;z-index:6; width:92%; max-width:1200px;
+    display:flex; gap:22px; align-items:center; justify-content:center;
+    transform-style:preserve-3d;
+    pointer-events:auto;
+  }
 
-header.shrink {
-  padding: 10px 40px;
-  background: rgba(10, 14, 23, 0.7);
-}
+  .card-left{
+    flex:1; min-width:280px;
+    transform: translateZ(40px) rotateX(0deg);
+  }
+  .headline{
+    font-size:clamp(28px,5.6vw,56px);
+    font-weight:900; margin:0 0 10px 0; line-height:1.02;
+    color: #f7fbff; text-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  }
+  .sub{
+    color:var(--muted); font-weight:500; margin:0 0 18px 0;
+    font-size:clamp(14px,1.6vw,18px);
+  }
 
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+  /* tracking widget (glass) */
+  .tracker{
+    display:flex; gap:12px; align-items:center;
+    padding:12px; border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.05);
+    box-shadow: 0 10px 40px rgba(6,12,30,0.6);
+    width:100%;
+    max-width:720px;
+  }
+  .tracker input{
+    flex:1;padding:16px 18px;border-radius:10px;border:none;background:transparent;color:#eaf3ff;
+    outline: none;font-weight:600;font-size:15px;
+  }
+  .tracker button{
+    white-space:nowrap;padding:14px 20px;border-radius:10px;border:none;
+    font-weight:800;background:linear-gradient(90deg,var(--accent),#34d1ff);
+    color:#061025; cursor:pointer; box-shadow: 0 8px 28px rgba(30,140,255,0.12);
+    transition: transform .14s ease, box-shadow .14s ease;
+  }
+  .tracker button:hover{ transform: translateY(-4px); box-shadow: 0 18px 50px rgba(30,140,255,0.18) }
 
-.logo-icon {
-  width: 34px;
-  height: 34px;
-  background: var(--accent);
-  clip-path: polygon(0 0, 100% 50%, 0 100%);
-}
+  /* right visual (glass card with stats & mini-map) */
+  .card-right{
+    width:420px; min-width:280px;
+    transform: translateZ(80px) rotateX(0deg);
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border-radius:18px;padding:18px;border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 30px 80px rgba(3,7,20,0.6);
+  }
+  .stat-row{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .stat{flex:1;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+        border:1px solid rgba(255,255,255,0.02); text-align:center;}
+  .stat h5{margin:0;font-size:14px;color:var(--muted);font-weight:600}
+  .stat p{margin:6px 0 0 0;font-weight:800;font-size:18px;color:#fff}
 
-.nav-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: white;
-}
+  /* subtle floating icons around hero (decor) */
+  .float-icon{
+    position:absolute; width:84px;height:84px;border-radius:16px;
+    display:grid;place-items:center;background:linear-gradient(180deg, rgba(30,140,255,0.08), rgba(57,255,136,0.03));
+    border:1px solid rgba(255,255,255,0.03); z-index:5;
+    transform: translateZ(60px);
+  }
+  .fi1{left:6%; top:22%}
+  .fi2{right:8%; top:30%}
+  .fi3{left:10%; bottom:18%}
+  .float-icon svg{width:42px;height:42px;opacity:0.95}
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-}
+  /* ---------------------
+     Services Section (asymmetric, overlap)
+     --------------------- */
+  .services{padding:44px 28px 80px; position:relative; z-index:4; max-width:1200px;margin:0 auto}
+  .svc{
+    display:grid; grid-template-columns: 1fr 1fr; gap:30px; align-items:center;margin:36px 0;
+  }
+  .svc.alt{ grid-template-columns: 1fr 1fr; }
+  .svc .text{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:28px;border-radius:16px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);
+  }
+  .svc .text h3{ margin:0 0 10px 0; font-size:20px; color:#fff }
+  .svc .text p{ margin:0;color:var(--muted) }
+  .svc .media{overflow:hidden;border-radius:16px; transform: translateY(0); transition: transform .6s cubic-bezier(.2,.9,.3,1) }
+  .svc .media img{width:100%; display:block; height:260px; object-fit:cover}
 
-.nav-right i {
-  cursor: pointer;
-  color: white;
-  font-size: 22px;
-}
+  /* overlap effect */
+  .svc:first-child .media{ transform: translateX(18%) translateY(-6%) scale(1.02) }
+  .svc alt .media{}
 
-.menu-button {
-  width: 26px;
-  height: 3px;
-  background: white;
-  position: relative;
-  cursor: pointer;
-}
+  /* ---------------------
+     Carousel / Gallery
+     --------------------- */
+  .carousel{ max-width:1200px;margin:30px auto 60px; padding:0 20px }
+  .car-viewport{ position:relative; overflow:hidden; border-radius:14px; }
+  .car-track{ display:flex; gap:18px; transition: transform .6s cubic-bezier(.2,.9,.25,1); will-change:transform; padding:18px }
+  .car-card{ min-width:320px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); padding:12px;border-radius:12px; border:1px solid rgba(255,255,255,0.03) }
+  .car-card img{height:180px;object-fit:cover;border-radius:10px}
+  .car-controls{ display:flex; gap:10px; justify-content:center; margin-top:12px }
 
-.menu-button::before,
-.menu-button::after {
-  content: "";
-  width: 26px;
-  height: 3px;
-  background: white;
-  position: absolute;
-  left: 0;
-}
+  /* logos ribbon */
+  .logo-ribbon{ display:flex; gap:28px; align-items:center; padding:18px 0; overflow:hidden; border-top:1px dashed rgba(255,255,255,0.02); border-bottom:1px dashed rgba(255,255,255,0.02); margin-top:24px}
+  .logo-ribbon .item{min-width:140px;opacity:.35; filter:grayscale(1)}
+  .logo-ribbon:hover .item{opacity:1; filter:none; transition: all .35s ease }
 
-.menu-button::before { top: -8px; }
-.menu-button::after { top: 8px; }
+  /* ---------------------
+     Testimonials
+     --------------------- */
+  .testi{ max-width:1000px;margin:24px auto;padding:12px; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px}
+  .card-t{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03) }
+  .stars{color: #ffd166; margin-bottom:8px}
 
-/* ------------------------- */
-/* OVERLAY SEARCH */
-/* ------------------------- */
-.search-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(10, 14, 23, 0.92);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-}
+  /* ---------------------
+     Footer
+     --------------------- */
+  footer{ background:linear-gradient(180deg,#061022 0%, #050514 100%); padding:44px 28px; margin-top:60px; border-top:1px solid rgba(255,255,255,0.02) }
+  .ft-grid{ max-width:1200px;margin:0 auto; display:grid; grid-template-columns: repeat(4,1fr); gap:18px; color:var(--muted) }
+  .ft-grid h5{ color:#d9ecff; margin-bottom:8px }
 
-.search-overlay input {
-  width: 60%;
-  padding: 20px;
-  font-size: 26px;
-  border: none;
-  border-radius: 12px;
-  outline: none;
-}
+  .copyright{ text-align:center;color:#7f95b4;padding:18px 0; font-size:13px }
 
-/* ------------------------- */
-/* SIDEBAR MENU */
-/* ------------------------- */
-.sidebar {
-  position: fixed;
-  top: 0; right: -400px;
-  width: 300px;
-  height: 100%;
-  background: #0f1b32;
-  padding: 40px;
-  color: white;
-  z-index: 9999;
-}
+  /* ---------------------
+     Responsive tweaks
+     --------------------- */
+  @media (max-width:980px){
+    header{left:10px;right:10px}
+    .hero{ height:84vh; min-height:560px }
+    .card{ flex-direction:column-reverse; gap:18px; align-items:center }
+    .card-right{ width:92%; max-width:520px }
+    .svc{ grid-template-columns: 1fr; }
+    .car-card{ min-width:260px }
+    .ft-grid{ grid-template-columns: repeat(2, 1fr) }
+    .float-icon{ display:none }
+  }
+  @media (max-width:520px){
+    header{ top:8px; left:8px; right:8px; padding:8px 10px; border-radius:12px }
+    .brand img{ width:36px;height:36px }
+    .headline{ font-size:28px }
+    .tracker input{ font-size:14px;padding:12px }
+    .tracker button{ padding:12px 14px;font-size:14px }
+    .ft-grid{ grid-template-columns: 1fr }
+  }
 
-.sidebar.open {
-  right: 0;
-}
-
-.sidebar h3 {
-  margin-top: 0;
-}
-
-.sidebar a {
-  display: block;
-  color: white;
-  margin: 12px 0;
-  font-size: 18px;
-}
-
-/* ------------------------- */
-/* HERO SECTION */
-/* ------------------------- */
-.hero {
-  position: relative;
-  width: 100%;
-  height: 88vh;
-  background: black;
-  overflow: hidden;
-}
-
-.hero video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(45%) contrast(120%);
-}
-
-.hero-content {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  width: 85%;
-}
-
-.hero h1 {
-  font-size: 56px;
-  line-height: 1.1;
-}
-
-.hero p {
-  font-size: 20px;
-  margin-top: -10px;
-}
-
-.tracking-box {
-  margin-top: 40px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.tracking-box input {
-  width: 400px;
-  padding: 16px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-  font-size: 18px;
-}
-
-.tracking-box button {
-  padding: 16px 28px;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  background: var(--accent);
-  color: white;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.tracking-box button:hover {
-  background: #0d6bd9;
-}
-
-/* ------------------------- */
-/* SERVICE SECTIONS */
-/* ------------------------- */
-.section {
-  padding: 100px 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-}
-
-.section img {
-  width: 50%;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.section .text {
-  width: 50%;
-}
-
-.section h2 {
-  font-size: 34px;
-}
-
-.section a {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 16px;
-  color: var(--accent);
-  font-weight: 600;
-}
-
-/* ------------------------- */
-/* FOOTER */
-/* ------------------------- */
-footer {
-  background: #0f1b32;
-  color: white;
-  padding: 60px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-}
-
-footer h3 {
-  margin-bottom: 14px;
-}
-
-footer input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  margin-bottom: 10px;
-}
-
-footer button {
-  padding: 10px 20px;
-  border: none;
-  background: var(--accent);
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.copy {
-  text-align: center;
-  margin-top: 30px;
-  color: #d9d9d9;
-}
-
+  /* small helper */
+  .muted{ color:var(--muted) }
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<header id="navbar">
-  <div class="nav-left">
-    <div class="logo-icon"></div>
-    <div class="nav-title">Nusantara Logistics</div>
-  </div>
+  <!-- HEADER -->
+  <header id="nav">
+    <div class="brand">
+      <img src="assets/logo/Logistik- kita.png" alt="Logo Nusantara Logistics" onerror="this.style.opacity='.6'">
+      <div>
+        <div class="title">Nusantara Logistics</div>
+        <div class="muted" style="font-size:12px;margin-top:4px">Velocity Flow • 2025</div>
+      </div>
+    </div>
 
-  <div class="nav-right">
-    <i onclick="openSearch()">🔍</i>
-    <div class="menu-button" onclick="toggleSidebar()"></div>
-  </div>
-</header>
+    <div class="nav-actions">
+      <div class="icon-btn" title="Search" onclick="openSearch();">
+        🔎
+      </div>
 
-<!-- SEARCH OVERLAY -->
-<div class="search-overlay" id="searchOverlay">
-  <input type="text" placeholder="Cari atau Masukkan Nomor Resi..." />
-</div>
+      <div class="icon-btn" title="Contact" onclick="openContact()">
+        ✉️
+      </div>
 
-<!-- SIDEBAR -->
-<div class="sidebar" id="sidebar">
-  <h3>Menu</h3>
-  <a href="#">Beranda</a>
-  <a href="#">Layanan</a>
-  <a href="#">Tentang Kami</a>
-  <a href="#">Kontak</a>
-  <a href="#">Login Klien</a>
-</div>
+      <div class="hamb icon-btn" onclick="toggleOffcanvas()">
+        <div class="bar"></div>
+      </div>
+    </div>
+  </header>
 
-<!-- HERO -->
-<section class="hero">
-  <video autoplay muted loop>
-    <source src="https://cdn.coverr.co/videos/coverr-freight-containers-ship-4370/1080p.mp4" type="video/mp4"/>
-  </video>
+  <!-- OFFCANVAS RIGHT -->
+  <aside class="offcanvas" id="offcanvas">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h4>Menu Cepat</h4>
+      <div style="display:flex;gap:8px">
+        <div class="icon-btn" onclick="toggleOffcanvas()">✖</div>
+      </div>
+    </div>
+    <nav style="margin-top:12px">
+      <a href="#">Beranda</a>
+      <a href="#">Layanan</a>
+      <a href="#">Tentang Kami</a>
+      <a href="#">Karir</a>
+      <a href="#">Kontak</a>
+      <a href="#" style="display:block;margin-top:14px;padding:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#051025;border-radius:10px;text-align:center;font-weight:800">Login Klien</a>
+    </nav>
+  </aside>
 
-  <div class="hero-content">
-    <h1>MENGHUBUNGKAN DUNIA, LEBIH CEPAT.</h1>
-    <p>Solusi pengiriman logistik terintegrasi untuk bisnis modern Anda.</p>
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="bg-layer" id="bgLayer">
+      <!-- cinematic video (external CDN ok but fallback will be handled) -->
+      <video autoplay muted loop playsinline>
+        <source src="https://cdn.coverr.co/videos/coverr-freight-containers-ship-4370/1080p.mp4" type="video/mp4">
+      </video>
+    </div>
 
-    <div class="tracking-box">
-      <input type="text" placeholder="Masukkan Nomor Resi Anda..." />
-      <button>LACAK SEKARANG</button>
+    <!-- decorative floating icons -->
+    <div class="float-icon fi1" aria-hidden>
+      <!-- airplane svg -->
+      <svg viewBox="0 0 24 24" fill="none"><path d="M2 13l20-9-9 20-2-8-9-3z" fill="white" opacity="0.95"/></svg>
+    </div>
+    <div class="float-icon fi2" aria-hidden>
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="white" opacity="0.06"/></svg>
+    </div>
+    <div class="float-icon fi3" aria-hidden>
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" fill="white" opacity="0.06"/></svg>
+    </div>
+
+    <!-- main floating card -->
+    <div class="card" id="heroCard" role="region" aria-label="Hero">
+      <div class="card-left">
+        <h1 class="headline">MENGHUBUNGKAN DUNIA, <span style="color:var(--accent-2)">LEBIH CEPAT</span>.</h1>
+        <p class="sub">Solusi pengiriman logistik terintegrasi untuk bisnis modern Anda — realtime tracking, rute global, smart warehousing.</p>
+
+        <!-- tracking widget -->
+        <div class="tracker" role="search" aria-label="Lacak Resi">
+          <input id="resiInput" placeholder="Masukkan Nomor Resi Anda..." aria-label="Nomor Resi">
+          <button id="btnTrack" onclick="trackNow()">LACAK SEKARANG</button>
+        </div>
+      </div>
+
+      <div class="card-right" aria-hidden>
+        <div class="stat-row">
+          <div class="stat"><h5>On-time</h5><p>98.7%</p></div>
+          <div class="stat"><h5>Rute</h5><p>320+</p></div>
+          <div class="stat"><h5>Negara</h5><p>45</p></div>
+        </div>
+
+        <div style="height:120px;border-radius:12px;overflow:hidden;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));display:flex;align-items:center;justify-content:center">
+          <div style="text-align:center">
+            <div style="font-weight:800;font-size:18px">Realtime Map</div>
+            <div class="muted" style="font-size:13px;margin-top:6px">(demo visual)</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+          <div style="flex:1;background:rgba(255,255,255,0.02);padding:10px;border-radius:10px;text-align:center">
+            <div style="font-size:12px" class="muted">Next Pickup</div>
+            <div style="font-weight:800">12:30 • SUB → JKT</div>
+          </div>
+          <div style="width:48px;height:48px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:800;color:#061025">GO</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- services -->
+  <main>
+    <section class="services" aria-label="Layanan Kami">
+      <div class="svc">
+        <div class="text">
+          <h3>Air Freight Express</h3>
+          <p class="muted">Pengiriman udara prioritas untuk kebutuhan bisnis yang menuntut kecepatan — door-to-door & customs support.</p>
+          <div style="margin-top:12px"><a href="#" style="font-weight:700;color:var(--accent)">Pelajari Selengkapnya →</a></div>
+        </div>
+        <div class="media" data-depth="0.08">
+          <img src="https://images.pexels.com/photos/1732957/pexels-photo-1732957.jpeg" alt="Air Freight">
+        </div>
+      </div>
+
+      <div class="svc alt">
+        <div class="media" data-depth="0.06">
+          <img src="https://images.pexels.com/photos/262353/pexels-photo-262353.jpeg" alt="Ocean Freight">
+        </div>
+        <div class="text">
+          <h3>Ocean Freight Solutions</h3>
+          <p class="muted">Skala besar, efisiensi biaya, dan jaringan rute global untuk pengiriman kargo ekonomis.</p>
+          <div style="margin-top:12px"><a href="#" style="font-weight:700;color:var(--accent)">Lihat Rute →</a></div>
+        </div>
+      </div>
+
+      <div class="svc">
+        <div class="text">
+          <h3>Smart Warehousing</h3>
+          <p class="muted">Gudang otomatis dengan manajemen inventaris berbasis AI dan integrasi WMS untuk kontrol stok real-time.</p>
+          <div style="margin-top:12px"><a href="#" style="font-weight:700;color:var(--accent)">Pelajari Selengkapnya →</a></div>
+        </div>
+        <div class="media" data-depth="0.05">
+          <img src="https://images.pexels.com/photos/256297/pexels-photo-256297.jpeg" alt="Warehousing">
+        </div>
+      </div>
+    </section>
+
+    <!-- Carousel gallery -->
+    <section class="carousel" aria-label="Galeri Operasional">
+      <div class="car-viewport">
+        <div class="car-track" id="carTrack">
+          <div class="car-card">
+            <img src="https://images.pexels.com/photos/257860/pexels-photo-257860.jpeg" alt="">
+            <div style="padding:10px"><strong>Docking — Tanjung Perak</strong><div class="muted" style="font-size:13px">Operasi cepat & aman</div></div>
+          </div>
+          <div class="car-card">
+            <img src="https://images.pexels.com/photos/327874/pexels-photo-327874.jpeg" alt="">
+            <div style="padding:10px"><strong>Airlift — Soekarno-Hatta</strong><div class="muted" style="font-size:13px">Kargo prioritas</div></div>
+          </div>
+          <div class="car-card">
+            <img src="https://images.pexels.com/photos/386197/pexels-photo-386197.jpeg" alt="">
+            <div style="padding:10px"><strong>Warehouse Robotics</strong><div class="muted" style="font-size:13px">Otomatisasi penyimpanan</div></div>
+          </div>
+          <div class="car-card">
+            <img src="https://images.pexels.com/photos/257897/pexels-photo-257897.jpeg" alt="">
+            <div style="padding:10px"><strong>Fleet — Truk Econ</strong><div class="muted" style="font-size:13px">Rute darat efisien</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="car-controls">
+        <button class="icon-btn" onclick="slideLeft()">◀</button>
+        <button class="icon-btn" onclick="slideRight()">▶</button>
+      </div>
+
+      <!-- logo ribbon -->
+      <div class="logo-ribbon" id="logoRibbon" aria-hidden>
+        <img class="item" src="https://via.placeholder.com/140x48?text=Client+1" alt="">
+        <img class="item" src="https://via.placeholder.com/140x48?text=Client+2" alt="">
+        <img class="item" src="https://via.placeholder.com/140x48?text=Client+3" alt="">
+        <img class="item" src="https://via.placeholder.com/140x48?text=Client+4" alt="">
+        <img class="item" src="https://via.placeholder.com/140x48?text=Client+5" alt="">
+      </div>
+    </section>
+
+    <!-- testimonials -->
+    <section style="padding:0 18px 30px">
+      <div class="testi" aria-label="Testimoni">
+        <div class="card-t">
+          <div class="stars">★★★★★</div>
+          <div style="font-weight:800">Amid Industries</div>
+          <div class="muted" style="margin-top:8px">"Pengiriman sangat reliable. Dashboard tracking realtime membantu operasi kami."</div>
+        </div>
+        <div class="card-t">
+          <div class="stars">★★★★★</div>
+          <div style="font-weight:800">PT. Bumi Kargo</div>
+          <div class="muted" style="margin-top:8px">"Harga bersaing untuk layanan rute internasional, support sangat responsif."</div>
+        </div>
+        <div class="card-t">
+          <div class="stars">★★★★☆</div>
+          <div style="font-weight:800">CV. Tunas Logistik</div>
+          <div class="muted" style="margin-top:8px">"Gudang smart mereka menghemat waktu penanganan kami."</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- footer -->
+  <footer>
+    <div class="ft-grid">
+      <div>
+        <img src="assets/logo/Logistik- kita.png" alt="logo" style="width:92px;margin-bottom:10px" onerror="this.style.opacity='.6'">
+        <div class="muted" style="font-size:13px">Mitra logistik modern untuk bisnis Anda. Visi: menghubungkan perdagangan secara efisien & aman.</div>
+      </div>
+
+      <div>
+        <h5>Quick Links</h5>
+        <div class="muted" style="line-height:1.9">
+          Beranda<br>Semua Layanan<br>Karir<br>Blog & Berita
+        </div>
+      </div>
+
+      <div>
+        <h5>Layanan Kami</h5>
+        <div class="muted" style="line-height:1.9">
+          Kargo Udara<br>Kargo Laut<br>Transportasi Darat<br>Pergudangan<br>Customs Clearance
+        </div>
+      </div>
+
+      <div>
+        <h5>Kontak & Newsletter</h5>
+        <div class="muted" style="font-size:13px">Jl. Contoh No.1, Surabaya<br>+62 812 3456 7890<br>hello@nusantaralog.com</div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <input type="email" placeholder="Email kamu" style="flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eaf3ff">
+          <button style="padding:10px 12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#051025;font-weight:700">Kirim</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright">© 2025 Nusantara Logistics. All rights reserved.</div>
+  </footer>
+
+  <!-- Search modal (simple) -->
+  <div id="searchModal" style="position:fixed;inset:0;display:none;place-items:center;z-index:10010;background:linear-gradient(0deg, rgba(0,0,0,0.5), rgba(0,0,0,0.6))">
+    <div style="width:92%;max-width:720px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 30px 80px rgba(0,0,0,0.6)">
+      <div style="display:flex;gap:12px">
+        <input id="searchBox" placeholder="Masukkan nomor resi atau kata kunci..." style="flex:1;padding:12px;font-size:16px;border-radius:10px;border:none;background:transparent;color:#eaf3ff" />
+        <button style="padding:10px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#051025;font-weight:800" onclick="doSearch()">CARI</button>
+      </div>
     </div>
   </div>
-</section>
-
-<!-- SERVICE SECTIONS -->
-<section class="section">
-  <div class="text">
-    <h2>Air Freight Express</h2>
-    <p>Pengiriman barang melalui udara dengan kecepatan tinggi.</p>
-    <a href="#">Pelajari Selengkapnya →</a>
-  </div>
-  <img src="https://images.pexels.com/photos/1732957/pexels-photo-1732957.jpeg" />
-</section>
-
-<section class="section">
-  <img src="https://images.pexels.com/photos/262353/pexels-photo-262353.jpeg" />
-  <div class="text">
-    <h2>Ocean Freight Solutions</h2>
-    <p>Pilihan pengiriman yang efisien dan ekonomis untuk kargo besar.</p>
-    <a href="#">Lihat Rute →</a>
-  </div>
-</section>
-
-<section class="section">
-  <div class="text">
-    <h2>Smart Warehousing</h2>
-    <p>Manajemen gudang terintegrasi dengan teknologi canggih.</p>
-    <a href="#">Pelajari Selengkapnya →</a>
-  </div>
-  <img src="https://images.pexels.com/photos/256297/pexels-photo-256297.jpeg" />
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div>
-    <h3>Nusantara Logistics</h3>
-    <p>Mitra logistik modern untuk bisnis Anda.</p>
-  </div>
-
-  <div>
-    <h3>Quick Links</h3>
-    <a>Beranda</a><br/>
-    <a>Layanan</a><br/>
-    <a>Karir</a><br/>
-    <a>Blog</a><br/>
-  </div>
-
-  <div>
-    <h3>Layanan Kami</h3>
-    <p>Kargo Udara</p>
-    <p>Kargo Laut</p>
-    <p>Transportasi Darat</p>
-    <p>Pergudangan</p>
-  </div>
-
-  <div>
-    <h3>Newsletter</h3>
-    <input type="email" placeholder="Masukkan Email Anda" />
-    <button>Kirim</button>
-  </div>
-</footer>
-
-<div class="copy">© 2025 Nusantara Logistics. All Rights Reserved.</div>
 
 <script>
-/* NAVBAR SHRINK */
-window.addEventListener("scroll", () => {
-  const nav = document.getElementById("navbar");
-  if (window.scrollY > 80) {
-    nav.classList.add("shrink");
-  } else {
-    nav.classList.remove("shrink");
-  }
+/* ===========================
+   Utilities & Interactions
+   =========================== */
+
+/* navbar shrink on scroll */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if(window.scrollY > 80) nav.classList.add('shrink'); else nav.classList.remove('shrink');
 });
 
-/* SEARCH OVERLAY */
-function openSearch() {
-  document.getElementById("searchOverlay").style.display = "flex";
+/* offcanvas toggler */
+const off = document.getElementById('offcanvas');
+function toggleOffcanvas(){ off.classList.toggle('open'); }
+
+/* search modal */
+const sm = document.getElementById('searchModal');
+function openSearch(){ sm.style.display = 'grid'; document.getElementById('searchBox').focus(); }
+function doSearch(){
+  const q = document.getElementById('searchBox').value.trim();
+  if(!q) return alert('Masukkan nomor resi atau kata kunci.');
+  // Demo behavior: show sample
+  alert('Mencari: ' + q + "\\n(Demo) — nanti akan terhubung ke API pelacakan.");
+  sm.style.display = 'none';
 }
-document.getElementById("searchOverlay").addEventListener("click", () => {
-  document.getElementById("searchOverlay").style.display = "none";
+sm.addEventListener('click', (e)=>{ if(e.target===sm) sm.style.display='none' });
+
+function openContact(){ alert('Hubungi kami: hello@nusantaralog.com • +62 812 3456 7890'); }
+
+/* tracking button (demo) */
+function trackNow(){
+  const v = document.getElementById('resiInput').value.trim();
+  if(!v){ document.getElementById('resiInput').focus(); return; }
+  // Instead of async call (can't run background), show simulated result
+  alert('Tracking: ' + v + '\\nStatus: In Transit • ETA: 2 hari (Demo)');
+}
+
+/* ===========================
+   Parallax / 3D mouse effect
+   =========================== */
+const hero = document.getElementById('hero');
+const card = document.getElementById('heroCard');
+const bg = document.getElementById('bgLayer');
+
+hero.addEventListener('mousemove', (e) => {
+  const rect = hero.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 .. 0.5
+  const y = (e.clientY - rect.top) / rect.height - 0.5;
+  const rx = (y * 8).toFixed(2);
+  const ry = (x * -12).toFixed(2);
+  card.style.transform = `translateZ(0px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+  // parallax background move slower
+  const bx = (x * -6).toFixed(2);
+  const by = (y * -4).toFixed(2);
+  bg.style.transform = `translate3d(${bx}px, ${by}px, -120px) scale(1.04)`;
 });
 
-/* SIDEBAR */
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("open");
+/* reset on leave */
+hero.addEventListener('mouseleave', ()=> {
+  card.style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg)';
+  bg.style.transform = 'translate3d(0px,0px,-120px) scale(1.04)';
+});
+
+/* scroll parallax for media cards */
+const mediaEls = document.querySelectorAll('.media');
+function parallaxOnScroll(){
+  const top = window.scrollY;
+  mediaEls.forEach((el, i)=>{
+    const depth = parseFloat(el.getAttribute('data-depth') || 0.06);
+    const offset = ((el.getBoundingClientRect().top - window.innerHeight/2) * depth);
+    el.style.transform = `translateY(${offset}px)`;
+  });
 }
+window.addEventListener('scroll', parallaxOnScroll);
+parallaxOnScroll();
+
+/* ===========================
+   Carousel (simple)
+   =========================== */
+const track = document.getElementById('carTrack');
+let idx = 0;
+function slideRight(){
+  const cards = track.children.length;
+  idx = Math.min(idx + 1, cards - 1);
+  updateTrack();
+}
+function slideLeft(){
+  idx = Math.max(idx - 1, 0);
+  updateTrack();
+}
+function updateTrack(){
+  const cardW = track.children[0].getBoundingClientRect().width + 18;
+  const shift = - (cardW * idx);
+  track.style.transform = `translateX(${shift}px)`;
+}
+
+/* allow swipe for carousel */
+let startX = null;
+track.addEventListener('touchstart', (e)=> startX = e.touches[0].clientX );
+track.addEventListener('touchend', (e)=>{
+  if(startX === null) return;
+  const endX = e.changedTouches[0].clientX;
+  const diff = startX - endX;
+  if(diff > 40) slideRight(); else if(diff < -40) slideLeft();
+  startX = null;
+});
+
+/* auto marquee for logo ribbon */
+const logoRibbon = document.getElementById('logoRibbon');
+let lr = 0;
+let marqueeSpeed = 0.35; // px per frame
+function marquee(){
+  // continuous scroll: clone content if needed
+  lr -= marqueeSpeed;
+  if(Math.abs(lr) > logoRibbon.scrollWidth/2) lr = 0;
+  logoRibbon.style.transform = `translateX(${lr}px)`;
+  requestAnimationFrame(marquee);
+}
+requestAnimationFrame(marquee);
+
+/* Accessibility: keyboard close search */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){ sm.style.display='none'; off.classList.remove('open') }
+});
+
+/* End of script */
 </script>
-
 </body>
 </html>
