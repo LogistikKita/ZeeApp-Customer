@@ -8,24 +8,13 @@
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-<!-- Lottie Player -->
-<script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
+<!-- Lottie Player (ke-load tapi tidak langsung dipakai sampai observer aktif) -->
+<script src="https://unpkg.com/lottie-web/build/player/lottie.min.js" defer></script>
 
 <style>
 /* ===========================================================
-   GLOBAL STYLE
+   VARIABLES (root first)
 =========================================================== */
-*{ margin:0; padding:0; box-sizing:border-box; }
-
-body{
-  font-family: "Plus Jakarta Sans", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s ease;
-  overflow-x:hidden;
-}
-
-/* LIGHT MODE */
 :root{
   --bg: #f5f7fa;
   --text: #111;
@@ -33,9 +22,12 @@ body{
   --accent: #3f8cff;
   --accent2: #00ff9d;
   --darknav: rgba(255,255,255,0.7);
+  --max-width: 1200px;
+  --radius: 16px;
+  --transition: 0.28s cubic-bezier(.2,.9,.2,1);
 }
 
-/* DARK MODE */
+/* DARK MODE toggled via body.dark class */
 body.dark{
   --bg: #0f1115;
   --text: #e7e7e7;
@@ -45,8 +37,21 @@ body.dark{
   --darknav: rgba(0,0,0,0.5);
 }
 
-/* Smooth Scroll */
+/* ===========================================================
+   BASE
+=========================================================== */
+*{ margin:0; padding:0; box-sizing:border-box; }
 html{ scroll-behavior:smooth; }
+body{
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .35s ease, color .35s ease;
+  overflow-x:hidden;
+}
+
+/* container helper */
+.container{ max-width:var(--max-width); margin:0 auto; padding:0 20px; }
 
 /* ===========================================================
    NAVBAR
@@ -58,41 +63,26 @@ html{ scroll-behavior:smooth; }
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:18px 40px;
-  backdrop-filter: blur(10px);
+  padding:18px 20px;
+  backdrop-filter: blur(8px);
   background: var(--darknav);
   z-index:1000;
-  transition:0.3s;
+  transition: padding .25s ease, background .35s ease;
 }
+.navbar.shrink{ padding:10px 20px; }
 
-.navbar.shrink{
-  padding:10px 40px;
-}
+.nav-left{ display:flex; align-items:center; gap:12px; }
+.nav-left img{ width:44px; height:auto; border-radius:6px; display:block; }
+.nav-left h1{ font-size:1.25rem; font-weight:800; letter-spacing:-0.6px; }
 
-.nav-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.nav-left img{
-  width:45px;
-}
-
-.nav-left h1{
-  font-size:1.5rem;
-  font-weight:800;
-  letter-spacing:-1px;
-}
-
-/* Dark Mode Toggle */
 .toggle-btn{
   cursor:pointer;
-  padding:8px 16px;
+  padding:8px 14px;
   border-radius:8px;
   background: var(--accent);
   color:white;
   font-weight:600;
+  border: none;
 }
 
 /* ===========================================================
@@ -100,34 +90,33 @@ html{ scroll-behavior:smooth; }
 =========================================================== */
 .banner-ads{
   width:100%;
-  height:200px;
-  background:url('https://images.unsplash.com/photo-1581093458791-9d07d6083cd5?auto=format&fit=crop&w=1600&q=80') center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  height:160px;
+  background:url('https://images.unsplash.com/photo-1581093458791-9d07d6083cd5?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center;
   position:relative;
+  border-bottom-left-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
+  overflow:hidden;
 }
-
 .banner-ads::after{
   content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.35);
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
 }
-
 .banner-ads h2{
-  position:relative;
-  z-index:2;
-  font-size:2rem;
-  font-weight:800;
-  color:white;
+  position:relative; z-index:2; font-size:1.6rem; font-weight:800; color:white;
+  text-align:center;
+  padding: 6px 12px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.15));
+  border-radius:8px;
 }
 
 /* ===========================================================
-   HERO SECTION
+   HERO
 =========================================================== */
 .hero{
-  height:90vh;
+  height:78vh;
+  min-height:480px;
   position:relative;
   display:flex;
   align-items:center;
@@ -135,456 +124,420 @@ html{ scroll-behavior:smooth; }
   text-align:center;
   color:white;
   overflow:hidden;
+  margin-top:18px;
 }
 
-/* Background Video/Img */
 .hero-bg{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter:brightness(55%);
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(45%); z-index:1;
 }
 
-/* Parallax layer */
-.parallax-layer{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
+/* parallax layer where Lottie will mount (pointer-events none) */
+.parallax-layer{ position:absolute; inset:0; pointer-events:none; z-index:3; }
 
-/* Hero Content */
-.hero-content{
-  position:relative;
-  z-index:10;
-  max-width:800px;
-  padding:20px;
-}
+/* content */
+.hero-content{ position:relative; z-index:6; max-width:900px; padding:20px; }
+.hero-content h1{ font-size:2.6rem; font-weight:800; line-height:1.04; margin-bottom:10px; }
+.hero-content p{ font-size:1.05rem; opacity:.9; margin-bottom:18px; color:rgba(255,255,255,0.92); }
 
-.hero-content h1{
-  font-size:4rem;
-  font-weight:800;
-  line-height:1.1;
-  margin-bottom:10px;
-}
-
-.hero-content p{
-  font-size:1.2rem;
-  opacity:0.8;
-  margin-bottom:20px;
-}
-
-/* Tracking Box */
-.track-box{
-  display:flex;
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  max-width:600px;
-  margin:auto;
-  border:3px solid var(--accent);
-}
-
-.track-box input{
-  flex:1;
-  padding:15px;
-  font-size:1rem;
-  border:none;
-  outline:none;
-}
-
-.track-btn{
-  padding:15px 25px;
-  background: var(--accent);
-  color:white;
-  font-weight:700;
-  cursor:pointer;
-}
+/* tracking */
+.track-box{ display:flex; background:rgba(255,255,255,0.95); border-radius:12px; overflow:hidden; max-width:640px; margin:auto; border:3px solid var(--accent); }
+.track-box input{ flex:1; padding:14px 16px; font-size:1rem; border:none; outline:none; color:#111; background:transparent; }
+.track-btn{ padding:12px 20px; background:var(--accent); color:#fff; font-weight:700; cursor:pointer; border:none; }
 
 /* ===========================================================
-   AUTO SLIDER (GALLERY)
+   GALLERY slider (fixed track)
+   Implementation: .gallery > .slider-track animated via JS
 =========================================================== */
-.gallery{
-  margin:80px auto;
-  padding:20px;
-  max-width:1200px;
-}
+.gallery{ margin:64px auto; max-width:var(--max-width); padding:0 20px; }
+.gallery h2{ font-size:1.6rem; font-weight:800; margin-bottom:14px; }
 
-.gallery h2{
-  font-size:2rem;
-  margin-bottom:20px;
-  font-weight:800;
-}
+/* viewport */
+.slider{ position:relative; width:100%; overflow:hidden; border-radius:12px; }
+.slider-track{ display:flex; gap:8px; transform:translateX(0); transition: transform .6s cubic-bezier(.2,.9,.25,1); }
+.slide{ min-width:100%; flex-shrink:0; position:relative; }
+.slide img{ width:100%; height:420px; object-fit:cover; display:block; border-radius:12px; }
 
-.slider{
-  width:100%;
-  overflow:hidden;
-  border-radius:20px;
-}
-
-.slider img{
-  width:100%;
-  height:450px;
-  object-fit:cover;
-  animation:slide 15s infinite;
-}
-
-@keyframes slide{
-  0%{ transform:translateX(0); }
-  33%{ transform:translateX(-100%); }
-  66%{ transform:translateX(-200%); }
-  100%{ transform:translateX(0); }
-}
+/* controls */
+.slider-controls{ display:flex; gap:8px; justify-content:center; margin-top:12px; }
+.ctrl-btn{ padding:8px 12px; border-radius:8px; background:var(--card); border:1px solid rgba(0,0,0,0.06); cursor:pointer; }
 
 /* ===========================================================
    ARMADA SECTION
 =========================================================== */
-.armada{
-  max-width:1200px;
-  margin:80px auto;
-  padding:20px;
-}
-
-.armada-item{
-  display:flex;
-  gap:40px;
-  margin-bottom:60px;
-  align-items:center;
-}
-
-.armada-item img{
-  width:50%;
-  border-radius:16px;
-}
-
-.armada-text{
-  width:50%;
-}
-
-.armada-text h3{
-  font-size:2rem;
-  margin-bottom:10px;
-  font-weight:800;
-}
-
-.more{
-  display:inline-block;
-  margin-top:10px;
-  font-weight:700;
-  color:var(--accent);
-  cursor:pointer;
-}
+.armada{ max-width:var(--max-width); margin:64px auto; padding:0 20px; }
+.armada-item{ display:flex; gap:32px; margin-bottom:48px; align-items:center; flex-wrap:wrap; }
+.armada-item img{ width:48%; border-radius:12px; object-fit:cover; }
+.armada-text{ width:48%; }
+.armada-text h3{ font-size:1.4rem; margin-bottom:8px; font-weight:800; }
+.armada-text p{ color:var(--text); opacity:.86; margin-bottom:12px; }
+.more{ display:inline-block; margin-top:6px; font-weight:700; color:var(--accent); cursor:pointer; }
 
 /* ===========================================================
-   TESTIMONI CARDS
+   TESTIMONI
 =========================================================== */
-.testimonial{
-  background:var(--card);
-  border-radius:20px;
-  padding:60px 20px;
-  max-width:1200px;
-  margin:80px auto;
-}
-
-.testimonial h2{
-  font-size:2rem;
-  margin-bottom:20px;
-  text-align:center;
-  font-weight:800;
-}
-
-.testi-wrap{
-  display:flex;
-  gap:20px;
-  overflow-x:auto;
-  padding-bottom:10px;
-}
-
-.testi{
-  min-width:280px;
-  padding:20px;
-  border-radius:15px;
-  background:var(--bg);
-  border:1px solid #3333;
-}
+.testimonial{ max-width:var(--max-width); margin:64px auto; padding:0 20px; }
+.testimonial h2{ text-align:center; font-size:1.6rem; margin-bottom:18px; font-weight:800; }
+.testi-wrap{ display:flex; gap:16px; overflow-x:auto; padding:8px 4px; }
+.testi{ min-width:260px; padding:18px; border-radius:10px; background:var(--card); box-shadow:0 6px 18px rgba(2,6,23,0.06); }
 
 /* ===========================================================
-   CLIENT LOGO SLIDER
+   CLIENT LOGO MARQUEE
 =========================================================== */
-.logo-slider{
-  margin:80px auto;
-  overflow:hidden;
-  white-space:nowrap;
-}
-
-.logo-track{
-  display:flex;
-  gap:60px;
-  animation:marquee 12s linear infinite;
-}
-
-.logo-track img{
-  width:120px;
-  opacity:0.5;
-  transition:0.3s;
-}
-
-.logo-track img:hover{
-  opacity:1;
-}
-
-@keyframes marquee{
-  0%{ transform:translateX(0); }
-  100%{ transform:translateX(-50%); }
-}
+.logo-slider{ max-width:var(--max-width); margin:56px auto; overflow:hidden; padding:0 20px; }
+.logo-track{ display:flex; gap:48px; align-items:center; transform: translateX(0); will-change: transform; }
+.logo-track img{ width:120px; opacity:.5; filter:grayscale(1); transition:opacity var(--transition); }
+.logo-track img:hover{ opacity:1; filter:none; }
 
 /* ===========================================================
    FOOTER
 =========================================================== */
-footer{
-  background:#000;
-  color:white;
-  padding:60px 40px;
-}
+footer{ background: #020203; color:#fff; padding:48px 20px; margin-top:56px; }
+footer .container{ display:flex; gap:40px; flex-wrap:wrap; }
+footer .col{ flex:1; min-width:200px; margin-bottom:20px; }
+footer h4{ font-size:1.05rem; margin-bottom:10px; font-weight:700; }
+footer ul{ list-style:none; padding-left:0; margin:0; }
+footer ul li{ margin-bottom:8px; opacity:.9; }
 
-footer .col{
-  margin-bottom:20px;
-}
-
-footer h4{
-  font-size:1.2rem;
-  margin-bottom:10px;
-  font-weight:700;
-}
-
-footer ul{
-  list-style:none;
-}
-
-footer ul li{
-  margin-bottom:6px;
-  opacity:0.8;
-}
-
-.copyright{
-  text-align:center;
-  margin-top:30px;
-  opacity:0.6;
-}
+/* copyright */
+.copyright{ text-align:center; color:rgba(255,255,255,0.6); margin-top:20px; }
 
 /* ===========================================================
    RESPONSIVE
 =========================================================== */
-@media(max-width:850px){
-  .armada-item{
-    flex-direction:column;
-  }
-  .armada-item img, .armada-text{
-    width:100%;
-  }
-  .hero-content h1{
-    font-size:2.4rem;
-  }
+@media(max-width:920px){
+  .hero-content h1{ font-size:1.8rem; }
+  .hero{ min-height:420px; }
+  .armada-item img, .armada-text{ width:100%; }
+  .track-box{ flex-direction:column; gap:8px; padding:8px; }
+  .track-box input{ padding:12px; }
+  .track-btn{ width:100%; padding:12px; border-radius:8px; }
 }
 
 </style>
 </head>
 <body>
 
-<!-- ===========================================================
-     NAVBAR
-=========================================================== -->
+<!-- NAVBAR -->
 <div class="navbar" id="nav">
   <div class="nav-left">
-    <img src="assets/logo/Logistik-kita.png" />
+    <img src="assets/logo/Logistik-kita.png" alt="Logo Logistik Kita" loading="lazy">
     <h1>LOGISTIK KITA</h1>
   </div>
 
-  <div class="toggle-btn" onclick="toggleDark()">Mode 🌗</div>
+  <button class="toggle-btn" aria-pressed="false" id="themeToggle">Mode 🌗</button>
 </div>
 
-<!-- ===========================================================
-     TOP BANNER IKLAN
-=========================================================== -->
-<div class="banner-ads">
-  <h2>Promo Pengiriman Akhir Tahun! ✈️📦</h2>
-</div>
+<!-- TOP BANNER IKLAN -->
+<section class="banner-ads" role="region" aria-label="Promosi">
+  <h2>Promo Pengiriman Akhir Tahun! Diskon hingga 20% ✈️📦</h2>
+</section>
 
-<!-- ===========================================================
-     HERO SECTION
-=========================================================== -->
-<section class="hero">
-  <img class="hero-bg" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80">
+<!-- HERO -->
+<section class="hero" role="region" aria-label="Hero">
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80" alt="Operasi logistik" loading="lazy">
 
-  <!-- Lottie Layer -->
-  <div id="lottie-layer" class="parallax-layer" style="opacity:0.6;"></div>
+  <!-- Parallax / Lottie mount point -->
+  <div id="lottie-layer" class="parallax-layer" aria-hidden="true" style="display:grid;place-items:center;pointer-events:none;opacity:.9;"></div>
 
-  <div class="hero-content">
-    <h1>MENGHUBUNGKAN DUNIA, <br> LEBIH CEPAT</h1>
-    <p>Solusi logistik terintegrasi untuk bisnis modern Anda.</p>
+  <div class="hero-content container">
+    <h1>MENGHUBUNGKAN DUNIA,<br>LEBIH CEPAT</h1>
+    <p>Solusi logistik terintegrasi untuk bisnis modern Anda. Realtime tracking, rute global, dan gudang pintar.</p>
 
-    <div class="track-box">
-      <input type="text" placeholder="Masukkan Nomor Resi Anda...">
-      <div class="track-btn">LACAK</div>
+    <div class="track-box" role="search" aria-label="Lacak resi">
+      <input id="resi" type="text" placeholder="Masukkan Nomor Resi Anda..." aria-label="Nomor resi" />
+      <button class="track-btn" id="btnTrack" aria-label="Lacak">LACAK</button>
     </div>
   </div>
 </section>
 
-<!-- ===========================================================
-     AUTO GALLERY SLIDER
-=========================================================== -->
-<div class="gallery">
-  <h2>Galeri Dokumentasi</h2>
+<!-- GALLERY: auto slider -->
+<section class="gallery">
+  <div class="container">
+    <h2>Galeri Dokumentasi</h2>
 
-  <div class="slider">
-    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1500&q=70">
-    <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1500&q=70">
-    <img src="https://images.unsplash.com/photo-1516239322201-5a9b86f7b8ab?auto=format&fit=crop&w=1500&q=70">
+    <div class="slider" id="gallerySlider" aria-roledescription="carousel">
+      <div class="slider-track" id="sliderTrack">
+        <div class="slide"><img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1500&q=70" alt="Dokumentasi 1" loading="lazy"></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1500&q=70" alt="Dokumentasi 2" loading="lazy"></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1516239322201-5a9b86f7b8ab?auto=format&fit=crop&w=1500&q=70" alt="Dokumentasi 3" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="slider-controls" style="margin-top:12px; display:flex; gap:10px; justify-content:center;">
+      <button class="ctrl-btn" id="prevSlide" aria-label="Sebelumnya">◀</button>
+      <button class="ctrl-btn" id="nextSlide" aria-label="Berikutnya">▶</button>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- ===========================================================
-     ARMADA SECTION WITH PHOTO + DESCRIPTION
-=========================================================== -->
-<div class="armada">
+<!-- ARMADA -->
+<section class="armada container" aria-label="Armada">
   <div class="armada-item">
-    <img src="https://images.unsplash.com/photo-1597005065970-17fa8e1a5a12?auto=format&fit=crop&w=1200&q=70">
+    <img src="https://images.unsplash.com/photo-1597005065970-17fa8e1a5a12?auto=format&fit=crop&w=1200&q=70" alt="Truck Wingbox" loading="lazy">
     <div class="armada-text">
       <h3>Truck Wingbox</h3>
-      <p>Ideal untuk pengiriman besar dengan keamanan ekstra.</p>
-      <div class="more">Lihat selengkapnya →</div>
+      <p>Ideal untuk pengiriman besar dengan keamanan ekstra. Kapasitas besar, cepat bongkar muat.</p>
+      <div class="more" tabindex="0" role="button" aria-label="Lihat selengkapnya tentang Truck Wingbox">Lihat selengkapnya →</div>
     </div>
   </div>
 
   <div class="armada-item">
-    <img src="https://images.unsplash.com/photo-1581093458791-9d07d6083cd5?auto=format&fit=crop&w=1200&q=70">
+    <img src="https://images.unsplash.com/photo-1581093458791-9d07d6083cd5?auto=format&fit=crop&w=1200&q=70" alt="Container 40ft" loading="lazy">
     <div class="armada-text">
       <h3>Container 40ft</h3>
-      <p>Kapasitas besar untuk ekspor & impor.</p>
-      <div class="more">Lihat selengkapnya →</div>
+      <p>Kapasitas besar untuk ekspor & impor. Ideal untuk pengiriman antar benua dan rute laut.</p>
+      <div class="more" tabindex="0" role="button" aria-label="Lihat selengkapnya tentang Container 40ft">Lihat selengkapnya →</div>
     </div>
   </div>
 
   <div class="armada-item">
-    <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1200&q=70">
+    <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1200&q=70" alt="Fuso Box" loading="lazy">
     <div class="armada-text">
       <h3>Fuso Box</h3>
-      <p>Efektif untuk pengiriman antar kota volume menengah.</p>
-      <div class="more">Lihat selengkapnya →</div>
+      <p>Efektif untuk pengiriman antar kota dengan volume menengah dan distribusi last-mile.</p>
+      <div class="more" tabindex="0" role="button" aria-label="Lihat selengkapnya tentang Fuso Box">Lihat selengkapnya →</div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ===========================================================
-     TESTIMONI
-=========================================================== -->
-<div class="testimonial">
+<!-- TESTIMONIAL -->
+<section class="testimonial container" aria-label="Testimoni">
   <h2>Dipercaya Banyak Perusahaan</h2>
-
-  <div class="testi-wrap">
-    <div class="testi">
-      ⭐⭐⭐⭐⭐  
+  <div class="testi-wrap" id="testiWrap" aria-live="polite">
+    <div class="testi" role="article">
+      <strong>PT Nusantara Abadi</strong>
+      <p>⭐⭐⭐⭐⭐</p>
       <p>"Pengiriman cepat dan aman. Sangat recommended!"</p>
-      <strong>- PT Nusantara Abadi</strong>
     </div>
 
-    <div class="testi">
-      ⭐⭐⭐⭐⭐  
+    <div class="testi" role="article">
+      <strong>LogisticHub</strong>
+      <p>⭐⭐⭐⭐⭐</p>
       <p>"Pelayanan terbaik untuk skala nasional."</p>
-      <strong>- LogisticHub</strong>
     </div>
 
-    <div class="testi">
-      ⭐⭐⭐⭐⭐  
+    <div class="testi" role="article">
+      <strong>GlobalMart</strong>
+      <p>⭐⭐⭐⭐⭐</p>
       <p>"Tim responsif, barang sampai tanpa kendala."</p>
-      <strong>- GlobalMart</strong>
     </div>
   </div>
-</div>
+</section>
 
-<!-- ===========================================================
-     CLIENT LOGO SLIDER
-=========================================================== -->
-<div class="logo-slider">
-  <div class="logo-track">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_Telkomsel.png">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Logo_Bank_Mandiri.png">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Logo_Pertamina.png">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Gojek_logo_2019.svg">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Logo_BRI.png">
+<!-- CLIENT LOGO MARQUEE -->
+<section class="logo-slider" aria-label="Klien kami">
+  <div id="logoTrack" class="logo-track" aria-hidden="true">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_Telkomsel.png" alt="Telkomsel" loading="lazy">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Logo_Bank_Mandiri.png" alt="Bank Mandiri" loading="lazy">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Logo_Pertamina.png" alt="Pertamina" loading="lazy">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Gojek_logo_2019.svg" alt="Gojek" loading="lazy">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Logo_BRI.png" alt="BRI" loading="lazy">
+    <!-- these will be cloned by JS for seamless marquee -->
   </div>
-</div>
+</section>
 
-<!-- ===========================================================
-     FOOTER
-=========================================================== -->
+<!-- FOOTER -->
 <footer>
-  <div class="col">
-    <h4>Tentang Kami</h4>
-    <p>Kami adalah perusahaan logistik berbasis teknologi yang berfokus pada efisiensi dan kecepatan.</p>
+  <div class="container">
+    <div class="col">
+      <h4>Tentang Kami</h4>
+      <p>Kami adalah perusahaan logistik berbasis teknologi yang berfokus pada efisiensi dan kecepatan.</p>
+    </div>
+
+    <div class="col">
+      <h4>Layanan</h4>
+      <ul>
+        <li>Kargo Udara</li>
+        <li>Kargo Laut</li>
+        <li>Transportasi Darat</li>
+        <li>Pergudangan</li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <h4>Kontak</h4>
+      <p>Email: info@logistikkita.com</p>
+      <p>Telp: 0812-3456-7890</p>
+    </div>
   </div>
 
-  <div class="col">
-    <h4>Layanan</h4>
-    <ul>
-      <li>Kargo Udara</li>
-      <li>Kargo Laut</li>
-      <li>Transportasi Darat</li>
-      <li>Pergudangan</li>
-    </ul>
-  </div>
-
-  <div class="col">
-    <h4>Kontak</h4>
-    <p>Email: info@logistikkita.com</p>
-    <p>Telp: 0812-3456-7890</p>
-  </div>
-
-  <div class="copyright">
+  <div class="container copyright">
     © 2025 Logistik Kita — Velocity Flow Design
   </div>
 </footer>
 
 <script>
 /* ===========================================================
-   DARK MODE TOGGLE
+   UTILITIES & INTERACTIONS
 =========================================================== */
-function toggleDark(){
-  document.body.classList.toggle("dark");
-}
 
-/* ===========================================================
-   NAV SHRINK ON SCROLL
-=========================================================== */
-const nav = document.getElementById("nav");
-window.addEventListener("scroll", () =>{
-  if(scrollY > 50) nav.classList.add("shrink");
-  else nav.classList.remove("shrink");
+/* NAV SHRINK */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) navEl.classList.add('shrink');
+  else navEl.classList.remove('shrink');
 });
 
-/* ===========================================================
-   PARALLAX 3D
-=========================================================== */
-document.addEventListener("mousemove", (e)=>{
-  const layer = document.querySelector(".parallax-layer");
-  const x = (window.innerWidth - e.pageX*2)/90;
-  const y = (window.innerHeight - e.pageY*2)/90;
+/* THEME TOGGLE */
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', () => {
+  const isDark = document.body.classList.toggle('dark');
+  themeToggle.setAttribute('aria-pressed', String(isDark));
+});
+
+/* TRACK BUTTON (demo) */
+document.getElementById('btnTrack').addEventListener('click', () => {
+  const val = document.getElementById('resi').value.trim();
+  if(!val){ alert('Masukkan nomor resi terlebih dahulu.'); return; }
+  // Simulasi: replace dengan API call di production
+  alert('Mencari resi: ' + val + '\\nStatus: In Transit (Demo)');
+});
+
+/* LIGHT PARALLAX (mouse) */
+document.addEventListener('mousemove', (e) => {
+  const layer = document.querySelector('.parallax-layer');
+  if(!layer) return;
+  const x = (e.clientX - window.innerWidth/2) / 60;
+  const y = (e.clientY - window.innerHeight/2) / 60;
   layer.style.transform = `translate(${x}px, ${y}px)`;
 });
 
 /* ===========================================================
-   LOTTIE LAZY LOAD ONLY ON DESKTOP
+   GALLERY SLIDER (Vanilla, responsive, auto)
+   - Uses sliderTrack, moves by slide width
+   - Pauses on hover
 =========================================================== */
-if(window.innerWidth > 850){
-  const anim = lottie.loadAnimation({
-    container: document.getElementById("lottie-layer"),
-    renderer: "svg",
-    loop: true,
-    autoplay: true,
-    path: "../lottie/velocity-arrow.json"
-  });
+const sliderTrack = document.getElementById('sliderTrack');
+const slides = sliderTrack.querySelectorAll('.slide');
+let currentIndex = 0;
+let slideWidth = 0;
+let sliderTimer = null;
+const AUTOPLAY_MS = 4500;
+
+function updateSlideMetrics(){
+  slideWidth = sliderTrack.clientWidth; // because each .slide is 100% of viewport
+  // ensure each slide width equals slider viewport width
+  sliderTrack.querySelectorAll('.slide').forEach(s => s.style.minWidth = sliderTrack.clientWidth + 'px');
+  moveTo(currentIndex);
 }
+function moveTo(index){
+  sliderTrack.style.transform = `translateX(-${index * slideWidth}px)`;
+}
+function nextSlide(){
+  currentIndex = (currentIndex + 1) % slides.length;
+  moveTo(currentIndex);
+}
+function prevSlide(){
+  currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+  moveTo(currentIndex);
+}
+window.addEventListener('resize', updateSlideMetrics);
+window.addEventListener('load', () => {
+  // set sizes after load
+  updateSlideMetrics();
+  startAutoPlay();
+});
+document.getElementById('nextSlide').addEventListener('click', () => { stopAutoPlay(); nextSlide(); startAutoPlay(); });
+document.getElementById('prevSlide').addEventListener('click', () => { stopAutoPlay(); prevSlide(); startAutoPlay(); });
+
+document.getElementById('gallerySlider').addEventListener('mouseenter', stopAutoPlay);
+document.getElementById('gallerySlider').addEventListener('mouseleave', startAutoPlay);
+
+function startAutoPlay(){
+  stopAutoPlay();
+  sliderTimer = setInterval(nextSlide, AUTOPLAY_MS);
+}
+function stopAutoPlay(){ if(sliderTimer) clearInterval(sliderTimer); }
+
+/* Touch support */
+let touchStartX = null;
+sliderTrack.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+sliderTrack.addEventListener('touchend', e => {
+  if(touchStartX === null) return;
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if(Math.abs(diff) > 40){
+    if(diff > 0) nextSlide(); else prevSlide();
+  }
+  touchStartX = null;
+});
+
+/* ===========================================================
+   CLIENT LOGO MARQUEE (clone for seamless loop)
+=========================================================== */
+const logoTrack = document.getElementById('logoTrack');
+function initLogoMarquee(){
+  // clone children to allow seamless loop
+  const nodes = Array.from(logoTrack.children);
+  nodes.forEach(n => {
+    const c = n.cloneNode(true);
+    logoTrack.appendChild(c);
+  });
+
+  // animate with requestAnimationFrame (smooth & low overhead)
+  let px = 0;
+  const speed = 0.5; // px per frame ~ adjust (lower is slower)
+  const totalWidth = logoTrack.scrollWidth / 2; // since cloned
+  function step(){
+    px -= speed;
+    if(Math.abs(px) >= totalWidth) px = 0;
+    logoTrack.style.transform = `translateX(${px}px)`;
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+initLogoMarquee();
+
+/* ===========================================================
+   LOTTIE LAZY LOAD (only when visible & only on desktop widths)
+   - Uses IntersectionObserver to avoid loading on mobile
+=========================================================== */
+function lazyLoadLottie(){
+  if(window.innerWidth <= 850) return; // skip on small screens
+  const mount = document.getElementById('lottie-layer');
+  if(!mount) return;
+
+  const obs = new IntersectionObserver((entries, o) => {
+    entries.forEach(en => {
+      if(en.isIntersecting){
+        // load animation (only once)
+        try {
+          lottie.loadAnimation({
+            container: mount,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: '../lottie/velocity-arrow.json' // your stored path
+          });
+        } catch(err){
+          // fail silently in case lottie not available
+          console.warn('Lottie failed to load', err);
+        }
+        o.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  obs.observe(mount);
+}
+document.addEventListener('DOMContentLoaded', lazyLoadLottie);
+
+/* ===========================================================
+   Accessibility: keyboard for "more" buttons (simple)
+=========================================================== */
+document.querySelectorAll('.more').forEach(el => {
+  el.addEventListener('keydown', e => {
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      el.click();
+    }
+  });
+});
+
+/* ===========================================================
+   Light optimization: ensure images lazy + no heavy reflows
+=========================================================== */
+/* all images already use loading="lazy" attribute */
+
+/* END */
 </script>
 
 </body>
