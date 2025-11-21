@@ -1,71 +1,311 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uji Coba Gemini Chat</title>
-    <style>
-        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
-        .chat-container { max-width: 600px; margin: auto; padding: 20px; border-radius: 8px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        #chat-output { min-height: 150px; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; overflow-y: scroll; background-color: #e9e9e9; border-radius: 4px; }
-        .user-msg { text-align: right; color: #007bff; }
-        .ai-msg { text-align: left; color: #28a745; border-top: 1px dashed #ccc; padding-top: 5px; margin-top: 5px; }
-        input[type="text"] { width: 80%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        button { width: 18%; padding: 8px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        .loader { display: none; margin-top: 10px; color: #555; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Logistik Kita — Prototype Landing</title>
+  <meta name="description" content="Prototype landing page Logistik Kita — modern animated UI" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;800&family=Montserrat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand-red:#D62828;
+      --dark:#0B0D17;
+      --soft:#F5F5F5;
+      --white:#FFFFFF;
+      --highlight:#FFBA08;
+      --glass: rgba(255,255,255,0.06);
+      --muted:#A3A3A3;
+      --maxw:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(180deg,var(--dark) 0%, #06070a 100%);color:var(--soft);-webkit-font-smoothing:antialiased;overflow-x:hidden
+    }
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}/* NAV */
+header{position:fixed;left:0;right:0;top:16px;z-index:60}
+.nav{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px}
+.logo .mark{width:44px;height:44px;border-radius:8px;background:var(--brand-red);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-family:Poppins}
+nav .links{display:flex;gap:18px;align-items:center}
+nav a{color:var(--soft);text-decoration:none;font-weight:600}
+.btn{background:var(--brand-red);color:white;padding:10px 18px;border-radius:10px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(214,40,40,0.18);transition:transform .18s ease,box-shadow .18s}
+.btn:hover{transform:translateY(-4px)}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.12);padding:9px 16px;border-radius:10px;color:var(--soft)}
+
+main{padding-top:120px}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1fr 520px;gap:40px;align-items:center;padding:80px 0}
+.hero-left h1{font-family:Poppins;font-size:48px;line-height:1.02;margin:0 0 16px}
+.hero-left p{margin:0 0 24px;color:var(--muted);max-width:620px}
+.hero-ctas{display:flex;gap:12px}
+
+.hero-right{position:relative;min-height:320px}
+.map-card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));border-radius:20px;padding:18px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.04)}
+.truck{position:absolute;right:24px;bottom:14px;width:220px;transform:translateX(0);animation:truckmove 10s linear infinite}
+@keyframes truckmove{0%{transform:translateX(-6px)}50%{transform:translateX(8px)}100%{transform:translateX(-6px)}}
+
+.floating-shape{position:absolute;left:-40px;top:-20px;width:220px;height:220px;border-radius:20px;opacity:0.06;background:linear-gradient(135deg,var(--brand-red),var(--highlight));filter:blur(24px)}
+
+/* Why choose */
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:40px 0}
+.card{background:var(--glass);padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;gap:10px}
+.ico{width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* Calculator */
+.calc-wrap{display:flex;gap:18px;align-items:stretch;margin:40px 0}
+.calc{flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid rgba(255,255,255,0.04)}
+.form-row{display:flex;gap:12px}
+.field{flex:1;display:flex;flex-direction:column;gap:8px}
+label{font-size:13px;color:var(--muted)}
+input,select{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--soft)}
+.price-box{min-width:260px;padding:18px;border-radius:14px;background:linear-gradient(180deg,var(--brand-red),#b72222);color:white;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.price-box h3{margin:0;font-size:14px;font-weight:600}
+.price{font-family:Montserrat;font-size:28px}
+
+/* Stats */
+.stats{display:flex;gap:18px;margin:40px 0}
+.stat{flex:1;background:rgba(255,255,255,0.03);padding:18px;border-radius:12px;text-align:center}
+.stat .num{font-family:Montserrat;font-size:28px}
+
+/* Armada grid */
+.fleet{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:40px 0}
+.fleet-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:12px}
+.fleet-card img{width:100%;border-radius:8px}
+
+/* Workflow timeline */
+.timeline{background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));padding:20px;border-radius:12px;margin:40px 0}
+.steps{display:flex;gap:18px;align-items:center;justify-content:space-between}
+.step{flex:1;text-align:center}
+.step .dot{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;background:rgba(255,255,255,0.04)}
+
+/* Testimonials */
+.testi{margin:40px 0}
+.carousel{position:relative;overflow:hidden}
+.slides{display:flex;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.slide{min-width:100%;padding:18px}
+
+/* Footer CTA */
+.cta-footer{background:var(--brand-red);padding:40px;border-radius:12px;margin:40px 0;text-align:center}
+
+footer{padding:40px 0}
+
+/* Responsive */
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;gap:20px;padding:40px 0}
+  .features{grid-template-columns:repeat(2,1fr)}
+  .fleet{grid-template-columns:repeat(2,1fr)}
+  .hero-left h1{font-size:36px}
+  .price-box{min-width:unset}
+}
+@media(max-width:600px){
+  .features{grid-template-columns:1fr}
+  .fleet{grid-template-columns:1fr}
+  header{top:8px}
+  .logo .mark{width:38px;height:38px}
+  .hero-left h1{font-size:28px}
+}
+
+  </style>
 </head>
 <body>
-    <div class="chat-container">
-        <h2>🤖 Uji Coba Chat Gemini (Netlify Function)</h2>
-        <div id="chat-output">Halo! Silakan ketik pesan Anda untuk diuji coba.</div>
-        <input type="text" id="user-input" placeholder="Tulis pesan..." onkeypress="if(event.keyCode == 13) sendMessage()">
-        <button onclick="sendMessage()">Kirim</button>
-        <div class="loader" id="loader">Sedang memproses...</div>
+  <header class="container">
+    <div class="nav">
+      <div class="logo">
+        <div class="mark">LK</div>
+        <div>
+          <div style="font-weight:700">Logistik Kita</div>
+          <div style="font-size:12px;color:var(--muted)">Cepat • Aman • Transparan</div>
+        </div>
+      </div>
+      <nav>
+        <div class="links">
+          <a href="#features">Kenapa Kami</a>
+          <a href="#tarif">Cek Tarif</a>
+          <a href="#armada">Armada</a>
+          <button class="btn" id="openForm">Input Pengiriman</button>
+        </div>
+      </nav>
     </div>
+  </header>  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Solusi Logistik Modern untuk Pengiriman Seluruh Jawa & Bali.</h1>
+        <p>Gabungkan kecepatan, transparansi tarif, dan armada andal. Cek tarif instan dan input pesanan dalam hitungan menit.</p>
+        <div class="hero-ctas">
+          <button class="btn" onclick="document.getElementById('calc').scrollIntoView({behavior:'smooth'})">Cek Tarif</button>
+          <button class="btn-outline" id="openCalc">Simulasi Carter</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="floating-shape"></div>
+        <div class="map-card">
+          <svg width="100%" height="220" viewBox="0 0 600 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="600" height="220" rx="14" fill="url(#g)"/>
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="rgba(255,255,255,0.02)"/><stop offset="1" stop-color="rgba(255,255,255,0.01)"/></linearGradient>
+            </defs>
+            <!-- map path -->
+            <path d="M40 180 C120 60, 220 20, 300 60 C380 100, 460 40, 560 80" stroke="rgba(255,255,255,0.14)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="44" cy="180" r="5" fill="var(--highlight)"/>
+            <circle cx="560" cy="80" r="6" fill="var(--brand-red)"/>
+          </svg>
+          <img class="truck" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 80'><rect rx='8' width='160' height='80' fill='%23D62828'/><circle cx='36' cy='62' r='10' fill='%230b0d17'/><circle cx='124' cy='62' r='10' fill='%230b0d17'/></svg>" alt="truck"/>
+        </div>
+      </div>
+    </section><section id="features">
+  <h2 style="font-family:Poppins">Kenapa Pilih Logistik Kita?</h2>
+  <div class="features">
+    <div class="card">
+      <div class="ico">⏱️</div>
+      <div style="font-weight:700">Pengiriman Cepat</div>
+      <div style="color:var(--muted);font-size:14px">Rute teroptimasi untuk waktu pengiriman lebih singkat.</div>
+    </div>
+    <div class="card">
+      <div class="ico">💸</div>
+      <div style="font-weight:700">Tarif Transparan</div>
+      <div style="color:var(--muted);font-size:14px">Estimasi biaya jelas sebelum konfirmasi.</div>
+    </div>
+    <div class="card">
+      <div class="ico">🚚</div>
+      <div style="font-weight:700">Armada Lengkap</div>
+      <div style="color:var(--muted);font-size:14px">Dari pickup kecil hingga truk besar, siap melayani.</div>
+    </div>
+    <div class="card">
+      <div class="ico">📞</div>
+      <div style="font-weight:700">Support 24/7</div>
+      <div style="color:var(--muted);font-size:14px">Tim kami selalu siap membantu operasi Anda.</div>
+    </div>
+  </div>
+</section>
 
-    <script>
-        // PENTING: Ganti dengan nama Netlify Function Anda
-        const NETLIFY_FUNCTION_URL = '/.netlify/functions/gemini-chat';
+<section id="tarif" class="calc-wrap">
+  <div id="calc" class="calc">
+    <h3 style="font-family:Poppins;margin:0 0 12px">Cek Tarif Instan</h3>
+    <div class="form-row">
+      <div class="field"><label>Asal</label><input id="asal" placeholder="Mojokerto"/></div>
+      <div class="field"><label>Tujuan</label><input id="tujuan" placeholder="Tanjung Perak"/></div>
+    </div>
+    <div class="form-row" style="margin-top:12px">
+      <div class="field"><label>Berat (kg)</label><input id="berat" type="number" value="10"/></div>
+      <div class="field"><label>Jumlah Koli</label><input id="koli" type="number" value="1"/></div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+      <label style="font-size:13px;color:var(--muted)">Layanan</label>
+      <select id="layanan"><option value="reguler">Reguler</option><option value="prioritas">Prioritas</option><option value="carter">Carter</option></select>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:12px;align-items:center">
+      <button class="btn" onclick="hitungTarif()">Hitung</button>
+      <div style="color:var(--muted);font-size:13px">*Estimasi cepat untuk prototipe</div>
+    </div>
+  </div>
+  <div class="price-box">
+    <h3>Estimasi Tarif</h3>
+    <div class="price" id="price">Rp —</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.9)" id="price-detail">Masukkan data dan klik Hitung</div>
+  </div>
+</section>
 
-        async function sendMessage() {
-            const inputElement = document.getElementById('user-input');
-            const outputElement = document.getElementById('chat-output');
-            const loaderElement = document.getElementById('loader');
-            const message = inputElement.value.trim();
+<section class="stats">
+  <div class="stat"><div class="num" data-target="12">0</div><div style="color:var(--muted);font-size:13px">Armada Aktif</div></div>
+  <div class="stat"><div class="num" data-target="120">0</div><div style="color:var(--muted);font-size:13px">Kota Tujuan</div></div>
+  <div class="stat"><div class="num" data-target="10000">0</div><div style="color:var(--muted);font-size:13px">Paket Terkirim</div></div>
+</section>
 
-            if (message === '') return;
+<section id="armada" class="fleet">
+  <div class="fleet-card"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='300'><rect width='600' height='300' rx='12' fill='%230b0d17'/><text x='50' y='160' fill='%23fff' font-size='28' font-family='Poppins'>Colt Diesel</text></svg>" alt="colt"><div style="margin-top:8px;font-weight:700">Colt Diesel</div><div style="color:var(--muted);font-size:13px">Capacity 2 ton</div></div>
+  <div class="fleet-card"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='300'><rect width='600' height='300' rx='12' fill='%231a1f2b'/><text x='50' y='160' fill='%23fff' font-size='28' font-family='Poppins'>Fuso</text></svg>" alt="fuso"><div style="margin-top:8px;font-weight:700">Fuso</div><div style="color:var(--muted);font-size:13px">Capacity 5 ton</div></div>
+  <div class="fleet-card"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='300'><rect width='600' height='300' rx='12' fill='%23222b33'/><text x='50' y='160' fill='%23fff' font-size='28' font-family='Poppins'>Wingbox</text></svg>" alt="wingbox"><div style="margin-top:8px;font-weight:700">Wingbox</div><div style="color:var(--muted);font-size:13px">Capacity 8 ton</div></div>
+</section>
 
-            // 1. Tampilkan pesan user
-            outputElement.innerHTML += `<div class="user-msg">Anda: ${message}</div>`;
-            inputElement.value = ''; // Kosongkan input
-            loaderElement.style.display = 'block'; // Tampilkan loader
-            outputElement.scrollTop = outputElement.scrollHeight; // Scroll ke bawah
+<section class="timeline">
+  <h3 style="font-family:Poppins">Alur Pengiriman</h3>
+  <div class="steps">
+    <div class="step"><div class="dot">1</div><div>Input Pesanan</div></div>
+    <div class="step"><div class="dot">2</div><div>Penjemputan</div></div>
+    <div class="step"><div class="dot">3</div><div>Proses & Pemantauan</div></div>
+    <div class="step"><div class="dot">4</div><div>Pengiriman</div></div>
+    <div class="step"><div class="dot">5</div><div>Barang Sampai</div></div>
+  </div>
+</section>
 
-            try {
-                // 2. Panggil Netlify Function
-                const response = await fetch(NETLIFY_FUNCTION_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: message })
-                });
+<section class="testi">
+  <h3 style="font-family:Poppins">Testimoni Pelanggan</h3>
+  <div class="carousel">
+    <div class="slides" id="slides">
+      <div class="slide"><div style="background:var(--glass);padding:18px;border-radius:12px">"Layanan cepat dan ramah. Harga juga transparan." — Budi, UMKM</div></div>
+      <div class="slide"><div style="background:var(--glass);padding:18px;border-radius:12px">"Armada lengkap, cocok untuk proyek kami." — PT Makmur</div></div>
+      <div class="slide"><div style="background:var(--glass);padding:18px;border-radius:12px">"Admin responsif, proses mudah." — Siti, Seller</div></div>
+    </div>
+  </div>
+</section>
 
-                const data = await response.json();
+<section class="cta-footer">
+  <h2 style="margin:0 0 8px;font-family:Poppins">Siap Kirim Barang Hari Ini?</h2>
+  <div style="margin-bottom:12px">Percayakan pada Logistik Kita — Mitra Pengiriman Terpercaya.</div>
+  <button class="btn" onclick="document.getElementById('openForm').click()">Input Pengiriman</button>
+</section>
 
-                // 3. Tampilkan respon AI
-                if (response.ok && data.text) {
-                    outputElement.innerHTML += `<div class="ai-msg">Gemini: ${data.text}</div>`;
-                } else {
-                    outputElement.innerHTML += `<div class="ai-msg" style="color: red;">[ERROR]: Gagal mendapatkan respon dari server. ${data.error || 'Cek logs Netlify Function.'}</div>`;
-                }
-            } catch (error) {
-                outputElement.innerHTML += `<div class="ai-msg" style="color: red;">[ERROR]: Koneksi Gagal. Cek URL Function. (${error.message})</div>`;
-            } finally {
-                loaderElement.style.display = 'none'; // Sembunyikan loader
-                outputElement.scrollTop = outputElement.scrollHeight; // Scroll ke bawah lagi
-            }
-        }
-    </script>
-</body>
+<footer>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;gap:12px;align-items:center"><div class="mark" style="width:48px;height:48px;border-radius:10px;background:var(--brand-red);display:flex;align-items:center;justify-content:center;font-weight:800">LK</div><div><div style="font-weight:700">Logistik Kita</div><div style="font-size:13px;color:var(--muted)">hotline: 0812-xxxx-xxxx</div></div></div>
+    <div style="color:var(--muted);font-size:13px">© 2025 Logistik Kita — All rights reserved</div>
+  </div>
+</footer>
+
+  </main>  <script>
+    // Simple tariff estimator (prototype logic)
+    function hitungTarif(){
+      const asal = document.getElementById('asal').value || 'Mojokerto';
+      const tujuan = document.getElementById('tujuan').value || 'Tanjung Perak';
+      const berat = Number(document.getElementById('berat').value) || 1;
+      const koli = Number(document.getElementById('koli').value) || 1;
+      const layanan = document.getElementById('layanan').value;
+
+      // crude distance estimator by string length (prototype only)
+      let baseDist = Math.max(20, Math.abs(tujuan.length - asal.length) * 12 + 40);
+      // base per kg rate
+      let rate = layanan==='prioritas' ? 8500 : 6500;
+      if(layanan==='carter') rate = 12000;
+
+      // price components
+      let priceKg = berat * rate;
+      let priceKoli = koli * 8000;
+      let distanceFactor = Math.round(baseDist/50);
+      let distanceCost = distanceFactor * 40000; // per 50km block
+      let total = priceKg + priceKoli + distanceCost;
+
+      // add small margin
+      total += 50000;
+
+      document.getElementById('price').textContent = formatIDR(total);
+      document.getElementById('price-detail').textContent = `Asal: ${asal} • Tujuan: ${tujuan} • Jarak~ ${baseDist}km • Komponen: ${formatIDR(priceKg)} (berat) + ${formatIDR(priceKoli)} (koli) + ${formatIDR(distanceCost)} (jarak)`;
+
+      // animate price box pulse
+      const box = document.querySelector('.price-box');
+      box.animate([{transform:'scale(1)'},{transform:'scale(1.02)'},{transform:'scale(1)'}],{duration:700});
+    }
+
+    function formatIDR(v){
+      return 'Rp '+v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    }
+
+    // Count up stats
+    document.addEventListener('DOMContentLoaded',()=>{
+      document.querySelectorAll('.num').forEach(el=>{
+        const to = Number(el.dataset.target) || 0; let cur=0; const step = Math.ceil(to/80);
+        const i = setInterval(()=>{cur+=step; if(cur>=to){cur=to; clearInterval(i);} el.textContent = cur.toLocaleString();},20);
+      });
+
+      // simple carousel
+      const slides = document.getElementById('slides'); let idx=0; const total = slides.children.length;
+      setInterval(()=>{idx=(idx+1)%total; slides.style.transform = `translateX(-${idx*100}%)`;},3500);
+
+      // open form / calc (demo)
+      document.getElementById('openCalc').addEventListener('click',()=>{document.getElementById('calc').scrollIntoView({behavior:'smooth'});});
+      document.getElementById('openForm').addEventListener('click',()=>{alert('Prototype: Form input pengiriman akan muncul di versi app.')});
+    });
+  </script></body>
 </html>
