@@ -1,235 +1,590 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Logistik Kita — Futuristic</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velocity Flow — Logistik Kita</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Lottie Player -->
+<script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
+
 <style>
-    :root {
-        --bg: #ffffff;
-        --text: #111;
-        --primary: #d60000;
-        --card: #f3f3f3;
-        --glow: rgba(214,0,0,0.45);
-    }
+/* ===========================================================
+   GLOBAL STYLE
+=========================================================== */
+*{ margin:0; padding:0; box-sizing:border-box; }
 
-    [data-theme="dark"] {
-        --bg: #0a0a0a;
-        --text: #f3f3f3;
-        --card: #1a1a1a;
-        --glow: rgba(255,50,50,0.4);
-    }
+body{
+  font-family: "Plus Jakarta Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
+  overflow-x:hidden;
+}
 
-    * {
-        margin: 0; padding: 0; box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-    }
+/* LIGHT MODE */
+:root{
+  --bg: #f5f7fa;
+  --text: #111;
+  --card: #ffffff;
+  --accent: #3f8cff;
+  --accent2: #00ff9d;
+  --darknav: rgba(255,255,255,0.7);
+}
 
-    body {
-        background: var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
-        transition: background 0.3s ease, color 0.3s ease;
-    }
+/* DARK MODE */
+body.dark{
+  --bg: #0f1115;
+  --text: #e7e7e7;
+  --card: #15171c;
+  --accent: #4da3ff;
+  --accent2: #00ffaa;
+  --darknav: rgba(0,0,0,0.5);
+}
 
-    header {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 20px 5%;
-        position: sticky;
-        top: 0;
-        background: var(--bg);
-        z-index: 999;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
+/* Smooth Scroll */
+html{ scroll-behavior:smooth; }
 
-    header img {
-        height: 45px;
-    }
+/* ===========================================================
+   NAVBAR
+=========================================================== */
+.navbar{
+  position:sticky;
+  top:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 40px;
+  backdrop-filter: blur(10px);
+  background: var(--darknav);
+  z-index:1000;
+  transition:0.3s;
+}
 
-    .theme-toggle {
-        padding: 10px 16px;
-        background: var(--primary);
-        color: #fff;
-        border-radius: 30px;
-        cursor: pointer;
-        font-size: 14px;
-        box-shadow: 0 0 12px var(--glow);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+.navbar.shrink{
+  padding:10px 40px;
+}
 
-    .hero {
-        height: 90vh;
-        display: flex;
-        align-items: center;
-        padding: 0 5%;
-        position: relative;
-        overflow: hidden;
-    }
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 
-    .hero h1 {
-        font-size: 3.2rem;
-        font-weight: 700;
-        line-height: 1.2;
-    }
+.nav-left img{
+  width:45px;
+}
 
-    .hero p {
-        margin-top: 10px;
-        max-width: 520px;
-        opacity: 0.8;
-    }
+.nav-left h1{
+  font-size:1.5rem;
+  font-weight:800;
+  letter-spacing:-1px;
+}
 
-    .cta-btn {
-        margin-top: 25px;
-        padding: 14px 26px;
-        background: var(--primary);
-        color: #fff;
-        border-radius: 12px;
-        border: none;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 0 15px var(--glow);
-        transition: transform .2s;
-    }
-    .cta-btn:hover {
-        transform: translateY(-3px);
-    }
+/* Dark Mode Toggle */
+.toggle-btn{
+  cursor:pointer;
+  padding:8px 16px;
+  border-radius:8px;
+  background: var(--accent);
+  color:white;
+  font-weight:600;
+}
 
-    /* Lightweight Parallax Elements */
-    .parallax-dot {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background: var(--primary);
-        border-radius: 50%;
-        opacity: 0.4;
-        filter: blur(2px);
-    }
+/* ===========================================================
+   TOP BANNER IKLAN
+=========================================================== */
+.banner-ads{
+  width:100%;
+  height:200px;
+  background:url('https://images.unsplash.com/photo-1581093458791-9d07d6083cd5?auto=format&fit=crop&w=1600&q=80') center/cover;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
 
-    .parallax-dot:nth-child(1){ top: 15%; left: 20%; }
-    .parallax-dot:nth-child(2){ top: 65%; left: 35%; }
-    .parallax-dot:nth-child(3){ top: 45%; left: 80%; }
+.banner-ads::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+}
 
-    /* Futuristic Card Section */
-    .features {
-        padding: 80px 5%;
-        display: grid;
-        gap: 25px;
-    }
+.banner-ads h2{
+  position:relative;
+  z-index:2;
+  font-size:2rem;
+  font-weight:800;
+  color:white;
+}
 
-    @media (min-width: 768px) {
-        .features {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
+/* ===========================================================
+   HERO SECTION
+=========================================================== */
+.hero{
+  height:90vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:white;
+  overflow:hidden;
+}
 
-    .card {
-        background: var(--card);
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 0 12px var(--glow);
-        transition: transform 0.25s;
-    }
-    .card:hover {
-        transform: translateY(-8px) scale(1.02);
-    }
+/* Background Video/Img */
+.hero-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:brightness(55%);
+}
 
-    .card svg {
-        width: 45px;
-        height: 45px;
-        margin-bottom: 15px;
-        stroke: var(--primary);
-    }
+/* Parallax layer */
+.parallax-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+/* Hero Content */
+.hero-content{
+  position:relative;
+  z-index:10;
+  max-width:800px;
+  padding:20px;
+}
+
+.hero-content h1{
+  font-size:4rem;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:10px;
+}
+
+.hero-content p{
+  font-size:1.2rem;
+  opacity:0.8;
+  margin-bottom:20px;
+}
+
+/* Tracking Box */
+.track-box{
+  display:flex;
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+  max-width:600px;
+  margin:auto;
+  border:3px solid var(--accent);
+}
+
+.track-box input{
+  flex:1;
+  padding:15px;
+  font-size:1rem;
+  border:none;
+  outline:none;
+}
+
+.track-btn{
+  padding:15px 25px;
+  background: var(--accent);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ===========================================================
+   AUTO SLIDER (GALLERY)
+=========================================================== */
+.gallery{
+  margin:80px auto;
+  padding:20px;
+  max-width:1200px;
+}
+
+.gallery h2{
+  font-size:2rem;
+  margin-bottom:20px;
+  font-weight:800;
+}
+
+.slider{
+  width:100%;
+  overflow:hidden;
+  border-radius:20px;
+}
+
+.slider img{
+  width:100%;
+  height:450px;
+  object-fit:cover;
+  animation:slide 15s infinite;
+}
+
+@keyframes slide{
+  0%{ transform:translateX(0); }
+  33%{ transform:translateX(-100%); }
+  66%{ transform:translateX(-200%); }
+  100%{ transform:translateX(0); }
+}
+
+/* ===========================================================
+   ARMADA SECTION
+=========================================================== */
+.armada{
+  max-width:1200px;
+  margin:80px auto;
+  padding:20px;
+}
+
+.armada-item{
+  display:flex;
+  gap:40px;
+  margin-bottom:60px;
+  align-items:center;
+}
+
+.armada-item img{
+  width:50%;
+  border-radius:16px;
+}
+
+.armada-text{
+  width:50%;
+}
+
+.armada-text h3{
+  font-size:2rem;
+  margin-bottom:10px;
+  font-weight:800;
+}
+
+.more{
+  display:inline-block;
+  margin-top:10px;
+  font-weight:700;
+  color:var(--accent);
+  cursor:pointer;
+}
+
+/* ===========================================================
+   TESTIMONI CARDS
+=========================================================== */
+.testimonial{
+  background:var(--card);
+  border-radius:20px;
+  padding:60px 20px;
+  max-width:1200px;
+  margin:80px auto;
+}
+
+.testimonial h2{
+  font-size:2rem;
+  margin-bottom:20px;
+  text-align:center;
+  font-weight:800;
+}
+
+.testi-wrap{
+  display:flex;
+  gap:20px;
+  overflow-x:auto;
+  padding-bottom:10px;
+}
+
+.testi{
+  min-width:280px;
+  padding:20px;
+  border-radius:15px;
+  background:var(--bg);
+  border:1px solid #3333;
+}
+
+/* ===========================================================
+   CLIENT LOGO SLIDER
+=========================================================== */
+.logo-slider{
+  margin:80px auto;
+  overflow:hidden;
+  white-space:nowrap;
+}
+
+.logo-track{
+  display:flex;
+  gap:60px;
+  animation:marquee 12s linear infinite;
+}
+
+.logo-track img{
+  width:120px;
+  opacity:0.5;
+  transition:0.3s;
+}
+
+.logo-track img:hover{
+  opacity:1;
+}
+
+@keyframes marquee{
+  0%{ transform:translateX(0); }
+  100%{ transform:translateX(-50%); }
+}
+
+/* ===========================================================
+   FOOTER
+=========================================================== */
+footer{
+  background:#000;
+  color:white;
+  padding:60px 40px;
+}
+
+footer .col{
+  margin-bottom:20px;
+}
+
+footer h4{
+  font-size:1.2rem;
+  margin-bottom:10px;
+  font-weight:700;
+}
+
+footer ul{
+  list-style:none;
+}
+
+footer ul li{
+  margin-bottom:6px;
+  opacity:0.8;
+}
+
+.copyright{
+  text-align:center;
+  margin-top:30px;
+  opacity:0.6;
+}
+
+/* ===========================================================
+   RESPONSIVE
+=========================================================== */
+@media(max-width:850px){
+  .armada-item{
+    flex-direction:column;
+  }
+  .armada-item img, .armada-text{
+    width:100%;
+  }
+  .hero-content h1{
+    font-size:2.4rem;
+  }
+}
 
 </style>
 </head>
 <body>
 
-<header>
-    <img src="assets/logo/Logistik-kita.png" alt="LOGO" />
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" 
-             viewBox="0 0 24 24" stroke-width="2" stroke="white" fill="none" stroke-linecap="round">
-            <path d="M12 3v2"></path>
-            <path d="M12 19v2"></path>
-            <path d="M5 12h-2"></path>
-            <path d="M21 12h-2"></path>
-            <circle cx="12" cy="12" r="4"></circle>
-        </svg>
-        Mode
-    </div>
-</header>
+<!-- ===========================================================
+     NAVBAR
+=========================================================== -->
+<div class="navbar" id="nav">
+  <div class="nav-left">
+    <img src="assets/logo/Logistik-kita.png" />
+    <h1>LOGISTIK KITA</h1>
+  </div>
 
+  <div class="toggle-btn" onclick="toggleDark()">Mode 🌗</div>
+</div>
+
+<!-- ===========================================================
+     TOP BANNER IKLAN
+=========================================================== -->
+<div class="banner-ads">
+  <h2>Promo Pengiriman Akhir Tahun! ✈️📦</h2>
+</div>
+
+<!-- ===========================================================
+     HERO SECTION
+=========================================================== -->
 <section class="hero">
-    <div class="text">
-        <h1>Solusi Logistik<br>Futuristik & Efisien</h1>
-        <p>
-            Layanan ekspedisi modern dengan akurasi tinggi, pelacakan real-time, dan sistem otomatis berbasis web.
-            Dibangun untuk kenyamanan customer & kecepatan operasional.
-        </p>
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1600&q=80">
 
-        <button class="cta-btn">
-            Mulai Kirim Sekarang →
-        </button>
+  <!-- Lottie Layer -->
+  <div id="lottie-layer" class="parallax-layer" style="opacity:0.6;"></div>
+
+  <div class="hero-content">
+    <h1>MENGHUBUNGKAN DUNIA, <br> LEBIH CEPAT</h1>
+    <p>Solusi logistik terintegrasi untuk bisnis modern Anda.</p>
+
+    <div class="track-box">
+      <input type="text" placeholder="Masukkan Nomor Resi Anda...">
+      <div class="track-btn">LACAK</div>
     </div>
-
-    <!-- Lightweight Parallax -->
-    <div class="parallax-dot"></div>
-    <div class="parallax-dot"></div>
-    <div class="parallax-dot"></div>
+  </div>
 </section>
 
-<section class="features">
-    <div class="card">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" stroke-width="2" fill="none" 
-             stroke-linecap="round">
-        <path d="M3 17l9 4l9 -4l-9 -4z" />
-        <path d="M3 12l9 4l9 -4l-9 -4z" />
-        <path d="M3 7l9 4l9 -4l-9 -4z" />
-        </svg>
-        <h3>Layanan Kilat</h3>
-        <p>Pengiriman cepat dengan jalur khusus prioritas.</p>
+<!-- ===========================================================
+     AUTO GALLERY SLIDER
+=========================================================== -->
+<div class="gallery">
+  <h2>Galeri Dokumentasi</h2>
+
+  <div class="slider">
+    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1500&q=70">
+    <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1500&q=70">
+    <img src="https://images.unsplash.com/photo-1516239322201-5a9b86f7b8ab?auto=format&fit=crop&w=1500&q=70">
+  </div>
+</div>
+
+<!-- ===========================================================
+     ARMADA SECTION WITH PHOTO + DESCRIPTION
+=========================================================== -->
+<div class="armada">
+  <div class="armada-item">
+    <img src="https://images.unsplash.com/photo-1597005065970-17fa8e1a5a12?auto=format&fit=crop&w=1200&q=70">
+    <div class="armada-text">
+      <h3>Truck Wingbox</h3>
+      <p>Ideal untuk pengiriman besar dengan keamanan ekstra.</p>
+      <div class="more">Lihat selengkapnya →</div>
+    </div>
+  </div>
+
+  <div class="armada-item">
+    <img src="https://images.unsplash.com/photo-1581093458791-9d07d6083cd5?auto=format&fit=crop&w=1200&q=70">
+    <div class="armada-text">
+      <h3>Container 40ft</h3>
+      <p>Kapasitas besar untuk ekspor & impor.</p>
+      <div class="more">Lihat selengkapnya →</div>
+    </div>
+  </div>
+
+  <div class="armada-item">
+    <img src="https://images.unsplash.com/photo-1504274066651-8d31a536b11a?auto=format&fit=crop&w=1200&q=70">
+    <div class="armada-text">
+      <h3>Fuso Box</h3>
+      <p>Efektif untuk pengiriman antar kota volume menengah.</p>
+      <div class="more">Lihat selengkapnya →</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===========================================================
+     TESTIMONI
+=========================================================== -->
+<div class="testimonial">
+  <h2>Dipercaya Banyak Perusahaan</h2>
+
+  <div class="testi-wrap">
+    <div class="testi">
+      ⭐⭐⭐⭐⭐  
+      <p>"Pengiriman cepat dan aman. Sangat recommended!"</p>
+      <strong>- PT Nusantara Abadi</strong>
     </div>
 
-    <div class="card">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" fill="none">
-            <circle cx="12" cy="12" r="9"></circle>
-            <path d="M12 7v5l3 3"></path>
-        </svg>
-        <h3>Tracking Real-Time</h3>
-        <p>Pantau paket kapan saja dengan teknologi live tracking.</p>
+    <div class="testi">
+      ⭐⭐⭐⭐⭐  
+      <p>"Pelayanan terbaik untuk skala nasional."</p>
+      <strong>- LogisticHub</strong>
     </div>
 
-    <div class="card">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2" fill="none">
-            <path d="M5 19h14l-1 -7h-12z"></path>
-            <path d="M15 6h3v6"></path>
-            <path d="M9 6h6"></path>
-        </svg>
-        <h3>Harga Transparan</h3>
-        <p>Perhitungan biaya otomatis, jelas, dan tanpa biaya tersembunyi.</p>
+    <div class="testi">
+      ⭐⭐⭐⭐⭐  
+      <p>"Tim responsif, barang sampai tanpa kendala."</p>
+      <strong>- GlobalMart</strong>
     </div>
-</section>
+  </div>
+</div>
+
+<!-- ===========================================================
+     CLIENT LOGO SLIDER
+=========================================================== -->
+<div class="logo-slider">
+  <div class="logo-track">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_Telkomsel.png">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Logo_Bank_Mandiri.png">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Logo_Pertamina.png">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Gojek_logo_2019.svg">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Logo_BRI.png">
+  </div>
+</div>
+
+<!-- ===========================================================
+     FOOTER
+=========================================================== -->
+<footer>
+  <div class="col">
+    <h4>Tentang Kami</h4>
+    <p>Kami adalah perusahaan logistik berbasis teknologi yang berfokus pada efisiensi dan kecepatan.</p>
+  </div>
+
+  <div class="col">
+    <h4>Layanan</h4>
+    <ul>
+      <li>Kargo Udara</li>
+      <li>Kargo Laut</li>
+      <li>Transportasi Darat</li>
+      <li>Pergudangan</li>
+    </ul>
+  </div>
+
+  <div class="col">
+    <h4>Kontak</h4>
+    <p>Email: info@logistikkita.com</p>
+    <p>Telp: 0812-3456-7890</p>
+  </div>
+
+  <div class="copyright">
+    © 2025 Logistik Kita — Velocity Flow Design
+  </div>
+</footer>
 
 <script>
-/* ====== MODE THEME ====== */
-function toggleTheme(){
-    const body = document.body;
-    const isDark = body.getAttribute("data-theme") === "dark";
-    body.setAttribute("data-theme", isDark ? "light" : "dark");
+/* ===========================================================
+   DARK MODE TOGGLE
+=========================================================== */
+function toggleDark(){
+  document.body.classList.toggle("dark");
 }
 
-/* ====== LIGHTWEIGHT PARALLAX ====== */
-document.addEventListener("mousemove", (e)=>{
-    document.querySelectorAll(".parallax-dot").forEach(dot => {
-        const speed = 0.02;
-        let x = (window.innerWidth - e.pageX*speed);
-        let y = (window.innerHeight - e.pageY*speed);
-        dot.style.transform = `translate(${x}px, ${y}px)`;
-    });
+/* ===========================================================
+   NAV SHRINK ON SCROLL
+=========================================================== */
+const nav = document.getElementById("nav");
+window.addEventListener("scroll", () =>{
+  if(scrollY > 50) nav.classList.add("shrink");
+  else nav.classList.remove("shrink");
 });
+
+/* ===========================================================
+   PARALLAX 3D
+=========================================================== */
+document.addEventListener("mousemove", (e)=>{
+  const layer = document.querySelector(".parallax-layer");
+  const x = (window.innerWidth - e.pageX*2)/90;
+  const y = (window.innerHeight - e.pageY*2)/90;
+  layer.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+/* ===========================================================
+   LOTTIE LAZY LOAD ONLY ON DESKTOP
+=========================================================== */
+if(window.innerWidth > 850){
+  const anim = lottie.loadAnimation({
+    container: document.getElementById("lottie-layer"),
+    renderer: "svg",
+    loop: true,
+    autoplay: true,
+    path: "../lottie/velocity-arrow.json"
+  });
+}
 </script>
 
 </body>
