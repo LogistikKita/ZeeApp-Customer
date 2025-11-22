@@ -116,11 +116,12 @@
         }
 
         /* Dropdown Menu Desktop */
+        /* Perbaikan: Atur posisi agar tidak berantakan di dalam kontainer flex (Revisi 2 Lanjutan) */
         .dropdown-menu {
             position: absolute;
             top: 100%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateY(10px); /* Geser sedikit ke bawah */
             min-width: 200px;
             padding: 10px 0;
             border-radius: 0.5rem;
@@ -133,8 +134,15 @@
         .dropdown-parent:hover .dropdown-menu {
             opacity: 1;
             visibility: visible;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(0); /* Kembali ke posisi normal saat hover */
         }
+        /* Style for dropdown items to inherit dark/light theme */
+        .dropdown-menu a {
+            display: block;
+            padding: 8px 20px;
+            white-space: nowrap;
+        }
+
 
         /* Mobile Menu (Smooth Animation) */
         #mobile-menu {
@@ -178,11 +186,11 @@
     <header class="sticky top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="#hero" class="flex items-center gap-2 group">
-                <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="w-8 h-8 lg:w-10 lg:h-10 transition-all">
-                <span class="text-lg lg:text-xl font-bold tracking-tight text-[var(--color-dark)] transition-colors">LOGISTIK KITA</span>
+                <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="w-8 h-8 lg:w-12 lg:h-12 transition-all">
+                <span class="text-lg lg:text-2xl font-bold tracking-tight text-[var(--color-dark)] transition-colors">LOGISTIK KITA</span>
             </a>
 
-            <nav class="hidden lg:flex items-center gap-6 font-medium text-sm">
+            <nav class="hidden lg:flex items-center gap-6 font-medium text-sm h-full">
                 <a href="#hero" class="text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">BERANDA</a>
                 
                 <div class="dropdown-parent relative h-full flex items-center">
@@ -210,7 +218,7 @@
                         <a href="#" class="hover:text-[var(--color-primary)]">Testimoni Klien</a>
                     </div>
                 </div>
-                
+
                 <div class="dropdown-parent relative h-full flex items-center">
                     <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
                         BLOG / BERITA <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
