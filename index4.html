@@ -1,182 +1,904 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistik Kita — Landing Page</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:"Plus Jakarta Sans",sans-serif;}
-    body{
-      background:url('../assets/background-lk.jpg') fixed center/cover;
-      color:#111;
-      overflow-x:hidden;
-      transition:0.3s;
-    }
-    body.dark{background:#0a0a0a;color:#eee;}/* HEADER */
-header{
-  position:fixed;top:0;left:0;width:100%;z-index:1000;
-  backdrop-filter:blur(14px);
-  background:rgba(255,255,255,0.35);
-  border-bottom:1px solid rgba(255,255,255,0.3);
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 26px;
-}
-body.dark header{background:rgba(0,0,0,0.45);border-color:rgba(255,255,255,0.1);}    
-header img{height:48px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda - Logistik Kita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================================= */
+        /* == PALET WARNA LOGISTIK KITA (MERAH-KUNING) & FONT == */
+        /* ======================================================= */
+        :root {
+            /* --- Light Mode Default --- */
+            --color-primary: #E51D2A;    /* Merah Menyala */
+            --color-primary-dark: #b91c1c; /* Merah Hover */
+            --color-accent: #FFC72C;     /* Kuning Cerah */
+            --color-accent-dark: #f5b91b; /* Kuning Hover */
+            --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
+            --color-light: #ffffff;      /* Putih Bersih */
+            --color-bg-light: #f3f4f6;   /* Gray 100 - Background/Border */
+            --color-text-secondary: #6b7280; /* Gray 500/600 */
+            
+            /* Variable Warna Overlay untuk Background Image */
+            /* Light Mode: Putih 95% opacity. */
+            --image-overlay: rgba(255, 255, 255, 0.95); 
+            
+            /* Glass utilities */
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
 
-nav ul{display:flex;gap:26px;list-style:none;align-items:center;}
-nav ul li{position:relative;cursor:pointer;font-weight:600;}
-nav ul li:hover .dropdown{display:block;}
+        /* --- Dark Mode Overrides (Deep Dark Gray) --- */
+        html.dark {
+            --color-primary: #f87171;    
+            --color-primary-dark: #ef4444; 
+            --color-accent: #fcd34d;     
+            --color-accent-dark: #fbbf24; 
+            --color-dark: #f3f4f6;       /* Teks Utama (Putih) */
+            --color-light: #18181B;      /* Background Utama */
+            --color-bg-light: #27272A;   /* Border/Shadow Ringan */
+            --color-text-secondary: #a1a1aa; 
+            
+            /* Dark Mode Overlay: Hampir Hitam 90% opacity */
+            --image-overlay: rgba(24, 24, 27, 0.9); 
+            
+            /* Glass utilities (Dark) */
+            --glass-bg: rgba(24, 24, 27, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Custom Scrollbar (Dipertahankan dari Vanguard) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--color-light); }
+        ::-webkit-scrollbar-thumb { background: var(--color-primary-dark); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
+        
+        /* Base Settings */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--color-dark);
+            overflow-x: hidden;
+            background-color: var(--image-overlay); /* Base color jika image gagal load */
+        }
 
-.dropdown{
-  display:none;position:absolute;top:38px;left:0;
-  background:white;padding:16px 0;border-radius:10px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.15);
-  min-width:240px;
-}
-body.dark .dropdown{background:#1b1b1b;}
-.dropdown a{display:block;padding:10px 20px;color:#111;text-decoration:none;font-size:15px;font-weight:500;}
-body.dark .dropdown a{color:#eee;}
-.dropdown a:hover{background:#f0f0f0;}    
-body.dark .dropdown a:hover{background:#333;}
+        /* Parallax Background (Revisi: Menggunakan asset Logistik Kita) */
+        .parallax-bg {
+            /* Revisi Background Image */
+            background-image: linear-gradient(to bottom, var(--image-overlay), var(--image-overlay)), 
+                              url('assets/background-lk.jpg');
+            background-attachment: fixed;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            transition: background-image 0.5s;
+        }
 
-.icon-btn{
-  cursor:pointer;font-size:20px;margin-left:16px;
-  transition:0.2s;
-}
-.icon-btn:hover{opacity:0.7;}
+        /* Utility Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Glass Utilities */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            transition: background 0.3s, border 0.3s;
+        }
+        /* Glass Nav (Revisi: Lebih transparan saat scroll) */
+        .glass-nav {
+            background: var(--image-overlay);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--color-bg-light);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
 
-/* HERO */
-.hero{
-  width:100%;height:90vh;display:flex;align-items:center;justify-content:center;
-  text-align:center;color:white;
-  padding-top:120px;
-  background:rgba(0,0,0,0.55);
-  backdrop-filter:blur(3px);
-}
-.hero h1{font-size:48px;font-weight:800;}
+        /* Dropdown Menu Desktop (New) */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 200px;
+            padding: 10px 0;
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 60;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .dropdown-parent:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .dropdown-menu a {
+            padding: 8px 16px;
+            display: block;
+            white-space: nowrap;
+        }
 
-/* MODERN FLEET */
-.section{padding:90px 20px;text-align:center;backdrop-filter:blur(2px);}    
-.section h2{font-size:40px;margin-bottom:10px;font-weight:800;}
-.section p{max-width:680px;margin:0 auto;font-size:17px;opacity:0.9;}
+        /* Mobile Menu (Revisi Poin 1: Animasi Smooth) */
+        #mobile-menu {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+        /* Mobile Accordion (Revisi Poin 2: Menu Kompleks) */
+        .mobile-accordion summary {
+            list-style: none;
+            position: relative;
+            padding-right: 2rem;
+        }
+        .mobile-accordion summary::-webkit-details-marker {
+            display: none;
+        }
+        .mobile-accordion summary::after {
+            content: '+';
+            position: absolute;
+            right: 1rem;
+            font-size: 1.5rem;
+            line-height: 1;
+            transition: transform 0.3s;
+        }
+        .mobile-accordion[open] summary::after {
+            content: '-';
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[var(--color-primary)] selection:text-white text-[var(--color-dark)]">
 
-.fleet-carousel,.portrait-carousel{
-  display:flex;overflow-x:auto;gap:18px;padding:20px;margin-top:32px;
-  scroll-snap-type:x mandatory;
-}
-.fleet-carousel img,.portrait-carousel img{
-  height:260px;border-radius:18px;scroll-snap-align:center;
-}
-.portrait-carousel img{height:360px;aspect-ratio:3/4;object-fit:cover;}
+    <div class="fixed inset-0 parallax-bg z-[-1]"></div>
 
-footer{
-  background:#111;color:white;padding:50px 20px;margin-top:120px;
-  text-align:center;
-}
+    <header class="sticky top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-2 group">
+                <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="w-10 h-10 transition-all">
+                <span class="text-xl font-bold tracking-tight text-[var(--color-dark)] transition-colors">LOGISTIK KITA</span>
+            </a>
 
-  </style>
-</head><body>
-  <!-- HEADER -->
-  <header>
-    <img src="../assets/logo/Logistik-Kita.png" alt="Logo Logistik Kita" /><nav>
-  <ul>
-    <li>BERANDA</li>
+            <nav class="hidden lg:flex items-center gap-6 font-medium text-sm">
+                <a href="#hero" class="text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">BERANDA</a>
+                
+                <div class="dropdown-parent relative h-full flex items-center">
+                    <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                        LAYANAN & ARMADA <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
+                    </button>
+                    <div class="dropdown-menu glass text-[var(--color-dark)]">
+                        <a href="#" class="hover:text-[var(--color-primary)]">Kapasitas Armada</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Jangkauan Pengiriman</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Prosedur Keamanan</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Simulasi Harga Estimasi</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Jenis Layanan</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Sewa Mobil</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Travel and Tour</a>
+                    </div>
+                </div>
 
-    <li>LAYANAN & ARMADA
-      <div class="dropdown">
-        <a href="#">Kapasitas Armada</a>
-        <a href="#">Jangkauan Pengiriman</a>
-        <a href="#">Prosedur Keamanan</a>
-        <a href="#">Simulasi Harga Estimasi</a>
-        <a href="#">Jenis Layanan</a>
-        <a href="#">Sewa Mobil</a>
-        <a href="#">Travel and Tour</a>
-      </div>
-    </li>
+                <div class="dropdown-parent relative h-full flex items-center">
+                    <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                        GALERI & PORTOFOLIO <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
+                    </button>
+                    <div class="dropdown-menu glass text-[var(--color-dark)]">
+                        <a href="#" class="hover:text-[var(--color-primary)]">Dokumentasi Pengiriman</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Kisah Sukses Lokal</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Testimoni Klien</a>
+                    </div>
+                </div>
+                
+                <div class="dropdown-parent relative h-full flex items-center">
+                    <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                        BLOG / BERITA <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
+                    </button>
+                    <div class="dropdown-menu glass text-[var(--color-dark)]">
+                        <a href="#" class="hover:text-[var(--color-primary)]">Berita Terbaru</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Tips Logistik</a>
+                    </div>
+                </div>
 
-    <li>GALERI & PORTOFOLIO
-      <div class="dropdown">
-        <a href="#">Dokumentasi Pengiriman</a>
-        <a href="#">Kisah Sukses Lokal</a>
-        <a href="#">Testimoni Klien</a>
-      </div>
-    </li>
+                <div class="dropdown-parent relative h-full flex items-center">
+                    <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                        MITRA ARMADA <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
+                    </button>
+                    <div class="dropdown-menu glass text-[var(--color-dark)]">
+                        <a href="#" class="hover:text-[var(--color-primary)]">Pendaftaran Mitra</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Info Muatan Balik</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Driver Terbaik Bulan Ini</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">SOP Mitra</a>
+                    </div>
+                </div>
+                
+                <a href="#" class="text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">LAPAK KITA</a>
+                
+                <div class="dropdown-parent relative h-full flex items-center">
+                    <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                        TENTANG KITA <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
+                    </button>
+                    <div class="dropdown-menu glass text-[var(--color-dark)]">
+                        <a href="#" class="hover:text-[var(--color-primary)]">Visi, Misi & Nilai</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Profil dan Legalitas</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]">Penanganan Resiko</a>
+                    </div>
+                </div>
 
-    <li>BLOG / BERITA
-      <div class="dropdown">
-        <a href="#">Berita Terbaru</a>
-        <a href="#">Tips Logistik</a>
-      </div>
-    </li>
+                <a href="#contact-cta" class="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-md">
+                    HUBUNGI KITA
+                </a>
+                
+            </nav>
 
-    <li>MITRA ARMADA
-      <div class="dropdown">
-        <a href="#">Pendaftaran Mitra</a>
-        <a href="#">Info Muatan Balik</a>
-        <a href="#">Driver Terbaik Bulan Ini</a>
-        <a href="#">SOP Mitra</a>
-      </div>
-    </li>
+            <div class="flex items-center gap-4">
+                
+                <button class="p-2 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </button>
+                
+                <button id="theme-toggle" class="p-2 rounded-full text-[var(--color-dark)] hover:bg-[var(--color-bg-light)] transition">
+                    <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
+                    <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
+                </button>
 
-    <li>LAPAK KITA
-      <div class="dropdown">
-        <a href="#">Forum Jual Beli</a>
-      </div>
-    </li>
+                <a href="#" class="hidden sm:block px-4 py-2 text-sm font-medium text-[var(--color-dark)] bg-[var(--color-accent)] rounded hover:bg-[var(--color-accent-dark)] transition-all duration-300 shadow-md">
+                    DAFTAR / MASUK
+                </a>
 
-    <li>TENTANG KITA
-      <div class="dropdown">
-        <a href="#">Visi, Misi & Nilai</a>
-        <a href="#">Profil dan Legalitas</a>
-        <a href="#">Penanganan Resiko</a>
-      </div>
-    </li>
+                <button id="menu-btn" class="lg:hidden text-[var(--color-dark)] p-2">
+                    <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+                    <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
-    <li>HUBUNGI KITA
-      <div class="dropdown">
-        <a href="#">Formulir RFQ</a>
-        <a href="#">Informasi Kontak</a>
-        <a href="#">Lokasi Kantor</a>
-      </div>
-    </li>
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-[var(--image-overlay)] flex flex-col items-start pt-24 pb-8 overflow-y-auto lg:hidden">
+        <nav class="w-full text-[var(--color-dark)] font-medium">
+            <a href="#hero" class="mobile-link block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors">BERANDA</a>
+            
+            <details class="mobile-accordion w-full">
+                <summary class="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">LAYANAN & ARMADA</summary>
+                <div class="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Kapasitas Armada</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Jangkauan Pengiriman</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Prosedur Keamanan</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Simulasi Harga Estimasi</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Jenis Layanan</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Sewa Mobil</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[var(--color-primary)]">Travel and Tour</a>
+                </div>
+            </details>
 
-    <li>DAFTAR / MASUK</li>
-  </ul>
-</nav>
+            <details class="mobile-accordion w-full">
+                <summary class="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">GALERI & PORTOFOLIO</summary>
+                <div class="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Dokumentasi Pengiriman</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Kisah Sukses Lokal</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[var(--color-primary)]">Testimoni Klien</a>
+                </div>
+            </details>
+            
+            <details class="mobile-accordion w-full">
+                <summary class="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">BLOG / BERITA</summary>
+                <div class="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Berita Terbaru</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[var(--color-primary)]">Tips Logistik</a>
+                </div>
+            </details>
 
-<div style="display:flex;align-items:center;">
-  <div id="searchBtn" class="icon-btn">🔍</div>
-  <div id="themeToggle" class="icon-btn">🌙</div>
-</div>
+            <details class="mobile-accordion w-full">
+                <summary class="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">MITRA ARMADA</summary>
+                <div class="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Pendaftaran Mitra</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Info Muatan Balik</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Driver Terbaik Bulan Ini</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[var(--color-primary)]">SOP Mitra</a>
+                </div>
+            </details>
+            
+            <a href="#" class="mobile-link block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors">LAPAK KITA</a>
 
-  </header>  <!-- HERO -->  <div class="hero">
-    <h1>Solusi Logistik Modern & Terpercaya</h1>
-  </div>  <!-- MODERN FLEET -->  <section class="section">
-    <h2>Our Modern Fleet</h2>
-    <p>Kami menggunakan armada terbaru yang dirawat secara berkala untuk memastikan setiap pengiriman aman, cepat, dan tepat waktu.</p><div class="fleet-carousel">
-  <img src="../assets/fleet1.jpg" />
-  <img src="../assets/fleet2.jpg" />
-  <img src="../assets/fleet3.jpg" />
-</div>
+            <details class="mobile-accordion w-full">
+                <summary class="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">TENTANG KITA</summary>
+                <div class="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Visi, Misi & Nilai</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Profil dan Legalitas</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[var(--color-primary)]">Penanganan Resiko</a>
+                </div>
+            </details>
 
-  </section>  <!-- PORTRAIT CAROUSEL -->  <section class="section">
-    <h2>Operational Highlights</h2>
-    <p>Dokumentasi aktivitas operasional harian yang menunjukkan komitmen kami dalam menyediakan layanan logistik terbaik bagi pelanggan.</p><div class="portrait-carousel">
-  <img src="../assets/doc1.jpg" />
-  <img src="../assets/doc2.jpg" />
-  <img src="../assets/doc3.jpg" />
-</div>
+            <details class="mobile-accordion w-full">
+                <summary class="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">HUBUNGI KITA</summary>
+                <div class="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Formulir RFQ</a>
+                    <a href="#" class="block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Informasi Kontak</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[var(--color-primary)]">Lokasi Kantor</a>
+                </div>
+            </details>
 
-  </section>  <!-- FOOTER -->  <footer>
-    <p>© 2025 Logistik Kita — All Rights Reserved</p>
-  </footer>  <script>
-    const themeToggle=document.getElementById('themeToggle');
-    themeToggle.onclick=()=>{
-      document.body.classList.toggle('dark');
-      themeToggle.textContent=document.body.classList.contains('dark')?'☀️':'🌙';
-    };
-  </script></body>
+            <a href="#" class="mobile-link block px-6 py-3 bg-[var(--color-accent)] text-[var(--color-dark)] font-bold hover:bg-[var(--color-accent-dark)] transition-colors mt-4">DAFTAR / MASUK</a>
+        </nav>
+    </div>
+    
+    <section id="hero" class="relative min-h-screen flex items-center justify-center px-6 pt-20">
+        <div class="max-w-5xl mx-auto text-center z-10">
+            <div class="reveal">
+                <span class="inline-block py-1 px-3 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-semibold tracking-widest uppercase mb-6">Solusi Logistik Terpercaya</span>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-[var(--color-dark)] leading-tight mb-6">
+                    Memajukan Ekonomi <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)]">Nusantara, Lebih Cepat.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+                    Kami menggabungkan teknologi pelacakan terkini dengan jaringan mitra terluas untuk memastikan kargo Anda tiba tepat waktu, setiap saat.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#gallery" class="group relative px-8 py-4 bg-[var(--color-primary)] text-white text-sm font-bold rounded overflow-hidden transition-all hover:bg-[var(--color-primary-dark)] shadow-lg">
+                        <span class="relative z-10 flex items-center gap-2">
+                            Cek Armada Kami <i data-lucide="truck" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="px-8 py-4 bg-[var(--color-light)]/5 border border-[var(--color-bg-light)] backdrop-blur-sm text-[var(--color-dark)] text-sm font-bold rounded hover:bg-[var(--color-bg-light)] transition-all shadow-md">
+                        Lacak Pengiriman
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-[var(--color-primary)]">
+            <i data-lucide="arrow-down" class="w-6 h-6"></i>
+        </div>
+    </section>
+
+    <section class="relative z-10 px-6 -mt-20 pb-20">
+        <div class="max-w-6xl mx-auto reveal">
+            <div class="glass rounded-2xl p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+                <div>
+                    <h3 class="text-4xl font-black text-[var(--color-dark)] mb-1">150+</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] uppercase tracking-wider">Jaringan Rute</p>
+                </div>
+                <div class="w-full h-px md:w-px md:h-12 bg-[var(--color-bg-light)]"></div>
+                <div>
+                    <h3 class="text-4xl font-black text-[var(--color-dark)] mb-1">2M+</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] uppercase tracking-wider">Kargo Terkirim</p>
+                </div>
+                <div class="w-full h-px md:w-px md:h-12 bg-[var(--color-bg-light)]"></div>
+                <div>
+                    <h3 class="text-4xl font-black text-[var(--color-dark)] mb-1">99.9%</h3>
+                    <p class="text-sm text-[var(--color-text-secondary)] uppercase tracking-wider">Tingkat Ketepatan Waktu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="fleet" class="relative py-24 bg-[var(--color-light)] text-[var(--color-dark)] overflow-hidden border-b border-[var(--color-bg-light)]">
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-2">Armada Modern Kami</h2>
+                    <p class="text-[var(--color-text-secondary)] max-w-lg">
+                        Dari pengiriman *first mile* yang gesit hingga kargo berat lintas pulau, kami memiliki unit yang tepat.
+                    </p>
+                </div>
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <button id="prevBtnFleet" class="carousel-btn p-3 rounded-full border border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors text-[var(--color-dark)]">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <button id="nextBtnFleet" class="carousel-btn p-3 rounded-full border border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors text-[var(--color-dark)]">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative w-full overflow-hidden rounded-2xl reveal shadow-2xl">
+                <div id="carousel-track-fleet" class="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&amp;w=2075&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Ground Transport">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12 text-white">
+                            <span class="text-[var(--color-accent)] text-xs font-bold uppercase tracking-widest mb-2">Ground Logistics</span>
+                            <h3 class="text-2xl md:text-3xl font-semibold">CDD & Fuso (5 - 16 Ton)</h3>
+                            <p class="text-gray-300 text-sm mt-2 max-w-md">Solusi pengiriman darat jarak menengah dan jauh, didukung sistem VTS dan tracking real-time.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1494412574643-35d324698420?q=80&amp;w=2064&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Ocean Freight">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12 text-white">
+                            <span class="text-[var(--color-accent)] text-xs font-bold uppercase tracking-widest mb-2">Ocean Freight</span>
+                            <h3 class="text-2xl md:text-3xl font-semibold">Layanan FCL & LCL</h3>
+                            <p class="text-gray-300 text-sm mt-2 max-w-md">Pengiriman kontainer penuh (FCL) dan parsial (LCL) ke seluruh pelabuhan utama di Indonesia.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Air Freight">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12 text-white">
+                            <span class="text-[var(--color-accent)] text-xs font-bold uppercase tracking-widest mb-2">Air Freight</span>
+                            <h3 class="text-2xl md:text-3xl font-semibold">Prioritas Ekspres</h3>
+                            <p class="text-gray-300 text-sm mt-2 max-w-md">Pengiriman kargo bernilai tinggi yang membutuhkan kecepatan dan penanganan khusus antar pulau.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-6 right-6 md:bottom-8 md:right-12 flex gap-2" id="dots-fleet">
+                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)] transition-all hover:scale-125"></button>
+                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
+                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="services" class="relative py-24 bg-[var(--image-overlay)] text-[var(--color-dark)] overflow-hidden">
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-2">Layanan Unggulan Kami</h2>
+                    <p class="text-[var(--color-text-secondary)] max-w-lg">
+                        Solusi terintegrasi untuk kebutuhan logistik dan mobilitas Anda yang beragam, semua dalam satu platform.
+                    </p>
+                </div>
+                <div class="flex gap-2 mt-4 md:mt-0">
+                    <button id="prevBtnServices" class="carousel-btn p-3 rounded-full border border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors text-[var(--color-dark)]">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <button id="nextBtnServices" class="carousel-btn p-3 rounded-full border border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors text-[var(--color-dark)]">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative w-full overflow-hidden reveal">
+                <div id="carousel-track-services" class="flex gap-6 pb-4">
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1558980394-6e69002afde4?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sewa Mobil">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                            <h3 class="text-xl font-semibold mb-1">Layanan Sewa Mobil</h3>
+                            <p class="text-gray-300 text-sm">Pilihan mobil keluarga dan operasional untuk kebutuhan harian atau bisnis.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1558980394-d922a96996d9?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Travel and Tour">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                            <h3 class="text-xl font-semibold mb-1">Travel & Tour</h3>
+                            <p class="text-gray-300 text-sm">Paket wisata dan transportasi pariwisata untuk eksplorasi Nusantara.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1542488827-0137c870ff53?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Lapak Kita">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                            <h3 class="text-xl font-semibold mb-1">Lapak Kita (Jual Beli)</h3>
+                            <p class="text-gray-300 text-sm">Forum jual beli terintegrasi untuk komunitas logistik dan mitra.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="absolute bottom-6 right-6 md:bottom-8 md:right-12 flex gap-2" id="dots-services">
+                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)] transition-all hover:scale-125"></button>
+                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
+                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-10 border-y border-[var(--color-bg-light)] bg-[var(--image-overlay)]">
+        <div class="max-w-7xl mx-auto px-6">
+            <p class="text-center text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-widest mb-8">Dipercaya oleh Pemimpin Industri</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-70">
+                <div class="group cursor-pointer">
+                    <span class="text-xl font-bold tracking-tighter text-[var(--color-text-secondary)] group-hover:text-[var(--color-dark)] transition-colors">ACME<span class="text-[var(--color-primary)] group-hover:text-[var(--color-primary)]">CORP</span></span>
+                </div>
+                <div class="group cursor-pointer">
+                    <span class="text-xl font-semibold tracking-widest text-[var(--color-text-secondary)] group-hover:text-[var(--color-dark)] transition-colors italic">OMEGA</span>
+                </div>
+                <div class="group cursor-pointer flex items-center gap-1 text-[var(--color-text-secondary)] group-hover:text-[var(--color-dark)] transition-colors">
+                    <i data-lucide="hexagon" class="w-6 h-6 fill-[var(--color-text-secondary)] group-hover:fill-[var(--color-dark)] transition-colors stroke-current"></i>
+                    <span class="text-xl font-bold tracking-tight">HexaLog</span>
+                </div>
+                <div class="group cursor-pointer">
+                    <span class="text-xl font-bold text-[var(--color-text-secondary)] group-hover:text-[var(--color-dark)] transition-colors font-serif">Starlight</span>
+                </div>
+                <div class="group cursor-pointer flex items-center gap-1 text-[var(--color-text-secondary)] group-hover:text-[var(--color-dark)] transition-colors">
+                    <i data-lucide="globe" class="w-5 h-5 stroke-current"></i>
+                    <span class="text-lg font-medium tracking-tight">Globex</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="py-24 relative z-10 bg-[var(--image-overlay)]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Kisah Sukses Klien</h2>
+                <p class="text-[var(--color-text-secondary)] max-w-xl mx-auto">Dengarkan dari para mitra bisnis yang mempercayakan pengiriman penting mereka kepada Logistik Kita.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal">
+                    <div class="flex gap-1 text-[var(--color-accent)] mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Logistik Kita benar-benar mengubah rantai pasok kami. Visibilitas pelacakan *real-time* mereka tidak tertandingi di industri ini."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">ED</div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Elena Dracos</h4>
+                            <p class="text-xs text-[var(--color-text-secondary)]">COO, Nexus Tech</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 100ms;">
+                    <div class="flex gap-1 text-[var(--color-accent)] mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                    </div>
+                    <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Kecepatan dan keandalan adalah hal wajib bagi kami. Logistik Kita memberikan keduanya, dengan tingkat profesionalisme yang membedakan mereka."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">MJ</div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Marcus James</h4>
+                            <p class="text-xs text-[var(--color-text-secondary)]">Director, Global Retail</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 200ms;">
+                    <div class="flex gap-1 text-[var(--color-accent)] mb-4">
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                        <i data-lucide="star" class="w-4 h-4 text-gray-400"></i>
+                    </div>
+                    <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Dukungan pelanggan sangat luar biasa. Ketika kami memiliki masalah bea cukai di Jakarta, mereka menyelesaikannya sebelum tim kami sempat panik."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">SL</div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Sarah Lee</h4>
+                            <p class="text-xs text-[var(--color-text-secondary)]">Logistics Lead, AutoImport</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-cta" class="py-16 bg-[var(--color-primary)] text-white">
+        <div class="max-w-4xl mx-auto px-6 text-center reveal">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Siap Memajukan Bisnis Anda?</h2>
+            <p class="text-lg mb-8 opacity-90">Dapatkan penawaran harga terbaik dan konsultasi armada gratis dari tim spesialis kami.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#" class="px-8 py-3 bg-[var(--color-accent)] text-[var(--color-dark)] font-bold rounded-full text-lg hover:bg-[var(--color-accent-dark)] transition-colors shadow-xl">
+                    Minta Penawaran Sekarang (RFQ)
+                </a>
+                <a href="#" class="px-8 py-3 border border-white/50 text-white font-medium rounded-full text-lg hover:bg-white/10 transition-colors">
+                    Hubungi Kami Via WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-[var(--color-light)] dark:bg-black pt-20 pb-10 border-t border-[var(--color-bg-light)] text-[var(--color-dark)] dark:text-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="w-8 h-8">
+                        <span class="text-base font-bold tracking-tight text-[var(--color-dark)] dark:text-white">LOGISTIK KITA</span>
+                    </div>
+                    <p class="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-6">
+                        Mendefinisikan ulang logistik nasional melalui teknologi, transparansi, dan kecepatan. Kami memajukan roda perekonomian.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"><i data-lucide="youtube" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-[var(--color-dark)] dark:text-white font-bold mb-6">Perusahaan</h4>
+                    <ul class="space-y-3 text-sm text-[var(--color-text-secondary)]">
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Karir</a></li>
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Berita</a></li>
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Menjadi Mitra</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-[var(--color-dark)] dark:text-white font-bold mb-6">Layanan</h4>
+                    <ul class="space-y-3 text-sm text-[var(--color-text-secondary)]">
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Freight Darat</a></li>
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Freight Laut</a></li>
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Freight Udara</a></li>
+                        <li><a href="#" class="hover:text-[var(--color-primary)] transition-colors">Layanan Tur & Travel</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-[var(--color-dark)] dark:text-white font-bold mb-6">Tetap Terkini</h4>
+                    <p class="text-xs text-[var(--color-text-secondary)] mb-4">Dapatkan wawasan industri langsung ke email Anda.</p>
+                    <form class="flex gap-2">
+                        <input type="email" placeholder="Alamat Email" class="bg-[var(--color-bg-light)] dark:bg-[var(--color-light)]/5 border border-[var(--color-bg-light)] rounded text-sm px-3 py-2 w-full text-[var(--color-dark)] dark:text-white focus:outline-none focus:border-[var(--color-primary)] transition-colors">
+                        <button type="submit" class="bg-[var(--color-primary)] text-white px-3 py-2 rounded hover:bg-[var(--color-primary-dark)] transition-colors">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-[var(--color-bg-light)] flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-[var(--color-text-secondary)]">© 2024 Logistik Kita. Hak Cipta Dilindungi.</p>
+                <div class="flex gap-6 text-xs text-[var(--color-text-secondary)]">
+                    <a href="#" class="hover:text-[var(--color-primary)]">Kebijakan Privasi</a>
+                    <a href="#" class="hover:text-[var(--color-primary)]">Syarat & Ketentuan</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi Lucide Icons (Mengganti unpkg.com/lucide@latest)
+        lucide.createIcons();
+
+        // =======================================================
+        // A. THEME TOGGLE (New)
+        // =======================================================
+        function initializeThemeToggle() {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+
+            function setDark(isDark) {
+                if (isDark) {
+                    html.classList.add('dark');
+                    if (sunIcon && moonIcon) {
+                        moonIcon.classList.add('hidden');
+                        sunIcon.classList.remove('hidden');
+                    }
+                } else {
+                    html.classList.remove('dark');
+                    if (sunIcon && moonIcon) {
+                        sunIcon.classList.add('hidden');
+                        moonIcon.classList.remove('hidden');
+                    }
+                }
+            }
+
+            // Inisialisasi dari localStorage atau system preference
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            setDark(isDark);
+            
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = localStorage.theme;
+                    isDark = currentTheme !== 'dark';
+                    localStorage.theme = isDark ? 'dark' : 'light';
+                    setDark(isDark);
+                });
+            }
+        }
+
+
+        // =======================================================
+        // B. MOBILE MENU LOGIC (Revisi: Smooth Animation)
+        // =======================================================
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const mobileAccordions = document.querySelectorAll('.mobile-accordion');
+
+        function toggleMenu(event) {
+            // Jika diklik dari link, jangan hentikan event agar scroll smooth tetap terjadi
+            if (event && event.currentTarget.classList.contains('mobile-link')) {
+                 // Beri sedikit delay untuk animasi menutup
+                setTimeout(() => {
+                    mobileMenu.classList.remove('active');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }, 300);
+            } else {
+                const isActive = mobileMenu.classList.toggle('active');
+                menuIcon.classList.toggle('hidden', isActive);
+                closeIcon.classList.toggle('hidden', !isActive);
+                document.body.style.overflow = isActive ? 'hidden' : '';
+            }
+        }
+
+        if (menuBtn) {
+            menuBtn.addEventListener('click', toggleMenu);
+        }
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+        
+        // Tutup semua accordion saat menu dibuka/ditutup
+        mobileAccordions.forEach(accordion => {
+            accordion.addEventListener('click', (e) => {
+                if(e.target.tagName.toLowerCase() === 'summary') {
+                    mobileAccordions.forEach(otherAccordion => {
+                        if (otherAccordion !== accordion) {
+                            otherAccordion.open = false;
+                        }
+                    });
+                }
+            });
+        });
+
+
+        // =======================================================
+        // C. SCROLL REVEAL ANIMATION (Tetap)
+        // =======================================================
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Stop observing setelah aktif
+                    revealObserver.unobserve(entry.target); 
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+
+        // =======================================================
+        // D. CAROUSEL LOGIC (Revisi: Multi-Carousel & Fix Logic)
+        // =======================================================
+        
+        function initCarousel(trackId, prevBtnId, nextBtnId, dotsId, slideWidthFactor = 1) {
+            const track = document.getElementById(trackId);
+            const prevBtn = document.getElementById(prevBtnId);
+            const nextBtn = document.getElementById(nextBtnId);
+            const dotsContainer = document.getElementById(dotsId);
+
+            if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+
+            const slides = Array.from(track.children);
+            const totalSlides = slides.length;
+            let currentIndex = 0;
+            let autoPlayInterval;
+
+            const updateDots = () => {
+                const dots = dotsContainer.querySelectorAll('.dot');
+                dots.forEach((dot, index) => {
+                    if(index === currentIndex) {
+                        dot.classList.remove('bg-[var(--color-primary)]/30');
+                        dot.classList.add('bg-[var(--color-primary)]');
+                    } else {
+                        dot.classList.remove('bg-[var(--color-primary)]');
+                        dot.classList.add('bg-[var(--color-primary)]/30');
+                    }
+                });
+            };
+
+            const updateCarousel = () => {
+                // Untuk carousel portrait, kita biarkan CSS menangani gap dan min-width
+                if (slideWidthFactor === 1) {
+                     track.style.transform = `translateX(-${currentIndex * 100}%)`;
+                } else {
+                    // Logika untuk scroll horizontal (portrait)
+                    const slideWidth = slides[0].offsetWidth;
+                    const gap = 24; // Tailwind gap-6 = 24px
+                    track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
+                }
+               
+                updateDots();
+            };
+
+            const nextSlide = () => {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                updateCarousel();
+            };
+
+            const prevSlide = () => {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                updateCarousel();
+            };
+            
+            // Generate dots dynamically if needed (Optional: karena sudah di markup)
+            // Cukup panggil updateDots() pertama kali
+            updateDots();
+
+
+            // Event Listeners
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetTimer();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetTimer();
+            });
+
+            // Auto Play
+            const startTimer = () => {
+                autoPlayInterval = setInterval(nextSlide, 5000);
+            };
+            
+            const resetTimer = () => {
+                clearInterval(autoPlayInterval);
+                startTimer();
+            };
+
+            startTimer();
+            
+            // Tambahkan event listener untuk dots (jika ada)
+            dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                    resetTimer();
+                });
+            });
+
+            // Touch Swipe Support (Dihapus/Disederhanakan untuk kemudahan)
+        }
+
+        // Inisialisasi Kedua Carousel
+        initCarousel('carousel-track-fleet', 'prevBtnFleet', 'nextBtnFleet', 'dots-fleet', 1);
+        initCarousel('carousel-track-services', 'prevBtnServices', 'nextBtnServices', 'dots-services', 0); // Factor 0 menandakan custom width
+
+        // =======================================================
+        // E. GLOBAL INIT
+        // =======================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeThemeToggle();
+            
+            // Navbar Glass Effect on Scroll (Revisi: Menggunakan Class List)
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-lg');
+                    navbar.classList.add('bg-[var(--image-overlay)]');
+                } else {
+                    navbar.classList.remove('shadow-lg');
+                    navbar.classList.remove('bg-[var(--image-overlay)]');
+                }
+            });
+        });
+    </script>
+
+</body>
 </html>
