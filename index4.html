@@ -31,6 +31,10 @@
             /* Glass utilities */
             --glass-bg: rgba(255, 255, 255, 0.9);
             --glass-border: rgba(255, 255, 255, 0.1);
+            
+            /* NEW: Soft Neon Glow Light */
+            --neon-shadow: 0 0 10px rgba(229, 29, 42, 0.2);
+            --neon-shadow-hover: 0 0 15px rgba(229, 29, 42, 0.6), 0 0 5px rgba(255, 199, 44, 0.3);
         }
 
         /* --- Dark Mode Overrides (Deep Dark Gray) --- */
@@ -51,6 +55,10 @@
             /* Glass utilities (Dark) */
             --glass-bg: rgba(24, 24, 27, 0.9);
             --glass-border: rgba(255, 255, 255, 0.05);
+
+            /* NEW: Soft Neon Glow Dark */
+            --neon-shadow: 0 0 10px rgba(248, 113, 113, 0.15);
+            --neon-shadow-hover: 0 0 15px rgba(248, 113, 113, 0.4), 0 0 5px rgba(252, 211, 77, 0.2);
         }
         
         /* Custom Scrollbar */
@@ -177,6 +185,16 @@
             content: '-';
             transform: rotate(180deg);
         }
+
+        /* NEW: Soft Neon Glow Frame for Testimonial Cards */
+        .testimonial-card {
+            box-shadow: var(--neon-shadow);
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s;
+        }
+        .testimonial-card:hover {
+            box-shadow: var(--neon-shadow-hover);
+            transform: translateY(-5px); /* Sedikit naik saat hover */
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-[var(--color-primary)] selection:text-white text-[var(--color-dark)]">
@@ -195,17 +213,19 @@
                 <a href="#hero" class="text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">BERANDA</a>
                 
                 <div class="dropdown-parent relative h-full flex items-center">
-                    <button class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    <button id="layanan-armada-btn" class="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors"
+                        aria-expanded="false" 
+                        aria-controls="layanan-armada-menu">
                         LAYANAN & ARMADA <i data-lucide="chevron-down" class="w-3 h-3 transition-transform"></i>
                     </button>
-                    <div class="dropdown-menu glass text-[var(--color-dark)]">
-                        <a href="#" class="hover:text-[var(--color-primary)]">Kapasitas Armada</a>
-                        <a href="#" class="hover:text-[var(--color-primary)]">Jangkauan Pengiriman</a>
-                        <a href="#" class="hover:text-[var(--color-primary)]">Prosedur Keamanan</a>
-                        <a href="#" class="hover:text-[var(--color-primary)]">Simulasi Harga Estimasi</a>
-                        <a href="#" class="hover:text-[var(--color-primary)]">Jenis Layanan</a>
-                        <a href="#" class="hover:text-[var(--color-primary)]">Sewa Mobil</a>
-                        <a href="#" class="hover:text-[var(--color-primary)]">Travel and Tour</a>
+                    <div id="layanan-armada-menu" class="dropdown-menu glass text-[var(--color-dark)]" role="menu">
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Kapasitas Armada</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Jangkauan Pengiriman</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Prosedur Keamanan</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Simulasi Harga Estimasi</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Jenis Layanan</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Sewa Mobil</a>
+                        <a href="#" class="hover:text-[var(--color-primary)]" role="menuitem">Travel and Tour</a>
                     </div>
                 </div>
 
@@ -276,7 +296,7 @@
                     DAFTAR / MASUK
                 </a>
 
-                <button id="menu-btn" class="lg:hidden text-[var(--color-dark)] p-2">
+                <button id="menu-btn" class="lg:hidden text-[var(--color-dark)] p-2" aria-controls="mobile-menu" aria-expanded="false">
                     <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
                     <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
                 </button>
@@ -424,7 +444,7 @@
 
             <div class="relative w-full overflow-hidden rounded-2xl reveal shadow-2xl">
                 <div id="carousel-track-fleet" class="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
-                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden">
+                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden slide-item">
                         <img src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&amp;w=2075&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Ground Transport">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12 text-white">
                             <span class="text-[var(--color-accent)] text-xs font-bold uppercase tracking-widest mb-2">Ground Logistics</span>
@@ -432,7 +452,7 @@
                             <p class="text-gray-300 text-sm mt-2 max-w-md">Solusi pengiriman darat jarak menengah dan jauh, didukung sistem VTS dan tracking real-time.</p>
                         </div>
                     </div>
-                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden">
+                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden slide-item">
                         <img src="https://images.unsplash.com/photo-1494412574643-35d324698420?q=80&amp;w=2064&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Ocean Freight">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12 text-white">
                             <span class="text-[var(--color-accent)] text-xs font-bold uppercase tracking-widest mb-2">Ocean Freight</span>
@@ -440,7 +460,7 @@
                             <p class="text-gray-300 text-sm mt-2 max-w-md">Pengiriman kontainer penuh (FCL) dan parsial (LCL) ke seluruh pelabuhan utama di Indonesia.</p>
                         </div>
                     </div>
-                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden">
+                    <div class="min-w-full relative aspect-[16/9] md:aspect-[21/9] group overflow-hidden slide-item">
                         <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?q=80&amp;w=2070&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Air Freight">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-8 md:p-12 text-white">
                             <span class="text-[var(--color-accent)] text-xs font-bold uppercase tracking-widest mb-2">Air Freight</span>
@@ -451,10 +471,7 @@
                 </div>
                 
                 <div class="absolute bottom-6 right-6 md:bottom-8 md:right-12 flex gap-2" id="dots-fleet">
-                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)] transition-all hover:scale-125"></button>
-                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
-                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
-                </div>
+                    </div>
             </div>
         </div>
     </section>
@@ -480,7 +497,7 @@
             </div>
 
             <div class="relative w-full overflow-hidden reveal">
-                <div id="carousel-track-services" class="flex gap-6 pb-4">
+                <div id="carousel-track-services" class="flex gap-6 pb-4 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
                     <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item">
                         <img src="https://images.unsplash.com/photo-1558980394-6e69002afde4?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sewa Mobil">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
@@ -496,27 +513,6 @@
                         </div>
                     </div>
                     <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item">
-                        <img src="https://images.unsplash.com/photo-1542488827-0137c870ff53?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Lapak Kita">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
-                            <h3 class="text-xl font-semibold mb-1">Lapak Kita (Jual Beli)</h3>
-                            <p class="text-gray-300 text-sm">Forum jual beli terintegrasi untuk komunitas logistik dan mitra.</p>
-                        </div>
-                    </div>
-                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item" data-duplicate="true">
-                        <img src="https://images.unsplash.com/photo-1558980394-6e69002afde4?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sewa Mobil">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
-                            <h3 class="text-xl font-semibold mb-1">Layanan Sewa Mobil</h3>
-                            <p class="text-gray-300 text-sm">Pilihan mobil keluarga dan operasional untuk kebutuhan harian atau bisnis.</p>
-                        </div>
-                    </div>
-                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item" data-duplicate="true">
-                        <img src="https://images.unsplash.com/photo-1558980394-d922a96996d9?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Travel and Tour">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
-                            <h3 class="text-xl font-semibold mb-1">Travel & Tour</h3>
-                            <p class="text-gray-300 text-sm">Paket wisata dan transportasi pariwisata untuk eksplorasi Nusantara.</p>
-                        </div>
-                    </div>
-                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item" data-duplicate="true">
                         <img src="https://images.unsplash.com/photo-1542488827-0137c870ff53?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Lapak Kita">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
                             <h3 class="text-xl font-semibold mb-1">Lapak Kita (Jual Beli)</h3>
@@ -526,10 +522,7 @@
                 </div>
                 
                 <div class="absolute bottom-6 right-6 md:bottom-8 md:right-12 flex gap-2" id="dots-services">
-                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)] transition-all hover:scale-125"></button>
-                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
-                    <button class="dot w-2 h-2 rounded-full bg-[var(--color-primary)]/30 transition-all hover:scale-125"></button>
-                </div>
+                    </div>
             </div>
         </div>
     </section>
@@ -566,62 +559,82 @@
                 <p class="text-[var(--color-text-secondary)] max-w-xl mx-auto">Dengarkan dari para mitra bisnis yang mempercayakan pengiriman penting mereka kepada Logistik Kita.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal">
-                    <div class="flex gap-1 text-[var(--color-accent)] mb-4">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+            <div class="relative overflow-hidden reveal">
+                <div id="carousel-track-testimonials" class="flex transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                    
+                    <div class="min-w-full md:min-w-[calc(33.333%-16px)] lg:min-w-[calc(33.333%-16px)] pr-6 md:pr-0 slide-item">
+                        <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl testimonial-card group h-full">
+                            <div class="flex gap-1 text-[var(--color-accent)] mb-4">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                            <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Logistik Kita benar-benar mengubah rantai pasok kami. Visibilitas pelacakan *real-time* mereka tidak tertandingi di industri ini."</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">ED</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Elena Dracos</h4>
+                                    <p class="text-xs text-[var(--color-text-secondary)]">COO, Nexus Tech</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Logistik Kita benar-benar mengubah rantai pasok kami. Visibilitas pelacakan *real-time* mereka tidak tertandingi di industri ini."</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">ED</div>
-                        <div>
-                            <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Elena Dracos</h4>
-                            <p class="text-xs text-[var(--color-text-secondary)]">COO, Nexus Tech</p>
+
+                    <div class="min-w-full md:min-w-[calc(33.333%-16px)] lg:min-w-[calc(33.333%-16px)] pr-6 md:pr-0 slide-item">
+                        <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl testimonial-card group h-full">
+                            <div class="flex gap-1 text-[var(--color-accent)] mb-4">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                            </div>
+                            <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Kecepatan dan keandalan adalah hal wajib bagi kami. Logistik Kita memberikan keduanya, dengan tingkat profesionalisme yang membedakan mereka."</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">MJ</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Marcus James</h4>
+                                    <p class="text-xs text-[var(--color-text-secondary)]">Director, Global Retail</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="min-w-full md:min-w-[calc(33.333%-16px)] lg:min-w-[calc(33.333%-16px)] pr-6 md:pr-0 slide-item">
+                        <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl testimonial-card group h-full">
+                            <div class="flex gap-1 text-[var(--color-accent)] mb-4">
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+                                <i data-lucide="star" class="w-4 h-4 text-gray-400"></i>
+                            </div>
+                            <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Dukungan pelanggan sangat luar biasa. Ketika kami memiliki masalah bea cukai di Jakarta, mereka menyelesaikannya sebelum tim kami sempat panik."</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">SL</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Sarah Lee</h4>
+                                    <p class="text-xs text-[var(--color-text-secondary)]">Logistics Lead, AutoImport</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 100ms;">
-                    <div class="flex gap-1 text-[var(--color-accent)] mb-4">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                    </div>
-                    <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Kecepatan dan keandalan adalah hal wajib bagi kami. Logistik Kita memberikan keduanya, dengan tingkat profesionalisme yang membedakan mereka."</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">MJ</div>
-                        <div>
-                            <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Marcus James</h4>
-                            <p class="text-xs text-[var(--color-text-secondary)]">Director, Global Retail</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 200ms;">
-                    <div class="flex gap-1 text-[var(--color-accent)] mb-4">
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 fill-current"></i>
-                        <i data-lucide="star" class="w-4 h-4 text-gray-400"></i>
-                    </div>
-                    <p class="text-[var(--color-dark)] dark:text-gray-300 mb-6 leading-relaxed">"Dukungan pelanggan sangat luar biasa. Ketika kami memiliki masalah bea cukai di Jakarta, mereka menyelesaikannya sebelum tim kami sempat panik."</p>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 rounded-full bg-[var(--color-bg-light)] dark:bg-gray-700 flex items-center justify-center text-xs font-bold text-[var(--color-dark)] dark:text-white">SL</div>
-                        <div>
-                            <h4 class="text-sm font-semibold text-[var(--color-dark)] dark:text-white">Sarah Lee</h4>
-                            <p class="text-xs text-[var(--color-text-secondary)]">Logistics Lead, AutoImport</p>
-                        </div>
-                    </div>
+                
+                <div class="flex justify-center items-center gap-4 mt-8 md:hidden">
+                    <button id="prevBtnTestimonials" class="carousel-btn p-3 rounded-full border border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors text-[var(--color-dark)]">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <div class="flex gap-2" id="dots-testimonials">
+                         </div>
+                    <button id="nextBtnTestimonials" class="carousel-btn p-3 rounded-full border border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors text-[var(--color-dark)]">
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
                 </div>
             </div>
-        </div>
+            </div>
     </section>
 
     <section id="contact-cta" class="py-16 bg-[var(--color-primary)] text-white">
@@ -764,12 +777,14 @@
                     menuIcon.classList.remove('hidden');
                     closeIcon.classList.add('hidden');
                     document.body.style.overflow = '';
+                    menuBtn.setAttribute('aria-expanded', 'false');
                 }, 300);
             } else {
                 const isActive = mobileMenu.classList.toggle('active');
                 menuIcon.classList.toggle('hidden', isActive);
                 closeIcon.classList.toggle('hidden', !isActive);
                 document.body.style.overflow = isActive ? 'hidden' : '';
+                menuBtn.setAttribute('aria-expanded', isActive);
             }
         }
 
@@ -815,144 +830,170 @@
 
 
         // =======================================================
-        // D. CAROUSEL LOGIC (Multi-Carousel)
-        // (REVISI 6: Perbaikan Logika Services Carousel agar Looping dan Smooth)
+        // D. CAROUSEL LOGIC (Multi-Carousel REVISI)
         // =======================================================
         
-        function initCarousel(trackId, prevBtnId, nextBtnId, dotsId, isFleet = true) {
+        function initCarousel(trackId, prevBtnId, nextBtnId, dotsId, slideInView = 1, autoPlay = false) {
             const track = document.getElementById(trackId);
             const prevBtn = document.getElementById(prevBtnId);
             const nextBtn = document.getElementById(nextBtnId);
             const dotsContainer = document.getElementById(dotsId);
 
-            if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+            if (!track) return;
 
-            const originalSlides = Array.from(track.querySelectorAll('.slide-item') || track.children).filter(el => !el.dataset.duplicate);
-            const totalSlides = originalSlides.length; // Hanya slide unik
-
+            const slides = Array.from(track.querySelectorAll('.slide-item'));
+            const totalSlides = slides.length; 
             if (totalSlides === 0) return;
             
             let currentIndex = 0;
             let autoPlayInterval;
             
-            // Untuk services (non-full width), kita perlu menghitung pergeseran berdasarkan lebar slide
-            const getShiftAmount = () => {
-                if (isFleet) {
-                    return currentIndex * 100; // Full width slides
-                } else {
-                    // Cek elemen pertama (slide unik pertama)
-                    const slide = originalSlides[0]; 
-                    if (!slide) return 0;
-                    const slideWidth = slide.offsetWidth;
-                    const gap = 24; // Tailwind gap-6 = 24px
-                    return currentIndex * (slideWidth + gap);
-                }
-            };
-            
-            const updateDots = () => {
-                const dots = dotsContainer.querySelectorAll('.dot');
-                dots.forEach((dot, index) => {
-                    if(index === currentIndex % totalSlides) {
-                        dot.classList.remove('bg-[var(--color-primary)]/30');
-                        dot.classList.add('bg-[var(--color-primary)]');
-                    } else {
-                        dot.classList.remove('bg-[var(--color-primary)]');
-                        dot.classList.add('bg-[var(--color-primary)]/30');
-                    }
-                });
-            };
-
-            const updateCarousel = () => {
-                track.style.transform = `translateX(-${getShiftAmount()}px)`;
-                updateDots();
-                
-                // Looping services carousel (JIKA non-full width)
-                if (!isFleet && currentIndex >= totalSlides) {
-                    // Setelah selesai transisi ke slide duplikasi, reset ke awal (tanpa animasi)
-                    setTimeout(() => {
-                        track.style.transition = 'none';
-                        currentIndex = 0;
-                        track.style.transform = `translateX(-${getShiftAmount()}px)`;
-                        
-                        // Kembalikan animasi setelah reset
-                        setTimeout(() => {
-                            track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-                        }, 50);
-                    }, 700);
-                }
-            };
-            
-            // Set transisi awal untuk services
-            if (!isFleet) {
-                 track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
+            // Function to determine how many slides fit/move
+            const getSlidesPerShift = () => {
+                 // For desktop, Services carousel shows 3 slides (so shift 1 by 1)
+                 if (trackId === 'carousel-track-services' && window.innerWidth >= 768) {
+                    return 1;
+                 }
+                 // For testimonials, switch to grid view on desktop (no carousel)
+                 if (trackId === 'carousel-track-testimonials' && window.innerWidth >= 768) {
+                    return 0; // Disable carousel logic
+                 }
+                 // Default for full-width slides (Fleet, or Testimonials on Mobile)
+                 return slideInView; 
             }
 
+            // Function to calculate the translation (shift) amount
+            const getShiftAmount = (shiftIndex) => {
+                const shift = getSlidesPerShift();
+                if (trackId === 'carousel-track-fleet' || shift === 0) {
+                    return shiftIndex * 100; // Full width slides or disabled
+                } else if (trackId === 'carousel-track-services') {
+                    // Calculate translation based on first slide width and gap (24px for gap-6)
+                    const slide = slides[0]; 
+                    if (!slide) return 0;
+                    const slideWidth = slide.offsetWidth;
+                    const gap = 24; 
+                    return shiftIndex * (slideWidth + gap);
+                } else { // Testimonials (mobile)
+                    return shiftIndex * 100; // Full width per slide on mobile
+                }
+            };
 
-            const nextSlide = () => {
-                 // Untuk services, kita geser ke slide duplikasi juga untuk efek looping
-                if (isFleet) {
-                    currentIndex = (currentIndex + 1) % totalSlides;
-                } else {
-                    // Services: geser sampai slide duplikasi terakhir
-                    const totalVisibleSlides = 3; // Misal 3 slide terlihat
-                    const maxIndex = totalSlides + totalVisibleSlides - 1; // Maksimal index yang terlihat
-                    if (currentIndex < maxIndex) {
-                        currentIndex++;
+            const updateDots = () => {
+                // Clear existing dots and generate new ones
+                dotsContainer.innerHTML = ''; 
+                
+                // Only create dots if carousel is active (i.e. on mobile for testimonials)
+                const shift = getSlidesPerShift();
+                if (shift === 0 && trackId === 'carousel-track-testimonials' && window.innerWidth >= 768) {
+                    return; // Disabled on desktop
+                }
+                
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('button');
+                    dot.classList.add('dot', 'w-2', 'h-2', 'rounded-full', 'transition-all', 'hover:scale-125');
+                    if (i === currentIndex % totalSlides) {
+                        dot.classList.add('bg-[var(--color-primary)]');
+                        dot.classList.remove('bg-[var(--color-primary)]/30');
                     } else {
-                        currentIndex = 0; // Reset cepat (akan ditangani di updateCarousel)
+                        dot.classList.add('bg-[var(--color-primary)]/30');
+                        dot.classList.remove('bg-[var(--color-primary)]');
                     }
+                    dot.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateCarousel();
+                        resetTimer();
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            };
+            
+            const updateCarousel = () => {
+                 const shift = getSlidesPerShift();
+                 
+                 if (shift === 0 && trackId === 'carousel-track-testimonials' && window.innerWidth >= 768) {
+                    // Disable carousel on desktop (Testimonials)
+                    track.style.transform = `translateX(0)`;
+                    track.style.flexWrap = 'wrap'; // Allow cards to wrap into grid
+                    track.style.gap = '24px'; // Tailwind gap-6
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                    return; 
+                 } else if (trackId === 'carousel-track-testimonials' && window.innerWidth < 768) {
+                    // Enable carousel on mobile (Testimonials)
+                    track.style.flexWrap = 'nowrap';
+                    track.style.gap = '0';
+                    prevBtn.style.display = 'inline-block';
+                    nextBtn.style.display = 'inline-block';
+                 }
+
+                // Apply transition
+                track.style.transform = `translateX(-${getShiftAmount(currentIndex)}px)`;
+                updateDots();
+
+                // Optional: Disable prev/next buttons at limits (only for non-looping carousels)
+                if (trackId !== 'carousel-track-fleet') { // Fleet loops, others don't for simplicity
+                    prevBtn.disabled = currentIndex === 0;
+                    nextBtn.disabled = currentIndex >= (totalSlides - shift);
+                }
+            };
+            
+            const nextSlide = () => {
+                const shift = getSlidesPerShift();
+                if (shift === 0) return;
+
+                if (trackId === 'carousel-track-fleet') {
+                    // Looping logic for Fleet
+                    currentIndex = (currentIndex + shift) % totalSlides;
+                } else if (currentIndex < (totalSlides - shift)) {
+                    // Simple boundary check for Services/Testimonials
+                    currentIndex += shift;
+                } else if (currentIndex === (totalSlides - shift)) {
+                    // Optional: loop back to start 
+                    currentIndex = 0;
                 }
                 updateCarousel();
             };
 
             const prevSlide = () => {
-                if (isFleet) {
-                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                const shift = getSlidesPerShift();
+                if (shift === 0) return;
+                
+                if (trackId === 'carousel-track-fleet') {
+                    // Looping logic for Fleet
+                    currentIndex = (currentIndex - shift + totalSlides) % totalSlides;
+                } else if (currentIndex > 0) {
+                    // Simple boundary check
+                    currentIndex -= shift;
                 } else {
-                    // Services: geser mundur, jika di awal, langsung ke duplikasi
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                    } else {
-                        // Jika di index 0, langsung lompat ke slide duplikasi
-                        currentIndex = totalSlides; 
-                        track.style.transition = 'none';
-                        track.style.transform = `translateX(-${getShiftAmount()}px)`;
-
-                        // Geser 1 slide mundur dengan animasi
-                        setTimeout(() => {
-                            track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
-                            currentIndex--; 
-                            updateCarousel();
-                        }, 50);
-                        return;
-                    }
+                    // Optional: loop back to end
+                     currentIndex = totalSlides - shift;
                 }
                 updateCarousel();
             };
             
-            updateDots(); // Initial update
+            updateCarousel(); // Initial update (will also create dots)
 
             // Event Listeners
-            nextBtn.addEventListener('click', () => {
+            if (nextBtn) nextBtn.addEventListener('click', () => {
                 nextSlide();
                 resetTimer();
             });
 
-            prevBtn.addEventListener('click', () => {
+            if (prevBtn) prevBtn.addEventListener('click', () => {
                 prevSlide();
                 resetTimer();
             });
 
-            // Auto Play
+            // Auto Play Logic
             const startTimer = () => {
-                // HANYA auto play untuk full-width carousel (Fleet)
-                if (isFleet) {
+                if (autoPlay) {
                     autoPlayInterval = setInterval(nextSlide, 5000);
                 }
             };
             
             const resetTimer = () => {
-                if (isFleet) {
+                if (autoPlay) {
                     clearInterval(autoPlayInterval);
                     startTimer();
                 }
@@ -960,22 +1001,26 @@
 
             startTimer();
             
-            // Dot click listeners
-            dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.addEventListener('click', () => {
-                    currentIndex = index;
-                    updateCarousel();
-                    resetTimer();
-                });
-            });
-
             // Recalculate position on window resize for responsiveness
-            window.addEventListener('resize', updateCarousel);
+            window.addEventListener('resize', () => {
+                // Reset currentIndex on major resize event (e.g. mobile to desktop view)
+                if (trackId === 'carousel-track-testimonials' && window.innerWidth >= 768 && slides.some(s => s.style.transform === '')) {
+                     currentIndex = 0; // Reset index saat pindah ke grid desktop
+                }
+                updateCarousel();
+            });
         }
 
-        // Inisialisasi Kedua Carousel
-        initCarousel('carousel-track-fleet', 'prevBtnFleet', 'nextBtnFleet', 'dots-fleet', true); // Fleet (isFleet = true)
-        initCarousel('carousel-track-services', 'prevBtnServices', 'nextBtnServices', 'dots-services', false); // Services (isFleet = false)
+        // Inisialisasi Carousel
+        // 1. Fleet (Full Width, Looping, AutoPlay)
+        initCarousel('carousel-track-fleet', 'prevBtnFleet', 'nextBtnFleet', 'dots-fleet', 1, true); 
+        
+        // 2. Services (3 slides visible on desktop, 1 on mobile, non-looping simple)
+        initCarousel('carousel-track-services', 'prevBtnServices', 'nextBtnServices', 'dots-services', 1, false); 
+        
+        // 3. Testimonials (1 slide visible on mobile, grid on desktop, non-looping simple)
+        // Set slideInView ke 1. Logic grid/carousel dihandle di getSlidesPerShift
+        initCarousel('carousel-track-testimonials', 'prevBtnTestimonials', 'nextBtnTestimonials', 'dots-testimonials', 1, false); 
 
 
         // =======================================================
