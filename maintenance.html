@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Under Maintenance - Logistik Kita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+    
+    <style>
+        /* ======================================================= */
+        /* == PALET WARNA LOGISTIK KITA (MERAH-ORANGE) & FONT == */
+        /* ======================================================= */
+        :root {
+            --color-primary: #E51D2A;    
+            --color-primary-dark: #b91c1c; 
+            --color-accent: #FDAD61;     
+            --color-dark: #1f2937;       
+            --color-light: #ffffff;      
+            --color-text-secondary: #6b7280;
+        }
+
+        html.dark {
+            --color-primary: #f87171;    
+            --color-primary-dark: #ef4444; 
+            --color-accent: #FDAD61;     
+            --color-dark: #f3f4f6;       
+            --color-light: #18181B;      
+            --color-text-secondary: #a1a1aa; 
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-light);
+            color: var(--color-dark);
+        }
+        
+        /* Tambahkan style untuk gambar Placeholder Maintenance */
+        .maintenance-image {
+            max-width: 300px;
+            height: auto;
+            animation: bounce-up 2s infinite alternate;
+        }
+        
+        @keyframes bounce-up {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen transition-colors duration-500">
+    
+    <div class="text-center p-6 max-w-lg mx-auto">
+        <img src="https://via.placeholder.com/400x300/FCA5A5/FFFFFF?text=UNDER+MAINTENANCE" alt="Halaman Sedang Dalam Pemeliharaan" 
+             class="maintenance-image mx-auto mb-8">
+        
+        <h1 class="text-4xl font-extrabold text-[var(--color-primary)] mb-4">
+            Kami Sedang Bekerja Keras!
+        </h1>
+        
+        <p class="text-lg text-[var(--color-text-secondary)] mb-8">
+            Mohon maaf, halaman yang Anda tuju sedang dalam proses pemeliharaan dan peningkatan sistem untuk layanan yang lebih optimal.
+        </p>
+        
+        <a href="index.html" class="inline-flex items-center gap-2 px-8 py-3 bg-[var(--color-primary)] text-white font-bold rounded-lg text-lg hover:bg-[var(--color-primary-dark)] transition-colors shadow-lg">
+            <i data-lucide="home" class="w-5 h-5"></i> Kembali ke Beranda
+        </a>
+        
+        <p class="mt-8 text-sm text-[var(--color-text-secondary)]">
+            Terima kasih atas kesabaran Anda.
+        </p>
+    </div>
+
+    <button id="theme-toggle" class="fixed top-4 right-4 p-3 rounded-full bg-[var(--color-dark)]/10 dark:bg-[var(--color-light)]/10 text-[var(--color-dark)] dark:text-white hover:bg-[var(--color-dark)]/20 dark:hover:bg-[var(--color-light)]/20 transition">
+        <i data-lucide="sun" id="sun-icon" class="w-5 h-5 hidden"></i>
+        <i data-lucide="moon" id="moon-icon" class="w-5 h-5"></i>
+    </button>
+    
+    <script>
+        // Inisialisasi Lucide Icons
+        lucide.createIcons();
+        
+        // Theme Toggle Logic
+        function initializeThemeToggle() {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+
+            function setDark(isDark) {
+                if (isDark) {
+                    html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    if (sunIcon && moonIcon) {
+                        moonIcon.classList.add('hidden');
+                        sunIcon.classList.remove('hidden');
+                    }
+                } else {
+                    html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    if (sunIcon && moonIcon) {
+                        sunIcon.classList.add('hidden');
+                        moonIcon.classList.remove('hidden');
+                    }
+                }
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            setDark(isDark);
+            
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const isCurrentlyDark = html.classList.contains('dark');
+                    setDark(!isCurrentlyDark);
+                });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initializeThemeToggle);
+    </script>
+</body>
+</html>
