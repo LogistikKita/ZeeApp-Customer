@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beranda - Logistik Kita</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
     
     <style>
@@ -53,7 +53,7 @@
             --glass-border: rgba(255, 255, 255, 0.05);
         }
         
-        /* Custom Scrollbar (Dipertahankan dari Vanguard) */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--color-light); }
         ::-webkit-scrollbar-thumb { background: var(--color-primary-dark); border-radius: 4px; }
@@ -64,12 +64,11 @@
             font-family: 'Poppins', sans-serif;
             color: var(--color-dark);
             overflow-x: hidden;
-            background-color: var(--image-overlay); /* Base color jika image gagal load */
+            background-color: var(--image-overlay); 
         }
 
-        /* Parallax Background (Revisi: Menggunakan asset Logistik Kita) */
+        /* Parallax Background */
         .parallax-bg {
-            /* Revisi Background Image */
             background-image: linear-gradient(to bottom, var(--image-overlay), var(--image-overlay)), 
                               url('assets/background-lk.jpg');
             background-attachment: fixed;
@@ -98,7 +97,8 @@
             border: 1px solid var(--glass-border);
             transition: background 0.3s, border 0.3s;
         }
-        /* Glass Nav (Revisi: Lebih transparan saat scroll) */
+        
+        /* Glass Nav (Sticky/Default state) */
         .glass-nav {
             background: var(--image-overlay);
             backdrop-filter: blur(16px);
@@ -106,8 +106,14 @@
             border-bottom: 1px solid var(--color-bg-light);
             transition: background-color 0.3s, border-color 0.3s;
         }
+        
+        /* New: Navbar scrolled state for clean transition */
+        .glass-nav.scrolled {
+             background: var(--image-overlay);
+             border-bottom-color: transparent; 
+        }
 
-        /* Dropdown Menu Desktop (New) */
+        /* Dropdown Menu Desktop */
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -127,13 +133,8 @@
             visibility: visible;
             transform: translateX(-50%) translateY(0);
         }
-        .dropdown-menu a {
-            padding: 8px 16px;
-            display: block;
-            white-space: nowrap;
-        }
 
-        /* Mobile Menu (Revisi Poin 1: Animasi Smooth) */
+        /* Mobile Menu (Smooth Animation) */
         #mobile-menu {
             opacity: 0;
             visibility: hidden;
@@ -145,7 +146,7 @@
             visibility: visible;
             transform: translateX(0);
         }
-        /* Mobile Accordion (Revisi Poin 2: Menu Kompleks) */
+        /* Mobile Accordion */
         .mobile-accordion summary {
             list-style: none;
             position: relative;
@@ -342,7 +343,7 @@
     
     <section id="hero" class="relative min-h-screen flex items-center justify-center px-6 pt-20">
         <div class="max-w-5xl mx-auto text-center z-10">
-            <div class="reveal">
+            <div> 
                 <span class="inline-block py-1 px-3 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-semibold tracking-widest uppercase mb-6">Solusi Logistik Terpercaya</span>
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-[var(--color-dark)] leading-tight mb-6">
                     Memajukan Ekonomi <br>
@@ -352,7 +353,7 @@
                     Kami menggabungkan teknologi pelacakan terkini dengan jaringan mitra terluas untuk memastikan kargo Anda tiba tepat waktu, setiap saat.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="#gallery" class="group relative px-8 py-4 bg-[var(--color-primary)] text-white text-sm font-bold rounded overflow-hidden transition-all hover:bg-[var(--color-primary-dark)] shadow-lg">
+                    <a href="#fleet" class="group relative px-8 py-4 bg-[var(--color-primary)] text-white text-sm font-bold rounded overflow-hidden transition-all hover:bg-[var(--color-primary-dark)] shadow-lg">
                         <span class="relative z-10 flex items-center gap-2">
                             Cek Armada Kami <i data-lucide="truck" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                         </span>
@@ -667,11 +668,11 @@
     </footer>
 
     <script>
-        // Inisialisasi Lucide Icons (Mengganti unpkg.com/lucide@latest)
+        // Inisialisasi Lucide Icons
         lucide.createIcons();
 
         // =======================================================
-        // A. THEME TOGGLE (New)
+        // A. THEME TOGGLE
         // =======================================================
         function initializeThemeToggle() {
             const html = document.documentElement;
@@ -682,12 +683,14 @@
             function setDark(isDark) {
                 if (isDark) {
                     html.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
                     if (sunIcon && moonIcon) {
                         moonIcon.classList.add('hidden');
                         sunIcon.classList.remove('hidden');
                     }
                 } else {
                     html.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
                     if (sunIcon && moonIcon) {
                         sunIcon.classList.add('hidden');
                         moonIcon.classList.remove('hidden');
@@ -703,17 +706,15 @@
             
             if (themeToggle) {
                 themeToggle.addEventListener('click', () => {
-                    const currentTheme = localStorage.theme;
-                    isDark = currentTheme !== 'dark';
-                    localStorage.theme = isDark ? 'dark' : 'light';
-                    setDark(isDark);
+                    const isCurrentlyDark = html.classList.contains('dark');
+                    setDark(!isCurrentlyDark);
                 });
             }
         }
 
 
         // =======================================================
-        // B. MOBILE MENU LOGIC (Revisi: Smooth Animation)
+        // B. MOBILE MENU LOGIC
         // =======================================================
         const menuBtn = document.getElementById('menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -723,10 +724,11 @@
         const mobileAccordions = document.querySelectorAll('.mobile-accordion');
 
         function toggleMenu(event) {
-            // Jika diklik dari link, jangan hentikan event agar scroll smooth tetap terjadi
-            if (event && event.currentTarget.classList.contains('mobile-link')) {
-                 // Beri sedikit delay untuk animasi menutup
-                setTimeout(() => {
+            // Berikan delay kecil untuk animasi smooth saat link diklik
+            const isLinkClick = event && event.currentTarget.classList.contains('mobile-link');
+            
+            if (isLinkClick) {
+                 setTimeout(() => {
                     mobileMenu.classList.remove('active');
                     menuIcon.classList.remove('hidden');
                     closeIcon.classList.add('hidden');
@@ -747,7 +749,7 @@
             link.addEventListener('click', toggleMenu);
         });
         
-        // Tutup semua accordion saat menu dibuka/ditutup
+        // Tutup accordion lain saat satu dibuka
         mobileAccordions.forEach(accordion => {
             accordion.addEventListener('click', (e) => {
                 if(e.target.tagName.toLowerCase() === 'summary') {
@@ -762,7 +764,7 @@
 
 
         // =======================================================
-        // C. SCROLL REVEAL ANIMATION (Tetap)
+        // C. SCROLL REVEAL ANIMATION
         // =======================================================
         const revealElements = document.querySelectorAll('.reveal');
         
@@ -770,7 +772,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    // Stop observing setelah aktif
                     revealObserver.unobserve(entry.target); 
                 }
             });
@@ -783,10 +784,10 @@
 
 
         // =======================================================
-        // D. CAROUSEL LOGIC (Revisi: Multi-Carousel & Fix Logic)
+        // D. CAROUSEL LOGIC (Multi-Carousel)
         // =======================================================
         
-        function initCarousel(trackId, prevBtnId, nextBtnId, dotsId, slideWidthFactor = 1) {
+        function initCarousel(trackId, prevBtnId, nextBtnId, dotsId, isFleet = true) {
             const track = document.getElementById(trackId);
             const prevBtn = document.getElementById(prevBtnId);
             const nextBtn = document.getElementById(nextBtnId);
@@ -813,11 +814,11 @@
             };
 
             const updateCarousel = () => {
-                // Untuk carousel portrait, kita biarkan CSS menangani gap dan min-width
-                if (slideWidthFactor === 1) {
+                if (isFleet) {
+                     // Full width slide
                      track.style.transform = `translateX(-${currentIndex * 100}%)`;
                 } else {
-                    // Logika untuk scroll horizontal (portrait)
+                    // Custom width slide (Portrait)
                     const slideWidth = slides[0].offsetWidth;
                     const gap = 24; // Tailwind gap-6 = 24px
                     track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
@@ -836,10 +837,7 @@
                 updateCarousel();
             };
             
-            // Generate dots dynamically if needed (Optional: karena sudah di markup)
-            // Cukup panggil updateDots() pertama kali
-            updateDots();
-
+            updateDots(); // Initial update
 
             // Event Listeners
             nextBtn.addEventListener('click', () => {
@@ -864,7 +862,7 @@
 
             startTimer();
             
-            // Tambahkan event listener untuk dots (jika ada)
+            // Dot click listeners
             dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
                 dot.addEventListener('click', () => {
                     currentIndex = index;
@@ -873,28 +871,31 @@
                 });
             });
 
-            // Touch Swipe Support (Dihapus/Disederhanakan untuk kemudahan)
+            // Recalculate position on window resize for responsiveness
+            window.addEventListener('resize', updateCarousel);
         }
 
         // Inisialisasi Kedua Carousel
-        initCarousel('carousel-track-fleet', 'prevBtnFleet', 'nextBtnFleet', 'dots-fleet', 1);
-        initCarousel('carousel-track-services', 'prevBtnServices', 'nextBtnServices', 'dots-services', 0); // Factor 0 menandakan custom width
+        initCarousel('carousel-track-fleet', 'prevBtnFleet', 'nextBtnFleet', 'dots-fleet', true); // Fleet (isFleet = true)
+        initCarousel('carousel-track-services', 'prevBtnServices', 'nextBtnServices', 'dots-services', false); // Services (isFleet = false)
+
 
         // =======================================================
-        // E. GLOBAL INIT
+        // E. GLOBAL INIT & NAVBAR SCROLL
         // =======================================================
         document.addEventListener('DOMContentLoaded', () => {
             initializeThemeToggle();
             
-            // Navbar Glass Effect on Scroll (Revisi: Menggunakan Class List)
+            // Navbar Scroll Effect (FIXED: Menggunakan Class List)
             const navbar = document.getElementById('navbar');
+            
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 50) {
                     navbar.classList.add('shadow-lg');
-                    navbar.classList.add('bg-[var(--image-overlay)]');
+                    navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('shadow-lg');
-                    navbar.classList.remove('bg-[var(--image-overlay)]');
+                    navbar.classList.remove('scrolled');
                 }
             });
         });
