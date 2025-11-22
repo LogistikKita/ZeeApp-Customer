@@ -17,17 +17,16 @@
         :root {
             /* --- Light Mode Default --- */
             --color-primary: #E51D2A;    /* Merah Menyala */
-            --color-primary-dark: #b91c1c; /* Merah Hover */
+            --color-primary-dark: #b91c1c; 
             --color-accent: #FFC72C;     /* Kuning Cerah */
-            --color-accent-dark: #f5b91b; /* Kuning Hover */
+            --color-accent-dark: #f5b91b;
             --color-dark: #1f2937;       /* Gray 800 - Teks Utama */
             --color-light: #ffffff;      /* Putih Bersih */
             --color-bg-light: #f3f4f6;   /* Gray 100 - Background/Border */
             --color-text-secondary: #6b7280; /* Gray 500/600 */
             
-            /* Variable Warna Overlay untuk Background Image */
-            /* Light Mode: Putih 95% opacity. */
-            --image-overlay: rgba(255, 255, 255, 0.95); 
+            /* REVISI 4: Background Fixed Visibility - Opacity 90% */
+            --image-overlay: rgba(255, 255, 255, 0.9); 
             
             /* Glass utilities */
             --glass-bg: rgba(255, 255, 255, 0.9);
@@ -36,17 +35,18 @@
 
         /* --- Dark Mode Overrides (Deep Dark Gray) --- */
         html.dark {
-            --color-primary: #f87171;    
+            /* REVISI 1: Komposisi Warna Dark Mode yang Lebih Kontras */
+            --color-primary: #f87171;    /* Light Red for contrast */
             --color-primary-dark: #ef4444; 
-            --color-accent: #fcd34d;     
+            --color-accent: #fcd34d;     /* Slightly subdued yellow */
             --color-accent-dark: #fbbf24; 
-            --color-dark: #f3f4f6;       /* Teks Utama (Putih) */
-            --color-light: #18181B;      /* Background Utama */
-            --color-bg-light: #27272A;   /* Border/Shadow Ringan */
+            --color-dark: #f3f4f6;       
+            --color-light: #18181B;      /* Deep Dark Background */
+            --color-bg-light: #27272A;   
             --color-text-secondary: #a1a1aa; 
             
-            /* Dark Mode Overlay: Hampir Hitam 90% opacity */
-            --image-overlay: rgba(24, 24, 27, 0.9); 
+            /* REVISI 4: Background Fixed Visibility - Opacity 85% */
+            --image-overlay: rgba(24, 24, 27, 0.85); 
             
             /* Glass utilities (Dark) */
             --glass-bg: rgba(24, 24, 27, 0.9);
@@ -67,7 +67,7 @@
             background-color: var(--image-overlay); 
         }
 
-        /* Parallax Background */
+        /* REVISI 3: Parallax Background Fixed (Performance Fix) */
         .parallax-bg {
             background-image: linear-gradient(to bottom, var(--image-overlay), var(--image-overlay)), 
                               url('assets/background-lk.jpg');
@@ -76,9 +76,11 @@
             background-size: cover;
             background-repeat: no-repeat;
             transition: background-image 0.5s;
+            /* Tambahkan hardware acceleration untuk scroll yang lebih mulus */
+            transform: translate3d(0, 0, 0); 
         }
 
-        /* Utility Animations */
+        /* Utility Animations (REVISI 8: Sudah cukup smooth dan ringan) */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -107,7 +109,7 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
         
-        /* New: Navbar scrolled state for clean transition */
+        /* Navbar scrolled state for clean transition */
         .glass-nav.scrolled {
              background: var(--image-overlay);
              border-bottom-color: transparent; 
@@ -176,8 +178,8 @@
     <header class="sticky top-0 left-0 right-0 z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="#hero" class="flex items-center gap-2 group">
-                <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="w-10 h-10 transition-all">
-                <span class="text-xl font-bold tracking-tight text-[var(--color-dark)] transition-colors">LOGISTIK KITA</span>
+                <img src="assets/logo/Logistik-Kita.png" alt="Logistik Kita Logo" class="w-8 h-8 lg:w-10 lg:h-10 transition-all">
+                <span class="text-lg lg:text-xl font-bold tracking-tight text-[var(--color-dark)] transition-colors">LOGISTIK KITA</span>
             </a>
 
             <nav class="hidden lg:flex items-center gap-6 font-medium text-sm">
@@ -372,7 +374,7 @@
 
     <section class="relative z-10 px-6 -mt-20 pb-20">
         <div class="max-w-6xl mx-auto reveal">
-            <div class="glass rounded-2xl p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+            <div class="glass rounded-2xl p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left shadow-xl"> 
                 <div>
                     <h3 class="text-4xl font-black text-[var(--color-dark)] mb-1">150+</h3>
                     <p class="text-sm text-[var(--color-text-secondary)] uppercase tracking-wider">Jaringan Rute</p>
@@ -470,21 +472,42 @@
 
             <div class="relative w-full overflow-hidden reveal">
                 <div id="carousel-track-services" class="flex gap-6 pb-4">
-                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl">
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item">
                         <img src="https://images.unsplash.com/photo-1558980394-6e69002afde4?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sewa Mobil">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
                             <h3 class="text-xl font-semibold mb-1">Layanan Sewa Mobil</h3>
                             <p class="text-gray-300 text-sm">Pilihan mobil keluarga dan operasional untuk kebutuhan harian atau bisnis.</p>
                         </div>
                     </div>
-                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl">
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item">
                         <img src="https://images.unsplash.com/photo-1558980394-d922a96996d9?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Travel and Tour">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
                             <h3 class="text-xl font-semibold mb-1">Travel & Tour</h3>
                             <p class="text-gray-300 text-sm">Paket wisata dan transportasi pariwisata untuk eksplorasi Nusantara.</p>
                         </div>
                     </div>
-                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl">
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item">
+                        <img src="https://images.unsplash.com/photo-1542488827-0137c870ff53?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Lapak Kita">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                            <h3 class="text-xl font-semibold mb-1">Lapak Kita (Jual Beli)</h3>
+                            <p class="text-gray-300 text-sm">Forum jual beli terintegrasi untuk komunitas logistik dan mitra.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item" data-duplicate="true">
+                        <img src="https://images.unsplash.com/photo-1558980394-6e69002afde4?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Sewa Mobil">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                            <h3 class="text-xl font-semibold mb-1">Layanan Sewa Mobil</h3>
+                            <p class="text-gray-300 text-sm">Pilihan mobil keluarga dan operasional untuk kebutuhan harian atau bisnis.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item" data-duplicate="true">
+                        <img src="https://images.unsplash.com/photo-1558980394-d922a96996d9?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Travel and Tour">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+                            <h3 class="text-xl font-semibold mb-1">Travel & Tour</h3>
+                            <p class="text-gray-300 text-sm">Paket wisata dan transportasi pariwisata untuk eksplorasi Nusantara.</p>
+                        </div>
+                    </div>
+                    <div class="min-w-[70%] sm:min-w-[40%] md:min-w-[30%] relative aspect-[3/4] group overflow-hidden rounded-2xl shadow-2xl slide-item" data-duplicate="true">
                         <img src="https://images.unsplash.com/photo-1542488827-0137c870ff53?q=80&w=1887&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Lapak Kita">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
                             <h3 class="text-xl font-semibold mb-1">Lapak Kita (Jual Beli)</h3>
@@ -535,7 +558,7 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal">
+                <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal">
                     <div class="flex gap-1 text-[var(--color-accent)] mb-4">
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
@@ -553,7 +576,7 @@
                     </div>
                 </div>
 
-                <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 100ms;">
+                <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 100ms;">
                     <div class="flex gap-1 text-[var(--color-accent)] mb-4">
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
@@ -571,7 +594,7 @@
                     </div>
                 </div>
 
-                <div class="glass p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 200ms;">
+                <div class="bg-[var(--color-light)] shadow-lg border border-[var(--color-bg-light)] p-8 rounded-xl hover:-translate-y-2 transition-transform duration-300 group reveal" style="transition-delay: 200ms;">
                     <div class="flex gap-1 text-[var(--color-accent)] mb-4">
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
                         <i data-lucide="star" class="w-4 h-4 fill-current"></i>
@@ -724,7 +747,6 @@
         const mobileAccordions = document.querySelectorAll('.mobile-accordion');
 
         function toggleMenu(event) {
-            // Berikan delay kecil untuk animasi smooth saat link diklik
             const isLinkClick = event && event.currentTarget.classList.contains('mobile-link');
             
             if (isLinkClick) {
@@ -785,6 +807,7 @@
 
         // =======================================================
         // D. CAROUSEL LOGIC (Multi-Carousel)
+        // (REVISI 6: Perbaikan Logika Services Carousel agar Looping dan Smooth)
         // =======================================================
         
         function initCarousel(trackId, prevBtnId, nextBtnId, dotsId, isFleet = true) {
@@ -795,15 +818,32 @@
 
             if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
 
-            const slides = Array.from(track.children);
-            const totalSlides = slides.length;
+            const originalSlides = Array.from(track.querySelectorAll('.slide-item') || track.children).filter(el => !el.dataset.duplicate);
+            const totalSlides = originalSlides.length; // Hanya slide unik
+
+            if (totalSlides === 0) return;
+            
             let currentIndex = 0;
             let autoPlayInterval;
-
+            
+            // Untuk services (non-full width), kita perlu menghitung pergeseran berdasarkan lebar slide
+            const getShiftAmount = () => {
+                if (isFleet) {
+                    return currentIndex * 100; // Full width slides
+                } else {
+                    // Cek elemen pertama (slide unik pertama)
+                    const slide = originalSlides[0]; 
+                    if (!slide) return 0;
+                    const slideWidth = slide.offsetWidth;
+                    const gap = 24; // Tailwind gap-6 = 24px
+                    return currentIndex * (slideWidth + gap);
+                }
+            };
+            
             const updateDots = () => {
                 const dots = dotsContainer.querySelectorAll('.dot');
                 dots.forEach((dot, index) => {
-                    if(index === currentIndex) {
+                    if(index === currentIndex % totalSlides) {
                         dot.classList.remove('bg-[var(--color-primary)]/30');
                         dot.classList.add('bg-[var(--color-primary)]');
                     } else {
@@ -814,26 +854,70 @@
             };
 
             const updateCarousel = () => {
-                if (isFleet) {
-                     // Full width slide
-                     track.style.transform = `translateX(-${currentIndex * 100}%)`;
-                } else {
-                    // Custom width slide (Portrait)
-                    const slideWidth = slides[0].offsetWidth;
-                    const gap = 24; // Tailwind gap-6 = 24px
-                    track.style.transform = `translateX(-${currentIndex * (slideWidth + gap)}px)`;
-                }
-               
+                track.style.transform = `translateX(-${getShiftAmount()}px)`;
                 updateDots();
+                
+                // Looping services carousel (JIKA non-full width)
+                if (!isFleet && currentIndex >= totalSlides) {
+                    // Setelah selesai transisi ke slide duplikasi, reset ke awal (tanpa animasi)
+                    setTimeout(() => {
+                        track.style.transition = 'none';
+                        currentIndex = 0;
+                        track.style.transform = `translateX(-${getShiftAmount()}px)`;
+                        
+                        // Kembalikan animasi setelah reset
+                        setTimeout(() => {
+                            track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
+                        }, 50);
+                    }, 700);
+                }
             };
+            
+            // Set transisi awal untuk services
+            if (!isFleet) {
+                 track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
+            }
+
 
             const nextSlide = () => {
-                currentIndex = (currentIndex + 1) % totalSlides;
+                 // Untuk services, kita geser ke slide duplikasi juga untuk efek looping
+                if (isFleet) {
+                    currentIndex = (currentIndex + 1) % totalSlides;
+                } else {
+                    // Services: geser sampai slide duplikasi terakhir
+                    const totalVisibleSlides = 3; // Misal 3 slide terlihat
+                    const maxIndex = totalSlides + totalVisibleSlides - 1; // Maksimal index yang terlihat
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                    } else {
+                        currentIndex = 0; // Reset cepat (akan ditangani di updateCarousel)
+                    }
+                }
                 updateCarousel();
             };
 
             const prevSlide = () => {
-                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                if (isFleet) {
+                    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                } else {
+                    // Services: geser mundur, jika di awal, langsung ke duplikasi
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                    } else {
+                        // Jika di index 0, langsung lompat ke slide duplikasi
+                        currentIndex = totalSlides; 
+                        track.style.transition = 'none';
+                        track.style.transform = `translateX(-${getShiftAmount()}px)`;
+
+                        // Geser 1 slide mundur dengan animasi
+                        setTimeout(() => {
+                            track.style.transition = 'transform 0.7s cubic-bezier(0.25, 1, 0.5, 1)';
+                            currentIndex--; 
+                            updateCarousel();
+                        }, 50);
+                        return;
+                    }
+                }
                 updateCarousel();
             };
             
@@ -852,12 +936,17 @@
 
             // Auto Play
             const startTimer = () => {
-                autoPlayInterval = setInterval(nextSlide, 5000);
+                // HANYA auto play untuk full-width carousel (Fleet)
+                if (isFleet) {
+                    autoPlayInterval = setInterval(nextSlide, 5000);
+                }
             };
             
             const resetTimer = () => {
-                clearInterval(autoPlayInterval);
-                startTimer();
+                if (isFleet) {
+                    clearInterval(autoPlayInterval);
+                    startTimer();
+                }
             };
 
             startTimer();
@@ -886,7 +975,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeThemeToggle();
             
-            // Navbar Scroll Effect (FIXED: Menggunakan Class List)
+            // Navbar Scroll Effect
             const navbar = document.getElementById('navbar');
             
             window.addEventListener('scroll', () => {
