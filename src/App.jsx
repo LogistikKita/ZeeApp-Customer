@@ -1,14 +1,24 @@
 import React from 'react';
+import Navbar from './components/layout/Navbar.jsx';
 
-// Ini adalah root component kita
 function App() {
   return (
-    <div className="text-3xl font-bold text-center p-10">
-      🎉 Logistik Kita App Berjalan!
-      {/* Nanti di sini kita panggil Navbar dan Home */}
-    </div>
+    <>
+      <Navbar />
+      
+      {/* Ini adalah konten halaman utama kamu. */}
+      <div className="p-10 text-center min-h-screen">
+          <h1 className="text-4xl font-black mt-20 text-[var(--color-primary)]">
+              Navbar Berhasil Dimuat!
+          </h1>
+          <p className="text-xl text-[var(--color-dark)] mt-4">
+              Cek Dark Mode & Mobile Menu.
+          </p>
+      </div>
+      
+      {/* Nanti di sini kita panggil komponen Footer */}
+    </>
   );
 }
 
 export default App;
-
