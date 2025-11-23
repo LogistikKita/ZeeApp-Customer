@@ -1,22 +1,26 @@
 import React from 'react';
 import Navbar from './components/layout/Navbar.jsx';
+import Footer from './components/layout/Footer.jsx';
 
 function App() {
   return (
+    // Menggunakan Fragment <></> sebagai pembungkus
     <>
       <Navbar />
       
-      {/* Ini adalah konten halaman utama kamu. */}
-      <div className="p-10 text-center min-h-screen">
-          <h1 className="text-4xl font-black mt-20 text-[var(--color-primary)]">
-              Navbar Berhasil Dimuat!
+      {/* Main (Konten Utama) - Nanti semua halaman akan ada di sini
+          Kita beri min-h-screen agar Footer selalu di bawah
+      */}
+      <main className="p-10 text-center min-h-screen">
+          <h1 className="text-4xl font-black mt-20 text-primary">
+              Navbar & Footer Siap!
           </h1>
-          <p className="text-xl text-[var(--color-dark)] mt-4">
+          <p className="text-xl text-gray-800 mt-4">
               Cek Dark Mode & Mobile Menu.
           </p>
-      </div>
+      </main>
       
-      {/* Nanti di sini kita panggil komponen Footer */}
+      <Footer />
     </>
   );
 }
