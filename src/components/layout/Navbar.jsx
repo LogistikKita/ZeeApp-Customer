@@ -52,7 +52,9 @@ const Navbar = () => {
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                     
                     <a href="#hero" className="flex items-center gap-2 group">
-                        <img src="/assets/images/logo/Logistik-Kita.png" alt="Logistik Kita Logo" className="w-8 h-8 lg:w-14 lg:h-14 transition-all" />
+                       <img src="/Logistik-Kita.png" alt="Logistik Kita Logo" className="w-8 h-8 lg:w-14 lg:h-14 transition-all" />
+ 
+
                         <span className="text-lg lg:text-3xl font-bold tracking-tight text-gray-900 dark:text-white transition-colors">LOGISTIK KITA</span>
                     </a>
 
