@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
+import Hero from './components/Hero.jsx'; // <--- Impor komponen Hero
 
 function App() {
   return (
@@ -8,16 +9,16 @@ function App() {
     <>
       <Navbar />
       
-      {/* Main (Konten Utama) - Nanti semua halaman akan ada di sini
-          Kita beri min-h-screen agar Footer selalu di bawah
-      */}
-      <main className="p-10 text-center min-h-screen">
-          <h1 className="text-4xl font-black mt-20 text-primary">
-              Navbar & Footer Siap!
-          </h1>
-          <p className="text-xl text-gray-800 mt-4">
-              Cek Dark Mode & Mobile Menu.
-          </p>
+      {/* Main Content: Di sinilah semua komponen halaman utama dipanggil */}
+      <main>
+          <Hero /> {/* <--- Panggil Komponen Hero (Banner Utama) */}
+          
+          {/* Di sini nanti akan ada komponen seperti:
+              <ServicesSection />
+              <Testimonials />
+              <FAQ />
+          */}
+          
       </main>
       
       <Footer />
