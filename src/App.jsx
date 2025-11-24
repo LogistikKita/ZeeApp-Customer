@@ -3,16 +3,17 @@ import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import Hero from './components/Hero.jsx'; 
 import Preloader from './components/Preloader.jsx'; 
-import FleetSection from './components/FleetSection.jsx'; // <-- Komponen baru Fleet
+import FleetSection from './components/FleetSection.jsx'; 
+import ServicesSection from './components/ServicesSection.jsx'; // <-- Layanan
+import TestimonialsSection from './components/TestimonialsSection.jsx'; // <-- Testimoni
 
 // =======================================================
 // Anti-Flash of Unstyled Content (FOUC) Fix
-// Mencegah mode gelap/terang berkedip saat reload
 // =======================================================
 document.documentElement.classList.add('no-transition');
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true); // State untuk mengontrol Preloader
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     // Menghapus kelas anti-flash setelah 100ms
@@ -22,12 +23,12 @@ function App() {
 
     // Mengatur waktu Preloader (muncul selama 1500ms atau 1.5 detik)
     const timer = setTimeout(() => {
-      setIsLoading(false); // Matikan Preloader
+      setIsLoading(false); 
     }, 1500); 
     
     // Cleanup function
     return () => clearTimeout(timer);
-  }, []); // Hanya berjalan sekali saat load
+  }, []); 
 
   return (
     <>
@@ -41,9 +42,13 @@ function App() {
           
           <main>
               <Hero />
-              {/* Seksi Armada menggunakan Carousel */}
+              
+              {/* Seksi Konten Utama */}
               <FleetSection /> 
-              {/* Di sini nanti komponen Services, Testimonials, dll. akan ditambahkan */}
+              <ServicesSection />
+              <TestimonialsSection /> 
+              
+              {/* Di sini nanti bagian CTA, Partners, Contact Form akan ditambahkan */}
           </main>
           
           <Footer />
