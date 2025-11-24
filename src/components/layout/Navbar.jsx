@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon, Search, ChevronDown, MessageSquare } from 'lucide-react';
-// CATATAN: Baris "import Logo" DIBUANG karena logo diakses dari folder /public/
 
 // Fungsi untuk mendapatkan/menetapkan tema awal
 const getInitialTheme = () => {
@@ -104,7 +103,7 @@ const Navbar = () => {
           href="https://wa.me/6285813487753" 
           target="_blank" 
           id="whatsapp-cta" 
-          className="fixed bottom-20 right-20 z-[1000] bg-[#25D366] text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+          className="fixed bottom-4 right-4 z-[1000] bg-[#25D366] text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
       >
           <MessageSquare className="w-6 h-6 fill-white stroke-white"/>
       </a>
@@ -361,3 +360,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
