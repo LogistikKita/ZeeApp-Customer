@@ -1,136 +1,363 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon, Search, ChevronDown, Truck } from 'lucide-react'; 
+import { Menu, X, Sun, Moon, Search, ChevronDown, MessageSquare } from 'lucide-react';
+import Logo from '../../assets/logo/Logistik-Kita.png'; // Pastikan path ini benar jika logo masih di assets/logo
+
+// Fungsi untuk mendapatkan/menetapkan tema awal
+const getInitialTheme = () => {
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      return savedTheme;
+    }
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
+  }
+  return 'light';
+};
 
 const Navbar = () => {
-    // STATE UNTUK MOBILE MENU
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    
-    // STATE UNTUK DARK MODE (Kita ambil dari localStorage saat load)
-    const [isDark, setIsDark] = useState(
-        localStorage.getItem('theme') === 'dark' || 
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    );
-    
-    // STATE UNTUK EFEK SCROLL NAVBAR
-    const [scrolled, setScrolled] = useState(false);
+  // 1. State untuk Tema
+  const [theme, setTheme] = useState(getInitialTheme);
+  
+  // 2. State untuk Scroll Effect
+  const [isScrolled, setIsScrolled] = useState(false);
 
-    // LOGIKA EFEK: MENGATUR TEMA DAN SCROLL
-    useEffect(() => {
-        if (isDark) {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        }
+  // 3. State untuk Mobile Menu
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-        const handleScroll = () => {
-            const isScrolled = window.scrollY > 50;
-            if (isScrolled !== scrolled) {
-                setScrolled(isScrolled);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [isDark, scrolled]); 
-
-    // LOGIKA TOMBOL: MENGATUR THEME DAN MENU
-    const toggleTheme = () => {
-        setIsDark(prev => !prev);
+  // =======================================================
+  // A. SCROLL EFFECT LOGIC
+  // =======================================================
+  useEffect(() => {
+    const handleScroll = () => {
+      // Menambahkan 'shadow-lg' dan 'scrolled' jika di-scroll lebih dari 50px
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
     };
 
-    const toggleMenu = () => {
-        setIsMenuOpen(prev => !prev);
-        document.body.style.overflow = isMenuOpen ? '' : 'hidden';
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll); // Cleanup
+  }, []);
 
-    return (
-        <>
-            <header className={`sticky top-0 left-0 right-0 z-50 glass-nav transition-all duration-300 bg-white dark:bg-gray-900 ${scrolled ? 'shadow-lg scrolled' : ''}`} id="navbar">
-                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                    
-                    <a href="#hero" className="flex items-center gap-2 group">
-                       <img src="/Logistik-Kita.png" alt="Logistik Kita Logo" className="w-8 h-8 lg:w-14 lg:h-14 transition-all" />
- 
+  // =======================================================
+  // B. THEME TOGGLE LOGIC
+  // =======================================================
+  useEffect(() => {
+    const html = document.documentElement;
+    // Set class 'dark' di elemen <html>
+    if (theme === 'dark') {
+      html.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      html.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [theme]);
+  
+  const toggleTheme = () => {
+    // Matikan sementara transisi saat beralih tema
+    document.documentElement.classList.add('no-transition');
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    
+    // Aktifkan kembali transisi setelah jeda
+    setTimeout(() => {
+      document.documentElement.classList.remove('no-transition');
+    }, 500);
+  };
+  
+  // =======================================================
+  // C. MOBILE MENU LOGIC
+  // =======================================================
+  const toggleMobileMenu = (e) => {
+      // Jika yang diklik adalah link atau accordion, tutup setelah jeda
+      const isLink = e.target.classList.contains('mobile-link');
+      if (isMobileMenuOpen && isLink) {
+        // Berikan jeda untuk animasi smooth scroll (300ms)
+        setTimeout(() => {
+            setIsMobileMenuOpen(false);
+            document.body.style.overflow = '';
+        }, 300);
+      } else {
+          // Buka/tutup menu
+          const newState = !isMobileMenuOpen;
+          setIsMobileMenuOpen(newState);
+          document.body.style.overflow = newState ? 'hidden' : '';
+      }
+  };
 
-                        <span className="text-lg lg:text-3xl font-bold tracking-tight text-gray-900 dark:text-white transition-colors">LOGISTIK KITA</span>
-                    </a>
+  // State untuk mengontrol Accordion Mobile Menu (Agar satu tertutup saat yang lain dibuka)
+  const [openAccordion, setOpenAccordion] = useState(null);
+  
+  const handleAccordionToggle = (name) => {
+    setOpenAccordion(openAccordion === name ? null : name);
+  };
+  
+  const navClass = `sticky top-0 left-0 right-0 z-50 glass-nav transition-all duration-300 ${isScrolled ? 'shadow-lg scrolled' : ''}`;
 
-                    {/* DESKTOP NAV */}
-                    <nav className="hidden lg:flex items-center gap-6 font-medium text-sm h-full">
-                        <a href="#hero" className="text-gray-800 dark:text-gray-300 hover:text-primary transition-colors">BERANDA</a>
-                        
-                        {/* LAYANAN & ARMADA */}
-                        <div className="dropdown-parent relative h-full flex items-center">
-                            <button className="flex items-center gap-1 text-gray-800 dark:text-gray-300 hover:text-primary transition-colors">
-                                LAYANAN & ARMADA <ChevronDown className="w-3 h-3 transition-transform" />
-                            </button>
-                            <div className="dropdown-menu bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-300 shadow-xl" role="menu">
-                                {/* Isi dropdown... */}
-                                <a href="/maintenance" className="hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Kapasitas Armada</a>
-                                <a href="/maintenance" className="hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Jangkauan Pengiriman</a>
-                                {/* ...dan seterusnya untuk item dropdown lainnya */}
-                            </div>
-                        </div>
+  return (
+    <>
+      {/* Tombol WhatsApp Mengambang (Floating WhatsApp Button) */}
+      <a 
+          href="https://wa.me/6285813487753" 
+          target="_blank" 
+          id="whatsapp-cta" 
+          className="fixed bottom-20 right-20 z-[1000] bg-[#25D366] text-white p-3 rounded-full shadow-lg transition-transform hover:scale-110"
+      >
+          <MessageSquare className="w-6 h-6 fill-white stroke-white"/>
+      </a>
+      
+      {/* HEADER UTAMA */}
+      <header className={navClass}>
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          
+          <a href="#hero" className="flex items-center gap-2 group">
+            <img 
+                src="/Logistik-Kita.png" // <-- Path sudah diubah ke folder public
+                alt="Logistik Kita Logo" 
+                className="w-8 h-8 lg:w-14 lg:h-14 transition-all"
+            />
+            <span className="text-lg lg:text-3xl font-bold tracking-tight text-[var(--color-dark)] transition-colors">LOGISTIK KITA</span>
+          </a>
 
-                        {/* ... Masukkan kembali semua menu DESKTOP NAV yang lain di sini, ganti var(--color-...) ke kelas Tailwind biasa. */}
-
-                        <a href="#contact-cta" className="px-4 py-2 text-sm font-medium text-white bg-primary rounded hover:bg-blue-700 transition-all duration-300 shadow-md">
-                            HUBUNGI KITA
-                        </a>
-                        
-                    </nav>
-
-                    <div className="flex items-center gap-4">
-                        
-                        <button className="p-2 text-gray-800 dark:text-gray-300 hover:text-primary transition-colors">
-                            <Search className="w-5 h-5" />
-                        </button>
-                        
-                        {/* THEME TOGGLE */}
-                        <button 
-                            id="theme-toggle" 
-                            onClick={toggleTheme} 
-                            className="p-2 rounded-full text-gray-800 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                        >
-                            {isDark ? (
-                                <Sun id="sun-icon" className="w-5 h-5" />
-                            ) : (
-                                <Moon id="moon-icon" className="w-5 h-5" />
-                            )}
-                        </button>
-
-                        <a href="/login" className="hidden sm:block px-4 py-2 text-sm font-medium text-gray-900 bg-accent rounded hover:bg-yellow-600 transition-all duration-300 shadow-md">
-                            DAFTAR / MASUK
-                        </a>
-
-                        {/* MOBILE MENU TOGGLE */}
-                        <button 
-                            id="menu-btn" 
-                            onClick={toggleMenu} 
-                            className="lg:hidden text-gray-800 dark:text-gray-300 p-2" 
-                            aria-controls="mobile-menu" 
-                            aria-expanded={isMenuOpen}
-                        >
-                            {isMenuOpen ? (
-                                <X id="close-icon" className="w-6 h-6" />
-                            ) : (
-                                <Menu id="menu-icon" className="w-6 h-6" />
-                            )}
-                        </button>
-                    </div>
-                </div>
-            </header>
+          {/* NAVIGASI DESKTOP */}
+          <nav className="hidden lg:flex items-center gap-6 font-medium text-sm h-full">
+            <a href="#hero" className="text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">BERANDA</a>
             
-            {/* MOBILE MENU */}
-            <div id="mobile-menu" className={`fixed inset-0 z-40 bg-white dark:bg-gray-900/90 flex flex-col items-start pt-24 pb-8 overflow-y-auto lg:hidden ${isMenuOpen ? 'active' : 'hidden'}`}>
-                {/* ... Salin kembali semua kode MOBILE MENU di sini, ganti var(--color-...) ke kelas Tailwind biasa. */}
-                <p className="text-gray-500 p-6">... Konten Mobile Menu ...</p>
+            {/* Dropdown 1: LAYANAN & ARMADA */}
+            <div className="dropdown-parent relative h-full flex items-center">
+                <button className="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    LAYANAN & ARMADA <ChevronDown className="w-3 h-3 transition-transform" />
+                </button>
+                <div className="dropdown-menu glass text-[var(--color-dark)]" role="menu">
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Kapasitas Armada</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Jangkauan Pengiriman</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Prosedur Keamanan</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Simulasi Harga Estimasi</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Jenis Layanan</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Sewa Mobil</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]" role="menuitem">Travel and Tour</a>
+                </div>
             </div>
-        </>
-    );
-}
+
+            {/* Dropdown 2: GALERI & PORTOFOLIO */}
+            <div className="dropdown-parent relative h-full flex items-center">
+                <button className="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    GALERI & PORTOFOLIO <ChevronDown className="w-3 h-3 transition-transform" />
+                </button>
+                <div className="dropdown-menu glass text-[var(--color-dark)]">
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Dokumentasi Pengiriman</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Kisah Sukses Lokal</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Testimoni Klien</a>
+                </div>
+            </div>
+
+            {/* Dropdown 3: BLOG / BERITA */}
+            <div className="dropdown-parent relative h-full flex items-center">
+                <button className="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    BLOG / BERITA <ChevronDown className="w-3 h-3 transition-transform" />
+                </button>
+                <div className="dropdown-menu glass text-[var(--color-dark)]">
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Berita Terbaru</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Tips Logistik</a>
+                </div>
+            </div>
+
+            {/* Dropdown 4: MITRA ARMADA */}
+            <div className="dropdown-parent relative h-full flex items-center">
+                <button className="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    MITRA ARMADA <ChevronDown className="w-3 h-3 transition-transform" />
+                </button>
+                <div className="dropdown-menu glass text-[var(--color-dark)]">
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Pendaftaran Mitra</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Info Muatan Balik</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Driver Terbaik Bulan Ini</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">SOP Mitra</a>
+                </div>
+            </div>
+            
+            <a href="maintenance.html" className="text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">LAPAK KITA</a>
+            
+            {/* Dropdown 5: TENTANG KITA */}
+            <div className="dropdown-parent relative h-full flex items-center">
+                <button className="flex items-center gap-1 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                    TENTANG KITA <ChevronDown className="w-3 h-3 transition-transform" />
+                </button>
+                <div className="dropdown-menu glass text-[var(--color-dark)]">
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Visi, Misi & Nilai</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Profil dan Legalitas</a>
+                    <a href="maintenance.html" className="hover:text-[var(--color-primary)]">Penanganan Resiko</a>
+                </div>
+            </div>
+
+            <a href="#contact-cta" className="px-4 py-2 text-sm font-medium text-white bg-[var(--color-primary)] rounded hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-md">
+                HUBUNGI KITA
+            </a>
+            
+          </nav>
+
+          {/* ICON SECTION (Search, Theme, Login/Register) */}
+          <div className="flex items-center gap-4">
+            
+            <button className="p-2 text-[var(--color-dark)] hover:text-[var(--color-primary)] transition-colors">
+                <Search className="w-5 h-5" />
+            </button>
+            
+            {/* Tombol Tema */}
+            <button 
+                id="theme-toggle" 
+                onClick={toggleTheme} 
+                className="p-2 rounded-full text-[var(--color-dark)] hover:bg-[var(--color-bg-light)] transition"
+            >
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
+
+            <a href="maintenance.html" className="hidden sm:block px-4 py-2 text-sm font-medium text-[var(--color-dark)] bg-[var(--color-accent)] rounded hover:bg-[var(--color-accent-dark)] transition-all duration-300 shadow-md">
+                DAFTAR / MASUK
+            </a>
+
+            {/* Hamburger Button */}
+            <button 
+                id="menu-btn" 
+                onClick={toggleMobileMenu} 
+                className="lg:hidden text-[var(--color-dark)] p-2" 
+                aria-controls="mobile-menu" 
+                aria-expanded={isMobileMenuOpen}
+            >
+                {isMobileMenuOpen ? (
+                    <X id="close-icon" className="w-6 h-6" />
+                ) : (
+                    <Menu id="menu-icon" className="w-6 h-6" />
+                )}
+            </button>
+          </div>
+        </div>
+      </header>
+      
+      {/* MOBILE MENU */}
+      <div 
+        id="mobile-menu" 
+        className={`fixed inset-0 z-40 bg-[var(--image-overlay)] flex flex-col items-start pt-24 pb-8 overflow-y-auto lg:hidden ${isMobileMenuOpen ? 'active' : ''}`}
+      >
+        <nav className="w-full text-[var(--color-dark)] font-medium">
+            <a href="#hero" onClick={toggleMobileMenu} className="mobile-link block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors">BERANDA</a>
+            
+            {/* Accordion 1: LAYANAN & ARMADA */}
+            <details 
+                className="mobile-accordion w-full" 
+                open={openAccordion === 'layanan'} 
+                onClick={(e) => {
+                    if(e.target.tagName.toLowerCase() === 'summary') e.preventDefault(); // Mencegah default toggle
+                    handleAccordionToggle('layanan');
+                }}
+            >
+                <summary className="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">LAYANAN & ARMADA</summary>
+                <div className="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Kapasitas Armada</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Jangkauan Pengiriman</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Prosedur Keamanan</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Simulasi Harga Estimasi</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Jenis Layanan</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Sewa Mobil</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 hover:text-[var(--color-primary)]">Travel and Tour</a>
+                </div>
+            </details>
+
+            {/* Accordion 2: GALERI & PORTOFOLIO */}
+            <details 
+                className="mobile-accordion w-full"
+                open={openAccordion === 'galeri'} 
+                onClick={(e) => {
+                    if(e.target.tagName.toLowerCase() === 'summary') e.preventDefault();
+                    handleAccordionToggle('galeri');
+                }}
+            >
+                <summary className="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">GALERI & PORTOFOLIO</summary>
+                <div className="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Dokumentasi Pengiriman</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Kisah Sukses Lokal</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 hover:text-[var(--color-primary)]">Testimoni Klien</a>
+                </div>
+            </details>
+            
+            {/* Accordion 3: BLOG / BERITA */}
+            <details 
+                className="mobile-accordion w-full"
+                open={openAccordion === 'blog'} 
+                onClick={(e) => {
+                    if(e.target.tagName.toLowerCase() === 'summary') e.preventDefault();
+                    handleAccordionToggle('blog');
+                }}
+            >
+                <summary className="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">BLOG / BERITA</summary>
+                <div className="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Berita Terbaru</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 hover:text-[var(--color-primary)]">Tips Logistik</a>
+                </div>
+            </details>
+
+            {/* Accordion 4: MITRA ARMADA */}
+            <details 
+                className="mobile-accordion w-full"
+                open={openAccordion === 'mitra'} 
+                onClick={(e) => {
+                    if(e.target.tagName.toLowerCase() === 'summary') e.preventDefault();
+                    handleAccordionToggle('mitra');
+                }}
+            >
+                <summary className="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">MITRA ARMADA</summary>
+                <div className="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Pendaftaran Mitra</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Info Muatan Balik</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Driver Terbaik Bulan Ini</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 hover:text-[var(--color-primary)]">SOP Mitra</a>
+                </div>
+            </details>
+            
+            <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors">LAPAK KITA</a>
+
+            {/* Accordion 5: TENTANG KITA */}
+            <details 
+                className="mobile-accordion w-full"
+                open={openAccordion === 'tentang'} 
+                onClick={(e) => {
+                    if(e.target.tagName.toLowerCase() === 'summary') e.preventDefault();
+                    handleAccordionToggle('tentang');
+                }}
+            >
+                <summary className="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">TENTANG KITA</summary>
+                <div className="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Visi, Misi & Nilai</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Profil dan Legalitas</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 hover:text-[var(--color-primary)]">Penanganan Resiko</a>
+                </div>
+            </details>
+
+            {/* Accordion 6: HUBUNGI KITA */}
+            <details 
+                className="mobile-accordion w-full"
+                open={openAccordion === 'hubungi'} 
+                onClick={(e) => {
+                    if(e.target.tagName.toLowerCase() === 'summary') e.preventDefault();
+                    handleAccordionToggle('hubungi');
+                }}
+            >
+                <summary className="block px-6 py-3 border-b border-[var(--color-bg-light)] hover:bg-[var(--color-bg-light)] transition-colors cursor-pointer">HUBUNGI KITA</summary>
+                <div className="pl-8 bg-[var(--color-bg-light)] dark:bg-gray-700/50">
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Formulir RFQ</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 border-b border-white/10 hover:text-[var(--color-primary)]">Informasi Kontak</a>
+                    <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-4 py-2 hover:text-[var(--color-primary)]">Lokasi Kantor</a>
+                </div>
+            </details>
+
+            <a href="maintenance.html" onClick={toggleMobileMenu} className="mobile-link block px-6 py-3 bg-[var(--color-accent)] text-[var(--color-dark)] font-bold hover:bg-[var(--color-accent-dark)] transition-colors mt-4">DAFTAR / MASUK</a>
+        </nav>
+      </div>
+    </>
+  );
+};
 
 export default Navbar;
