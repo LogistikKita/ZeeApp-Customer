@@ -4,8 +4,8 @@ import Footer from './components/layout/Footer.jsx';
 import Hero from './components/Hero.jsx'; 
 import Preloader from './components/Preloader.jsx'; 
 import FleetSection from './components/FleetSection.jsx'; 
-import ServicesSection from './components/ServicesSection.jsx'; // <-- Layanan
-import TestimonialsSection from './components/TestimonialsSection.jsx'; // <-- Testimoni
+import ServicesSection from './components/ServicesSection.jsx'; 
+import TestimonialsSection from './components/TestimonialsSection.jsx'; 
 
 // =======================================================
 // Anti-Flash of Unstyled Content (FOUC) Fix
@@ -48,7 +48,7 @@ function App() {
               <ServicesSection />
               <TestimonialsSection /> 
               
-              {/* Di sini nanti bagian CTA, Partners, Contact Form akan ditambahkan */}
+              {/* Footer akan kita perbaiki setelah ini */}
           </main>
           
           <Footer />
