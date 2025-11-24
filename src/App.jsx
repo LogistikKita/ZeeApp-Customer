@@ -39,16 +39,15 @@ function App() {
             <Navbar />
             <main>
                 <Hero />
-                {/* AKTIFKAN TRUSTMETRICS */}
                 <TrustMetrics />      
                 
-                {/* KOMPONEN BERISIKO TINGGI (FIREBASE) MASIH DIKOMENTARI */}
-                {/* <TrackingSection /> */}
+                {/* INI YANG KITA NONAKTIFKAN */}
+                {/* <TrackingSection /> */} 
                 
-                {/* KOMPONEN LAIN MASIH DIKOMENTARI */}
-                {/* <ServicesSection />    */}
-                {/* <FleetSection /> */} 
-                {/* <TestimonialsSection /> */}
+                {/* KOMPONEN LAIN DI-AKTIFKAN */}
+                <ServicesSection />    
+                <FleetSection /> 
+                <TestimonialsSection /> 
             </main>
             <Footer />
         </>
