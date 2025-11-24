@@ -4,7 +4,7 @@ import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 // Komentar semua komponen section DULU. Kita akan buka satu per satu.
 import Hero from './components/Hero.jsx'; 
-// import FleetSection from './components/FleetSection.jsx'; 
+import FleetSection from './components/FleetSection.jsx'; 
 // import ServicesSection from './components/ServicesSection.jsx'; 
 // import TestimonialsSection from './components/TestimonialsSection.jsx'; 
 
@@ -46,6 +46,17 @@ function App() {
     <p className="text-gray-700 dark:text-gray-300 mt-4">
         Jika ini muncul, masalah ada di komponen Section (Hero, Fleet, dll.)
     </p>
+        return (
+    <>
+      <Navbar />
+      <main>
+          <Hero />
+          <FleetSection /> {/* <-- TAMBAHKAN INI */}
+      </main>
+      <Footer />
+    </>
+);
+
 </main>
 
       
