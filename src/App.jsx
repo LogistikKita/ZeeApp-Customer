@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 
-// Import semua section (JANGAN DIHAPUS, BIARKAN SAJA DI SINI)
+// Import semua section
 import Hero from './components/Hero.jsx'; 
 import TrustMetrics from './components/TrustMetrics.jsx'; 
-import TrackingSection from './components/TrackingSection.jsx'; 
+import TrackingSection from './components/TrackingSection.jsx'; // JANGAN DIHAPUS IMPORTNYA
 import FleetSection from './components/FleetSection.jsx'; 
 import ServicesSection from './components/ServicesSection.jsx'; 
 import TestimonialsSection from './components/TestimonialsSection.jsx'; 
@@ -17,7 +17,6 @@ function App() {
 
     // Efek untuk mengelola Preloader dan transisi awal (SUDAH DIPERBAIKI)
     useEffect(() => {
-        // PENTING: Manipulasi DOM harus dilakukan di dalam useEffect!
         document.documentElement.classList.add('no-transition');
 
         setTimeout(() => {
@@ -32,25 +31,24 @@ function App() {
     }, []); 
 
     if (isLoading) {
-        // PERIKSA: Jika Preloader ini bermasalah, masih akan crash di sini.
         return <Preloader />; 
     }
 
-    // ===============================================
-    // HANYA RENDER HERO DAN LAYOUT DASAR
-    // ===============================================
     return (
         <>
             <Navbar />
             <main>
                 <Hero />
-                {/* // KOMPONEN LAIN DI-KOMENTARI DULU UNTUK DIAGNOSA
+                {/* AKTIFKAN TRUSTMETRICS */}
                 <TrustMetrics />      
-                <TrackingSection />    
-                <ServicesSection />    
-                <FleetSection /> 
-                <TestimonialsSection /> 
-                */}
+                
+                {/* KOMPONEN BERISIKO TINGGI (FIREBASE) MASIH DIKOMENTARI */}
+                {/* <TrackingSection /> */}
+                
+                {/* KOMPONEN LAIN MASIH DIKOMENTARI */}
+                {/* <ServicesSection />    */}
+                {/* <FleetSection /> */} 
+                {/* <TestimonialsSection /> */}
             </main>
             <Footer />
         </>
