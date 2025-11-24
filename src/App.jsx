@@ -5,7 +5,7 @@ import Footer from './components/layout/Footer.jsx';
 // Import semua section
 import Hero from './components/Hero.jsx'; 
 import TrustMetrics from './components/TrustMetrics.jsx'; 
-import TrackingSection from './components/TrackingSection.jsx'; // JANGAN DIHAPUS IMPORTNYA
+import TrackingSection from './components/TrackingSection.jsx'; 
 import FleetSection from './components/FleetSection.jsx'; 
 import ServicesSection from './components/ServicesSection.jsx'; 
 import TestimonialsSection from './components/TestimonialsSection.jsx'; 
@@ -41,10 +41,9 @@ function App() {
                 <Hero />
                 <TrustMetrics />      
                 
-                {/* INI YANG KITA NONAKTIFKAN */}
-                {/* <TrackingSection /> */} 
+                {/* AKTIFKAN KEMBALI TRACKING SECTION */}
+                <TrackingSection /> 
                 
-                {/* KOMPONEN LAIN DI-AKTIFKAN */}
                 <ServicesSection />    
                 <FleetSection /> 
                 <TestimonialsSection /> 
