@@ -1,110 +1,104 @@
 import React from 'react';
 import Carousel from './Carousel';
-import { Quote } from 'lucide-react';
+import { Package, Truck, Box, Users, ShoppingCart, Lock, ChevronRight } from 'lucide-react';
 
-// Data Dummy Testimoni
-const testimonialsData = [
-  { 
-    name: "Budi Santoso", 
-    company: "PT Maju Jaya Konstruksi", 
-    review: "Pengiriman material konstruksi selalu tepat waktu, bahkan untuk lokasi proyek terpencil. Armada Logistik Kita selalu dalam kondisi prima.", 
-    rating: 5 
-  },
-  { 
-    name: "Siti Rahayu", 
-    company: "Toko Elektronik Cepat", 
-    review: "Layanan LTL-nya sangat membantu bisnis kecil seperti kami. Biaya efisien dan barang elektronik kami ditangani dengan sangat hati-hati.", 
-    rating: 5 
-  },
-  { 
-    name: "Wayan Kertiyasa", 
-    company: "Ekspor Hasil Bumi Bali", 
-    review: "Proses *customs clearance* sangat cepat dan tanpa masalah. Kami bisa fokus pada kualitas produk ekspor tanpa khawatir logistik.", 
-    rating: 4 
-  },
-  { 
-    name: "Ahmad Rizky", 
-    company: "Distributor Farmasi", 
-    review: "Sangat profesional dalam menangani barang sensitif suhu. Tim driver sangat komunikatif dan bertanggung jawab.", 
-    rating: 5 
-  },
-  // Tambahkan data testimoni lainnya di sini
+// Data Dummy Layanan
+const servicesData = [
+    { 
+        title: "Layanan FTL (Full Truck Load)", 
+        description: "Penyewaan truk eksklusif untuk satu pelanggan, memastikan keamanan dan jadwal yang terjamin.", 
+        icon: Truck, 
+        color: "bg-blue-600/10 text-blue-600"
+    },
+    { 
+        title: "Layanan LTL (Less Than Truckload)", 
+        description: "Opsi pengiriman barang dalam volume kecil yang digabung dengan muatan lain untuk efisiensi biaya.", 
+        icon: Package, 
+        color: "bg-green-600/10 text-green-600"
+    },
+    { 
+        title: "Cargo Udara", 
+        description: "Solusi tercepat untuk pengiriman antar pulau dan internasional dengan prioritas kecepatan.", 
+        icon: Box, 
+        color: "bg-red-600/10 text-red-600"
+    },
+    { 
+        title: "Custom Clearance & Dokumen", 
+        description: "Pengurusan izin impor/ekspor dan dokumen bea cukai yang rumit secara profesional.", 
+        icon: Lock, 
+        color: "bg-yellow-600/10 text-yellow-600"
+    },
+    { 
+        title: "Jasa Pindahan Rumah/Kantor", 
+        description: "Layanan pindahan terintegrasi, mulai dari *packing*, transportasi, hingga penataan di lokasi baru.", 
+        icon: Users, 
+        color: "bg-indigo-600/10 text-indigo-600"
+    },
+    { 
+        title: "E-Commerce Fulfillment", 
+        description: "Manajemen gudang, *picking*, *packing*, hingga *last-mile delivery* untuk bisnis online Anda.", 
+        icon: ShoppingCart, 
+        color: "bg-pink-600/10 text-pink-600"
+    },
 ];
 
-// Sub-komponen Bintang (Rating)
-const StarRating = ({ count }) => {
-  return (
-    <div className="flex text-yellow-500 mb-3">
-      {Array.from({ length: 5 }, (_, index) => (
-        <svg 
-          key={index}
-          className={`w-5 h-5 fill-current ${index < count ? 'opacity-100' : 'opacity-30'}`}
-          xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 20 20"
-        >
-          <path d="M10 15l-5.878 3.09 1.123-6.545L.487 7.71l6.56-.955L10 1l2.953 5.755 6.56.955-4.758 4.635 1.123 6.545z"/>
-        </svg>
-      ))}
-    </div>
-  );
+// Sub-komponen Kartu Layanan
+const ServiceCard = ({ item }) => {
+    const Icon = item.icon;
+    return (
+        <div className="bg-white dark:bg-zinc-800 rounded-xl p-6 shadow-xl border border-gray-100 dark:border-zinc-700 h-full flex flex-col justify-between reveal-item">
+            
+            <div className={`p-4 rounded-xl ${item.color} w-fit mb-4`}>
+                <Icon className="w-8 h-8"/>
+            </div>
+
+            <h3 className="text-xl font-bold mb-2 text-[var(--color-dark)]">
+                {item.title}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 flex-grow">
+                {item.description}
+            </p>
+
+            <a 
+                href="maintenance.html" 
+                className="inline-flex items-center text-sm font-semibold text-[var(--color-primary)] hover:underline transition-colors mt-auto"
+            >
+                Pelajari Lebih Lanjut
+                <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"/>
+            </a>
+        </div>
+    );
 };
 
-// Sub-komponen Kartu Testimoni
-const TestimonialCard = ({ testimonial }) => {
-  return (
-    <div className="bg-white dark:bg-zinc-800 rounded-xl p-8 shadow-xl border-t-4 border-[var(--color-primary)] h-full flex flex-col justify-start reveal-item">
-        
-        {/* Icon Quote */}
-        <Quote className="w-8 h-8 text-[var(--color-primary)] mb-4 opacity-50"/>
+const ServicesSection = () => {
+    return (
+        <section id="layanan-unggulan" className="py-20 bg-white dark:bg-zinc-900">
+            <div className="max-w-7xl mx-auto px-6">
+                
+                {/* Header Section */}
+                <div className="text-center mb-12 reveal-item">
+                    <span className="text-sm font-semibold text-[var(--color-primary)] uppercase tracking-wider">
+                        Solusi Total Logistik
+                    </span>
+                    <h2 className="text-4xl font-extrabold text-[var(--color-dark)] mt-2">
+                        Layanan yang Kami Tawarkan
+                    </h2>
+                    <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                        Mulai dari pengiriman darat, laut, udara, hingga solusi manajemen rantai pasok lengkap.
+                    </p>
+                </div>
 
-        {/* Review */}
-        <p className="text-lg italic text-gray-700 dark:text-gray-200 mb-6 flex-grow">
-            "{testimonial.review}"
-        </p>
-
-        {/* Rating */}
-        <StarRating count={testimonial.rating} />
-        
-        {/* Author Info */}
-        <div className="border-t border-gray-100 dark:border-zinc-700 pt-4">
-            <p className="text-xl font-bold text-[var(--color-dark)]">{testimonial.name}</p>
-            <p className="text-sm text-[var(--color-primary)] font-medium">{testimonial.company}</p>
-        </div>
-    </div>
-  );
+                {/* Implementasi Carousel - Menggunakan 4 slide per tampilan untuk layanan */}
+                <div className="mt-10">
+                    <Carousel slidesPerView={4} gap="gap-6">
+                        {servicesData.map((service, index) => (
+                            <ServiceCard key={index} item={service} />
+                        ))}
+                    </Carousel>
+                </div>
+            </div>
+        </section>
+    );
 };
 
-const TestimonialsSection = () => {
-  return (
-    <section id="testimoni" className="py-20 bg-[var(--color-bg-light)] dark:bg-[var(--color-bg-dark)]">
-      <div className="max-w-7xl mx-auto px-6">
-        
-        {/* Header Section */}
-        <div className="text-center mb-12 reveal-item">
-          <span className="text-sm font-semibold text-[var(--color-primary)] uppercase tracking-wider">
-            Kepercayaan Pelanggan
-          </span>
-          <h2 className="text-4xl font-extrabold text-[var(--color-dark)] mt-2">
-            Apa Kata Klien Kami
-          </h2>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Kami bangga telah menjadi mitra logistik terpercaya bagi berbagai perusahaan di Indonesia.
-          </p>
-        </div>
-
-        {/* Implementasi Carousel */}
-        <div className="mt-10">
-          {/* Kita gunakan 3 slide per tampilan untuk Testimoni */}
-          <Carousel slidesPerView={3} gap="gap-8" autoPlay={true} interval={6000}>
-            {testimonialsData.map((t, index) => (
-              <TestimonialCard key={index} testimonial={t} />
-            ))}
-          </Carousel>
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-export default TestimonialsSection;
+export default ServicesSection;
