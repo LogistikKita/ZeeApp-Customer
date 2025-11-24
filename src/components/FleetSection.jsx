@@ -1,45 +1,46 @@
 import React from 'react';
-import Carousel from './Carousel';
-import { Box, Truck, Package, Ship, Plane } from 'lucide-react'; // Icon untuk estetika
+// import Carousel from './Carousel'; // <-- ❌ DIHAPUS SEMENTARA (SUMBER CRASH KEDUA)
+// Icon yang DIBUTUHKAN (termasuk ChevronRight)
+import { Box, Truck, Package, Ship, Plane, ChevronRight } from 'lucide-react'; 
 
 // Data Dummy Armada
 const fleetData = [
+  // ... (Data Armada tidak perlu diubah) ...
   { 
     title: "CDD Box (4 Roda)", 
     description: "Ideal untuk pengiriman barang sedang di perkotaan dan antarkota dekat.", 
     capacity: "2.5 Ton / 12 CBM", 
-    image: "/fleet/cdd-box.jpg", // Gantilah dengan path gambar aslimu
+    image: "/fleet/cdd-box.jpg", 
     icon: Truck 
   },
   { 
     title: "Fuso Box (6 Roda)", 
     description: "Solusi untuk muatan berat dan volume besar ke berbagai pulau di Indonesia.", 
     capacity: "8 Ton / 30 CBM", 
-    image: "/fleet/fuso-box.jpg", // Gantilah dengan path gambar aslimu
+    image: "/fleet/fuso-box.jpg", 
     icon: Box 
   },
   { 
     title: "Trailer 40 Feet", 
     description: "Digunakan untuk pengiriman kontainer berat dan besar (FCL) antar pelabuhan.", 
     capacity: "25 Ton / 70 CBM", 
-    image: "/fleet/trailer.jpg", // Gantilah dengan path gambar aslimu
+    image: "/fleet/trailer.jpg", 
     icon: Ship 
   },
   { 
     title: "Blind Van / L300", 
     description: "Kendaraan cepat untuk pengiriman retail (last-mile) atau barang sensitif.", 
     capacity: "1 Ton / 5 CBM", 
-    image: "/fleet/blind-van.jpg", // Gantilah dengan path gambar aslimu
+    image: "/fleet/blind-van.jpg", 
     icon: Package 
   },
   { 
     title: "Wingbox Tronton", 
     description: "Memudahkan bongkar muat dari sisi samping, sangat efisien untuk industri.", 
     capacity: "18 Ton / 45 CBM", 
-    image: "/fleet/wingbox.jpg", // Gantilah dengan path gambar aslimu
+    image: "/fleet/wingbox.jpg", 
     icon: Truck 
   },
-  // Tambahkan data armada lainnya di sini jika ada
 ];
 
 // Sub-komponen Kartu Armada
@@ -48,14 +49,13 @@ const FleetCard = ({ item }) => {
   return (
     <div className="bg-white dark:bg-zinc-800 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 reveal-item">
       
-      {/* Gambar Armada - Gunakan placeholder jika gambar tidak ada */}
+      {/* Gambar Armada */}
       <div className="h-40 bg-gray-200 dark:bg-zinc-700 relative overflow-hidden">
         <img 
-            src={item.image || "/placeholder-truck.jpg"} // Pastikan gambar armadanya ada di public/fleet
+            src={item.image || "/placeholder-truck.jpg"} 
             alt={item.title} 
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
-        {/* Badge Kapasitas di pojok */}
         <span className="absolute top-3 left-3 bg-[var(--color-primary)] text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
             {item.capacity}
         </span>
@@ -71,10 +71,10 @@ const FleetCard = ({ item }) => {
 
         <a 
             href="#contact-cta" 
-            className="inline-flex items-center text-sm font-semibold text-[var(--color-dark)] dark:text-white hover:text-[var(--color-primary)] transition-colors"
+            className="inline-flex items-center text-sm font-semibold text-[var(--color-dark)] dark:text-white hover:text-[var(--color-primary)] transition-colors group" // Tambah group
         >
             Lihat Detail & Harga 
-            <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"/>
+            <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"/> {/* <-- SUDAH DI-IMPORT */}
         </a>
       </div>
     </div>
@@ -99,13 +99,11 @@ const FleetSection = () => {
           </p>
         </div>
 
-        {/* Implementasi Carousel */}
-        <div className="mt-10">
-          <Carousel slidesPerView={3} gap="gap-6">
+        {/* Implementasi Grid Sederhana (MENGGANTIKAN CAROUSEL SEMENTARA) */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {fleetData.map((fleet, index) => (
               <FleetCard key={index} item={fleet} />
             ))}
-          </Carousel>
         </div>
         
         {/* Tombol CTA (Optional) */}
