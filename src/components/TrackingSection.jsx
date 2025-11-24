@@ -2,29 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Loader2, CheckCircle, Clock, Package } from 'lucide-react';
 
 // ===============================================
-// ** FIREBASE INITIALIZATION & IMPORTS (MENGGUNAKAN VARIABEL GLOBAL) **
+// ** FIREBASE INITIALIZATION & IMPORTS (DEFENSIVE) **
 // ===============================================
 
-// Menggunakan window.firebase untuk mengatasi error 'Failed to resolve import'
-const getFirestore = window.firebase.firestore.getFirestore;
-const doc = window.firebase.firestore.doc;
-const getDoc = window.firebase.firestore.getDoc;
-const setDoc = window.firebase.firestore.setDoc;
-const initializeApp = window.firebase.app.initializeApp;
-const getAuth = window.firebase.auth.getAuth;
-const signInWithCustomToken = window.firebase.auth.signInWithCustomToken;
-const signInAnonymously = window.firebase.auth.signInAnonymously;
-
+// JANGAN gunakan window.firebase di top level. Gunakan di dalam useEffect.
+// Deklarasi ref ini tetap di top level, nilainya akan diisi di useEffect.
+let db, auth;
 
 // Global variables provided by the Canvas environment
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-// Firebase references
-let db, auth;
-
-// Data Dummy Tracking yang akan di-seed ke Firestore
+// Data Dummy Tracking
 const DUMMY_SHIPMENTS = [
     {
         id: 'MOJO-001',
@@ -67,7 +57,6 @@ const DUMMY_SHIPMENTS = [
 
 // Helper function to format timestamp
 const formatTimestamp = (date) => {
-    // Pastikan date adalah objek Date yang valid
     if (!(date instanceof Date) || isNaN(date)) return 'Tanggal Tidak Valid';
     
     return date.toLocaleDateString('id-ID', {
@@ -86,6 +75,19 @@ const TrackingSection = () => {
     // 1. Inisialisasi Firebase dan Autentikasi
     useEffect(() => {
         const initializeFirebase = async () => {
+            // Akses Firebase utilities HANYA di sini
+            if (typeof window.firebase === 'undefined' || !window.firebase.app) {
+                console.error("Firebase global object is not available.");
+                // Set error state agar user tahu kenapa tracking tidak berfungsi
+                setError("Koneksi ke sistem logistik gagal. Firebase belum siap.");
+                return;
+            }
+
+            // DEFENSIVE IMPORTS: Ambil fungsi Firebase di dalam scope ini
+            const { initializeApp } = window.firebase.app;
+            const { getFirestore, doc, getDoc, setDoc } = window.firebase.firestore;
+            const { getAuth, signInWithCustomToken, signInAnonymously } = window.firebase.auth;
+
             try {
                 if (Object.keys(firebaseConfig).length === 0) {
                     console.error("Firebase config is empty. Cannot initialize.");
@@ -110,12 +112,11 @@ const TrackingSection = () => {
                 setIsAuthReady(true);
 
                 // ** Seed initial data if collection is empty **
-                await seedDummyData(db, collectionPath);
+                await seedDummyData(db, doc, getDoc, setDoc, collectionPath);
                 
             } catch (e) {
                 console.error("Firebase initialization failed:", e);
-                // Menetapkan error hanya jika koneksi ke Firebase benar-benar gagal
-                setError("Koneksi ke sistem logistik gagal. Coba lagi.");
+                setError("Koneksi ke sistem logistik gagal: " + e.message);
             }
         };
 
@@ -128,22 +129,25 @@ const TrackingSection = () => {
     }, []);
 
     // Function to seed initial dummy data
-    const seedDummyData = async (firestore, path) => {
+    const seedDummyData = async (firestore, docFn, getDocFn, setDocFn, path) => {
         console.log("Checking if data needs to be seeded...");
         for (const shipment of DUMMY_SHIPMENTS) {
-            const docRef = doc(firestore, path, shipment.id);
+            const docRef = docFn(firestore, path, shipment.id);
             try {
-                const docSnap = await getDoc(docRef);
+                const docSnap = await getDocFn(docRef);
                 if (!docSnap.exists()) {
                     // Convert Date objects to ISO string for safe storage in Firestore
                     const dataToSet = {
                         ...shipment,
                         trackingHistory: shipment.trackingHistory.map(history => ({
                             ...history,
-                            timestamp: history.timestamp.toISOString() 
+                            // Pastikan konversi ke ISO string berhasil
+                            timestamp: history.timestamp instanceof Date && !isNaN(history.timestamp) 
+                                ? history.timestamp.toISOString() 
+                                : new Date().toISOString()
                         }))
                     };
-                    await setDoc(docRef, dataToSet);
+                    await setDocFn(docRef, dataToSet);
                     console.log(`Seeded shipment: ${shipment.id}`);
                 }
             } catch (e) {
@@ -161,6 +165,9 @@ const TrackingSection = () => {
             return;
         }
 
+        // Ambil fungsi Firestore yang dibutuhkan
+        const { doc: docFn, getDoc: getDocFn } = window.firebase.firestore;
+
         const resi = trackingNumber.trim().toUpperCase();
         if (resi === '') {
             setError('Masukkan Nomor Resi yang valid.');
@@ -174,8 +181,8 @@ const TrackingSection = () => {
         try {
             // Path: /artifacts/{appId}/public/data/shipments/{resi}
             const collectionPath = `artifacts/${appId}/public/data/shipments`;
-            const docRef = doc(db, collectionPath, resi);
-            const docSnap = await getDoc(docRef);
+            const docRef = docFn(db, collectionPath, resi);
+            const docSnap = await getDocFn(docRef);
 
             if (docSnap.exists()) {
                 const data = docSnap.data();
@@ -260,7 +267,7 @@ const TrackingSection = () => {
                 )}
                 
                 {/* Display Not Ready/User ID */}
-                {!isAuthReady && !loading && (
+                {!isAuthReady && !error && !loading && (
                     <div className="bg-blue-100 dark:bg-blue-900/50 border border-blue-400 text-blue-700 dark:text-blue-300 p-4 rounded-lg mb-6 reveal-item" role="status">
                         <p className="font-semibold">Sistem sedang dipersiapkan...</p>
                         <p>Koneksi ke database sedang diinisialisasi. Mohon tunggu sebentar.</p>
