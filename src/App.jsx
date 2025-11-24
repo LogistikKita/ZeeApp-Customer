@@ -16,12 +16,12 @@ function App() {
   const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
-    // Menghapus kelas anti-flash setelah 100ms
+    // 1. Hapus kelas anti-flash setelah 100ms
     setTimeout(() => {
         document.documentElement.classList.remove('no-transition');
     }, 100); 
 
-    // Mengatur waktu Preloader (muncul selama 1500ms atau 1.5 detik)
+    // 2. Mengatur waktu Preloader (muncul selama 1500ms atau 1.5 detik)
     const timer = setTimeout(() => {
       setIsLoading(false); 
     }, 1500); 
@@ -32,28 +32,29 @@ function App() {
 
   return (
     <>
-      {/* Tampilkan Preloader jika isLoading = true */}
-      {isLoading && <Preloader />} 
-
-      {/* Tampilkan konten utama HANYA jika isLoading = false */}
-      {!isLoading && (
-        <>
+      {/* 1. KONTEN UTAMA (Muncul selalu, tetapi transparan jika isLoading=true) */}
+      {/* Opacity diatur melalui CSS global atau class hidden/show jika perlu.
+          Saat ini kita mengandalkan Preloader menutupi semua. */}
+      
+      {/* Kita menambahkan class 'content-loaded' agar kamu bisa mengontrol opacity
+          konten utama di CSS (optional). */}
+      <div className={`content-wrapper ${isLoading ? 'hidden' : 'block'}`}>
           <Navbar />
           
           <main>
               <Hero />
-              
-              {/* Seksi Konten Utama */}
               <FleetSection /> 
               <ServicesSection />
               <TestimonialsSection /> 
-              
-              {/* Footer akan kita perbaiki setelah ini */}
+              {/* Di sini nanti bagian CTA, Partners, Contact Form akan ditambahkan */}
           </main>
           
           <Footer />
-        </>
-      )}
+      </div>
+
+      {/* 2. PRELOADER (Akan hilang setelah 1.5 detik) */}
+      {isLoading && <Preloader />} 
+
     </>
   );
 }
