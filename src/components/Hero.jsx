@@ -7,6 +7,7 @@ const Hero = () => {
             className="relative h-screen bg-cover bg-center flex items-center justify-center text-center overflow-hidden" 
             style={{ 
                 // !!! PENTING: PASTIKAN PATH INI BENAR MENGGUNAKAN ROOT PATH /
+                // DAN PASTIKAN FILE background-lk.jpg ADA DI FOLDER PUBLIC/
                 backgroundImage: 'url(/background-lk.jpg)', 
                 minHeight: '85vh', 
                 backgroundAttachment: 'fixed',
@@ -20,6 +21,7 @@ const Hero = () => {
 
             {/* Konten Hero */}
             <div className="relative z-20 text-white p-6 max-w-4xl">
+                
                 {/* Logo Transparan di Tengah */}
                 <div className="mb-8 opacity-50 max-w-xs mx-auto">
                     {/* Menggunakan root path /Logistik-Kita.png dari folder /public/ */}
