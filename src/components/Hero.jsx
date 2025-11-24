@@ -6,11 +6,10 @@ const Hero = () => {
             id="hero" 
             className="relative h-screen bg-cover bg-center flex items-center justify-center text-center overflow-hidden" 
             style={{ 
-                // !!! PENTING: PASTIKAN PATH INI BENAR MENGGUNAKAN ROOT PATH /
-                // DAN PASTIKAN FILE background-lk.jpg ADA DI FOLDER PUBLIC/
+                // !!! PENTING: PASTIKAN FILE background-lk.jpg ADA DI FOLDER public/
                 backgroundImage: 'url(/background-lk.jpg)', 
                 minHeight: '85vh', 
-                backgroundAttachment: 'fixed',
+                // backgroundAttachment: 'fixed', // <-- DIHILANGKAN DULU
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover'
@@ -28,7 +27,8 @@ const Hero = () => {
                     <img 
                         src="/Logistik-Kita.png" 
                         alt="Logistik Kita Logo" 
-                        className="w-full h-auto drop-shadow-lg"
+                        // MENGECILKAN UKURAN LOGO AGAR TIDAK MENUTUPI LAYAR
+                        className="w-40 h-auto md:w-64 drop-shadow-lg mx-auto" 
                     />
                 </div>
                 
