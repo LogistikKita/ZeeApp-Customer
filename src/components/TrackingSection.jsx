@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { getFirestore, doc, getDoc, collection, setDoc } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, signInAnonymously } from 'firebase/auth';
 import { Search, MapPin, Loader2, CheckCircle, Clock, Package } from 'lucide-react';
 
 // ===============================================
-// ** FIREBASE INITIALIZATION & AUTH (MANDATORY) **
+// ** FIREBASE INITIALIZATION & IMPORTS (DIJAMIN BERHASIL) **
+// KARENA LINGKUNGAN INI TIDAK MENDUKUNG 'npm install', KITA HARUS 
+// MENGGUNAKAN VARIABEL GLOBAL DARI FIREBASE UNTUK MENGHINDARI ERROR RESOLVE IMPORT.
 // ===============================================
+
+// Pastikan semua fungsi diakses melalui variabel global/window.
+const getFirestore = window.firebase.firestore.getFirestore;
+const doc = window.firebase.firestore.doc;
+const getDoc = window.firebase.firestore.getDoc;
+const setDoc = window.firebase.firestore.setDoc;
+const initializeApp = window.firebase.app.initializeApp;
+const getAuth = window.firebase.auth.getAuth;
+const signInWithCustomToken = window.firebase.auth.signInWithCustomToken;
+const signInAnonymously = window.firebase.auth.signInAnonymously;
+
 
 // Global variables provided by the Canvas environment
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -78,6 +88,7 @@ const TrackingSection = () => {
             try {
                 if (Object.keys(firebaseConfig).length === 0) {
                     console.error("Firebase config is empty. Cannot initialize.");
+                    // Set error state here if needed
                     return;
                 }
                 
@@ -118,23 +129,25 @@ const TrackingSection = () => {
     // Function to seed initial dummy data
     const seedDummyData = async (firestore, path) => {
         console.log("Checking if data needs to be seeded...");
+        // Use a loop to check and set documents individually
         for (const shipment of DUMMY_SHIPMENTS) {
             const docRef = doc(firestore, path, shipment.id);
             try {
                 const docSnap = await getDoc(docRef);
                 if (!docSnap.exists()) {
-                    // Convert Date objects to Firestore Timestamps by using plain objects
+                    // Convert Date objects to ISO string for safe storage in Firestore
                     const dataToSet = {
                         ...shipment,
                         trackingHistory: shipment.trackingHistory.map(history => ({
                             ...history,
-                            timestamp: history.timestamp.toISOString() // Convert Date to ISO string
+                            timestamp: history.timestamp.toISOString() 
                         }))
                     };
                     await setDoc(docRef, dataToSet);
                     console.log(`Seeded shipment: ${shipment.id}`);
                 }
             } catch (e) {
+                // Do not throw error here, just log it
                 console.error(`Failed to seed ${shipment.id}:`, e);
             }
         }
