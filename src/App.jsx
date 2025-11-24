@@ -12,14 +12,16 @@ import TestimonialsSection from './components/TestimonialsSection.jsx';
 
 import Preloader from './components/Preloader.jsx'; 
 
-// Menonaktifkan transisi CSS saat loading untuk mencegah flicker
-document.documentElement.classList.add('no-transition');
-
 function App() {
     const [isLoading, setIsLoading] = useState(true); 
 
     // Efek untuk mengelola Preloader dan transisi awal
     useEffect(() => {
+        // PENTING: Manipulasi DOM harus dilakukan di dalam useEffect!
+        // Menonaktifkan transisi CSS saat loading untuk mencegah flicker.
+        document.documentElement.classList.add('no-transition');
+
+
         // Hapus kelas no-transition setelah Preloader selesai/diabaikan
         setTimeout(() => {
             document.documentElement.classList.remove('no-transition');
@@ -45,10 +47,11 @@ function App() {
                 <Hero />
                 <TrustMetrics />      
                 <TrackingSection />    {/* Komponen Tracking menggunakan Firestore */}
-                <FleetSection /> 
                 <ServicesSection />    
+                <FleetSection /> 
                 <TestimonialsSection /> 
             </main>
+            {/* PASTIKAN KAMU JUGA MEMILIKI ContactSection JIKA ADA */}
             <Footer />
         </>
     );
