@@ -5,8 +5,8 @@ const Hero = () => {
         <section 
             id="hero" 
             className="relative h-screen bg-cover bg-center flex items-center justify-center text-center overflow-hidden" 
-            // PASTIKAN PATH GAMBAR BENAR MENGGUNAKAN ROOT PATH /
             style={{ 
+                // !!! PENTING: PASTIKAN PATH INI BENAR MENGGUNAKAN ROOT PATH /
                 backgroundImage: 'url(/background-lk.jpg)', 
                 minHeight: '85vh', 
                 backgroundAttachment: 'fixed',
