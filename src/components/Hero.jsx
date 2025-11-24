@@ -1,52 +1,61 @@
 import React from 'react';
+import { Truck, Search, ChevronRight } from 'lucide-react';
 
 const Hero = () => {
-    return (
-        <section 
-            id="hero" 
-            className="relative h-screen bg-cover bg-center flex items-center justify-center text-center overflow-hidden" 
-            style={{ 
-                // !!! PENTING: PASTIKAN FILE background-lk.jpg ADA DI FOLDER public/
-                backgroundImage: 'url(/background-lk.jpg)', 
-                minHeight: '85vh', 
-                // backgroundAttachment: 'fixed', // <-- DIHILANGKAN DULU
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover'
-            }}
-        >
-            {/* Overlay Gelap */}
-            <div className="absolute inset-0 bg-black/50 dark:bg-black/70 z-10"></div>
+  return (
+    <section 
+      className="relative h-[80vh] min-h-[600px] flex items-center bg-gray-900 dark:bg-zinc-950 overflow-hidden" 
+      style={{ 
+        backgroundImage: `url('https://placehold.co/1920x1080/0d0c22/38A169?text=Logistik+Mojokerto+Banner')`, 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Overlay Gelap */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
-            {/* Konten Hero */}
-            <div className="relative z-20 text-white p-6 max-w-4xl">
-                
-                {/* Logo Transparan di Tengah */}
-                <div className="mb-8 opacity-50 max-w-xs mx-auto">
-                    {/* Menggunakan root path /Logistik-Kita.png dari folder /public/ */}
-                    <img 
-                        src="/Logistik-Kita.png" 
-                        alt="Logistik Kita Logo" 
-                        // MENGECILKAN UKURAN LOGO AGAR TIDAK MENUTUPI LAYAR
-                        className="w-40 h-auto md:w-64 drop-shadow-lg mx-auto" 
-                    />
-                </div>
-                
-                <h1 className="text-4xl sm:text-6xl font-extrabold mb-4 drop-shadow-lg leading-tight reveal-item">
-                    SOLUSI LOGISTIK TERPADU DAN TERPERCAYA
-                </h1>
-                <p className="text-lg sm:text-xl mb-8 drop-shadow-md reveal-item delay-100">
-                    Kami menyediakan layanan pengiriman barang yang cepat, aman, dan efisien ke seluruh Indonesia.
-                </p>
-                <a 
-                    href="#contact-cta" 
-                    className="inline-block px-10 py-4 text-lg font-bold bg-[var(--color-primary)] text-white rounded-full hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-2xl reveal-item delay-200"
-                >
-                    SIMULASI HARGA & JADWAL
-                </a>
-            </div>
-        </section>
-    );
+      <div className="max-w-7xl mx-auto px-6 relative z-10 text-center text-white">
+        
+        {/* Slogan Khas Mojokerto (Poin 1) */}
+        <p className="text-xl font-bold mb-3 tracking-widest uppercase text-yellow-300 reveal-item">
+          #LogistikKita
+        </p>
+
+        {/* Judul Utama */}
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight reveal-item">
+          LOGISTIK'E AREK MOJOKERTO
+        </h1>
+
+        {/* Sub-judul yang Fokus pada Keuntungan Klien */}
+        <p className="text-lg sm:text-xl font-light mb-10 max-w-4xl mx-auto reveal-item">
+          Solusi pengiriman terpercaya, cepat, dan aman untuk Jawa Timur dan seluruh Indonesia. Kami hadir untuk mengembangkan bisnis UMKM Anda.
+        </p>
+
+        {/* Blok Tombol Utama (Wajib Menonjol) */}
+        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 reveal-item">
+          
+          {/* Tombol Lacak Pengiriman */}
+          <a href="#tracking" 
+            className="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-900 bg-[var(--color-primary)] rounded-lg hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-2xl shadow-[var(--color-primary)]/40 transform hover:scale-105"
+          >
+            <Search className="w-6 h-6 mr-2" /> 
+            Lacak Pengiriman Anda
+          </a>
+
+          {/* Tombol Cek Armada / Simulasi Harga */}
+          <a href="#armada" 
+            className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white border-2 border-white/50 rounded-lg hover:bg-white/10 transition-all duration-300"
+          >
+            <Truck className="w-6 h-6 mr-2" /> 
+            Cek Armada & Harga
+            <ChevronRight className="w-5 h-5 ml-2" />
+          </a>
+        </div>
+        
+      </div>
+    </section>
+  );
 };
 
 export default Hero;
+
