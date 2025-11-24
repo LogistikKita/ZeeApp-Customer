@@ -5,7 +5,6 @@ import { Search, MapPin, Loader2, CheckCircle, Clock, Package } from 'lucide-rea
 // ** FIREBASE INITIALIZATION & IMPORTS (DEFENSIVE) **
 // ===============================================
 
-// JANGAN gunakan window.firebase di top level. Gunakan di dalam useEffect.
 // Deklarasi ref ini tetap di top level, nilainya akan diisi di useEffect.
 let db, auth;
 
@@ -71,14 +70,13 @@ const TrackingSection = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [isAuthReady, setIsAuthReady] = useState(false);
+    const [userId, setUserId] = useState(null);
 
     // 1. Inisialisasi Firebase dan Autentikasi
     useEffect(() => {
         const initializeFirebase = async () => {
-            // Akses Firebase utilities HANYA di sini
             if (typeof window.firebase === 'undefined' || !window.firebase.app) {
                 console.error("Firebase global object is not available.");
-                // Set error state agar user tahu kenapa tracking tidak berfungsi
                 setError("Koneksi ke sistem logistik gagal. Firebase belum siap.");
                 return;
             }
@@ -98,9 +96,6 @@ const TrackingSection = () => {
                 db = getFirestore(app);
                 auth = getAuth(app);
                 
-                // Set the correct Firestore security path for public data
-                const collectionPath = `artifacts/${appId}/public/data/shipments`;
-                
                 // Attempt custom token sign-in or anonymous sign-in
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
@@ -108,8 +103,15 @@ const TrackingSection = () => {
                     await signInAnonymously(auth);
                 }
                 
-                console.log("Firebase initialized and signed in.");
+                // Get the User ID after sign-in
+                const currentUserId = auth.currentUser?.uid || 'anonymous';
+                setUserId(currentUserId);
+                
+                console.log("Firebase initialized and signed in. User ID:", currentUserId);
                 setIsAuthReady(true);
+
+                // Set the correct Firestore security path for public data
+                const collectionPath = `artifacts/${appId}/public/data/shipments`;
 
                 // ** Seed initial data if collection is empty **
                 await seedDummyData(db, doc, getDoc, setDoc, collectionPath);
@@ -225,8 +227,8 @@ const TrackingSection = () => {
     const statusLabel = result ? getStatusInfo(result.status).label : '';
 
     return (
-        <section id="tracking" className="py-20 bg-gray-50 dark:bg-zinc-950">
-            <div className="max-w-4xl mx-auto px-6">
+        <section id="tracking" className="py-20 bg-gray-50 dark:bg-zinc-950 relative z-10">
+            <div className="max-w-4xl mx-auto px-6 relative z-20">
                 <h2 className="text-4xl font-extrabold text-center mb-4 text-[var(--color-dark)] dark:text-white reveal-item">
                     Lacak Pengiriman Anda
                 </h2>
@@ -234,28 +236,30 @@ const TrackingSection = () => {
                     Masukkan Nomor Resi (misalnya: MOJO-001) di bawah untuk melihat status dan lokasi terkini paket Anda.
                 </p>
 
-                {/* Form Pencarian */}
-                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4 mb-8 reveal-item">
-                    <input
-                        type="text"
-                        placeholder="Masukkan Nomor Resi, Contoh: MOJO-001"
-                        value={trackingNumber}
-                        onChange={(e) => setTrackingNumber(e.target.value)}
-                        className="flex-grow p-4 border border-gray-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] dark:bg-zinc-800 dark:text-white transition-all"
-                        disabled={!isAuthReady || loading}
-                    />
-                    <button
-                        type="submit"
-                        className="flex items-center justify-center px-6 py-4 bg-[var(--color-primary)] text-gray-900 font-bold rounded-lg hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-lg disabled:opacity-50"
-                        disabled={!isAuthReady || loading}
-                    >
-                        {loading ? (
-                            <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                        ) : (
-                            <Search className="w-5 h-5 mr-2" />
-                        )}
-                        {loading ? 'Mencari...' : 'Lacak Sekarang'}
-                    </button>
+                {/* Form Pencarian - PERBAIKAN: Tambah margin-top dan pastikan display block */}
+                <form onSubmit={handleSearch} className="block mt-12 mb-8 reveal-item bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-800">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <input
+                            type="text"
+                            placeholder="Masukkan Nomor Resi, Contoh: MOJO-001"
+                            value={trackingNumber}
+                            onChange={(e) => setTrackingNumber(e.target.value)}
+                            className="flex-grow p-4 border border-gray-300 dark:border-zinc-700 rounded-lg focus:ring-2 focus:ring-[var(--color-primary)] dark:bg-zinc-800 dark:text-white transition-all text-base"
+                            disabled={!isAuthReady || loading}
+                        />
+                        <button
+                            type="submit"
+                            className="flex items-center justify-center px-6 py-4 text-base bg-[var(--color-primary)] text-gray-900 font-bold rounded-lg hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-lg disabled:opacity-50"
+                            disabled={!isAuthReady || loading}
+                        >
+                            {loading ? (
+                                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                            ) : (
+                                <Search className="w-5 h-5 mr-2" />
+                            )}
+                            {loading ? 'Mencari...' : 'Lacak Sekarang'}
+                        </button>
+                    </div>
                 </form>
 
                 {/* Display Error */}
@@ -270,7 +274,7 @@ const TrackingSection = () => {
                 {!isAuthReady && !error && !loading && (
                     <div className="bg-blue-100 dark:bg-blue-900/50 border border-blue-400 text-blue-700 dark:text-blue-300 p-4 rounded-lg mb-6 reveal-item" role="status">
                         <p className="font-semibold">Sistem sedang dipersiapkan...</p>
-                        <p>Koneksi ke database sedang diinisialisasi. Mohon tunggu sebentar.</p>
+                        <p>Koneksi ke database sedang diinisialisasi. User ID: {userId || 'Authenticating...'}</p>
                     </div>
                 )}
 
@@ -284,9 +288,9 @@ const TrackingSection = () => {
                             <h3 className="text-2xl font-bold text-[var(--color-dark)] dark:text-white">
                                 Status Resi: <span className="font-mono">{result.id}</span>
                             </h3>
-                            <div className={`flex items-center text-lg font-semibold ${statusColor}`}>
+                            <div className={`flex items-center text-lg font-semibold ${getStatusInfo(result.status).color}`}>
                                 <StatusIcon className="w-6 h-6 mr-2" />
-                                {statusLabel}
+                                {getStatusInfo(result.status).label}
                             </div>
                         </div>
 
