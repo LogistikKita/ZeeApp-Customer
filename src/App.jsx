@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react'; // <-- Import useState dan useEffect
+import React, { useState, useEffect } from 'react'; 
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import Hero from './components/Hero.jsx'; 
-import Preloader from './components/Preloader.jsx'; // <-- Import Preloader
+import Preloader from './components/Preloader.jsx'; 
+import FleetSection from './components/FleetSection.jsx'; // <-- Komponen baru Fleet
 
-// Logika awal untuk mencegah transisi kilat (anti-flash)
+// =======================================================
+// Anti-Flash of Unstyled Content (FOUC) Fix
+// Mencegah mode gelap/terang berkedip saat reload
+// =======================================================
 document.documentElement.classList.add('no-transition');
 
 function App() {
@@ -21,7 +25,7 @@ function App() {
       setIsLoading(false); // Matikan Preloader
     }, 1500); 
     
-    // Cleanup function: penting jika komponen di-unmount
+    // Cleanup function
     return () => clearTimeout(timer);
   }, []); // Hanya berjalan sekali saat load
 
@@ -37,6 +41,8 @@ function App() {
           
           <main>
               <Hero />
+              {/* Seksi Armada menggunakan Carousel */}
+              <FleetSection /> 
               {/* Di sini nanti komponen Services, Testimonials, dll. akan ditambahkan */}
           </main>
           
