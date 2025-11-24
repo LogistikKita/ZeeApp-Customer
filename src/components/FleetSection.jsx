@@ -1,11 +1,10 @@
 import React from 'react';
-// import Carousel from './Carousel'; // <-- ❌ DIHAPUS SEMENTARA (SUMBER CRASH KEDUA)
-// Icon yang DIBUTUHKAN (termasuk ChevronRight)
+import Carousel from './Carousel'; // Import Carousel (pastikan file ini sudah diperbaiki)
+// Menambahkan ChevronRight di import agar tidak crash
 import { Box, Truck, Package, Ship, Plane, ChevronRight } from 'lucide-react'; 
 
 // Data Dummy Armada
 const fleetData = [
-  // ... (Data Armada tidak perlu diubah) ...
   { 
     title: "CDD Box (4 Roda)", 
     description: "Ideal untuk pengiriman barang sedang di perkotaan dan antarkota dekat.", 
@@ -56,6 +55,7 @@ const FleetCard = ({ item }) => {
             alt={item.title} 
             className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
+        {/* Badge Kapasitas di pojok */}
         <span className="absolute top-3 left-3 bg-[var(--color-primary)] text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
             {item.capacity}
         </span>
@@ -71,10 +71,12 @@ const FleetCard = ({ item }) => {
 
         <a 
             href="#contact-cta" 
-            className="inline-flex items-center text-sm font-semibold text-[var(--color-dark)] dark:text-white hover:text-[var(--color-primary)] transition-colors group" // Tambah group
+            // Tambahkan group agar transisi ChevronRight berfungsi
+            className="inline-flex items-center text-sm font-semibold text-[var(--color-dark)] dark:text-white hover:text-[var(--color-primary)] transition-colors group" 
         >
             Lihat Detail & Harga 
-            <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"/> {/* <-- SUDAH DI-IMPORT */}
+            {/* ChevronRight sekarang sudah di-import */}
+            <ChevronRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"/> 
         </a>
       </div>
     </div>
@@ -99,11 +101,13 @@ const FleetSection = () => {
           </p>
         </div>
 
-        {/* Implementasi Grid Sederhana (MENGGANTIKAN CAROUSEL SEMENTARA) */}
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Implementasi Carousel (KEMBALI KE CAROUSEL) */}
+        <div className="mt-10">
+          <Carousel slidesPerView={3} gap="gap-6">
             {fleetData.map((fleet, index) => (
               <FleetCard key={index} item={fleet} />
             ))}
+          </Carousel>
         </div>
         
         {/* Tombol CTA (Optional) */}
