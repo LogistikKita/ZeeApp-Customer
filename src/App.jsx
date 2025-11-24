@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 // Komentar semua komponen section DULU. Kita akan buka satu per satu.
-// import Hero from './components/Hero.jsx'; 
+import Hero from './components/Hero.jsx'; 
 // import FleetSection from './components/FleetSection.jsx'; 
 // import ServicesSection from './components/ServicesSection.jsx'; 
 // import TestimonialsSection from './components/TestimonialsSection.jsx'; 
@@ -39,13 +39,15 @@ function App() {
       <Navbar />
       
       <main className="py-20 text-center bg-gray-100 dark:bg-gray-800 h-screen">
-          <h1 className="text-3xl font-bold text-black dark:text-white">
-              KONTEN UTAMA DIBUKA
-          </h1>
-          <p className="text-gray-700 dark:text-gray-300 mt-4">
-              Jika ini muncul, masalah ada di komponen Section (Hero, Fleet, dll.)
-          </p>
-      </main>
+    <Hero /> {/* <-- Tambahkan ini */}
+    <h1 className="text-3xl font-bold text-black dark:text-white mt-10">
+        KONTEN UTAMA DIBUKA
+    </h1>
+    <p className="text-gray-700 dark:text-gray-300 mt-4">
+        Jika ini muncul, masalah ada di komponen Section (Hero, Fleet, dll.)
+    </p>
+</main>
+
       
       <Footer />
     </>
