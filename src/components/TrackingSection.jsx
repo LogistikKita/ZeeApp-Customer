@@ -11,7 +11,7 @@ let db, auth;
 // Global variables provided by the Canvas environment
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_token : null;
 
 // Data Dummy Tracking
 const DUMMY_SHIPMENTS = [
@@ -227,7 +227,7 @@ const TrackingSection = () => {
     const statusLabel = result ? getStatusInfo(result.status).label : '';
 
     return (
-        <section id="tracking" className="py-20 bg-gray-50 dark:bg-zinc-950 relative z-10">
+        <section id="tracking" className="py-20 bg-gray-50 dark:bg-zinc-950 relative z-10 min-h-[500px]">
             <div className="max-w-4xl mx-auto px-6 relative z-20">
                 <h2 className="text-4xl font-extrabold text-center mb-4 text-[var(--color-dark)] dark:text-white reveal-item">
                     Lacak Pengiriman Anda
@@ -236,8 +236,8 @@ const TrackingSection = () => {
                     Masukkan Nomor Resi (misalnya: MOJO-001) di bawah untuk melihat status dan lokasi terkini paket Anda.
                 </p>
 
-                {/* Form Pencarian - PERBAIKAN: Tambah margin-top dan pastikan display block */}
-                <form onSubmit={handleSearch} className="block mt-12 mb-8 reveal-item bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-800">
+                {/* Form Pencarian - DEBUGGING: Ada border merah tebal */}
+                <form onSubmit={handleSearch} className="mt-12 mb-8 reveal-item bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-lg border-4 border-red-500">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <input
                             type="text"
@@ -249,7 +249,7 @@ const TrackingSection = () => {
                         />
                         <button
                             type="submit"
-                            className="flex items-center justify-center px-6 py-4 text-base bg-[var(--color-primary)] text-gray-900 font-bold rounded-lg hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-lg disabled:opacity-50"
+                            className="flex items-center justify-center px-6 py-4 text-base bg-[var(--color-primary)] text-gray-900 font-bold rounded-lg hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-lg disabled:opacity-50 min-w-[150px]"
                             disabled={!isAuthReady || loading}
                         >
                             {loading ? (
