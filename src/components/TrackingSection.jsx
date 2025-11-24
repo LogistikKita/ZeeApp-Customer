@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Loader2, CheckCircle, Clock, Package } from 'lucide-react';
 
 // ===============================================
-// ** FIREBASE INITIALIZATION & IMPORTS (DIJAMIN BERHASIL) **
+// ** FIREBASE INITIALIZATION & IMPORTS (MENGGUNAKAN VARIABEL GLOBAL) **
 // ===============================================
 
-// Menggunakan variabel global window.firebase untuk menghindari error 'Failed to resolve import'
+// Menggunakan window.firebase untuk mengatasi error 'Failed to resolve import'
 const getFirestore = window.firebase.firestore.getFirestore;
 const doc = window.firebase.firestore.doc;
 const getDoc = window.firebase.firestore.getDoc;
@@ -67,6 +67,9 @@ const DUMMY_SHIPMENTS = [
 
 // Helper function to format timestamp
 const formatTimestamp = (date) => {
+    // Pastikan date adalah objek Date yang valid
+    if (!(date instanceof Date) || isNaN(date)) return 'Tanggal Tidak Valid';
+    
     return date.toLocaleDateString('id-ID', {
         day: '2-digit', month: 'short', year: 'numeric', 
         hour: '2-digit', minute: '2-digit'
