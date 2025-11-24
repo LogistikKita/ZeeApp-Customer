@@ -10,9 +10,8 @@ const Carousel = ({ children, slidesPerView = 3, gap = 'gap-8', autoPlay = false
   useEffect(() => {
     const calculateWidth = () => {
       if (carouselRef.current) {
-        // Logika untuk menghitung lebar, mengabaikan gap untuk sementara
         const width = carouselRef.current.offsetWidth;
-        // Penyesuaian untuk responsif:
+        
         let viewCount = slidesPerView;
         if (width < 640) { // Mobile (< sm)
           viewCount = 1;
@@ -20,9 +19,9 @@ const Carousel = ({ children, slidesPerView = 3, gap = 'gap-8', autoPlay = false
           viewCount = Math.min(slidesPerView, 2);
         }
         
-        // Hitung lebar slide setelah memperhitungkan gap
-        // Kita asumsikan gap 8 (tailwind: 2rem = 32px) * (viewCount - 1)
-        const gapInPx = 32 * (viewCount - 1);
+        // Asumsi gap-6 = 24px, gap-8 = 32px (default)
+        const gapSize = gap === 'gap-6' ? 24 : 32; 
+        const gapInPx = gapSize * (viewCount - 1);
         const singleSlideWidth = (width - gapInPx) / viewCount;
         setSlideWidth(singleSlideWidth);
       }
@@ -31,34 +30,26 @@ const Carousel = ({ children, slidesPerView = 3, gap = 'gap-8', autoPlay = false
     calculateWidth();
     window.addEventListener('resize', calculateWidth);
     return () => window.removeEventListener('resize', calculateWidth);
-  }, [slidesPerView]);
-
+  }, [slidesPerView, gap]);
 
   // Logic Autoplay
   useEffect(() => {
-    if (!autoPlay) return;
+    if (!autoPlay || !children || children.length === 0) return;
+
+    const maxTranslate = children.length - (slideWidth > 0 ? Math.floor(carouselRef.current.offsetWidth / slideWidth) : 1);
 
     const timer = setInterval(() => {
-      setCurrentIndex(prevIndex => (prevIndex + 1) % children.length);
+      setCurrentIndex(prevIndex => Math.min(maxTranslate, (prevIndex + 1) % (maxTranslate + 1)));
     }, interval);
 
     return () => clearInterval(timer);
-  }, [autoPlay, children.length, interval]);
+  }, [autoPlay, children, interval, slideWidth]);
 
 
-  const goToPrev = () => {
-    setCurrentIndex(prevIndex => (prevIndex === 0 ? children.length - 1 : prevIndex - 1));
-  };
-
-  const goToNext = () => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % children.length);
-  };
-
-  // Kita tidak perlu menggunakan currentIndex untuk menggeser, kita akan menggunakan 'transform: translateX'
-  // Namun, kita perlu tahu berapa banyak item yang terlihat.
-  const visibleItems = slideWidth > 0 ? Math.floor(carouselRef.current.offsetWidth / slideWidth) : 1;
-  const slideCount = children.length;
-  const maxTranslate = slideCount - visibleItems;
+  const visibleItems = slideWidth > 0 && carouselRef.current ? Math.floor(carouselRef.current.offsetWidth / slideWidth) : slidesPerView;
+  const slideCount = children ? children.length : 0;
+  const maxTranslate = slideCount > 0 ? slideCount - visibleItems : 0;
+  const gapSize = gap === 'gap-6' ? 24 : 32;
 
   const handleNext = () => {
     setCurrentIndex(prevIndex => Math.min(maxTranslate, prevIndex + 1));
@@ -68,8 +59,7 @@ const Carousel = ({ children, slidesPerView = 3, gap = 'gap-8', autoPlay = false
     setCurrentIndex(prevIndex => Math.max(0, prevIndex - 1));
   };
 
-  // Style Transform untuk menggeser
-  const translateX = -(currentIndex * (slideWidth + 32)); // 32px karena gap-8
+  const translateX = -(currentIndex * (slideWidth + gapSize));
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -108,9 +98,9 @@ const Carousel = ({ children, slidesPerView = 3, gap = 'gap-8', autoPlay = false
         </button>
       </div>
 
-      {/* Dots Indikator (Opsional, untuk estetika) */}
+      {/* Dots Indikator */}
       <div className="flex justify-center mt-6 space-x-2">
-        {Array.from({ length: slideCount - visibleItems + 1 }, (_, i) => (
+        {Array.from({ length: maxTranslate + 1 }, (_, i) => (
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}
