@@ -11,7 +11,7 @@ let db, auth;
 // Global variables provided by the Canvas environment
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_token : null;
+const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
 // Data Dummy Tracking
 const DUMMY_SHIPMENTS = [
@@ -236,8 +236,8 @@ const TrackingSection = () => {
                     Masukkan Nomor Resi (misalnya: MOJO-001) di bawah untuk melihat status dan lokasi terkini paket Anda.
                 </p>
 
-                {/* Form Pencarian - DEBUGGING: Ada border merah tebal */}
-                <form onSubmit={handleSearch} className="mt-12 mb-8 reveal-item bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-lg border-4 border-red-500">
+                {/* Form Pencarian - Sudah bersih, tanpa border merah */}
+                <form onSubmit={handleSearch} className="mt-12 mb-8 reveal-item bg-white dark:bg-zinc-900 p-4 rounded-xl shadow-lg border border-gray-100 dark:border-zinc-800">
                     <div className="flex flex-col sm:flex-row gap-4">
                         <input
                             type="text"
