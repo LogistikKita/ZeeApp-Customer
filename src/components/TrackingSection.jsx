@@ -3,11 +3,9 @@ import { Search, MapPin, Loader2, CheckCircle, Clock, Package } from 'lucide-rea
 
 // ===============================================
 // ** FIREBASE INITIALIZATION & IMPORTS (DIJAMIN BERHASIL) **
-// KARENA LINGKUNGAN INI TIDAK MENDUKUNG 'npm install', KITA HARUS 
-// MENGGUNAKAN VARIABEL GLOBAL DARI FIREBASE UNTUK MENGHINDARI ERROR RESOLVE IMPORT.
 // ===============================================
 
-// Pastikan semua fungsi diakses melalui variabel global/window.
+// Menggunakan variabel global window.firebase untuk menghindari error 'Failed to resolve import'
 const getFirestore = window.firebase.firestore.getFirestore;
 const doc = window.firebase.firestore.doc;
 const getDoc = window.firebase.firestore.getDoc;
@@ -26,7 +24,7 @@ const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial
 // Firebase references
 let db, auth;
 
-// Dummy tracking data to seed into Firestore (for demonstration)
+// Data Dummy Tracking yang akan di-seed ke Firestore
 const DUMMY_SHIPMENTS = [
     {
         id: 'MOJO-001',
@@ -88,7 +86,6 @@ const TrackingSection = () => {
             try {
                 if (Object.keys(firebaseConfig).length === 0) {
                     console.error("Firebase config is empty. Cannot initialize.");
-                    // Set error state here if needed
                     return;
                 }
                 
@@ -114,6 +111,7 @@ const TrackingSection = () => {
                 
             } catch (e) {
                 console.error("Firebase initialization failed:", e);
+                // Menetapkan error hanya jika koneksi ke Firebase benar-benar gagal
                 setError("Koneksi ke sistem logistik gagal. Coba lagi.");
             }
         };
@@ -129,7 +127,6 @@ const TrackingSection = () => {
     // Function to seed initial dummy data
     const seedDummyData = async (firestore, path) => {
         console.log("Checking if data needs to be seeded...");
-        // Use a loop to check and set documents individually
         for (const shipment of DUMMY_SHIPMENTS) {
             const docRef = doc(firestore, path, shipment.id);
             try {
@@ -147,7 +144,6 @@ const TrackingSection = () => {
                     console.log(`Seeded shipment: ${shipment.id}`);
                 }
             } catch (e) {
-                // Do not throw error here, just log it
                 console.error(`Failed to seed ${shipment.id}:`, e);
             }
         }
