@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Truck, MapPin, CheckCircle, Package, Database, User, XCircle, Plus, Save } from 'lucide-react';
+import { Clock, Truck, MapPin, CheckCircle, Package, Database, User, XCircle, Plus, Save, Copy } from 'lucide-react';
 
 // --- IMPORTS FIREBASE (NPM STYLE) ---
 // Menggunakan impor NPM karena ini adalah lingkungan React/Codespaces
@@ -71,7 +71,11 @@ const AdminInput = ({ db, userId, onPackageAdded }) => {
 
     const handleCreate = async (e) => {
         e.preventDefault();
-        if (!db) return alert("Database belum terkoneksi! Pastikan Config sudah benar.");
+        // Mengganti alert() dengan console.error atau penanganan UI yang lebih baik
+        if (!db) {
+            console.error("Database belum terkoneksi! Pastikan Config sudah benar.");
+            return;
+        }
 
         setLoading(true);
         try {
@@ -99,13 +103,14 @@ const AdminInput = ({ db, userId, onPackageAdded }) => {
 
             await setDoc(docRef, newPackage);
             
-            alert(`✅ Paket ${formData.id} berhasil dibuat! Silakan lacak.`);
+            console.log(`✅ Paket ${formData.id} berhasil dibuat! Silakan lacak.`);
+            // alert() diganti dengan log/state
             onPackageAdded(formData.id);
             setIsOpen(false);
             setFormData({ ...formData, id: '' });
         } catch (error) {
             console.error("Error creating package:", error);
-            alert("Gagal membuat paket: " + error.message);
+            // alert() diganti dengan log
         } finally {
             setLoading(false);
         }
@@ -150,15 +155,16 @@ const AdminInput = ({ db, userId, onPackageAdded }) => {
 };
 
 // --- KOMPONEN: HASIL LACAK ---
-const TrackingResult = ({ result, loading, error }) => {
+// Sekarang hanya menerima searchError (kesalahan data), bukan error koneksi
+const TrackingResult = ({ result, loading, searchError }) => {
     if (loading) return <div className="text-center p-8 animate-pulse text-blue-500 dark:text-blue-400">Mencari data di server...</div>;
     
-    if (error) {
+    if (searchError) {
         return (
             <div className="mt-6 p-6 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-center">
                 <XCircle className="w-12 h-12 text-red-500 mx-auto mb-2" />
-                <p className="text-red-600 dark:text-red-400 font-bold">{error}</p>
-                <p className="text-sm text-gray-500 mt-1">Coba buat data baru menggunakan panel Admin di atas, atau cek kembali config Firebase.</p>
+                <p className="text-red-600 dark:text-red-400 font-bold">{searchError}</p>
+                <p className="text-sm text-gray-500 mt-1">Coba buat data baru menggunakan panel Admin di atas.</p>
             </div>
         );
     }
@@ -211,7 +217,14 @@ const App = () => {
     const [trackingId, setTrackingId] = useState('');
     const [result, setResult] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    
+    // Dipisahkan: error untuk data/pencarian
+    const [searchError, setSearchError] = useState(null); 
+    
+    // Dipisahkan: error untuk koneksi/inisialisasi Firebase
+    const [firebaseError, setFirebaseError] = useState(null);
+    
+    const [copyStatus, setCopyStatus] = useState('');
     
     // Firebase State
     const [db, setDb] = useState(null);
@@ -222,7 +235,7 @@ const App = () => {
     useEffect(() => {
         // Pengecekan Kualitas Konfigurasi Manual
         if (!firebaseConfig.apiKey) {
-            setError("❌ Config belum diisi/tidak lengkap. Periksa MANUAL_CONFIG.");
+            setFirebaseError("❌ Config belum diisi/tidak lengkap. Periksa MANUAL_CONFIG.");
             return;
         }
 
@@ -243,7 +256,7 @@ const App = () => {
                         console.log("✅ Terhubung ke Firebase sebagai Anonim:", cred.user.uid);
                     } catch (e) {
                         console.error("Auth Error:", e);
-                        setError("Gagal login anonim ke Firebase. Pastikan rules Firestore sudah benar.");
+                        setFirebaseError("Gagal login anonim ke Firebase. Pastikan rules Firestore sudah benar.");
                     }
                 } else {
                     setCurrentUser(user.uid);
@@ -253,7 +266,7 @@ const App = () => {
             return () => unsubscribe();
         } catch (e) {
             console.error("Firebase Init Error:", e);
-            setError("Error Inisialisasi Firebase. Cek koneksi dan konfigurasi.");
+            setFirebaseError("Error Inisialisasi Firebase. Cek koneksi dan konfigurasi.");
         }
     }, []);
 
@@ -263,7 +276,7 @@ const App = () => {
         if (!targetId || !db || !isReady) return;
 
         setLoading(true);
-        setError(null);
+        setSearchError(null); // Reset error pencarian
         setResult(null);
 
         try {
@@ -275,26 +288,72 @@ const App = () => {
             if (docSnap.exists()) {
                 setResult({ id: docSnap.id, ...docSnap.data() });
             } else {
-                setError(`Resi ${targetId} tidak ditemukan.`);
+                setSearchError(`Resi ${targetId} tidak ditemukan.`);
             }
         } catch (err) {
-            console.error(err);
-            setError("Gagal mengambil data dari Firestore.");
+            console.error("Firebase Search Error:", err);
+            setSearchError("Gagal mengambil data dari Firestore.");
         } finally {
             setLoading(false);
         }
     };
+    
+    // Fungsi untuk menyalin User ID (tanpa navigator.clipboard)
+    const copyUserIdToClipboard = (text) => {
+        // Karena navigator.clipboard mungkin tidak tersedia di Codespaces/iFrame
+        // kita menggunakan metode fallback (execCommand)
+        const dummy = document.createElement("textarea");
+        document.body.appendChild(dummy);
+        dummy.value = text;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+        
+        setCopyStatus('Disalin!');
+        setTimeout(() => setCopyStatus(''), 2000);
+    };
+
+    // Tentukan status koneksi utama
+    const connectionStatus = isReady && !firebaseError 
+        ? { label: 'Online & Siap', color: 'bg-green-500', text: 'text-green-600' } 
+        : { label: 'Connecting...', color: 'bg-red-500 animate-pulse', text: 'text-red-500' };
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-zinc-950 text-gray-800 dark:text-gray-200 p-4 font-sans transition-colors">
             {/* Indikator Status Koneksi */}
-            <div className={`fixed top-0 left-0 w-full h-1 ${isReady && !error ? 'bg-green-500' : 'bg-red-500 animate-pulse'}`}></div>
+            <div className={`fixed top-0 left-0 w-full h-1 ${connectionStatus.color}`}></div>
 
             <div className="max-w-2xl mx-auto mt-10">
                 <h1 className="text-3xl font-extrabold text-center mb-2 dark:text-white">📦 Logistik Tracker</h1>
-                <p className="text-center text-sm text-gray-500 mb-8">
-                    Status: {isReady && !error ? <span className="text-green-600 font-bold">Online & Siap</span> : <span className="text-red-500 font-bold">Connecting...</span>}
-                </p>
+                
+                {/* Status dan User ID */}
+                <div className="text-center text-sm text-gray-500 mb-8 flex flex-col items-center">
+                    <p>Status: <span className={`${connectionStatus.text} font-bold`}>{connectionStatus.label}</span></p>
+                    
+                    {/* Menampilkan error koneksi jika ada */}
+                    {firebaseError && (
+                        <p className="mt-2 text-xs text-red-600 dark:text-red-400 font-bold p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
+                            {firebaseError}
+                        </p>
+                    )}
+
+                    {currentUser && (
+                        <div className="mt-2 text-xs flex items-center bg-gray-200 dark:bg-zinc-800 p-2 rounded-lg max-w-full overflow-auto">
+                            <User className="w-3 h-3 mr-1 text-blue-500 flex-shrink-0" /> 
+                            <span className="font-mono text-gray-700 dark:text-gray-300 truncate">
+                                ID Pengguna: {currentUser}
+                            </span>
+                            <button 
+                                onClick={() => copyUserIdToClipboard(currentUser)} 
+                                className="ml-2 p-1 bg-blue-100 dark:bg-blue-900/50 hover:bg-blue-200 dark:hover:bg-blue-800/50 rounded transition relative"
+                            >
+                                <Copy className="w-3 h-3 text-blue-600" />
+                                {copyStatus && <span className="absolute top-0 right-0 -mt-7 px-2 py-1 bg-black text-white text-xs rounded shadow-lg animate-fade-in-out">{copyStatus}</span>}
+                            </button>
+                        </div>
+                    )}
+                    
+                </div>
 
                 {/* Bagian Admin (Untuk Input Data) */}
                 <AdminInput 
@@ -326,7 +385,7 @@ const App = () => {
                 </div>
 
                 {/* Hasil */}
-                <TrackingResult result={result} loading={loading} error={error} />
+                <TrackingResult result={result} loading={loading} searchError={searchError} />
             </div>
         </div>
     );
