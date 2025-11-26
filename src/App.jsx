@@ -1,8 +1,4 @@
 import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from 'firebase/firestore';
-import { setLogLevel } from 'firebase/firestore'; // Untuk debug
 
 // --- KONSTANTA & SETUP FIREBASE (JANGAN DIUBAH) ---
 // Variabel global disediakan oleh lingkungan Canvas
@@ -45,6 +41,7 @@ const shipmentData = [
 // --- KONTEKS FIREBASE ---
 const FirebaseContext = createContext();
 
+// Komponen Pembungkus untuk Inisialisasi Firebase
 const FirebaseProvider = ({ children }) => {
   const [db, setDb] = useState(null);
   const [auth, setAuth] = useState(null);
@@ -57,8 +54,10 @@ const FirebaseProvider = ({ children }) => {
   const getCollectionPath = (collectionName) => `/artifacts/${appId}/public/data/${collectionName}`;
 
   // Seeding Data Awal
-  const seedShipmentData = useCallback(async (firestoreInstance) => {
+  const seedShipmentData = useCallback(async (firebaseModules, firestoreInstance, userId) => {
     if (!firestoreInstance) return;
+
+    const { doc, getDoc, setDoc, collection, onSnapshot } = firebaseModules;
 
     try {
       const collectionRef = collection(firestoreInstance, getCollectionPath('shipments'));
@@ -75,7 +74,7 @@ const FirebaseProvider = ({ children }) => {
       }
 
       if (count > 0) {
-        console.log(`[Seeding] Berhasil menambahkan ${count} dokumen resi simulasi.`);
+        console.log(`[Seeding] Berhasil menambahkan ${count} dokumen resi simulasi. User: ${userId}`);
       }
 
       // Setup listener untuk menghitung total data
@@ -89,52 +88,124 @@ const FirebaseProvider = ({ children }) => {
       console.error('[Seeding Error] Gagal seeding data atau membuat listener:', error);
       setFirestoreStatus('Gagal (Seeding/Listener)');
     }
-  }, []);
+  }, []); // Dependensi kosong, hanya dijalankan sekali
 
-  // Inisialisasi Firebase dan Auth
+  // Fungsi Inisialisasi Utama
   useEffect(() => {
-    if (Object.keys(firebaseConfig).length === 0) {
-      setAuthStatus('Error (Config tidak ditemukan)');
-      return;
-    }
+    const loadFirebaseScripts = () => {
+        // Cek apakah library Firebase sudah dimuat melalui CDN global
+        if (typeof window.firebase === 'undefined' || typeof window.firebase.firestore === 'undefined') {
+            
+            // Definisikan CDN scripts
+            const firebaseScripts = [
+                "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js",
+                "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js",
+                "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"
+            ];
 
-    try {
-      setLogLevel('debug');
-      const app = initializeApp(firebaseConfig);
-      const authInstance = getAuth(app);
-      const dbInstance = getFirestore(app);
+            let loadedCount = 0;
+            const scriptsToLoad = firebaseScripts.length;
 
-      setAuth(authInstance);
-      setDb(dbInstance);
+            const handleScriptLoad = () => {
+                loadedCount++;
+                if (loadedCount === scriptsToLoad) {
+                    // Semua script sudah dimuat, panggil fungsi init
+                    initFirebase();
+                }
+            };
 
-      // 1. Otentikasi
-      const unsubscribe = onAuthStateChanged(authInstance, async (user) => {
-        if (user) {
-          setAuthStatus('Siap');
-          setUserId(user.uid);
-          // 2. Jika auth siap, jalankan seeding dan listener
-          seedShipmentData(dbInstance);
-        } else {
-          try {
-            if (initialAuthToken) {
-              await signInWithCustomToken(authInstance, initialAuthToken);
-            } else {
-              await signInAnonymously(authInstance);
-            }
-          } catch (error) {
-            console.error('[Auth Error] Gagal sign in:', error);
-            setAuthStatus('Gagal');
-          }
+            // Tambahkan script ke DOM
+            firebaseScripts.forEach(url => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = handleScriptLoad;
+                script.onerror = () => {
+                    console.error(`Gagal memuat script Firebase dari: ${url}`);
+                    setAuthStatus('Error (Gagal memuat script)');
+                };
+                document.head.appendChild(script);
+            });
+            return; // Tunggu script dimuat
         }
-      });
+        
+        // Jika sudah dimuat (sudah ada di window), langsung init
+        initFirebase();
+    };
 
-      return () => unsubscribe();
-    } catch (error) {
-      console.error('[Init Error] Gagal menginisialisasi Firebase:', error);
-      setAuthStatus('Gagal (Init)');
-      setFirestoreStatus('Gagal (Init)');
-    }
+    const initFirebase = () => {
+        // Akses modul dari global window
+        const firebaseModules = {
+            initializeApp: window.firebase.initializeApp,
+            getAuth: window.firebase.auth.getAuth,
+            signInAnonymously: window.firebase.auth.signInAnonymously,
+            signInWithCustomToken: window.firebase.auth.signInWithCustomToken,
+            onAuthStateChanged: window.firebase.auth.onAuthStateChanged,
+            getFirestore: window.firebase.firestore.getFirestore,
+            setLogLevel: window.firebase.firestore.setLogLevel,
+            doc: window.firebase.firestore.doc,
+            getDoc: window.firebase.firestore.getDoc,
+            addDoc: window.firebase.firestore.addDoc,
+            setDoc: window.firebase.firestore.setDoc,
+            updateDoc: window.firebase.firestore.updateDoc,
+            onSnapshot: window.firebase.firestore.onSnapshot,
+            collection: window.firebase.firestore.collection,
+            query: window.firebase.firestore.query,
+            where: window.firebase.firestore.where,
+            getDocs: window.firebase.firestore.getDocs,
+        };
+
+        if (Object.keys(firebaseConfig).length === 0) {
+          setAuthStatus('Error (Config tidak ditemukan)');
+          return;
+        }
+
+        try {
+          // Hanya setLogLevel jika getFirestore tersedia
+          if (firebaseModules.getFirestore) {
+             firebaseModules.setLogLevel('debug');
+          }
+         
+          const app = firebaseModules.initializeApp(firebaseConfig);
+          const authInstance = firebaseModules.getAuth(app);
+          const dbInstance = firebaseModules.getFirestore(app);
+
+          setAuth(authInstance);
+          setDb(dbInstance);
+
+          // 1. Otentikasi
+          const unsubscribe = firebaseModules.onAuthStateChanged(authInstance, async (user) => {
+            if (user) {
+              setAuthStatus('Siap');
+              setUserId(user.uid);
+              // 2. Jika auth siap, jalankan seeding dan listener
+              seedShipmentData(firebaseModules, dbInstance, user.uid);
+            } else {
+              try {
+                if (initialAuthToken) {
+                  await firebaseModules.signInWithCustomToken(authInstance, initialAuthToken);
+                } else {
+                  await firebaseModules.signInAnonymously(authInstance);
+                }
+              } catch (error) {
+                console.error('[Auth Error] Gagal sign in:', error);
+                setAuthStatus('Gagal');
+              }
+            }
+          });
+
+          return () => unsubscribe();
+        } catch (error) {
+          console.error('[Init Error] Gagal menginisialisasi Firebase:', error);
+          setAuthStatus('Gagal (Init)');
+          setFirestoreStatus('Gagal (Init)');
+        }
+    };
+
+    loadFirebaseScripts();
+    
+    // Cleanup tidak diperlukan untuk script CDN yang dimuat secara global
   }, [seedShipmentData]);
+
 
   // Public utility function to fetch shipment
   const getShipment = useCallback(async (resi) => {
@@ -142,6 +213,8 @@ const FirebaseProvider = ({ children }) => {
       console.error('Firestore belum siap.');
       return null;
     }
+    // Akses modul Firestore dari global window
+    const { doc, getDoc } = window.firebase.firestore;
     try {
       const docRef = doc(db, getCollectionPath('shipments'), resi);
       const docSnap = await getDoc(docRef);
@@ -157,6 +230,8 @@ const FirebaseProvider = ({ children }) => {
     if (!db) {
       throw new Error("Firestore belum terhubung.");
     }
+    // Akses modul Firestore dari global window
+    const { collection, addDoc } = window.firebase.firestore;
     try {
       const collectionRef = collection(db, getCollectionPath('contact_messages'));
       const timestamp = new Date().toISOString();
@@ -198,30 +273,26 @@ const FirebaseStatus = () => {
 
   // Fungsi untuk muat ulang komponen saat tombol Cek Ulang ditekan
   const handleReload = () => {
-    if (!db) {
-      console.warn("Database instance not available, reloading page.");
-      window.location.reload();
-    } else {
-      console.log("Database instance available, checking connection status again.");
-      // Karena logic init ada di useEffect, refresh penuh adalah cara termudah
-      // untuk mencoba ulang otentikasi jika config sudah benar.
-      window.location.reload(); 
-    }
+    // Refresh penuh halaman adalah cara terbaik untuk memicu ulang inisialisasi CDN
+    window.location.reload();
   };
+
+  // Warna status
+  const statusColor = firestoreStatus === 'Terhubung' ? '#4CAF50' : '#F44336'; // Hijau atau Merah
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-50 p-4 w-64 text-xs font-mono rounded-lg shadow-2xl transition-all"
+      className="fixed bottom-4 right-4 z-50 p-4 w-64 text-xs font-mono rounded-xl shadow-2xl transition-all"
       style={{
         backgroundColor: '#1E1E1E',
         color: '#FFFFFF',
-        border: '1px solid #333333',
-        transform: firestoreStatus === 'Terhubung' ? 'scale(0.9)' : 'scale(1)',
+        border: `1px solid ${statusColor}`,
+        transform: firestoreStatus === 'Terhubung' ? 'scale(0.95)' : 'scale(1)',
       }}
     >
       <div className="flex items-center justify-between mb-2">
         <div className="font-bold text-sm text-red-500">
-          <span className="inline-block h-3 w-3 rounded-full mr-2" style={{ backgroundColor: firestoreStatus === 'Terhubung' ? '#4CAF50' : '#F44336' }}></span>
+          <span className="inline-block h-3 w-3 rounded-full mr-2" style={{ backgroundColor: statusColor }}></span>
           DEBUG FIREBASE
         </div>
       </div>
@@ -231,14 +302,14 @@ const FirebaseStatus = () => {
         <p>Auth Status: <span className={`font-bold ${authStatus === 'Siap' ? 'text-green-400' : 'text-red-400'}`}>{authStatus}</span></p>
         <p>Firestore: <span className={`font-bold ${firestoreStatus === 'Terhubung' ? 'text-green-400' : 'text-red-400'}`}>{firestoreStatus}</span></p>
         {firestoreStatus === 'Terhubung' && (
-          <p>Total Resi: <span className="font-bold text-green-400">{totalData}</span></p>
+          <p>Total Resi (Seeding): <span className="font-bold text-green-400">{totalData}</span></p>
         )}
         {firestoreStatus !== 'Terhubung' && (
           <button
             onClick={handleReload}
             className="w-full mt-2 p-1 bg-red-600 hover:bg-red-700 rounded text-white transition duration-200"
           >
-            &#x21BB; Cek Ulang
+            &#x21BB; Cek Ulang Koneksi
           </button>
         )}
       </div>
