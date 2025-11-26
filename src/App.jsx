@@ -5,12 +5,16 @@ import TrustMetrics from './components/TrustMetrics';
 import Services from './components/Services';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
-import FirebaseStatus from './components/FirebaseStatus'; // <-- DEBUGGER BARU
+import FirebaseStatus from './components/FirebaseStatus';
 
 // GANTI: Import Firebase menggunakan URL CDN untuk menghindari masalah resolusi modul
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+// Mengatur level log untuk debugging Firestore
+setLogLevel('debug'); 
 
 // Konstanta Warna
 const customColors = {
@@ -69,23 +73,27 @@ const App = () => {
     const [auth, setAuth] = useState(null);
     const [isAuthReady, setIsAuthReady] = useState(false);
     const [userId, setUserId] = useState(null);
+    const [firebaseConfig, setFirebaseConfig] = useState(null); // <-- NEW STATE
 
     // 1. Inisialisasi Firebase & Otentikasi
     useEffect(() => {
         try {
             // Ambil variabel global yang disediakan oleh lingkungan
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+            const configString = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
             const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
             
-            if (Object.keys(firebaseConfig).length === 0) {
+            const config = JSON.parse(configString);
+            setFirebaseConfig(config); // <-- SIMPAN CONFIG DI STATE
+
+            if (Object.keys(config).length === 0) {
                 console.error("Firebase config tidak ditemukan.");
                 setTrackingError("Koneksi ke sistem logistik gagal. Konfigurasi Firebase tidak lengkap.");
                 setIsAuthReady(true); 
                 return;
             }
 
-            const app = initializeApp(firebaseConfig);
+            const app = initializeApp(config);
             const firestore = getFirestore(app);
             const authInstance = getAuth(app);
             
@@ -122,6 +130,7 @@ const App = () => {
         } catch (error) {
             console.error("Kesalahan inisialisasi Firebase:", error);
             setTrackingError("Koneksi ke sistem logistik gagal. Inisialisasi Firebase error.");
+            setFirebaseConfig(null); // <-- Reset config state jika gagal
             setIsAuthReady(true); 
         }
     }, []);
@@ -227,8 +236,8 @@ const App = () => {
                 <ContactUs />
             </main>
             <Footer />
-            {/* DEBUGGER TAMPIL DI POJOK KANAN BAWAH */}
-            <FirebaseStatus /> 
+            {/* DEBUGGER TAMPIL DI POJOK KANAN BAWAH. Teruskan config yang sudah diinisialisasi. */}
+            {firebaseConfig && <FirebaseStatus firebaseConfig={firebaseConfig} />}
         </div>
     );
 };
