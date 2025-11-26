@@ -5,11 +5,12 @@ import TrustMetrics from './components/TrustMetrics';
 import Services from './components/Services';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
+import FirebaseStatus from './components/FirebaseStatus'; // <-- DEBUGGER BARU
 
-// Impor Firebase
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, collection, query, where } from 'firebase/firestore';
+// GANTI: Import Firebase menggunakan URL CDN untuk menghindari masalah resolusi modul
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 // Konstanta Warna
 const customColors = {
@@ -53,7 +54,7 @@ const trackingData = [
             "2025-11-25: Paket tiba di Hub Mojokerto.",
             "2025-11-26: Paket berhasil dikirim dan diterima."
         ] 
-    },
+    }
 ];
 
 const App = () => {
@@ -80,6 +81,7 @@ const App = () => {
             if (Object.keys(firebaseConfig).length === 0) {
                 console.error("Firebase config tidak ditemukan.");
                 setTrackingError("Koneksi ke sistem logistik gagal. Konfigurasi Firebase tidak lengkap.");
+                setIsAuthReady(true); 
                 return;
             }
 
@@ -95,7 +97,7 @@ const App = () => {
                 if (user) {
                     setUserId(user.uid);
                 } else {
-                    // Sign in anonymously if no token is provided, or token expired/invalid
+                    // Sign in anonymously
                     await signInAnonymously(authInstance);
                     // Listener akan dipanggil lagi setelah sign-in anonim berhasil
                 }
@@ -120,7 +122,7 @@ const App = () => {
         } catch (error) {
             console.error("Kesalahan inisialisasi Firebase:", error);
             setTrackingError("Koneksi ke sistem logistik gagal. Inisialisasi Firebase error.");
-            setIsAuthReady(true); // Tetap tandai siap, tapi dengan error.
+            setIsAuthReady(true); 
         }
     }, []);
 
@@ -136,25 +138,25 @@ const App = () => {
                 const trackingCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'tracking_updates');
 
                 // Cek apakah data MOJO-001 sudah ada
-                const q = query(trackingCollectionRef, where("id", "==", "MOJO-001"));
-                const querySnapshot = await getDocs(q);
+                const docRef1 = doc(trackingCollectionRef, "MOJO-001");
+                const docSnap1 = await getDoc(docRef1);
 
-                if (querySnapshot.empty) {
+                if (!docSnap1.exists()) {
                     console.log("Data tracking belum ada. Mengunggah data simulasi...");
                     // Upload semua data simulasi
                     for (const data of trackingData) {
-                        // Untuk contoh, kita hanya mengunggah data MOJO-001
-                        if (data.id === "MOJO-001") {
-                            await setDoc(doc(trackingCollectionRef, data.id), data);
-                        }
+                        await setDoc(doc(trackingCollectionRef, data.id), data);
                     }
                     console.log("Pengunggahan data simulasi selesai.");
                 } else {
                     console.log("Data tracking MOJO-001 sudah ada.");
                 }
 
-                // Setelah data dipastikan ada, hapus error status
-                setTrackingError(null); 
+                // Setelah data dipastikan ada, hapus error status jika error sebelumnya adalah 'Firebase belum siap'
+                if (trackingError === "Koneksi ke sistem logistik gagal. Firebase belum siap." || trackingError === "Sistem logistik belum siap. Mohon coba beberapa saat lagi.") {
+                    setTrackingError(null);
+                }
+
 
             } catch (e) {
                 console.error("Gagal mengunggah/memeriksa data tracking:", e);
@@ -220,12 +222,13 @@ const App = () => {
                     setTrackingNumber={setTrackingNumber}
                     trackingNumber={trackingNumber}
                 />
-                {/* Komponen lain yang sudah kamu buat */}
                 <TrustMetrics />
                 <Services />
                 <ContactUs />
             </main>
             <Footer />
+            {/* DEBUGGER TAMPIL DI POJOK KANAN BAWAH */}
+            <FirebaseStatus /> 
         </div>
     );
 };
