@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, CheckCircle, XCircle, Info, Database } from 'lucide-react';
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+// Import CDN diperlukan karena komponen ini mandiri
+import { getFirestore, collection, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 
 // Komponen ini digunakan untuk Debugging/Validasi koneksi Firebase & data
-const FirebaseStatus = () => {
+// Sekarang menerima firebaseConfig sebagai prop dari App.jsx
+const FirebaseStatus = ({ firebaseConfig }) => {
     const [appId, setAppId] = useState('N/A');
     const [status, setStatus] = useState('Memuat...');
     const [dataCount, setDataCount] = useState(0);
@@ -17,20 +19,19 @@ const FirebaseStatus = () => {
         setDataCount(0);
         setDataSample(null);
 
+        // 1. Cek Config yang Diterima
+        if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
+            setStatus('Gagal Koneksi');
+            setError("Konfigurasi Firebase (prop) tidak ditemukan.");
+            return;
+        }
+
         try {
             // Ambil variabel global
             const currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
             setAppId(currentAppId);
-            
-            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
 
-            if (Object.keys(firebaseConfig).length === 0) {
-                setStatus('Gagal Koneksi');
-                setError("Konfigurasi Firebase tidak ditemukan.");
-                return;
-            }
-
-            // Inisialisasi app (dengan asumsi sudah dilakukan di App.jsx, tapi kita ulang untuk memastikan)
+            // Inisialisasi app menggunakan config dari prop
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
 
@@ -54,13 +55,18 @@ const FirebaseStatus = () => {
         } catch (err) {
             console.error("DEBUG FIREBASE ERROR:", err);
             setStatus('Gagal Koneksi');
-            setError("Gagal membaca data dari Firestore. Cek Console Browser untuk detail.");
+            // Cek apakah ini error permissions atau yang lain
+            const errorMessage = err.message.includes('permission') 
+                ? "Gagal (Izin Ditolak): Cek security rules." 
+                : "Gagal membaca data dari Firestore. Cek Console Browser.";
+            setError(errorMessage);
         }
     };
 
+    // Jalankan cekStatus setiap kali firebaseConfig (prop) berubah atau dimuat
     useEffect(() => {
         checkStatus();
-    }, []);
+    }, [firebaseConfig]);
 
     const statusStyle = status.includes('Gagal') ? 'bg-red-600' : status.includes('Tersambung') ? 'bg-green-600' : 'bg-yellow-600';
 
