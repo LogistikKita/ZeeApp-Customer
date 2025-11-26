@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { RefreshCw, CheckCircle, XCircle, Info, Database } from 'lucide-react';
-// Import CDN diperlukan karena komponen ini mandiri
-import { getFirestore, collection, getDocs, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+// Import CDN diperlukan
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+// Tambahkan getApps, getApp, dan deleteApp untuk manajemen instance
+import { initializeApp, getApps, getApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 
 // Komponen ini digunakan untuk Debugging/Validasi koneksi Firebase & data
-// Sekarang menerima firebaseConfig sebagai prop dari App.jsx
 const FirebaseStatus = ({ firebaseConfig }) => {
     const [appId, setAppId] = useState('N/A');
     const [status, setStatus] = useState('Memuat...');
@@ -30,9 +30,18 @@ const FirebaseStatus = ({ firebaseConfig }) => {
             // Ambil variabel global
             const currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
             setAppId(currentAppId);
-
-            // Inisialisasi app menggunakan config dari prop
-            const app = initializeApp(firebaseConfig);
+            
+            let app;
+            
+            // **SOLUSI UTAMA: Mengambil instance yang sudah ada**
+            if (getApps().length > 0) {
+                // Jika sudah ada app yang terinisialisasi (oleh App.jsx), gunakan itu
+                app = getApp();
+            } else {
+                // Jika belum, coba inisialisasi (walaupun ini seharusnya di App.jsx)
+                app = initializeApp(firebaseConfig);
+            }
+            
             const db = getFirestore(app);
 
             // Tentukan path koleksi publik tempat kita menyimpan data tracking
@@ -46,7 +55,6 @@ const FirebaseStatus = ({ firebaseConfig }) => {
             
             setDataCount(docs.length);
             if (docs.length > 0) {
-                // Tampilkan sampel data pertama
                 setDataSample(docs[0]);
             }
             
@@ -58,7 +66,7 @@ const FirebaseStatus = ({ firebaseConfig }) => {
             // Cek apakah ini error permissions atau yang lain
             const errorMessage = err.message.includes('permission') 
                 ? "Gagal (Izin Ditolak): Cek security rules." 
-                : "Gagal membaca data dari Firestore. Cek Console Browser.";
+                : (err.message.includes('already exists') ? "Gagal (App Duplikat). Cek Console." : "Gagal membaca data dari Firestore. Cek Console Browser.");
             setError(errorMessage);
         }
     };
@@ -112,4 +120,3 @@ const FirebaseStatus = ({ firebaseConfig }) => {
 };
 
 export default FirebaseStatus;
-
