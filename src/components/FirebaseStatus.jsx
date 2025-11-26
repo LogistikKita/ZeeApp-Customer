@@ -1,122 +1,84 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, CheckCircle, XCircle, Info, Database } from 'lucide-react';
-// Import CDN diperlukan
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-// Tambahkan getApps, getApp, dan deleteApp untuk manajemen instance
-import { initializeApp, getApps, getApp, deleteApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { CheckCircle, XCircle, Clock, Database, User } from 'lucide-react';
 
-// Komponen ini digunakan untuk Debugging/Validasi koneksi Firebase & data
-const FirebaseStatus = ({ firebaseConfig }) => {
-    const [appId, setAppId] = useState('N/A');
-    const [status, setStatus] = useState('Memuat...');
-    const [dataCount, setDataCount] = useState(0);
-    const [dataSample, setDataSample] = useState(null);
-    const [error, setError] = useState(null);
+const getDatabaseStatus = (db) => {
+    return db ? 'Terkoneksi' : 'Terputus';
+};
 
-    const checkStatus = async () => {
-        setStatus('Memeriksa koneksi...');
-        setError(null);
-        setDataCount(0);
-        setDataSample(null);
+const FirebaseStatus = ({ firebaseConfig, isAuthReady, userId, db }) => {
+    const [isVisible, setIsVisible] = useState(false);
 
-        // 1. Cek Config yang Diterima
-        if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
-            setStatus('Gagal Koneksi');
-            setError("Konfigurasi Firebase (prop) tidak ditemukan.");
-            return;
-        }
+    // Pastikan ini hanya muncul saat ada config
+    if (!firebaseConfig) return null;
 
-        try {
-            // Ambil variabel global
-            const currentAppId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            setAppId(currentAppId);
-            
-            let app;
-            
-            // **SOLUSI UTAMA: Mengambil instance yang sudah ada**
-            if (getApps().length > 0) {
-                // Jika sudah ada app yang terinisialisasi (oleh App.jsx), gunakan itu
-                app = getApp();
-            } else {
-                // Jika belum, coba inisialisasi (walaupun ini seharusnya di App.jsx)
-                app = initializeApp(firebaseConfig);
-            }
-            
-            const db = getFirestore(app);
+    const StatusIcon = isAuthReady ? CheckCircle : Clock;
+    const authStatus = isAuthReady ? 'Siap' : 'Memuat';
 
-            // Tentukan path koleksi publik tempat kita menyimpan data tracking
-            const trackingCollectionPath = `artifacts/${currentAppId}/public/data/tracking_updates`;
-            const trackingCollectionRef = collection(db, trackingCollectionPath);
+    const dbStatus = getDatabaseStatus(db);
+    const dbIcon = db ? Database : XCircle;
 
-            // Mengambil data (simulasi melihat isi "konsol")
-            const snapshot = await getDocs(trackingCollectionRef);
-            
-            const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            
-            setDataCount(docs.length);
-            if (docs.length > 0) {
-                setDataSample(docs[0]);
-            }
-            
-            setStatus('Tersambung & Data Ditemukan');
-
-        } catch (err) {
-            console.error("DEBUG FIREBASE ERROR:", err);
-            setStatus('Gagal Koneksi');
-            // Cek apakah ini error permissions atau yang lain
-            const errorMessage = err.message.includes('permission') 
-                ? "Gagal (Izin Ditolak): Cek security rules." 
-                : (err.message.includes('already exists') ? "Gagal (App Duplikat). Cek Console." : "Gagal membaca data dari Firestore. Cek Console Browser.");
-            setError(errorMessage);
-        }
+    const toggleVisibility = () => {
+        setIsVisible(!isVisible);
     };
 
-    // Jalankan cekStatus setiap kali firebaseConfig (prop) berubah atau dimuat
-    useEffect(() => {
-        checkStatus();
-    }, [firebaseConfig]);
-
-    const statusStyle = status.includes('Gagal') ? 'bg-red-600' : status.includes('Tersambung') ? 'bg-green-600' : 'bg-yellow-600';
-
     return (
-        <div className="fixed bottom-0 right-0 m-4 p-4 w-64 bg-gray-900 border border-gray-700 rounded-lg shadow-2xl z-50 text-xs font-mono">
-            <h4 className="flex items-center space-x-2 font-bold mb-2 border-b border-gray-700 pb-1 text-[var(--color-primary)]">
-                <Database className="w-4 h-4" />
-                <span>DEBUG FIREBASE</span>
-            </h4>
-            
-            {/* Status Koneksi */}
-            <div className={`flex items-center p-1 rounded-md text-white ${statusStyle} mb-2`}>
-                {status.includes('Tersambung') ? <CheckCircle className="w-3 h-3 mr-1" /> : <XCircle className="w-3 h-3 mr-1" />}
-                <span className="font-semibold">{status}</span>
-            </div>
+        <div className="fixed bottom-4 right-4 z-50">
+            {/* Tombol Toggle */}
+            <button
+                onClick={toggleVisibility}
+                className="bg-[var(--color-primary)] text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition duration-300 flex items-center justify-center"
+                title="Toggle Firebase Debugger"
+            >
+                <Database className="w-6 h-6" />
+            </button>
 
-            <div className="space-y-1 text-gray-400">
-                <p>App ID: <span className="text-white break-all">{appId}</span></p>
-                <p>Koleksi: <span className="text-white">tracking_updates</span></p>
-                <p>Total Data: <span className="text-white">{dataCount}</span></p>
-            </div>
+            {/* Panel Status */}
+            {isVisible && (
+                <div className="mt-2 bg-zinc-900 p-4 rounded-lg shadow-2xl border border-zinc-700 w-80 text-xs text-white">
+                    <h3 className="font-bold text-sm border-b pb-2 mb-2 border-zinc-700 text-[var(--color-accent)]">
+                        🛠️ Firebase/DB Status
+                    </h3>
+                    
+                    <div className="space-y-2">
+                        {/* Status Auth */}
+                        <div className="flex items-center space-x-2">
+                            <StatusIcon className={`w-4 h-4 ${isAuthReady ? 'text-green-500' : 'text-yellow-500'}`} />
+                            <span className="font-semibold">Auth Status:</span>
+                            <span className={`${isAuthReady ? 'text-green-300' : 'text-yellow-300'}`}>{authStatus}</span>
+                        </div>
+                        
+                        {/* Status DB */}
+                        <div className="flex items-center space-x-2">
+                            <dbIcon className={`w-4 h-4 ${db ? 'text-green-500' : 'text-red-500'}`} />
+                            <span className="font-semibold">Firestore:</span>
+                            <span className={`${db ? 'text-green-300' : 'text-red-300'}`}>{dbStatus}</span>
+                        </div>
 
-            {/* Detail Error/Data Sample */}
-            {error && <p className="mt-2 text-red-400"><Info className="w-3 h-3 inline mr-1" /> Error: {error}</p>}
-            
-            {dataSample && (
-                <div className="mt-2 p-2 bg-gray-800 rounded">
-                    <p className="font-semibold text-[var(--color-accent)]">Sampel Data:</p>
-                    <p className="text-gray-300">ID: {dataSample.id}</p>
-                    <p className="text-gray-300">Status: {dataSample.status}</p>
+                        {/* User ID */}
+                        {userId && (
+                            <div className="text-gray-400 break-words pt-1 border-t border-zinc-700">
+                                <div className="flex items-center space-x-2">
+                                    <User className="w-4 h-4 flex-shrink-0" />
+                                    <span className="font-semibold text-gray-300">User ID (Current):</span>
+                                </div>
+                                <p className="ml-6 mt-1 font-mono text-gray-300">{userId}</p>
+                            </div>
+                        )}
+                        
+                        {/* App ID (Untuk path Firestore) */}
+                        <div className="text-gray-400 break-words">
+                            <div className="flex items-center space-x-2">
+                                <Database className="w-4 h-4 flex-shrink-0" />
+                                <span className="font-semibold text-gray-300">App ID:</span>
+                            </div>
+                            <p className="ml-6 mt-1 font-mono text-gray-300">{typeof __app_id !== 'undefined' ? __app_id : 'default-app-id'}</p>
+                        </div>
+                    </div>
                 </div>
             )}
-            
-            <button 
-                onClick={checkStatus} 
-                className="mt-3 w-full flex items-center justify-center space-x-1 p-1 bg-[var(--color-primary)] hover:bg-red-700 rounded transition duration-300 text-white"
-            >
-                <RefreshCw className="w-3 h-3" />
-                <span>Cek Ulang</span>
-            </button>
         </div>
     );
 };
 
 export default FirebaseStatus;
+
