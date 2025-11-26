@@ -95,4 +95,3 @@ const TrackingSection = ({ result }) => {
 };
 
 export default TrackingSection;
-
