@@ -1,304 +1,695 @@
-import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import TrustMetrics from './components/TrustMetrics';
-import Services from './components/Services';
-import ContactUs from './components/ContactUs';
-import Footer from './components/Footer';
-import FirebaseStatus from './components/FirebaseStatus'; 
+import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, doc, getDoc, addDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from 'firebase/firestore';
+import { setLogLevel } from 'firebase/firestore'; // Untuk debug
 
-// KONSOLIDASI IMPOR DARI CDN:
-// Menggunakan sintaks impor penuh untuk memastikan resolusi modul yang benar.
-import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { 
-    getFirestore, doc, getDoc, setDoc, collection, setLogLevel 
-} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+// --- KONSTANTA & SETUP FIREBASE (JANGAN DIUBAH) ---
+// Variabel global disediakan oleh lingkungan Canvas
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
-// Mengatur level log untuk debugging Firestore
-setLogLevel('debug'); 
-
-// Konstanta Warna
-const customColors = {
-    '--color-primary': '#E51D2A', // Merah Menyala
-    '--color-accent': '#FDAD61', // Oranye/Krem
-    '--color-dark': '#0d0d0d',    // Background Gelap
-    '--color-light': '#ffffff',   // Teks Terang
-};
-
-// Data Simulasi Pengiriman
-const DUMMY_SHIPMENTS = [
-    {
-        id: 'MOJO-001',
-        status: 'DELIVERED',
-        recipient: 'Bapak Hartono (Jl. Rungkut No. 12)',
-        sender: 'PT. Mojokerto Jaya',
-        origin: 'Mojokerto (Gudang Pusat)',
-        destination: 'Surabaya (Rungkut Industri)',
-        trackingHistory: [
-            { timestamp: new Date(Date.now() - 86400000 * 2), location: 'Mojokerto: Paket diterima di warehouse.', notes: 'Barang sudah dicek dan siap dikirim.' },
-            { timestamp: new Date(Date.now() - 86400000), location: 'Mojokerto: Dalam perjalanan menuju Surabaya.', notes: 'Berangkat dengan Armada No. A-1234.' },
-            { timestamp: new Date(Date.now() - 3600000), location: 'Surabaya: Tiba di gudang penyortiran lokal.', notes: 'Siap untuk pengiriman akhir.' },
-            { timestamp: new Date(), location: 'Surabaya: Paket telah diterima oleh Bapak Hartono.', notes: 'Pengiriman sukses.' }
-        ]
-    },
-    {
-        id: 'MOJO-002',
-        status: 'IN_TRANSIT',
-        recipient: 'Ibu Rina (Perumahan Indah Blok D)',
-        sender: 'Toko Online Jaya',
-        origin: 'Gresik (Kantor Cabang)',
-        destination: 'Sidoarjo (Perumahan Indah)',
-        trackingHistory: [
-            { timestamp: new Date(Date.now() - 86400000), location: 'Gresik: Paket diterima di kantor cabang.', notes: 'Menunggu jadwal keberangkatan.' },
-            { timestamp: new Date(Date.now() - 3600000 * 2), location: 'Gresik: Paket sedang dalam proses pengiriman.', notes: 'Menuju ke Sidoarjo.' }
-        ]
-    },
+// Data simulasi untuk seeding
+const shipmentData = [
+  {
+    resi: 'MOJO-001',
+    status: 'Telah Tiba di Tujuan',
+    lokasi_terkini: 'Mojokerto',
+    nama_penerima: 'Budi Santoso',
+    telepon_penerima: '0812-xxxx-xxxx',
+    timeline: [
+      { waktu: '2025-11-20 09:00', deskripsi: 'Paket diterima di gudang pengirim (Jakarta).' },
+      { waktu: '2025-11-20 14:30', deskripsi: 'Paket berangkat dari gudang Jakarta.' },
+      { waktu: '2025-11-21 08:00', deskripsi: 'Transit di Surabaya.' },
+      { waktu: '2025-11-21 16:00', deskripsi: 'Paket tiba di Mojokerto dan siap diantar.' },
+      { waktu: '2025-11-22 10:00', deskripsi: 'Paket dalam proses pengiriman oleh kurir.' },
+      { waktu: '2025-11-22 14:00', deskripsi: 'Telah Tiba di Tujuan. Diterima oleh Budi Santoso.' },
+    ],
+  },
+  {
+    resi: 'MOJO-002',
+    status: 'Dalam Perjalanan',
+    lokasi_terkini: 'Surabaya',
+    nama_penerima: 'Citra Dewi',
+    telepon_penerima: '0813-xxxx-xxxx',
+    timeline: [
+      { waktu: '2025-11-23 11:00', deskripsi: 'Paket diterima di gudang pengirim (Bandung).' },
+      { waktu: '2025-11-23 17:00', deskripsi: 'Paket berangkat dari gudang Bandung.' },
+      { waktu: '2025-11-24 07:00', deskripsi: 'Transit di Semarang.' },
+      { waktu: '2025-11-25 12:00', deskripsi: 'Dalam perjalanan ke Surabaya.' },
+    ],
+  },
 ];
 
-const App = () => {
-    // State untuk Firebase
-    const [db, setDb] = useState(null);
-    const [auth, setAuth] = useState(null);
-    const [isAuthReady, setIsAuthReady] = useState(false);
-    const [userId, setUserId] = useState(null);
-    const [firebaseConfig, setFirebaseConfig] = useState(null);
+// --- KONTEKS FIREBASE ---
+const FirebaseContext = createContext();
 
-    // State untuk Tracking
-    const [trackingNumber, setTrackingNumber] = useState('');
-    const [trackingResult, setTrackingResult] = useState(null);
-    const [trackingError, setTrackingError] = useState(null);
-    // Mengubah default menjadi true dan hanya set false setelah AUTH/DB siap
-    const [isTrackingLoading, setIsTrackingLoading] = useState(true); 
+const FirebaseProvider = ({ children }) => {
+  const [db, setDb] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const [authStatus, setAuthStatus] = useState('Memuat...');
+  const [firestoreStatus, setFirestoreStatus] = useState('Terputus');
+  const [userId, setUserId] = useState(null);
+  const [totalData, setTotalData] = useState(0);
 
-    // 1. Inisialisasi Firebase & Otentikasi
-    useEffect(() => {
-        let isCancelled = false;
-        
-        const configString = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        
-        console.log("Memulai inisialisasi Firebase...");
+  // Path ke koleksi
+  const getCollectionPath = (collectionName) => `/artifacts/${appId}/public/data/${collectionName}`;
 
-        try {
-            const config = JSON.parse(configString);
-            
-            if (Object.keys(config).length === 0) {
-                console.error("Firebase config tidak ditemukan (kosong). Menggunakan default-app-id.");
-                setFirebaseConfig(null);
-                setIsAuthReady(true);
-                setIsTrackingLoading(false);
-                return;
-            }
+  // Seeding Data Awal
+  const seedShipmentData = useCallback(async (firestoreInstance) => {
+    if (!firestoreInstance) return;
 
-            setFirebaseConfig(config);
-            
-            // Inisialisasi App
-            const app = getApps().length > 0 ? getApp() : initializeApp(config);
-            console.log("Firebase App diinisialisasi.");
-            
-            // Inisialisasi Firestore dan Auth
-            const firestore = getFirestore(app);
-            const authInstance = getAuth(app);
-            
-            // FIX: Set instance DB dan Auth segera
-            if (!isCancelled) {
-                setDb(firestore);
-                setAuth(authInstance);
-                console.log("Firestore dan Auth instances berhasil diset.");
-            }
+    try {
+      const collectionRef = collection(firestoreInstance, getCollectionPath('shipments'));
+      let count = 0;
 
-            // Inisiasi Autentikasi
-            const initializeAuth = async () => {
-                if (initialAuthToken) {
-                    await signInWithCustomToken(authInstance, initialAuthToken);
-                    console.log("Sign-in dengan token kustom berhasil.");
-                } else {
-                    await signInAnonymously(authInstance);
-                    console.log("Sign-in anonim berhasil.");
-                }
-            };
-            
-            initializeAuth();
+      for (const shipment of shipmentData) {
+        const docRef = doc(collectionRef, shipment.resi);
+        const docSnap = await getDoc(docRef);
 
-            // Listener Perubahan Status Otentikasi
-            const unsubscribe = onAuthStateChanged(authInstance, (user) => {
-                if (isCancelled) return;
-                
-                if (user) {
-                    setUserId(user.uid);
-                } else {
-                    setUserId('anonymous'); 
-                }
-                
-                // Set Auth siap. Ini menandakan Auth sudah selesai.
-                setIsAuthReady(true);
-                // Langsung set loading ke false karena DB instance sudah ada.
-                setIsTrackingLoading(false); 
-                console.log(`Auth Ready: True. User ID: ${user ? user.uid : 'anonymous'}`);
-            });
-
-            return () => {
-                isCancelled = true;
-                unsubscribe();
-            };
-
-        } catch (error) {
-            console.error("Kesalahan FATAL saat inisialisasi Firebase:", error);
-            // Fallback: set semua status siap dengan null database
-            if (!isCancelled) {
-                setFirebaseConfig(null);
-                setDb(null);
-                setIsAuthReady(true); 
-                setIsTrackingLoading(false);
-            }
+        if (!docSnap.exists()) {
+          await setDoc(docRef, shipment);
+          count++;
         }
-    }, []);
+      }
 
-    // 2. Simulasi Data Tracking ke Firestore (Seeding Data)
-    useEffect(() => {
-        // HANYA jalankan jika Auth siap, userId ada, dan DB instance ada
-        if (!isAuthReady || !userId || !db) {
-             // console.log("Seeding data ditunda: Menunggu Auth/DB siap.");
-             return;
-        }
+      if (count > 0) {
+        console.log(`[Seeding] Berhasil menambahkan ${count} dokumen resi simulasi.`);
+      }
 
-        const uploadTrackingData = async () => {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const collectionPath = `artifacts/${appId}/public/data/shipments`;
-            const trackingCollectionRef = collection(db, collectionPath);
+      // Setup listener untuk menghitung total data
+      const q = collection(firestoreInstance, getCollectionPath('shipments'));
+      onSnapshot(q, (snapshot) => {
+        setTotalData(snapshot.size);
+      });
 
-            try {
-                // Cek apakah MOJO-001 sudah ada
-                const docRef1 = doc(trackingCollectionRef, "MOJO-001");
-                const docSnap1 = await getDoc(docRef1);
+      setFirestoreStatus('Terhubung');
+    } catch (error) {
+      console.error('[Seeding Error] Gagal seeding data atau membuat listener:', error);
+      setFirestoreStatus('Gagal (Seeding/Listener)');
+    }
+  }, []);
 
-                if (!docSnap1.exists()) {
-                    console.log("Data tracking belum ada. Mengunggah data simulasi...");
-                    
-                    for (const shipment of DUMMY_SHIPMENTS) {
-                        // Konversi Date ke ISO String sebelum disimpan
-                        const dataToSet = {
-                            ...shipment,
-                            trackingHistory: shipment.trackingHistory.map(history => ({
-                                ...history,
-                                timestamp: history.timestamp instanceof Date && !isNaN(history.timestamp) 
-                                    ? history.timestamp.toISOString() 
-                                    : new Date().toISOString()
-                            }))
-                        };
-                        await setDoc(doc(trackingCollectionRef, shipment.id), dataToSet);
-                    }
-                    console.log("Pengunggahan data simulasi selesai.");
-                } else {
-                    console.log("Data simulasi sudah ada. Melewati seeding.");
-                }
+  // Inisialisasi Firebase dan Auth
+  useEffect(() => {
+    if (Object.keys(firebaseConfig).length === 0) {
+      setAuthStatus('Error (Config tidak ditemukan)');
+      return;
+    }
 
-            } catch (e) {
-                console.error("Gagal mengunggah/memeriksa data tracking:", e);
-                // Pesan ini mungkin muncul jika aturan keamanan Firestore menolak,
-                // meskipun koneksi DB berhasil.
-            }
-        };
+    try {
+      setLogLevel('debug');
+      const app = initializeApp(firebaseConfig);
+      const authInstance = getAuth(app);
+      const dbInstance = getFirestore(app);
 
-        uploadTrackingData();
-    }, [isAuthReady, userId, db]);
-    
-    
-    // 3. Fungsi Pencarian Resi (Handler yang akan dipanggil dari HeroSection)
-    const handleTrack = async (resi) => {
-        // Cek kembali: jika db null, tampilkan error
-        if (!db) {
-            setTrackingError("Koneksi ke sistem logistik gagal. Database (Firestore) belum siap.");
-            return;
-        }
+      setAuth(authInstance);
+      setDb(dbInstance);
 
-        const trackingId = resi.trim().toUpperCase();
-        if (trackingId === '') {
-            setTrackingError('Masukkan Nomor Resi yang valid.');
-            return;
-        }
-
-        setIsTrackingLoading(true);
-        setTrackingError(null);
-        setTrackingResult(null);
-
-        try {
-            const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-            const collectionPath = `artifacts/${appId}/public/data/shipments`;
-            
-            const docRef = doc(db, collectionPath, trackingId);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                
-                // Konversi ISO strings ke Date objects dan urutkan (terbaru di atas)
-                const processedHistory = data.trackingHistory.map(history => ({
-                        ...history,
-                        timestamp: new Date(history.timestamp)
-                })).sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
-                
-                // Temukan status terkini untuk tampilan ringkas
-                const latestUpdate = processedHistory.length > 0 ? processedHistory[0] : null;
-
-                const processedData = {
-                    ...data,
-                    latestStatus: latestUpdate ? latestUpdate.location : 'Belum Ada Data',
-                    latestDate: latestUpdate ? latestUpdate.timestamp : null,
-                    trackingHistory: processedHistory
-                };
-                setTrackingResult(processedData);
+      // 1. Otentikasi
+      const unsubscribe = onAuthStateChanged(authInstance, async (user) => {
+        if (user) {
+          setAuthStatus('Siap');
+          setUserId(user.uid);
+          // 2. Jika auth siap, jalankan seeding dan listener
+          seedShipmentData(dbInstance);
+        } else {
+          try {
+            if (initialAuthToken) {
+              await signInWithCustomToken(authInstance, initialAuthToken);
             } else {
-                setTrackingError(`Nomor Resi "${trackingId}" tidak ditemukan. Cek kembali nomor resi Anda.`);
+              await signInAnonymously(authInstance);
             }
-        } catch (e) {
-            console.error("Error fetching document:", e);
-            // Seringkali error di sini disebabkan oleh aturan keamanan Firestore (perlu 'allow read')
-            setTrackingError("Terjadi kesalahan saat mencari data. Pastikan Aturan Keamanan Firestore mengizinkan 'read' pada path yang ditentukan.");
+          } catch (error) {
+            console.error('[Auth Error] Gagal sign in:', error);
+            setAuthStatus('Gagal');
+          }
+        }
+      });
+
+      return () => unsubscribe();
+    } catch (error) {
+      console.error('[Init Error] Gagal menginisialisasi Firebase:', error);
+      setAuthStatus('Gagal (Init)');
+      setFirestoreStatus('Gagal (Init)');
+    }
+  }, [seedShipmentData]);
+
+  // Public utility function to fetch shipment
+  const getShipment = useCallback(async (resi) => {
+    if (!db) {
+      console.error('Firestore belum siap.');
+      return null;
+    }
+    try {
+      const docRef = doc(db, getCollectionPath('shipments'), resi);
+      const docSnap = await getDoc(docRef);
+      return docSnap.exists() ? docSnap.data() : null;
+    } catch (error) {
+      console.error('[Fetch Error] Gagal mengambil data resi:', error);
+      return null;
+    }
+  }, [db]);
+  
+  // Public utility function to submit contact form
+  const submitContactForm = useCallback(async (formData) => {
+    if (!db) {
+      throw new Error("Firestore belum terhubung.");
+    }
+    try {
+      const collectionRef = collection(db, getCollectionPath('contact_messages'));
+      const timestamp = new Date().toISOString();
+      await addDoc(collectionRef, {
+        ...formData,
+        timestamp: timestamp,
+        userId: userId || 'anonymous',
+      });
+      return { success: true, message: "Pesan berhasil terkirim!" };
+    } catch (error) {
+      console.error('[Submit Error] Gagal menyimpan pesan kontak:', error);
+      throw new Error(`Gagal menyimpan pesan: ${error.message}`);
+    }
+  }, [db, userId]);
+
+  return (
+    <FirebaseContext.Provider value={{
+      db,
+      auth,
+      authStatus,
+      firestoreStatus,
+      userId,
+      appId,
+      totalData,
+      getShipment,
+      submitContactForm,
+    }}>
+      {children}
+    </FirebaseContext.Provider>
+  );
+};
+
+// Hook untuk menggunakan konteks
+const useFirebase = () => useContext(FirebaseContext);
+
+// --- KOMPONEN DEBUG (Panel di kanan bawah) ---
+const FirebaseStatus = () => {
+  const { authStatus, firestoreStatus, appId, totalData, userId, db } = useFirebase();
+
+  // Fungsi untuk muat ulang komponen saat tombol Cek Ulang ditekan
+  const handleReload = () => {
+    if (!db) {
+      console.warn("Database instance not available, reloading page.");
+      window.location.reload();
+    } else {
+      console.log("Database instance available, checking connection status again.");
+      // Karena logic init ada di useEffect, refresh penuh adalah cara termudah
+      // untuk mencoba ulang otentikasi jika config sudah benar.
+      window.location.reload(); 
+    }
+  };
+
+  return (
+    <div
+      className="fixed bottom-4 right-4 z-50 p-4 w-64 text-xs font-mono rounded-lg shadow-2xl transition-all"
+      style={{
+        backgroundColor: '#1E1E1E',
+        color: '#FFFFFF',
+        border: '1px solid #333333',
+        transform: firestoreStatus === 'Terhubung' ? 'scale(0.9)' : 'scale(1)',
+      }}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="font-bold text-sm text-red-500">
+          <span className="inline-block h-3 w-3 rounded-full mr-2" style={{ backgroundColor: firestoreStatus === 'Terhubung' ? '#4CAF50' : '#F44336' }}></span>
+          DEBUG FIREBASE
+        </div>
+      </div>
+      <div className="space-y-1">
+        <p>App ID: <span className="text-yellow-400">{appId}</span></p>
+        <p>User ID: <span className="text-yellow-400 truncate">{userId || 'N/A'}</span></p>
+        <p>Auth Status: <span className={`font-bold ${authStatus === 'Siap' ? 'text-green-400' : 'text-red-400'}`}>{authStatus}</span></p>
+        <p>Firestore: <span className={`font-bold ${firestoreStatus === 'Terhubung' ? 'text-green-400' : 'text-red-400'}`}>{firestoreStatus}</span></p>
+        {firestoreStatus === 'Terhubung' && (
+          <p>Total Resi: <span className="font-bold text-green-400">{totalData}</span></p>
+        )}
+        {firestoreStatus !== 'Terhubung' && (
+          <button
+            onClick={handleReload}
+            className="w-full mt-2 p-1 bg-red-600 hover:bg-red-700 rounded text-white transition duration-200"
+          >
+            &#x21BB; Cek Ulang
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+// --- KOMPONEN UI ---
+
+const Navbar = () => (
+  <nav className="bg-black py-4 sticky top-0 z-40 shadow-lg">
+    <div className="container mx-auto px-4 flex justify-between items-center">
+      <div className="flex items-center space-x-2">
+        {/* Placeholder Logo (Gunakan Emoji atau SVG sederhana) */}
+        <span className="text-red-500 text-2xl font-black">LOGISTIK KITA</span>
+      </div>
+      <div className="hidden md:flex space-x-6 text-white text-sm font-semibold">
+        {['Layanan', 'Keunggulan', 'Pelacakan'].map(item => (
+          <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-red-500 transition duration-300">{item}</a>
+        ))}
+        <a href="#hubungi-kami" className="px-4 py-2 bg-red-600 rounded-full hover:bg-red-700 transition duration-300">Hubungi Kami</a>
+      </div>
+      <button className="md:hidden text-white text-2xl">&#9776;</button>
+    </div>
+  </nav>
+);
+
+const HeroSection = () => (
+  <header id="beranda" className="bg-black text-white pt-20 pb-24 relative overflow-hidden">
+    <div className="container mx-auto px-4 relative z-10">
+      <div className="max-w-4xl">
+        <h1 className="text-6xl md:text-8xl font-black leading-tight mb-4 text-red-500">
+          Logistik Mojokerto Baru
+        </h1>
+        <p className="text-xl text-gray-300 mb-8">
+          Solusi pengiriman terpercaya dan efisien untuk kebutuhan bisnis Anda di Jawa Timur dan seluruh Indonesia.
+        </p>
+        <div className="flex space-x-4">
+          <a href="#pelacakan" className="px-8 py-3 bg-red-600 text-white font-bold rounded-full text-lg hover:bg-red-700 transition duration-300 shadow-xl">
+            Lacak Resi Cepat
+          </a>
+          <a href="#layanan" className="px-8 py-3 bg-gray-800 text-white font-bold rounded-full text-lg hover:bg-gray-700 transition duration-300">
+            Lihat Layanan Kami
+          </a>
+        </div>
+      </div>
+    </div>
+    <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: 'url(https://placehold.co/1200x800/222/FFF?text=TRUCK+IMAGE)' }}></div>
+  </header>
+);
+
+const TrackingSection = () => {
+  const { firestoreStatus, getShipment } = useFirebase();
+  const [resiInput, setResiInput] = useState('');
+  const [trackingResult, setTrackingResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleTracking = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setTrackingResult(null);
+
+    if (firestoreStatus !== 'Terhubung') {
+      setError('Koneksi ke sistem logistik gagal. Database (Firestore) belum siap.');
+      return;
+    }
+    
+    if (!resiInput.trim()) {
+      setError('Mohon masukkan Nomor Resi.');
+      return;
+    }
+
+    setLoading(true);
+    const result = await getShipment(resiInput.trim().toUpperCase());
+    setLoading(false);
+
+    if (result) {
+      setTrackingResult(result);
+    } else {
+      setError(`Nomor Resi "${resiInput.trim().toUpperCase()}" tidak ditemukan.`);
+    }
+  };
+
+  return (
+    <section id="pelacakan" className="py-20 bg-gray-900">
+      <div className="container mx-auto px-4">
+        <div className="max-w-xl mx-auto bg-white p-8 md:p-10 rounded-xl shadow-2xl">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Lacak Pengiriman Anda</h2>
+          <p className="text-center text-gray-600 mb-8">
+            Masukkan Nomor Resi (misalnya, MOJO-001 atau MOJO-002) di bawah untuk melihat status dan lokasi terkini paket Anda.
+          </p>
+
+          <form onSubmit={handleTracking} className="space-y-6">
+            <input
+              type="text"
+              placeholder="Masukkan Resi, Contoh: MOJO-001"
+              value={resiInput}
+              onChange={(e) => setResiInput(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
+              disabled={loading || firestoreStatus !== 'Terhubung'}
+            />
+            <button
+              type="submit"
+              className="w-full py-3 bg-red-600 text-white font-bold rounded-lg text-lg hover:bg-red-700 transition duration-300 flex items-center justify-center space-x-2 shadow-md disabled:bg-red-400"
+              disabled={loading || firestoreStatus !== 'Terhubung'}
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Mencari...</span>
+                </>
+              ) : (
+                <>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <span>Lacak Sekarang</span>
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Display Error/Status */}
+          {firestoreStatus !== 'Terhubung' && (
+            <div className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg flex items-center space-x-3 border border-red-300">
+              <span className="text-xl">
+                &#9888;
+              </span>
+              <span>
+                **Pencarian Gagal:** Koneksi ke sistem logistik gagal. Database (Firestore) belum siap.
+              </span>
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-6 p-4 bg-red-100 text-red-700 rounded-lg flex items-center space-x-3 border border-red-300">
+              <span className="text-xl">
+                &#10060;
+              </span>
+              <span>
+                **Pencarian Gagal:** {error}
+              </span>
+            </div>
+          )}
+          
+          {/* Display Tracking Result */}
+          {trackingResult && (
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <h3 className="text-2xl font-bold text-gray-800 mb-4">Detail Pengiriman {trackingResult.resi}</h3>
+              <div className="bg-gray-100 p-4 rounded-lg mb-6">
+                <p className="text-sm text-gray-600">Status Terkini:</p>
+                <p className={`text-xl font-bold ${trackingResult.status === 'Telah Tiba di Tujuan' ? 'text-green-600' : 'text-yellow-600'}`}>
+                  {trackingResult.status}
+                </p>
+                <p className="text-sm text-gray-600 mt-2">Lokasi:</p>
+                <p className="text-lg font-semibold text-gray-800">{trackingResult.lokasi_terkini}</p>
+                <p className="text-sm text-gray-600 mt-2">Penerima:</p>
+                <p className="text-lg font-semibold text-gray-800">{trackingResult.nama_penerima}</p>
+              </div>
+
+              <h4 className="text-xl font-bold text-gray-800 mb-3">Riwayat Perjalanan:</h4>
+              <ol className="relative border-l border-gray-300 ml-4">
+                {trackingResult.timeline.slice().reverse().map((item, index) => (
+                  <li key={index} className="mb-4 ml-6">
+                    <span className="absolute flex items-center justify-center w-3 h-3 bg-red-600 rounded-full -left-1.5 ring-4 ring-white"></span>
+                    <p className="text-sm font-medium text-gray-500">{item.waktu.split(' ')[0]}</p>
+                    <p className="text-base font-semibold text-gray-800">{item.deskripsi}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ContactForm = () => {
+    const { submitContactForm, firestoreStatus } = useFirebase();
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState(null); // { type: 'success'|'error', message: '...' }
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setStatus(null);
+
+        if (firestoreStatus !== 'Terhubung') {
+            setStatus({ type: 'error', message: 'Koneksi database gagal. Mohon periksa status koneksi Firebase Anda.' });
+            return;
+        }
+
+        if (!formData.name || !formData.email || !formData.message) {
+            setStatus({ type: 'error', message: 'Semua kolom wajib diisi.' });
+            return;
+        }
+        
+        setLoading(true);
+        try {
+            await submitContactForm(formData);
+            setStatus({ type: 'success', message: 'Pesan Anda berhasil terkirim! Kami akan segera menghubungi Anda.' });
+            setFormData({ name: '', email: '', message: '' });
+        } catch (error) {
+            setStatus({ type: 'error', message: error.message || 'Terjadi kesalahan saat mengirim pesan.' });
         } finally {
-            // Set loading ke false setelah proses pencarian selesai
-            setIsTrackingLoading(false); 
+            setLoading(false);
         }
     };
 
-
-    // Terapkan custom CSS Variables
-    useEffect(() => {
-        Object.entries(customColors).forEach(([key, value]) => {
-            document.documentElement.style.setProperty(key, value);
-        });
-    }, []);
-
-    // Struktur Halaman Utama
     return (
-        <div className="min-h-screen bg-[var(--color-dark)] text-[var(--color-light)]">
-            <Navbar />
-            <main>
-                <HeroSection 
-                    onTrack={handleTrack}
-                    trackingError={trackingError}
-                    trackingResult={trackingResult}
-                    // Gunakan isTrackingLoading untuk disable input saat loading (inisial atau pencarian)
-                    isTrackingLoading={isTrackingLoading} 
-                    setTrackingNumber={setTrackingNumber}
-                    trackingNumber={trackingNumber}
-                />
-                <TrustMetrics />
-                <Services />
-                <ContactUs />
-            </main>
-            <Footer />
-            {/* DEBUGGER TAMPIL DI POJOK KANAN BAWAH. */}
-            {firebaseConfig && <FirebaseStatus 
-                firebaseConfig={firebaseConfig} 
-                isAuthReady={isAuthReady} 
-                userId={userId}
-                db={db}
-            />}
-        </div>
+        <section id="hubungi-kami" className="py-20 bg-gray-900 text-white">
+            <div className="container mx-auto px-4">
+                <h2 className="text-4xl font-extrabold text-center mb-10 text-red-500">Hubungi Kami</h2>
+                <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12">
+                    {/* Form Bagian Kiri */}
+                    <div className="bg-gray-800 p-8 rounded-xl shadow-lg">
+                        <p className="text-gray-300 mb-6">Kami siap membantu! Isi formulir di bawah ini untuk konsultasi pengiriman atau pertanyaan lainnya.</p>
+                        
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Nama Lengkap"
+                                value={formData.name}
+                                onChange={handleChange}
+                                className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500"
+                                disabled={loading}
+                            />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email Aktif Anda"
+                                value={formData.email}
+                                onChange={handleChange}
+                                className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500"
+                                disabled={loading}
+                            />
+                            <textarea
+                                name="message"
+                                placeholder="Tuliskan pesan atau pertanyaan Anda di sini..."
+                                rows="5"
+                                value={formData.message}
+                                onChange={handleChange}
+                                className="w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-red-500 focus:border-red-500"
+                                disabled={loading}
+                            ></textarea>
+                            
+                            {status && (
+                                <div className={`p-3 rounded-lg text-sm ${status.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
+                                    {status.message}
+                                </div>
+                            )}
+
+                            <button
+                                type="submit"
+                                className="w-full py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition duration-300 flex items-center justify-center space-x-2 shadow-md disabled:bg-red-400"
+                                disabled={loading || firestoreStatus !== 'Terhubung'}
+                            >
+                                {loading ? (
+                                    <>
+                                        <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <span>Mengirim...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span>Kirim Pesan</span>
+                                    </>
+                                )}
+                            </button>
+                            {firestoreStatus !== 'Terhubung' && (
+                                <p className='text-xs text-red-400 pt-2 text-center'>
+                                    (Fungsi kirim pesan tidak aktif karena Firestore terputus)
+                                </p>
+                            )}
+                        </form>
+                    </div>
+
+                    {/* Info Kontak Bagian Kanan */}
+                    <div className="space-y-6">
+                        <h3 className="text-2xl font-bold text-red-500">Kantor Pusat Kami</h3>
+                        <div className="space-y-4">
+                            <div className="flex items-start space-x-3">
+                                <span className="text-red-500 text-xl">&#x1F3E0;</span>
+                                <div>
+                                    <p className="font-semibold">Alamat</p>
+                                    <p className="text-gray-400">Jl. Raya Bypass Mojokerto No. 45, Mojokerto, Jawa Timur 61361.</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start space-x-3">
+                                <span className="text-red-500 text-xl">&#x1F4DE;</span>
+                                <div>
+                                    <p className="font-semibold">Telepon/WhatsApp</p>
+                                    <p className="text-gray-400">(0321) 1234 5678</p>
+                                </div>
+                            </div>
+                            <div className="flex items-start space-x-3">
+                                <span className="text-red-500 text-xl">&#x2709;&#xFE0F;</span>
+                                <div>
+                                    <p className="font-semibold">Email</p>
+                                    <p className="text-gray-400">info@logistik-kita.id</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Placeholder Peta */}
+                        <div className="bg-gray-800 h-64 rounded-xl flex items-center justify-center text-gray-500">
+                            Peta Lokasi Kantor Pusat
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     );
+};
+
+
+const Footer = () => (
+  <footer className="bg-gray-800 text-white py-12">
+    <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-5 gap-8">
+      <div>
+        <h3 className="text-xl font-black text-red-500 mb-4">LOGISTIK KITA</h3>
+        <p className="text-sm text-gray-400">Solusi pengiriman terpercaya, cepat, dan efisien untuk kebutuhan perusahaan dan individu.</p>
+      </div>
+      <div>
+        <h4 className="font-semibold mb-3">Tentang Kami</h4>
+        <ul className="space-y-2 text-sm text-gray-400">
+          <li>Karir</li>
+          <li>Media</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold mb-3">Layanan</h4>
+        <ul className="space-y-2 text-sm text-gray-400">
+          <li>Pengiriman Domestik</li>
+          <li>Asuransi</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold mb-3">Info</h4>
+        <ul className="space-y-2 text-sm text-gray-400">
+          <li>FAQ</li>
+          <li>Syarat & Ketentuan</li>
+          <li>Kebijakan Privasi</li>
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-semibold mb-3">Ikuti Kami</h4>
+        <div className="flex space-x-3 text-2xl">
+          {/* Ikon Sosial Media Placeholder */}
+          <a href="#" className="hover:text-red-500 transition duration-300">&#x24B8;</a>
+          <a href="#" className="hover:text-red-500 transition duration-300">&#x24B9;</a>
+          <a href="#" className="hover:text-red-500 transition duration-300">&#x24BD;</a>
+        </div>
+      </div>
+    </div>
+    <div className="container mx-auto px-4 mt-8 pt-6 border-t border-gray-700 text-center text-sm text-gray-500">
+      &copy; 2025 Logistik Kita. All rights reserved.
+    </div>
+  </footer>
+);
+
+const ServicesSection = () => (
+    <section id="layanan" className="py-20 bg-black text-white">
+        <div className="container mx-auto px-4">
+            <h2 className="text-4xl font-extrabold text-center mb-12">Layanan Logistik Unggulan</h2>
+            <p className="text-center text-gray-400 mb-16 max-w-3xl mx-auto">
+                Kami menawarkan berbagai solusi pengiriman yang dapat disesuaikan dengan kebutuhan spesifik bisnis Anda.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Kartu Layanan */}
+                {[
+                    {
+                        title: "Pengiriman Darat (Road Freight)",
+                        icon: "🚚",
+                        desc: "Layanan kargo umum untuk angkutan darat besar maupun kecil di seluruh pulau Jawa, Bali, dan Sumatera. Cepat, aman, dan terjangkau."
+                    },
+                    {
+                        title: "Pengiriman Udara (Air Cargo)",
+                        icon: "✈️",
+                        desc: "Solusi untuk barang yang memerlukan kecepatan tinggi, melayani rute domestik dan internasional. Prioritas untuk kargo sensitif waktu."
+                    },
+                    {
+                        title: "Pengiriman Laut (Sea Freight)",
+                        icon: "🚢",
+                        desc: "Layanan FCL (Full Container Load) dan LCL (Less than Container Load) untuk efisiensi biaya pengiriman antar pulau dan internasional."
+                    },
+                    {
+                        title: "Gudang & Distribusi",
+                        icon: "📦",
+                        desc: "Fasilitas gudang modern di Mojokerto dengan sistem manajemen inventaris terintegrasi, siap mendukung rantai pasok Anda."
+                    },
+                    {
+                        title: "Last-Mile Express",
+                        icon: "🏍️",
+                        desc: "Pengiriman cepat (satu hari sampai) untuk area Mojokerto, Surabaya, dan Malang. Cocok untuk kebutuhan e-commerce dan mendesak."
+                    },
+                    {
+                        title: "Tracking Real-Time",
+                        icon: "📍",
+                        desc: "Sistem pelacakan GPS terintegrasi yang memungkinkan Anda memantau lokasi kiriman secara akurat, 24 jam sehari."
+                    },
+                ].map((service, index) => (
+                    <div key={index} className="bg-gray-900 p-6 rounded-xl shadow-xl border border-gray-700 hover:border-red-500 transition duration-300">
+                        <div className="text-4xl mb-4">{service.icon}</div>
+                        <h3 className="text-2xl font-bold mb-3 text-red-500">{service.title}</h3>
+                        <p className="text-gray-400">{service.desc}</p>
+                    </div>
+                ))}
+            </div>
+
+            <div className="text-center mt-16">
+                <a href="#hubungi-kami" className="px-8 py-3 bg-red-600 text-white font-bold rounded-full text-lg hover:bg-red-700 transition duration-300 shadow-xl">
+                    Konsultasikan Kebutuhan Anda
+                </a>
+            </div>
+        </div>
+    </section>
+);
+
+
+const App = () => {
+  return (
+    <FirebaseProvider>
+      <div className="min-h-screen font-sans antialiased">
+        <Navbar />
+        <main>
+          <HeroSection />
+          <ServicesSection />
+          <TrackingSection />
+          <ContactForm />
+        </main>
+        <Footer />
+        <FirebaseStatus /> {/* Panel Debug Kembali! */}
+      </div>
+    </FirebaseProvider>
+  );
 };
 
 export default App;
