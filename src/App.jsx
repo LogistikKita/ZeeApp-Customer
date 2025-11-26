@@ -19,29 +19,27 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, getDoc, collection } from 'firebase/firestore';
 
-// --- KONFIGURASI ---
-const MANUAL_CONFIG = {
-    apiKey: "AIzaSyDHB-ZIg4UoFL_tuFDQuCZQdhM8pd7Xwbg",
-    authDomain: "gen-lang-client-0318354714.firebaseapp.com",
-    projectId: "gen-lang-client-0318354714",
-    storageBucket: "gen-lang-client-0318354714.firebasestorage.app",
-    messagingSenderId: "967542358897",
-    appId: "1:967542358897:web:c126afb27aa2391d3eacd0",
+// --- KONFIGURASI FIREBASE ---
+// Menggunakan Env Var jika ada, Fallback ke Manual jika Env bermasalah di CodeSpaces
+const FIREBASE_CONFIG = {
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDHB-ZIg4UoFL_tuFDQuCZQdhM8pd7Xwbg",
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "gen-lang-client-0318354714.firebaseapp.com",
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "gen-lang-client-0318354714",
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "gen-lang-client-0318354714.firebasestorage.app",
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "967542358897",
+    appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:967542358897:web:c126afb27aa2391d3eacd0",
 };
 
-const firebaseConfig = MANUAL_CONFIG;
-const appId = MANUAL_CONFIG.projectId; 
-
 const App = () => {
-    // State
+    // State UI & Data
     const [loading, setLoading] = useState(true);
+    const [trackingLoading, setTrackingLoading] = useState(false);
     const [trackingId, setTrackingId] = useState('');
     const [result, setResult] = useState(null);
     const [searchError, setSearchError] = useState(null);
-    const [trackingLoading, setTrackingLoading] = useState(false);
     const [isAdminOpen, setIsAdminOpen] = useState(false);
     
-    // Firebase
+    // Firebase State
     const [db, setDb] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [isFirebaseReady, setIsFirebaseReady] = useState(false);
@@ -51,7 +49,7 @@ const App = () => {
     useEffect(() => {
         const init = async () => {
             try {
-                const app = initializeApp(firebaseConfig);
+                const app = initializeApp(FIREBASE_CONFIG);
                 const firestore = getFirestore(app);
                 const auth = getAuth(app);
                 setDb(firestore);
@@ -64,7 +62,7 @@ const App = () => {
                         setCurrentUser(cred.user.uid);
                     }
                     setIsFirebaseReady(true);
-                    setTimeout(() => setLoading(false), 1500);
+                    setTimeout(() => setLoading(false), 1500); // Simulasi preloader
                 });
                 return unsubscribe;
             } catch (e) {
@@ -76,7 +74,7 @@ const App = () => {
         init();
     }, []);
 
-    // Logic Pencarian
+    // Logic Pencarian (Dipanggil oleh TrackingSection)
     const handleSearch = async (overrideId) => {
         const target = overrideId || trackingId;
         if (!target || !db) return;
@@ -86,7 +84,7 @@ const App = () => {
         setResult(null);
 
         try {
-            const docRef = doc(collection(db, 'artifacts', appId, 'public', 'data', 'packages'), target);
+            const docRef = doc(collection(db, 'artifacts', FIREBASE_CONFIG.projectId, 'public', 'data', 'packages'), target);
             const snap = await getDoc(docRef);
             
             if (snap.exists()) {
@@ -100,10 +98,12 @@ const App = () => {
         setTrackingLoading(false);
     };
 
-    // Callback setelah Admin Create/Update
+    // Callback saat Admin Create/Update sukses
     const handleAdminSuccess = (id) => {
         setTrackingId(id);
         handleSearch(id);
+        // Scroll otomatis ke bagian tracking
+        document.getElementById('tracking')?.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
@@ -111,7 +111,6 @@ const App = () => {
             <Preloader loading={loading} />
             
             <Navbar 
-                currentUser={currentUser} 
                 toggleAdmin={() => setIsAdminOpen(!isAdminOpen)} 
                 isAdminOpen={isAdminOpen}
             />
@@ -119,10 +118,10 @@ const App = () => {
             <main>
                 <HeroSection />
                 
-                {/* Tracking Section menerima banyak props karena dia menghandle UI Admin & Search */}
+                {/* TrackingSection menyatukan Form Lacak + Admin Panel + Hasil */}
                 <TrackingSection 
                     db={db}
-                    appId={appId}
+                    appId={FIREBASE_CONFIG.projectId}
                     userId={currentUser}
                     isReady={isFirebaseReady}
                     loading={trackingLoading}
