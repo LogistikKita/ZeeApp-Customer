@@ -6,8 +6,6 @@ import Services from './components/Services';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
 import FirebaseStatus from './components/FirebaseStatus'; // Debugger status
-// TrackingSection tidak perlu diimport di App.jsx karena sudah diimport di HeroSection.jsx
-// import TrackingSection from './components/TrackingSection'; 
 
 // GANTI: Import Firebase menggunakan URL CDN untuk menghindari masalah resolusi modul
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -116,8 +114,13 @@ const App = () => {
                 } else {
                     setUserId('anonymous'); 
                 }
-                setIsAuthReady(true);
-                setIsTrackingLoading(false); // Selesai loading inisial
+                
+                // FIX: Tambahkan penundaan singkat untuk memastikan state 'db' dan 'auth' terupdate 
+                // sebelum isTrackingLoading disetel ke false, mengatasi race condition.
+                setTimeout(() => {
+                    setIsAuthReady(true);
+                    setIsTrackingLoading(false); // Selesai loading inisial
+                }, 100); 
             });
 
             return () => unsubscribe();
@@ -132,6 +135,7 @@ const App = () => {
 
     // 2. Simulasi Data Tracking ke Firestore (Seeding Data)
     useEffect(() => {
+        // Hanya jalankan jika Auth siap, userId ada, dan DB instance ada
         if (!isAuthReady || !userId || !db) return;
 
         const uploadTrackingData = async () => {
@@ -174,6 +178,7 @@ const App = () => {
     
     // 3. Fungsi Pencarian Resi (Handler yang akan dipanggil dari HeroSection)
     const handleTrack = async (resi) => {
+        // Cek kembali: jika db null, tampilkan error
         if (!isAuthReady || !db) {
             setTrackingError("Sistem logistik belum sepenuhnya siap. Mohon tunggu sebentar.");
             return;
@@ -222,7 +227,7 @@ const App = () => {
             console.error("Error fetching document:", e);
             setTrackingError("Terjadi kesalahan saat mencari data. Coba lagi.");
         } finally {
-            // Set loading ke false setelah proses pencarian selesai (bukan inisial loading)
+            // Set loading ke false setelah proses pencarian selesai
             setIsTrackingLoading(false); 
         }
     };
@@ -266,3 +271,4 @@ const App = () => {
 };
 
 export default App;
+
