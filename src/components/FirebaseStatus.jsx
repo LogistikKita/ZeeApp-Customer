@@ -81,4 +81,3 @@ const FirebaseStatus = ({ firebaseConfig, isAuthReady, userId, db }) => {
 };
 
 export default FirebaseStatus;
-
