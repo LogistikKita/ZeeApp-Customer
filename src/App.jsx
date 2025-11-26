@@ -5,9 +5,10 @@ import TrustMetrics from './components/TrustMetrics';
 import Services from './components/Services';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
-import FirebaseStatus from './components/FirebaseStatus'; // Debugger status
+import FirebaseStatus from './components/FirebaseStatus'; 
 
-// GANTI: Import Firebase menggunakan URL CDN untuk menghindari masalah resolusi modul
+// KONSOLIDASI IMPOR DARI CDN:
+// Menggunakan sintaks impor penuh untuk memastikan resolusi modul yang benar.
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { 
@@ -25,7 +26,7 @@ const customColors = {
     '--color-light': '#ffffff',   // Teks Terang
 };
 
-// Data Simulasi Pengiriman (Contoh Data yang akan disimpan ke Firestore)
+// Data Simulasi Pengiriman
 const DUMMY_SHIPMENTS = [
     {
         id: 'MOJO-001',
@@ -67,76 +68,101 @@ const App = () => {
     const [trackingNumber, setTrackingNumber] = useState('');
     const [trackingResult, setTrackingResult] = useState(null);
     const [trackingError, setTrackingError] = useState(null);
-    const [isTrackingLoading, setIsTrackingLoading] = useState(true); // Mulai dengan true
+    // Mengubah default menjadi true dan hanya set false setelah AUTH/DB siap
+    const [isTrackingLoading, setIsTrackingLoading] = useState(true); 
 
     // 1. Inisialisasi Firebase & Otentikasi
     useEffect(() => {
-        try {
-            const configString = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
-            const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-            
-            const config = JSON.parse(configString);
-            setFirebaseConfig(config);
+        let isCancelled = false;
+        
+        const configString = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
+        console.log("Memulai inisialisasi Firebase...");
 
+        try {
+            const config = JSON.parse(configString);
+            
             if (Object.keys(config).length === 0) {
-                console.error("Firebase config tidak ditemukan.");
+                console.error("Firebase config tidak ditemukan (kosong). Menggunakan default-app-id.");
+                setFirebaseConfig(null);
                 setIsAuthReady(true);
                 setIsTrackingLoading(false);
                 return;
             }
 
-            // Mencegah inisialisasi ulang jika sudah ada instance
+            setFirebaseConfig(config);
+            
+            // Inisialisasi App
             const app = getApps().length > 0 ? getApp() : initializeApp(config);
+            console.log("Firebase App diinisialisasi.");
+            
+            // Inisialisasi Firestore dan Auth
             const firestore = getFirestore(app);
             const authInstance = getAuth(app);
             
-            setDb(firestore);
-            setAuth(authInstance);
+            // FIX: Set instance DB dan Auth segera
+            if (!isCancelled) {
+                setDb(firestore);
+                setAuth(authInstance);
+                console.log("Firestore dan Auth instances berhasil diset.");
+            }
 
             // Inisiasi Autentikasi
             const initializeAuth = async () => {
-                try {
-                    if (initialAuthToken) {
-                        await signInWithCustomToken(authInstance, initialAuthToken);
-                    } else {
-                        await signInAnonymously(authInstance);
-                    }
-                } catch (e) {
-                    console.error("Gagal melakukan sign-in:", e);
-                    await signInAnonymously(authInstance); // Fallback ke anonim
+                if (initialAuthToken) {
+                    await signInWithCustomToken(authInstance, initialAuthToken);
+                    console.log("Sign-in dengan token kustom berhasil.");
+                } else {
+                    await signInAnonymously(authInstance);
+                    console.log("Sign-in anonim berhasil.");
                 }
             };
+            
             initializeAuth();
 
+            // Listener Perubahan Status Otentikasi
             const unsubscribe = onAuthStateChanged(authInstance, (user) => {
+                if (isCancelled) return;
+                
                 if (user) {
                     setUserId(user.uid);
                 } else {
                     setUserId('anonymous'); 
                 }
                 
-                // FIX: Tambahkan penundaan singkat untuk memastikan state 'db' dan 'auth' terupdate 
-                // sebelum isTrackingLoading disetel ke false, mengatasi race condition.
-                setTimeout(() => {
-                    setIsAuthReady(true);
-                    setIsTrackingLoading(false); // Selesai loading inisial
-                }, 100); 
+                // Set Auth siap. Ini menandakan Auth sudah selesai.
+                setIsAuthReady(true);
+                // Langsung set loading ke false karena DB instance sudah ada.
+                setIsTrackingLoading(false); 
+                console.log(`Auth Ready: True. User ID: ${user ? user.uid : 'anonymous'}`);
             });
 
-            return () => unsubscribe();
+            return () => {
+                isCancelled = true;
+                unsubscribe();
+            };
 
         } catch (error) {
-            console.error("Kesalahan inisialisasi Firebase:", error);
-            setFirebaseConfig(null);
-            setIsAuthReady(true); 
-            setIsTrackingLoading(false);
+            console.error("Kesalahan FATAL saat inisialisasi Firebase:", error);
+            // Fallback: set semua status siap dengan null database
+            if (!isCancelled) {
+                setFirebaseConfig(null);
+                setDb(null);
+                setIsAuthReady(true); 
+                setIsTrackingLoading(false);
+            }
         }
     }, []);
 
     // 2. Simulasi Data Tracking ke Firestore (Seeding Data)
     useEffect(() => {
-        // Hanya jalankan jika Auth siap, userId ada, dan DB instance ada
-        if (!isAuthReady || !userId || !db) return;
+        // HANYA jalankan jika Auth siap, userId ada, dan DB instance ada
+        if (!isAuthReady || !userId || !db) {
+             // console.log("Seeding data ditunda: Menunggu Auth/DB siap.");
+             return;
+        }
 
         const uploadTrackingData = async () => {
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -165,10 +191,14 @@ const App = () => {
                         await setDoc(doc(trackingCollectionRef, shipment.id), dataToSet);
                     }
                     console.log("Pengunggahan data simulasi selesai.");
+                } else {
+                    console.log("Data simulasi sudah ada. Melewati seeding.");
                 }
 
             } catch (e) {
                 console.error("Gagal mengunggah/memeriksa data tracking:", e);
+                // Pesan ini mungkin muncul jika aturan keamanan Firestore menolak,
+                // meskipun koneksi DB berhasil.
             }
         };
 
@@ -179,8 +209,8 @@ const App = () => {
     // 3. Fungsi Pencarian Resi (Handler yang akan dipanggil dari HeroSection)
     const handleTrack = async (resi) => {
         // Cek kembali: jika db null, tampilkan error
-        if (!isAuthReady || !db) {
-            setTrackingError("Sistem logistik belum sepenuhnya siap. Mohon tunggu sebentar.");
+        if (!db) {
+            setTrackingError("Koneksi ke sistem logistik gagal. Database (Firestore) belum siap.");
             return;
         }
 
@@ -225,7 +255,8 @@ const App = () => {
             }
         } catch (e) {
             console.error("Error fetching document:", e);
-            setTrackingError("Terjadi kesalahan saat mencari data. Coba lagi.");
+            // Seringkali error di sini disebabkan oleh aturan keamanan Firestore (perlu 'allow read')
+            setTrackingError("Terjadi kesalahan saat mencari data. Pastikan Aturan Keamanan Firestore mengizinkan 'read' pada path yang ditentukan.");
         } finally {
             // Set loading ke false setelah proses pencarian selesai
             setIsTrackingLoading(false); 
