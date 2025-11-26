@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// --- 1. IMPORTS KOMPONEN (Sesuai Struktur Folder Kamu) ---
+// --- IMPORTS KOMPONEN ---
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import TrustMetrics from './components/TrustMetrics';
@@ -14,14 +14,12 @@ import FirebaseStatus from './components/FirebaseStatus';
 import Carousel from './components/Carousel';
 import Preloader from './components/Preloader';
 
-// --- 2. IMPORTS FIREBASE ---
+// --- IMPORTS FIREBASE ---
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { 
-    getFirestore, doc, getDoc, collection, setDoc, updateDoc, arrayUnion, serverTimestamp 
-} from 'firebase/firestore';
+import { getFirestore, doc, getDoc, collection } from 'firebase/firestore';
 
-// --- 3. KONFIGURASI FIREBASE ---
+// --- KONFIGURASI ---
 const MANUAL_CONFIG = {
     apiKey: "AIzaSyDHB-ZIg4UoFL_tuFDQuCZQdhM8pd7Xwbg",
     authDomain: "gen-lang-client-0318354714.firebaseapp.com",
@@ -35,61 +33,50 @@ const firebaseConfig = MANUAL_CONFIG;
 const appId = MANUAL_CONFIG.projectId; 
 
 const App = () => {
-    // --- STATE MANAGEMENT ---
-    const [loading, setLoading] = useState(true); // Untuk Preloader
-    const [trackingLoading, setTrackingLoading] = useState(false); // Untuk proses lacak
-    
-    // Data
+    // State
+    const [loading, setLoading] = useState(true);
     const [trackingId, setTrackingId] = useState('');
     const [result, setResult] = useState(null);
     const [searchError, setSearchError] = useState(null);
-    
-    // UI State
+    const [trackingLoading, setTrackingLoading] = useState(false);
     const [isAdminOpen, setIsAdminOpen] = useState(false);
     
-    // Firebase State
+    // Firebase
     const [db, setDb] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [isFirebaseReady, setIsFirebaseReady] = useState(false);
     const [firebaseError, setFirebaseError] = useState(null);
 
-    // --- EFFECT: INIT FIREBASE ---
+    // Init Firebase
     useEffect(() => {
-        const initFirebase = async () => {
+        const init = async () => {
             try {
                 const app = initializeApp(firebaseConfig);
                 const firestore = getFirestore(app);
                 const auth = getAuth(app);
-                
                 setDb(firestore);
 
-                // Auth Listener
                 const unsubscribe = onAuthStateChanged(auth, async (user) => {
                     if (user) {
                         setCurrentUser(user.uid);
                     } else {
-                        // Auto login anonim jika belum login
                         const cred = await signInAnonymously(auth);
                         setCurrentUser(cred.user.uid);
                     }
                     setIsFirebaseReady(true);
-                    
-                    // Matikan preloader setelah firebase siap (simulasi delay dikit biar smooth)
                     setTimeout(() => setLoading(false), 1500);
                 });
-                
                 return unsubscribe;
-            } catch (error) {
-                console.error("Firebase Init Error:", error);
-                setFirebaseError(error.message);
+            } catch (e) {
+                console.error("Firebase Error:", e);
+                setFirebaseError(e.message);
                 setLoading(false);
             }
         };
-
-        initFirebase();
+        init();
     }, []);
 
-    // --- FUNGSI: LACAK RESI ---
+    // Logic Pencarian
     const handleSearch = async (overrideId) => {
         const target = overrideId || trackingId;
         if (!target || !db) return;
@@ -108,63 +95,21 @@ const App = () => {
                 setSearchError(`Resi #${target} tidak ditemukan.`);
             }
         } catch (e) {
-            console.error(e);
-            setSearchError("Terjadi kesalahan koneksi saat mengambil data.");
+            setSearchError("Gagal mengambil data. Cek koneksi.");
         }
         setTrackingLoading(false);
     };
 
-    // --- FUNGSI: ADMIN ACTIONS (Create/Update) ---
-    // Fungsi ini dilempar ke TrackingSection atau AdminPanel jika ada
-    const handleAdminAction = async (type, payload) => {
-        if (!db) return;
-        setTrackingLoading(true);
-
-        try {
-            const packagesCol = collection(db, 'artifacts', appId, 'public', 'data', 'packages');
-
-            if (type === 'CREATE') {
-                await setDoc(doc(packagesCol, payload.id), {
-                    ...payload,
-                    createdBy: currentUser,
-                    createdAt: serverTimestamp(),
-                    trackingHistory: [{
-                        location: `Permintaan dibuat oleh ${payload.sender}`,
-                        notes: 'Menunggu penjemputan oleh kurir.',
-                        timestamp: new Date().toISOString()
-                    }]
-                });
-            } else if (type === 'UPDATE') {
-                const docRef = doc(packagesCol, payload.id);
-                await updateDoc(docRef, {
-                    status: payload.status,
-                    trackingHistory: arrayUnion({
-                        location: payload.location,
-                        notes: payload.notes,
-                        timestamp: new Date().toISOString()
-                    })
-                });
-            }
-
-            // Refresh data setelah update
-            setTrackingId(payload.id);
-            handleSearch(payload.id);
-            
-        } catch (error) {
-            console.error("Admin Action Error:", error);
-            alert("Gagal memproses data: " + error.message);
-        }
-        setTrackingLoading(false);
+    // Callback setelah Admin Create/Update
+    const handleAdminSuccess = (id) => {
+        setTrackingId(id);
+        handleSearch(id);
     };
 
-    // --- RENDER UTAMA ---
     return (
-        <div className="min-h-screen bg-zinc-950 text-gray-200 font-sans overflow-x-hidden selection:bg-green-500 selection:text-white">
-            
-            {/* 1. Preloader */}
+        <div className="min-h-screen bg-zinc-950 text-gray-200 font-sans selection:bg-green-500 selection:text-white overflow-x-hidden">
             <Preloader loading={loading} />
-
-            {/* 2. Navbar */}
+            
             <Navbar 
                 currentUser={currentUser} 
                 toggleAdmin={() => setIsAdminOpen(!isAdminOpen)} 
@@ -172,13 +117,13 @@ const App = () => {
             />
 
             <main>
-                {/* 3. Hero Section */}
                 <HeroSection />
-
-                {/* 4. Tracking Section (Paling Penting) */}
-                {/* Kita passing semua props yang dibutuhkan untuk lacak & admin */}
+                
+                {/* Tracking Section menerima banyak props karena dia menghandle UI Admin & Search */}
                 <TrackingSection 
                     db={db}
+                    appId={appId}
+                    userId={currentUser}
                     isReady={isFirebaseReady}
                     loading={trackingLoading}
                     trackingId={trackingId}
@@ -186,41 +131,27 @@ const App = () => {
                     handleSearch={handleSearch}
                     result={result}
                     searchError={searchError}
-                    isAdminOpen={isAdminOpen}     // Untuk menampilkan form admin
-                    onAdminAction={handleAdminAction} // Fungsi create/update
+                    isAdminOpen={isAdminOpen}
+                    onAdminSuccess={handleAdminSuccess}
                 />
 
-                {/* 5. Trust Metrics */}
-                <TrustMetrics />
-
-                {/* 6. Carousel / Promo (Opsional) */}
+                <div className="mt-20">
+                    <TrustMetrics />
+                </div>
+                
                 <Carousel />
-
-                {/* 7. Services */}
                 <ServicesSection />
-
-                {/* 8. Fleet (Armada) */}
                 <FleetSection />
-
-                {/* 9. Testimonials */}
                 <TestimonialsSection />
-
-                {/* 10. Contact Us */}
                 <ContactUs />
             </main>
 
-            {/* 11. Footer */}
             <Footer currentUser={currentUser} />
-
-            {/* 12. Floating Status (Opsional, untuk debug koneksi) */}
-            <FirebaseStatus 
-                isReady={isFirebaseReady} 
-                error={firebaseError} 
-            />
-
+            <FirebaseStatus isReady={isFirebaseReady} error={firebaseError} />
         </div>
     );
 };
 
 export default App;
+
 
