@@ -2,134 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-/* =======================================================
-   1. VARIABLE WARNA & BASE STYLING
-   ======================================================= */
-
-/* Definisi Variabel Warna dan Font */
-:root {
-    /* Warna Utama */
-    --color-primary: #FF5733; /* Merah Oranye Terang */
-    --color-primary-dark: #cc452a; /* Hover Primary */
-    --color-accent: #FFC300; /* Kuning (untuk button/highlight) */
-    --color-accent-dark: #cc9c00;
-
-    /* Tema Light */
-    --color-dark: #1f2937; /* Teks, Ikon, Background Nav */
-    --color-bg-light: #f3f4f6; /* Background Section Light */
-    --color-bg-body: #ffffff; /* Background Body Putih */
-    --image-overlay: rgba(0, 0, 0, 0.5); /* Overlay Gambar */
-    --glass-bg: rgba(255, 255, 255, 0.9); /* Background Navbar Glass */
-    --glass-border: rgba(229, 231, 235, 0.8); /* Border Navbar Glass */
-}
-
-/* Tema Dark (Diterapkan ketika <html> memiliki class="dark") */
-.dark {
-    /* Tema Dark */
-    --color-dark: #f9fafb; /* Teks, Ikon, Background Nav */
-    --color-bg-light: #374151; /* Background Section Darker */
-    --color-bg-body: #111827; /* Background Body Dark Blue/Gray */
-    --image-overlay: rgba(0, 0, 0, 0.7);
-    --glass-bg: rgba(31, 41, 55, 0.9); /* Background Navbar Dark Glass */
-    --glass-border: rgba(75, 85, 99, 0.8); /* Border Navbar Glass */
-}
-
-/* Base Body Styling */
-body {
-    /* Menggunakan variabel warna tema */
-    background-color: var(--color-bg-body);
-    color: var(--color-dark);
-    /* Tailwind utilities */
-    @apply antialiased scroll-smooth transition-colors duration-500;
-}
-
-/* Scroll-smooth class pada html agar scroll ke section menjadi halus */
 html {
-    @apply scroll-smooth;
+    scroll-behavior: smooth;
+    background-color: #09090b; /* zinc-950 */
 }
 
-/* Utility untuk menghilangkan transisi saat beralih tema */
-.no-transition * {
-  transition: none !important;
+/* Custom Scrollbar Hijau */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #09090b; }
+::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+.animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* =======================================================
-   2. NAVBAR & DROPDOWN STYLING
-   ======================================================= */
 
-/* Efek Glass Navbar */
-.glass-nav {
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--glass-border);
-}
-
-/* Efek Shadow Tambahan saat Scroll */
-.glass-nav.scrolled {
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
-/* Styling Dropdown Menu */
-.dropdown-menu {
-    @apply absolute top-full left-0 mt-0 py-2 w-48 rounded-lg shadow-xl border border-gray-200 dark:border-zinc-700 hidden opacity-0 transition-all duration-300 transform scale-95 origin-top-left flex flex-col;
-    background-color: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.dropdown-parent:hover .dropdown-menu {
-    @apply block opacity-100 scale-100;
-}
-
-.dropdown-menu a {
-    @apply px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 dark:hover:bg-zinc-700;
-}
-
-/* =======================================================
-   3. MOBILE MENU & ACCORDION STYLING
-   ======================================================= */
-
-#mobile-menu {
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-}
-
-#mobile-menu.active {
-    transform: translateX(0);
-}
-
-/* =======================================================
-   4. PRELOADER & FADE EFFECT
-   ======================================================= */
-
-/* Tambahkan kelas ini jika ingin Preloader memiliki efek fade out */
-#preloader-container {
-    opacity: 1;
-    transition: opacity 0.7s ease-out;
-}
-
-/* KITA TIDAK MEMBUTUHKAN INI LAGI KARENA KITA MENGGUNAKAN 'hidden' di App.jsx
-#preloader-container.hidden {
-    opacity: 0;
-    pointer-events: none; 
-}
-*/
-
-/* =======================================================
-   5. UTILITY KOMPONEN (OPTIONAL)
-   ======================================================= */
-
-/* Efek Reveal saat Scroll - Dasar */
-.reveal-item {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-/* Contoh implementasi di JS/React (diasumsikan kamu punya IntersectionObserver) 
-.reveal-item.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-*/
