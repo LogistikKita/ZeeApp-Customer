@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-// Import all components
-import Navbar from './components/Navbar';
+// Perbaikan Import Navbar: Menggunakan path yang kamu sebutkan
+import Navbar from './components/layout/Navbar'; 
+// Import komponen lainnya (diasumsikan berada di /src/components/)
 import Footer from './components/Footer';
 import Hero from './components/Hero';
 import TrackingSection from './components/TrackingSection';
@@ -42,9 +43,18 @@ const App = () => {
             {/* Tailwind CSS base styling for smoother scrolling and text rendering */}
             <style jsx global>{`
                 :root {
-                    --color-primary: #34D399; /* Emerald 400 - Green Light */
-                    --color-primary-dark: #10B981; /* Emerald 500 - Green Darker */
-                    --color-dark: #18181b; /* Zinc 900 - Dark Text */
+                    /* Warna Primer: Merah Menyala */
+                    --color-primary: #E51D2A; 
+                    /* Warna Primer Darker (untuk hover/active) */
+                    --color-primary-dark: #C21A24; 
+                    /* Warna Primer Lighter (untuk background/border ringan) */
+                    --color-primary-light: #FF4A5C;
+                    
+                    /* Warna Accent: Oranye Krem */
+                    --color-accent: #FDAD61;
+                    
+                    /* Warna Teks/Elemen Gelap */
+                    --color-dark: #1A1A1A; /* Hampir hitam */
                 }
                 html {
                     scroll-behavior: smooth;
@@ -52,8 +62,14 @@ const App = () => {
                     -moz-osx-font-smoothing: grayscale;
                 }
                 .dark {
-                    background-color: #09090b; /* Zinc 950 */
+                    background-color: #0d0d0d; /* Darker background for dark mode */
+                    color: #e0e0e0; /* Lighter text for dark mode */
                 }
+                /* Mengubah warna dark mode yang kamu sebutkan #f87171 untuk teks */
+                .dark .text-dark-override { 
+                    color: #f87171; 
+                }
+
                 /* Optional: Animation for revealing elements */
                 .reveal-item {
                     opacity: 0;
@@ -76,11 +92,8 @@ const App = () => {
             
             <main>
                 <Hero />
-                {/* 1. Komponen KRITIS yang tadinya hilang - Tracking Section */}
                 <TrackingSection /> 
-                {/* 2. Komponen baru - Metrik Kepercayaan */}
                 <TrustMetrics /> 
-                {/* 3. Komponen selanjutnya */}
                 <Services />
                 <ContactUs />
             </main>
