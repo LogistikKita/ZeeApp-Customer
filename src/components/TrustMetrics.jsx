@@ -1,21 +1,21 @@
 import React from 'react';
-import { Truck, MapPin, Users, Shield } from 'lucide-react';
+import { Users, Truck, UserCheck, CheckSquare } from 'lucide-react';
 
-const TrustMetrics = () => {
+const TrustMetrics = ({ darkMode }) => {
     const metrics = [
-        { icon: Truck, label: "Armada", value: "100+" },
-        { icon: MapPin, label: "Kota", value: "34" },
-        { icon: Users, label: "Klien", value: "5k+" },
-        { icon: Shield, label: "Aman", value: "100%" },
+        { icon: Users, label: "Pengunjung Website", value: "15.4K" },
+        { icon: Truck, label: "Jumlah Armada", value: "120+" },
+        { icon: UserCheck, label: "Mitra Armada", value: "850+" },
+        { icon: CheckSquare, label: "Pengiriman Selesai", value: "54K+" },
     ];
     return (
-        <div className="py-12 bg-zinc-950 border-y border-white/5">
-            <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="relative z-10 -mt-10 px-4">
+            <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {metrics.map((m, i) => (
-                    <div key={i} className="text-center group">
-                        <m.icon className="w-8 h-8 mx-auto text-gray-600 group-hover:text-green-500 transition mb-2" />
-                        <div className="text-3xl font-bold text-white">{m.value}</div>
-                        <div className="text-xs text-gray-500 uppercase tracking-widest">{m.label}</div>
+                    <div key={i} className={`p-6 rounded-3xl text-center transform transition duration-300 hover:-translate-y-2 ${darkMode ? 'bg-slate-800 border border-white/5 shadow-lg shadow-black/30' : 'bg-white border border-gray-100 shadow-xl shadow-gray-200'}`}>
+                        <div className="w-12 h-12 mx-auto bg-green-500/10 rounded-2xl flex items-center justify-center mb-4 text-green-500"><m.icon className="w-6 h-6" /></div>
+                        <h3 className={`text-3xl font-bold mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{m.value}</h3>
+                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{m.label}</p>
                     </div>
                 ))}
             </div>
