@@ -1,24 +1,23 @@
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
 
-const FleetSection = () => (
-    <div id="fleet" className="py-20 bg-zinc-950">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
-            <div className="md:w-1/2">
-                <h2 className="text-3xl font-bold text-white mb-4">Armada Modern</h2>
-                <p className="text-gray-400 mb-6">Armada lengkap dengan GPS Tracker dan perawatan rutin.</p>
-                <ul className="space-y-2">
-                    {['Blind Van', 'CDD Long', 'Wingbox'].map((item, i) =>(
-                        <li key={i} className="flex items-center text-gray-300"><CheckCircle className="w-4 h-4 text-green-500 mr-2" /> {item}</li>
-                    ))}
-                </ul>
+const FleetSection = ({ darkMode }) => {
+    return (
+        <div className="py-20 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 mb-10">
+                <h2 className={`text-3xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Armada Kami</h2>
+                <p className="opacity-60">Unit terawat siap jalan ke seluruh pelosok.</p>
             </div>
-            <div className="md:w-1/2 bg-zinc-900 h-64 rounded-3xl border border-zinc-800 flex items-center justify-center text-gray-600">
-                [Fleet Image]
+            <div className="flex gap-6 overflow-x-auto pb-10 px-4 md:px-0 snap-x no-scrollbar">
+                {[1, 2, 3, 4, 5].map((i) => (
+                    <div key={i} className="flex-shrink-0 snap-center w-80 md:w-96 aspect-[4/3] rounded-3xl overflow-hidden relative group shadow-lg">
+                        <img src={`https://source.unsplash.com/random/800x600?truck&sig=${i}`} alt={`Armada ${i}`} className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6"><p className="text-white font-bold">Unit {i} - Ready</p></div>
+                    </div>
+                ))}
             </div>
         </div>
-    </div>
-);
+    );
+};
 export default FleetSection;
 
 
