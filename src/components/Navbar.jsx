@@ -30,7 +30,10 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigateTo('home')}>
                         <img src="/Logistik-Kita.png" alt="Logo" className="h-10 w-auto object-contain" onError={(e) => e.target.style.display='none'} />
                         <div>
-                            <span className={`font-extrabold text-xl tracking-tighter leading-none block ${darkMode ? 'text-white' : 'text-slate-900'}`}>LOGISTIK <span className="text-green-500">KITA</span></span>
+                            {/* REVISI LOGO: Logistik (Merah) Kita (Putih/Hitam) */}
+                            <span className={`font-extrabold text-xl tracking-tighter leading-none block ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                                <span className="text-primary">LOGISTIK</span> KITA
+                            </span>
                             <span className="text-[10px] text-gray-500 font-bold tracking-widest block">MOJOKERTO</span>
                         </div>
                     </div>
@@ -41,7 +44,7 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
                             <button 
                                 key={idx} 
                                 onClick={item.action}
-                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${darkMode ? 'text-gray-300 hover:text-white hover:bg-white/10' : 'text-gray-600 hover:text-green-600 hover:bg-gray-100'}`}
+                                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${darkMode ? 'text-gray-300 hover:text-primary hover:bg-white/10' : 'text-gray-600 hover:text-primary hover:bg-gray-100'}`}
                             >
                                 {item.label}
                             </button>
@@ -50,19 +53,24 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
 
                     {/* ACTIONS */}
                     <div className="hidden lg:flex items-center gap-3">
-                        <div className={`p-2 rounded-full cursor-pointer transition ${darkMode ? 'hover:bg-white/10 text-gray-300' : 'hover:bg-gray-100 text-gray-600'}`}>
+                        {/* ICON PENCARIAN (Sudah ada di sini) */}
+                        <div className={`p-2 rounded-full cursor-pointer transition ${darkMode ? 'hover:bg-white/10 text-gray-300 hover:text-primary' : 'hover:bg-gray-100 text-gray-600 hover:text-primary'}`}>
                             <Search className="w-5 h-5" />
                         </div>
+                        
                         <button onClick={toggleTheme} className={`p-2 rounded-full transition ${darkMode ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-200 text-gray-600'}`}>
                             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                         </button>
-                        <button onClick={() => navigateTo('maintenance')} className="px-5 py-2.5 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold text-sm shadow-lg shadow-green-500/30 transition transform hover:scale-105">
+                        
+                        {/* TOMBOL MERAH */}
+                        <button onClick={() => navigateTo('maintenance')} className="px-5 py-2.5 bg-primary hover:bg-red-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 transition transform hover:scale-105">
                             DAFTAR / LOGIN
                         </button>
                     </div>
 
                     {/* MOBILE TOGGLE */}
                     <div className="lg:hidden flex items-center gap-4">
+                        <div className={`${darkMode ? 'text-white' : 'text-slate-900'}`}><Search className="w-5 h-5"/></div>
                         <button onClick={toggleTheme} className={`${darkMode ? 'text-yellow-400' : 'text-gray-600'}`}>{darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}</button>
                         <button onClick={() => setIsOpen(!isOpen)} className={`${darkMode ? 'text-white' : 'text-slate-900'}`}>{isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}</button>
                     </div>
@@ -75,7 +83,7 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
                     {menuItems.map((item, idx) => (
                         <button key={idx} onClick={() => { item.action(); setIsOpen(false); }} className={`text-left p-3 rounded-xl font-medium ${darkMode ? 'text-gray-200 hover:bg-white/5' : 'text-gray-700 hover:bg-gray-50'}`}>{item.label}</button>
                     ))}
-                    <button onClick={() => navigateTo('maintenance')} className="w-full py-3 bg-green-600 text-white font-bold rounded-xl mt-2">LOGIN / DAFTAR</button>
+                    <button onClick={() => navigateTo('maintenance')} className="w-full py-3 bg-primary text-white font-bold rounded-xl mt-2">LOGIN / DAFTAR</button>
                 </div>
             )}
         </nav>
