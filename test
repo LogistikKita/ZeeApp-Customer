@@ -1,0 +1,473 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+    Search, Sun, Moon, Menu, X, Truck, Zap, Shield, 
+    Globe, Clock, MapPin, Phone, Mail, ChevronRight, 
+    Star, Users, UserCheck, CheckSquare, ArrowRight,
+    ArrowLeft, Package, CheckCircle, AlertCircle
+} from 'lucide-react';
+
+// --- FIREBASE IMPORTS (Dibiarkan tetap ada untuk integrasi nanti) ---
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
+import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
+// --- KONFIGURASI FIREBASE ---
+const FIREBASE_CONFIG = {
+    apiKey: "AIzaSyDHB-ZIg4UoFL_tuFDQuCZQdhM8pd7Xwbg",
+    authDomain: "gen-lang-client-0318354714.firebaseapp.com",
+    projectId: "gen-lang-client-0318354714",
+    storageBucket: "gen-lang-client-0318354714.firebasestorage.app",
+    messagingSenderId: "967542358897",
+    appId: "1:967542358897:web:c126afb27aa2391d3eacd0",
+};
+
+// --- DATA STATIS & DUMMY (Untuk Tampilan Awal) ---
+const MENUS = [
+    { label: 'Beranda', id: 'home' },
+    { label: 'Layanan & Armada', id: 'maintenance' },
+    { label: 'Galeri & Portofolio', id: 'maintenance' },
+    { label: 'Blog / Berita', id: 'maintenance' },
+    { label: 'Mitra Armada', id: 'maintenance' },
+    { label: 'Tentang Kita', id: 'maintenance' },
+    { label: 'Hubungi Kita', id: 'contact' }, // Scroll ke footer/contact
+    { label: 'Info Muatan', id: 'maintenance' },
+    { label: 'Lapak Kita', id: 'maintenance' },
+];
+
+const SERVICES = [
+    { title: "Kargo Darat", icon: Truck, desc: "Pengiriman via Truk Jawa-Bali" },
+    { title: "Kargo Laut", icon: Globe, desc: "Kontainer Antar Pulau" },
+    { title: "Express", icon: Zap, desc: "Sampai di Hari yang Sama" },
+    { title: "Asuransi", icon: Shield, desc: "Jaminan Keamanan 100%" },
+    { title: "Sewa Armada", icon: Users, desc: "Lepas Kunci / Driver" },
+    { title: "Pindahan", icon: Package, desc: "Jasa Angkut Rumah/Kantor" },
+];
+
+const CLIENTS = ["GOJEK", "TOKOPEDIA", "SHOPEE", "LAZADA", "BUKALAPAK", "BLIBLI", "JD.ID"];
+
+const REVIEWS = [
+    { name: "H. Samsul", role: "Juragan Beras", text: "Kiriman ke gudang Surabaya selalu aman dan tepat waktu. Sopirnya sopan-sopan." },
+    { name: "Dewi Sartika", role: "Owner Online Shop", text: "Sistem trackingnya sangat membantu. Customer saya jadi tidak rewel tanya paket." },
+    { name: "PT. Beton Jaya", role: "Corporate Partner", text: "Kerjasama B2B yang profesional. Invoice rapi dan termin pembayaran fleksibel." },
+];
+
+const METRICS = [
+    { icon: Users, label: "Pengunjung Website", value: "15.4K" },
+    { icon: Truck, label: "Jumlah Armada", value: "120+" },
+    { icon: UserCheck, label: "Mitra Armada", value: "850+" },
+    { icon: CheckSquare, label: "Pengiriman Selesai", value: "54K+" },
+];
+
+// --- MAIN COMPONENT ---
+export default function App() {
+    // STATE
+    const [loading, setLoading] = useState(true);
+    const [darkMode, setDarkMode] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    
+    // NAVIGATION STATE
+    const [activePage, setActivePage] = useState('home'); // 'home', 'tracking', 'maintenance'
+    const [trackingId, setTrackingId] = useState('');
+    
+    // FIREBASE STATE
+    const [db, setDb] = useState(null);
+    const [isFirebaseReady, setIsFirebaseReady] = useState(false);
+    const [trackingResult, setTrackingResult] = useState(null);
+    const [trackingError, setTrackingError] = useState(null);
+    const [trackingLoading, setTrackingLoading] = useState(false);
+
+    // --- EFFECTS ---
+    useEffect(() => {
+        // Init Firebase
+        const initFirebase = async () => {
+            try {
+                const app = initializeApp(FIREBASE_CONFIG);
+                const firestore = getFirestore(app);
+                const auth = getAuth(app);
+                setDb(firestore);
+                
+                // Login Anonim
+                await signInAnonymously(auth);
+                
+                setIsFirebaseReady(true);
+            } catch (e) {
+                console.error("Firebase Error (Mungkin offline/config salah):", e);
+                // Tetap lanjut loading agar UI tampil walau firebase error
+            } finally {
+                setTimeout(() => setLoading(false), 2000);
+            }
+        };
+        initFirebase();
+
+        // Scroll Listener
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', handleScroll);
+        
+        // Dark Mode System Preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setDarkMode(true);
+        }
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // --- ACTIONS ---
+    const toggleTheme = () => setDarkMode(!darkMode);
+    
+    const navigateTo = (page) => {
+        window.scrollTo(0, 0);
+        setActivePage(page);
+        setMobileMenuOpen(false);
+    };
+
+    const handleSearch = async (e) => {
+        if (e) e.preventDefault();
+        if (!trackingId) return;
+
+        navigateTo('tracking'); // Pindah ke halaman hasil
+        setTrackingLoading(true);
+        setTrackingError(null);
+        setTrackingResult(null);
+
+        // Simulasi Logika Pencarian (Jika Firebase Gagal/Kosong)
+        if (!db || !isFirebaseReady) {
+            setTimeout(() => {
+                setTrackingError("Database sedang offline. Coba lagi nanti.");
+                setTrackingLoading(false);
+            }, 1000);
+            return;
+        }
+
+        try {
+            const docRef = doc(collection(db, 'artifacts', FIREBASE_CONFIG.projectId, 'public', 'data', 'packages'), trackingId);
+            const snap = await getDoc(docRef);
+            if (snap.exists()) {
+                setTrackingResult({ id: snap.id, ...snap.data() });
+            } else {
+                setTrackingError(`Resi #${trackingId} tidak ditemukan.`);
+            }
+        } catch (err) {
+            console.error(err);
+            setTrackingError("Gagal mengambil data. Periksa koneksi internet.");
+        }
+        setTrackingLoading(false);
+    };
+
+    // --- HELPER UI ---
+    const getStatusUI = (status) => {
+        switch (status) {
+            case 'DELIVERED': return { color: 'text-green-500', bg: 'bg-green-500/10', icon: CheckCircle, label: 'DITERIMA' };
+            case 'IN_TRANSIT': return { color: 'text-yellow-500', bg: 'bg-yellow-500/10', icon: Truck, label: 'PERJALANAN' };
+            default: return { color: 'text-blue-500', bg: 'bg-blue-500/10', icon: Package, label: 'PENDING' };
+        }
+    };
+
+    // --- RENDERERS ---
+    
+    // 1. LOADING SCREEN
+    if (loading) return (
+        <div className={`fixed inset-0 z-[60] flex flex-col items-center justify-center transition-colors ${darkMode ? 'bg-slate-900' : 'bg-white'}`}>
+            <div className="w-16 h-16 border-4 border-t-green-500 border-r-transparent border-b-green-500 border-l-transparent rounded-full animate-spin mb-4"></div>
+            <p className={`font-bold tracking-widest animate-pulse ${darkMode ? 'text-white' : 'text-slate-900'}`}>LOGISTIK KITA</p>
+        </div>
+    );
+
+    // 2. MAINTENANCE PAGE
+    if (activePage === 'maintenance') return (
+        <div className={`min-h-screen flex flex-col ${darkMode ? 'bg-slate-900 text-white' : 'bg-gray-50 text-slate-900'}`}>
+            <div className="flex-1 flex flex-col items-center justify-center text-center px-4">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/website-maintenance-7565383-6190870.png" alt="Maintenance" className="w-64 mb-8 opacity-80" />
+                <h2 className="text-4xl font-bold mb-4">Sedang Dalam Pengembangan</h2>
+                <p className="text-gray-500 max-w-md mb-8">Fitur ini sedang kami siapkan untuk memberikan pengalaman terbaik bagi Anda.</p>
+                <button onClick={() => navigateTo('home')} className="px-8 py-3 bg-green-600 rounded-full text-white font-bold hover:bg-green-500 transition shadow-lg shadow-green-500/30">
+                    Kembali ke Beranda
+                </button>
+            </div>
+        </div>
+    );
+
+    // 3. TRACKING PAGE
+    if (activePage === 'tracking') return (
+        <div className={`min-h-screen pt-24 pb-12 px-4 transition-colors ${darkMode ? 'bg-slate-900 text-white' : 'bg-gray-50 text-slate-900'}`}>
+             <div className="max-w-4xl mx-auto">
+                <button onClick={() => navigateTo('home')} className={`flex items-center gap-2 font-medium mb-8 transition hover:text-green-500`}>
+                    <ArrowLeft className="w-5 h-5" /> Kembali ke Beranda
+                </button>
+
+                <div className={`p-8 rounded-3xl shadow-xl mb-10 border ${darkMode ? 'bg-slate-800 border-white/5' : 'bg-white border-gray-100'}`}>
+                    <h2 className="text-2xl font-bold mb-6 text-center">Lacak Kiriman</h2>
+                    <form onSubmit={handleSearch} className="flex gap-4">
+                        <input 
+                            value={trackingId}
+                            onChange={(e) => setTrackingId(e.target.value.toUpperCase())}
+                            placeholder="Contoh: MOJO001"
+                            className={`flex-1 px-6 py-4 rounded-xl outline-none font-mono text-lg transition focus:ring-2 focus:ring-green-500 ${darkMode ? 'bg-slate-900 text-white placeholder-gray-600' : 'bg-gray-50 text-slate-900 placeholder-gray-400'}`}
+                        />
+                        <button disabled={trackingLoading} className="px-8 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold transition disabled:opacity-50">
+                            {trackingLoading ? '...' : <Search />}
+                        </button>
+                    </form>
+                </div>
+
+                {trackingError && (
+                    <div className="p-6 bg-red-500/10 border border-red-500/20 text-red-500 rounded-2xl flex items-center gap-3 mb-8">
+                        <AlertCircle className="w-6 h-6" /> <p className="font-medium">{trackingError}</p>
+                    </div>
+                )}
+
+                {trackingResult && (
+                    <div className={`rounded-3xl shadow-2xl overflow-hidden border ${darkMode ? 'bg-slate-800 border-white/5' : 'bg-white border-gray-100'}`}>
+                        <div className={`p-8 border-b flex flex-col md:flex-row justify-between items-start md:items-center gap-4 ${darkMode ? 'bg-slate-800/50 border-white/5' : 'bg-gray-50 border-gray-100'}`}>
+                            <div>
+                                <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-1">NOMOR RESI</p>
+                                <h1 className="text-4xl font-mono font-bold">{trackingResult.id}</h1>
+                            </div>
+                            <div className={`px-5 py-2 rounded-full flex items-center gap-2 ${getStatusUI(trackingResult.status).bg} ${getStatusUI(trackingResult.status).color}`}>
+                                {React.createElement(getStatusUI(trackingResult.status).icon, { className: "w-5 h-5" })}
+                                <span className="font-bold tracking-wide">{getStatusUI(trackingResult.status).label}</span>
+                            </div>
+                        </div>
+
+                        <div className={`p-8 grid grid-cols-1 md:grid-cols-2 gap-8 border-b ${darkMode ? 'border-white/5' : 'border-gray-100'}`}>
+                            <div>
+                                <p className="text-xs font-bold text-green-500 uppercase tracking-widest mb-2">PENGIRIM</p>
+                                <p className="text-xl font-bold mb-1">{trackingResult.sender}</p>
+                                <div className="flex items-center gap-2 text-gray-500 text-sm"><MapPin className="w-4 h-4" /> {trackingResult.origin || 'N/A'}</div>
+                            </div>
+                            <div className="md:text-right">
+                                <p className="text-xs font-bold text-green-500 uppercase tracking-widest mb-2">PENERIMA</p>
+                                <p className="text-xl font-bold mb-1">{trackingResult.recipient}</p>
+                                <div className="flex items-center md:justify-end gap-2 text-gray-500 text-sm"><MapPin className="w-4 h-4" /> {trackingResult.destination || 'N/A'}</div>
+                            </div>
+                        </div>
+
+                        <div className="p-8">
+                            <h3 className="font-bold text-lg mb-8 flex items-center gap-2"><Clock className="w-5 h-5 text-green-500" /> Riwayat Perjalanan</h3>
+                            <div className={`border-l-2 ml-3 space-y-10 pl-8 py-2 ${darkMode ? 'border-white/10' : 'border-gray-200'}`}>
+                                {[...(trackingResult.trackingHistory || [])].sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp)).map((h, i) => (
+                                    <div key={i} className="relative">
+                                        <span className={`absolute -left-[39px] top-1 w-5 h-5 rounded-full border-4 ${i===0 ? 'bg-green-500 border-green-200' : 'bg-gray-400 border-gray-200'}`}></span>
+                                        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-1">
+                                            <div>
+                                                <p className={`font-bold text-lg ${i===0 ? 'text-green-500' : 'text-gray-500'}`}>{h.location}</p>
+                                                <p className="text-gray-500 text-sm mt-1">{h.notes}</p>
+                                            </div>
+                                            <div className="text-xs text-gray-400 font-mono mt-1 md:mt-0 md:text-right">
+                                                {h.timestamp ? new Date(h.timestamp).toLocaleDateString() : '-'}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+             </div>
+        </div>
+    );
+
+    // 4. HOME PAGE (DEFAULT)
+    return (
+        <div className={`min-h-screen font-sans transition-colors duration-500 overflow-x-hidden ${darkMode ? 'bg-slate-900 text-gray-100' : 'bg-gray-50 text-slate-900'}`}>
+            
+            {/* FIXED BACKGROUND */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <img src="/background-lk.jpg" onError={(e) => e.target.style.display='none'} alt="" className="w-full h-full object-cover opacity-10 blur-[2px]" />
+                <div className={`absolute inset-0 ${darkMode ? 'bg-slate-900/90' : 'bg-white/80'}`}></div>
+            </div>
+
+            {/* NAVBAR (Sticky & Glass) */}
+            <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? (darkMode ? 'bg-slate-900/70 backdrop-blur-lg border-b border-white/5 shadow-lg' : 'bg-white/70 backdrop-blur-lg border-b border-gray-200 shadow-sm') : 'bg-transparent'}`}>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between h-20">
+                        {/* Logo */}
+                        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('home')}>
+                            <div className="bg-green-600 p-2 rounded-lg"><Truck className="w-5 h-5 text-white" /></div>
+                            <div>
+                                <span className="font-extrabold text-xl tracking-tighter leading-none block">LOGISTIK <span className="text-green-500">KITA</span></span>
+                                <span className="text-[10px] text-gray-500 font-bold tracking-widest block">MOJOKERTO</span>
+                            </div>
+                        </div>
+
+                        {/* Desktop Menu */}
+                        <div className="hidden lg:flex items-center space-x-1">
+                            {MENUS.map((item, idx) => (
+                                <button key={idx} onClick={() => navigateTo(item.id)} className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${darkMode ? 'hover:bg-white/10 hover:text-white text-gray-300' : 'hover:bg-gray-100 hover:text-green-600 text-gray-600'}`}>
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Icons */}
+                        <div className="hidden lg:flex items-center gap-3">
+                            <button onClick={toggleTheme} className={`p-2 rounded-full transition ${darkMode ? 'bg-white/10 text-yellow-400' : 'bg-gray-100 text-gray-600'}`}>
+                                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                            </button>
+                            <button onClick={() => navigateTo('maintenance')} className="px-5 py-2.5 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold text-sm shadow-lg shadow-green-500/30 transition transform hover:scale-105">
+                                DAFTAR / LOGIN
+                            </button>
+                        </div>
+
+                        {/* Mobile Toggle */}
+                        <div className="lg:hidden flex items-center gap-3">
+                            <button onClick={toggleTheme} className={`${darkMode ? 'text-yellow-400' : 'text-gray-600'}`}>{darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}</button>
+                            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className={`${darkMode ? 'text-white' : 'text-slate-900'}`}>{mobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}</button>
+                        </div>
+                    </div>
+                </div>
+                {/* Mobile Menu */}
+                {mobileMenuOpen && (
+                    <div className={`lg:hidden absolute top-20 left-0 w-full p-4 flex flex-col gap-2 shadow-2xl ${darkMode ? 'bg-slate-900/95 backdrop-blur-xl border-b border-white/10' : 'bg-white/95 backdrop-blur-xl border-b border-gray-200'}`}>
+                        {MENUS.map((item, idx) => (
+                            <button key={idx} onClick={() => navigateTo(item.id)} className={`text-left p-3 rounded-xl font-medium ${darkMode ? 'text-gray-200 hover:bg-white/5' : 'text-gray-700 hover:bg-gray-50'}`}>{item.label}</button>
+                        ))}
+                         <button onClick={() => navigateTo('maintenance')} className="w-full py-3 bg-green-600 text-white font-bold rounded-xl mt-2">LOGIN / DAFTAR</button>
+                    </div>
+                )}
+            </nav>
+
+            {/* CONTENT */}
+            <div className="relative z-10">
+                
+                {/* HERO SECTION */}
+                <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col md:flex-row items-center">
+                        <div className="md:w-1/2 text-center md:text-left">
+                            <div className="inline-flex items-center px-4 py-1.5 rounded-full border border-green-500/30 bg-green-500/10 text-green-500 text-xs font-bold uppercase tracking-widest mb-6 animate-pulse"><Zap className="w-3 h-3 mr-2" /> Solusi Logistik #1</div>
+                            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6">Kirim Paket <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">Tanpa Batas</span></h1>
+                            <p className="text-lg opacity-80 mb-8 max-w-lg mx-auto md:mx-0">Ekspedisi modern. Lacak resi, cek tarif, dan sewa armada dalam satu aplikasi.</p>
+                            
+                            {/* Tracking Widget */}
+                            <form onSubmit={(e) => { e.preventDefault(); handleSearch(e); }} className={`p-2 rounded-2xl shadow-2xl flex items-center gap-2 max-w-md mx-auto md:mx-0 ${darkMode ? 'bg-white/5 border border-white/10 backdrop-blur-md' : 'bg-white border border-gray-100'}`}>
+                                <div className="relative flex-1">
+                                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                                    <input value={trackingId} onChange={(e) => setTrackingId(e.target.value.toUpperCase())} placeholder="Lacak Resi..." className="w-full h-14 pl-12 pr-4 bg-transparent border-none focus:ring-0 font-mono text-lg outline-none" />
+                                </div>
+                                <button type="submit" className="h-12 px-6 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-green-500/20">Lacak <ArrowRight className="w-4 h-4" /></button>
+                            </form>
+                        </div>
+                        <div className="md:w-1/2 mt-16 md:mt-0 relative hidden md:block">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-green-500/20 rounded-full blur-3xl animate-pulse"></div>
+                            <img src="https://images.unsplash.com/photo-1616432043562-3671ea2e5242?auto=format&fit=crop&w=1000&q=80" alt="Logistics" className="relative z-10 rounded-[40px] shadow-2xl border-4 border-white/20 transform rotate-2 hover:rotate-0 transition duration-700 object-cover w-full h-[500px]" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* TRUST METRICS */}
+                <div className="relative z-10 -mt-10 px-4">
+                    <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
+                        {METRICS.map((m, i) => (
+                            <div key={i} className={`p-6 rounded-3xl text-center transform transition duration-300 hover:-translate-y-2 ${darkMode ? 'bg-slate-800 border border-white/5 shadow-lg' : 'bg-white border border-gray-100 shadow-xl'}`}>
+                                <div className="w-12 h-12 mx-auto bg-green-500/10 rounded-2xl flex items-center justify-center mb-4 text-green-500"><m.icon className="w-6 h-6" /></div>
+                                <h3 className="text-3xl font-bold mb-1">{m.value}</h3>
+                                <p className="text-xs font-bold opacity-60 uppercase tracking-widest">{m.label}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* PROMO CAROUSEL */}
+                <div className="py-20 px-4">
+                    <div className="max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden relative h-64 md:h-80 shadow-2xl group">
+                        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80" alt="Promo" className="w-full h-full object-cover transform group-hover:scale-105 transition duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent flex flex-col justify-center px-8 md:px-16 text-white">
+                            <span className="bg-yellow-500 text-black text-xs font-bold px-3 py-1 rounded-full w-fit mb-4 animate-pulse">PROMO SPESIAL</span>
+                            <h2 className="text-3xl md:text-5xl font-bold mb-4">Diskon Ongkir 20%</h2>
+                            <p className="text-gray-300 max-w-md mb-8">Khusus pengiriman pertama ke seluruh Jawa Timur. Kode: <strong>MOJO20</strong></p>
+                            <button className="bg-white text-green-900 px-6 py-3 rounded-xl font-bold w-fit hover:bg-gray-100 transition">Klaim Sekarang</button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* SERVICES SECTION */}
+                <div className="py-10 px-4">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Layanan Kami</h2>
+                            <p className="opacity-60 max-w-2xl mx-auto">Solusi logistik terintegrasi untuk segala kebutuhan bisnis Anda.</p>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-20">
+                            {SERVICES.map((s, i) => (
+                                <div key={i} onClick={() => navigateTo('maintenance')} className={`p-6 rounded-3xl border transition cursor-pointer group ${darkMode ? 'bg-slate-800/50 border-white/5 hover:border-green-500' : 'bg-white border-gray-100 hover:border-green-500 hover:shadow-lg'}`}>
+                                    <s.icon className="w-10 h-10 text-green-500 mb-4 group-hover:scale-110 transition" />
+                                    <h3 className="text-lg font-bold mb-2">{s.title}</h3>
+                                    <p className="text-sm opacity-60">{s.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className={`pt-10 border-t ${darkMode ? 'border-white/5' : 'border-gray-200'}`}>
+                            <p className="text-center text-xs font-bold opacity-50 uppercase tracking-widest mb-10">Dipercaya Oleh</p>
+                            <div className="flex overflow-x-auto gap-12 pb-4 opacity-50 grayscale hover:grayscale-0 transition duration-500 items-center justify-start md:justify-center no-scrollbar">
+                                {CLIENTS.map((client, i) => <span key={i} className="text-2xl font-black flex-shrink-0">{client}</span>)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* FLEET SECTION */}
+                <div className="py-20 overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-4 mb-10">
+                        <h2 className="text-3xl font-bold mb-2">Armada Kami</h2>
+                        <p className="opacity-60">Unit terawat siap jalan ke seluruh pelosok.</p>
+                    </div>
+                    <div className="flex gap-6 overflow-x-auto pb-10 px-4 md:px-0 snap-x no-scrollbar">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="flex-shrink-0 snap-center w-80 md:w-96 aspect-[4/3] rounded-3xl overflow-hidden relative group shadow-lg">
+                                <img src={`https://source.unsplash.com/random/800x600?truck&sig=${i}`} alt={`Armada ${i}`} className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-6">
+                                    <p className="text-white font-bold">Unit {i} - Ready</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* TESTIMONIALS */}
+                <div className={`py-24 ${darkMode ? 'bg-slate-800/50' : 'bg-green-50/50'}`}>
+                    <div className="max-w-7xl mx-auto px-4 text-center mb-16">
+                        <h2 className="text-3xl font-bold mb-4">Kata Mereka</h2>
+                    </div>
+                    <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
+                        {REVIEWS.map((r, i) => (
+                            <div key={i} className={`p-8 rounded-3xl relative ${darkMode ? 'bg-slate-800 border border-white/5' : 'bg-white shadow-xl shadow-gray-100'}`}>
+                                <div className="flex gap-1 mb-6">{[1,2,3,4,5].map(s => <Star key={s} className="w-5 h-5 text-yellow-400 fill-yellow-400" />)}</div>
+                                <p className="text-lg italic mb-8 leading-relaxed opacity-80">"{r.text}"</p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-blue-500"></div>
+                                    <div className="text-left"><h4 className="font-bold">{r.name}</h4><p className="text-xs font-bold text-green-500 uppercase">{r.role}</p></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* FOOTER */}
+                <footer className={`pt-20 pb-10 border-t ${darkMode ? 'bg-slate-900 border-white/5 text-gray-400' : 'bg-white border-gray-100 text-gray-600'}`}>
+                    <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                        <div className="col-span-1 md:col-span-1">
+                            <h3 className={`text-2xl font-black mb-6 tracking-tighter ${darkMode ? 'text-white' : 'text-slate-900'}`}>LOGISTIK <span className="text-green-500">KITA</span></h3>
+                            <p className="mb-6 text-sm">Platform logistik digital yang menghubungkan pengirim, pemilik armada, dan driver dalam satu ekosistem.</p>
+                        </div>
+                        <div>
+                            <h4 className={`font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan</h4>
+                            <ul className="space-y-3 text-sm">{['Cek Tarif', 'Lacak Resi', 'Sewa Armada', 'Pindahan'].map((item, i) => <li key={i}><button className="hover:text-green-500">{item}</button></li>)}</ul>
+                        </div>
+                        <div>
+                            <h4 className={`font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Perusahaan</h4>
+                            <ul className="space-y-3 text-sm">{['Tentang Kami', 'Karir', 'Blog', 'Hubungi Kami'].map((item, i) => <li key={i}><button className="hover:text-green-500">{item}</button></li>)}</ul>
+                        </div>
+                        <div>
+                            <h4 className={`font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Kontak</h4>
+                            <p className="text-sm mb-4">Jl. Mojopahit No. 45, Mojokerto</p>
+                            <p className="text-sm">+62 812-3456-7890</p>
+                        </div>
+                    </div>
+                    <div className={`pt-8 border-t text-center text-xs ${darkMode ? 'border-white/5' : 'border-gray-100'}`}>
+                        <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    );
+}
