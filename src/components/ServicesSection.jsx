@@ -1,23 +1,33 @@
 import React from 'react';
-import { Truck, Zap, Globe, Box, Shield, User } from 'lucide-react';
+import { Truck, Ship, Clock, Shield, User, Map } from 'lucide-react';
 
-const ServicesSection = () => {
+const ServicesSection = ({ darkMode, navigateTo }) => {
     const services = [
-        { title: "Kargo Darat", icon: Truck }, { title: "Express", icon: Zap },
-        { title: "Kargo Laut", icon: Globe }, { title: "Gudang", icon: Box },
-        { title: "Asuransi", icon: Shield }, { title: "Door-to-Door", icon: User },
+        { title: "Kargo Darat", icon: Truck, desc: "Truk Jawa-Bali" }, { title: "Kargo Laut", icon: Ship, desc: "Antar Pulau" },
+        { title: "Express", icon: Clock, desc: "1 Day Service" }, { title: "Asuransi", icon: Shield, desc: "Proteksi 100%" },
+        { title: "Sewa Armada", icon: User, desc: "Lepas Kunci/Driver" }, { title: "Pindahan", icon: Map, desc: "Rumah & Kantor" }
     ];
     return (
-        <div id="services" className="py-20 bg-zinc-900 border-t border-white/5">
-            <div className="max-w-7xl mx-auto px-4 text-center">
-                <h2 className="text-3xl font-bold text-white mb-10">Layanan Kami</h2>
-                <div className="grid md:grid-cols-3 gap-6">
+        <div className="py-10 px-4">
+            <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16">
+                    <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan Kami</h2>
+                    <p className="opacity-60 max-w-2xl mx-auto">Solusi logistik terintegrasi untuk segala kebutuhan.</p>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-20">
                     {services.map((s, i) => (
-                        <div key={i} className="p-6 bg-zinc-950 border border-zinc-800 rounded-2xl hover:border-green-500/50 transition flex items-center gap-4">
-                            <s.icon className="w-8 h-8 text-green-600" />
-                            <h3 className="text-xl font-bold text-white">{s.title}</h3>
+                        <div key={i} onClick={() => navigateTo('maintenance')} className={`p-6 rounded-3xl border transition cursor-pointer group ${darkMode ? 'bg-slate-800/50 border-white/5 hover:border-green-500' : 'bg-white border-gray-100 hover:border-green-500 hover:shadow-lg'}`}>
+                            <s.icon className="w-10 h-10 text-green-500 mb-4 group-hover:scale-110 transition" />
+                            <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{s.title}</h3>
+                            <p className="text-sm opacity-60">{s.desc}</p>
                         </div>
                     ))}
+                </div>
+                <div className={`pt-10 border-t ${darkMode ? 'border-white/5' : 'border-gray-200'}`}>
+                    <p className="text-center text-xs font-bold opacity-50 uppercase tracking-widest mb-10">Dipercaya Oleh</p>
+                    <div className="flex overflow-x-auto gap-12 pb-4 opacity-50 grayscale hover:grayscale-0 transition duration-500 items-center justify-start md:justify-center no-scrollbar">
+                        {["GOJEK", "TOKOPEDIA", "SHOPEE", "LAZADA", "BUKALAPAK", "BLIBLI"].map((client, i) => <span key={i} className={`text-2xl font-black flex-shrink-0 ${darkMode ? 'text-white' : 'text-slate-800'}`}>{client}</span>)}
+                    </div>
                 </div>
             </div>
         </div>
