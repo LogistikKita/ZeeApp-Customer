@@ -139,6 +139,7 @@ export default function App() {
             return;
         }
 
+
         try {
             const docRef = doc(collection(db, 'artifacts', FIREBASE_CONFIG.projectId, 'public', 'data', 'packages'), trackingId);
             const snap = await getDoc(docRef);
