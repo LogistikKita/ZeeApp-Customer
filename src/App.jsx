@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// --- IMPORTS KOMPONEN ---
+// COMPONENTS
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import TrustMetrics from './components/TrustMetrics';
@@ -10,42 +10,38 @@ import TestimonialsSection from './components/TestimonialsSection';
 import ContactUs from './components/ContactUs';
 import Footer from './components/Footer';
 import TrackingSection from './components/TrackingSection';
-import FirebaseStatus from './components/FirebaseStatus';
 import Carousel from './components/Carousel';
 import Preloader from './components/Preloader';
+import FirebaseStatus from './components/FirebaseStatus';
 
-// --- IMPORTS FIREBASE ---
+// FIREBASE
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, getDoc, collection } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
 
-// --- KONFIGURASI FIREBASE ---
-// Menggunakan Env Var jika ada, Fallback ke Manual jika Env bermasalah di CodeSpaces
 const FIREBASE_CONFIG = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyDHB-ZIg4UoFL_tuFDQuCZQdhM8pd7Xwbg",
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "gen-lang-client-0318354714.firebaseapp.com",
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "gen-lang-client-0318354714",
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "gen-lang-client-0318354714.firebasestorage.app",
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "967542358897",
-    appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:967542358897:web:c126afb27aa2391d3eacd0",
+    apiKey: "AIzaSyDHB-ZIg4UoFL_tuFDQuCZQdhM8pd7Xwbg",
+    authDomain: "gen-lang-client-0318354714.firebaseapp.com",
+    projectId: "gen-lang-client-0318354714",
+    storageBucket: "gen-lang-client-0318354714.firebasestorage.app",
+    messagingSenderId: "967542358897",
+    appId: "1:967542358897:web:c126afb27aa2391d3eacd0",
 };
 
 const App = () => {
-    // State UI & Data
+    // STATE
     const [loading, setLoading] = useState(true);
-    const [trackingLoading, setTrackingLoading] = useState(false);
+    const [darkMode, setDarkMode] = useState(false);
+    const [activePage, setActivePage] = useState('home'); // home, tracking, maintenance
     const [trackingId, setTrackingId] = useState('');
-    const [result, setResult] = useState(null);
-    const [searchError, setSearchError] = useState(null);
-    const [isAdminOpen, setIsAdminOpen] = useState(false);
     
-    // Firebase State
+    // FIREBASE STATE
     const [db, setDb] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
     const [isFirebaseReady, setIsFirebaseReady] = useState(false);
     const [firebaseError, setFirebaseError] = useState(null);
 
-    // Init Firebase
+    // INIT
     useEffect(() => {
         const init = async () => {
             try {
@@ -62,90 +58,105 @@ const App = () => {
                         setCurrentUser(cred.user.uid);
                     }
                     setIsFirebaseReady(true);
-                    setTimeout(() => setLoading(false), 1500); // Simulasi preloader
+                    setTimeout(() => setLoading(false), 2000);
                 });
                 return unsubscribe;
             } catch (e) {
-                console.error("Firebase Error:", e);
+                console.error(e);
                 setFirebaseError(e.message);
                 setLoading(false);
             }
         };
         init();
+
+        // Check system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setDarkMode(true);
+        }
     }, []);
 
-    // Logic Pencarian (Dipanggil oleh TrackingSection)
-    const handleSearch = async (overrideId) => {
-        const target = overrideId || trackingId;
-        if (!target || !db) return;
+    // ACTIONS
+    const toggleTheme = () => setDarkMode(!darkMode);
 
-        setTrackingLoading(true);
-        setSearchError(null);
-        setResult(null);
-
-        try {
-            const docRef = doc(collection(db, 'artifacts', FIREBASE_CONFIG.projectId, 'public', 'data', 'packages'), target);
-            const snap = await getDoc(docRef);
-            
-            if (snap.exists()) {
-                setResult({ id: snap.id, ...snap.data() });
-            } else {
-                setSearchError(`Resi #${target} tidak ditemukan.`);
-            }
-        } catch (e) {
-            setSearchError("Gagal mengambil data. Cek koneksi.");
-        }
-        setTrackingLoading(false);
+    const navigateTo = (page) => {
+        window.scrollTo(0, 0);
+        setActivePage(page);
     };
 
-    // Callback saat Admin Create/Update sukses
-    const handleAdminSuccess = (id) => {
+    const handleSearch = (id) => {
+        if (!id) return;
         setTrackingId(id);
-        handleSearch(id);
-        // Scroll otomatis ke bagian tracking
-        document.getElementById('tracking')?.scrollIntoView({ behavior: 'smooth' });
+        navigateTo('tracking');
+    };
+
+    // RENDER CONTENT SWITCHER
+    const renderContent = () => {
+        if (activePage === 'maintenance') {
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-20 animate-fade-in">
+                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/website-maintenance-7565383-6190870.png" alt="Maintenance" className="w-64 mb-6 opacity-80" />
+                    <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Segera Hadir</h2>
+                    <p className="text-gray-500 max-w-md mb-8">Fitur ini sedang kami kembangkan untuk memberikan layanan terbaik (Lapak Kita, Info Muatan, dll).</p>
+                    <button onClick={() => navigateTo('home')} className="px-8 py-3 bg-green-600 rounded-full text-white font-bold hover:bg-green-500 transition shadow-lg shadow-green-500/30">
+                        Kembali ke Beranda
+                    </button>
+                </div>
+            );
+        }
+
+        if (activePage === 'tracking') {
+            return (
+                <div className="pt-24 min-h-screen animate-slide-right">
+                    <TrackingSection 
+                        db={db} 
+                        appId={FIREBASE_CONFIG.projectId} 
+                        initialId={trackingId} 
+                        onBack={() => navigateTo('home')}
+                        darkMode={darkMode}
+                    />
+                </div>
+            );
+        }
+
+        // DEFAULT: HOME PAGE
+        return (
+            <div className="animate-fade-in">
+                <HeroSection onSearch={handleSearch} darkMode={darkMode} />
+                <TrustMetrics darkMode={darkMode} />
+                <Carousel darkMode={darkMode} />
+                <ServicesSection darkMode={darkMode} navigateTo={navigateTo} />
+                <FleetSection darkMode={darkMode} />
+                <TestimonialsSection darkMode={darkMode} />
+                <ContactUs db={db} appId={FIREBASE_CONFIG.projectId} darkMode={darkMode} />
+            </div>
+        );
     };
 
     return (
-        <div className="min-h-screen bg-zinc-950 text-gray-200 font-sans selection:bg-green-500 selection:text-white overflow-x-hidden">
+        <div className={`min-h-screen font-sans transition-colors duration-500 ${darkMode ? 'dark bg-slate-900' : 'bg-gray-50'}`}>
             <Preloader loading={loading} />
-            
-            <Navbar 
-                toggleAdmin={() => setIsAdminOpen(!isAdminOpen)} 
-                isAdminOpen={isAdminOpen}
-            />
 
-            <main>
-                <HeroSection />
-                
-                {/* TrackingSection menyatukan Form Lacak + Admin Panel + Hasil */}
-                <TrackingSection 
-                    db={db}
-                    appId={FIREBASE_CONFIG.projectId}
-                    userId={currentUser}
-                    isReady={isFirebaseReady}
-                    loading={trackingLoading}
-                    trackingId={trackingId}
-                    setTrackingId={setTrackingId}
-                    handleSearch={handleSearch}
-                    result={result}
-                    searchError={searchError}
-                    isAdminOpen={isAdminOpen}
-                    onAdminSuccess={handleAdminSuccess}
+            {/* FIXED BACKGROUND */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <img src="/background-lk.jpg" alt="" className="w-full h-full object-cover opacity-10 blur-[2px]" onError={(e) => e.target.style.display='none'} />
+                <div className={`absolute inset-0 ${darkMode ? 'bg-slate-900/90' : 'bg-white/80'}`}></div>
+            </div>
+
+            <div className="relative z-10">
+                <Navbar 
+                    navigateTo={navigateTo} 
+                    activePage={activePage} 
+                    darkMode={darkMode} 
+                    toggleTheme={toggleTheme} 
                 />
-
-                <div className="mt-20">
-                    <TrustMetrics />
-                </div>
                 
-                <Carousel />
-                <ServicesSection />
-                <FleetSection />
-                <TestimonialsSection />
-                <ContactUs />
-            </main>
+                <main>
+                    {renderContent()}
+                </main>
 
-            <Footer currentUser={currentUser} />
+                <Footer navigateTo={navigateTo} darkMode={darkMode} />
+            </div>
+
             <FirebaseStatus isReady={isFirebaseReady} error={firebaseError} />
         </div>
     );
