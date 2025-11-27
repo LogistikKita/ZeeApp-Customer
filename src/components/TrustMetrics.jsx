@@ -13,7 +13,8 @@ const TrustMetrics = ({ darkMode }) => {
             <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
                 {metrics.map((m, i) => (
                     <div key={i} className={`p-6 rounded-3xl text-center transform transition duration-300 hover:-translate-y-2 ${darkMode ? 'bg-slate-800 border border-white/5 shadow-lg shadow-black/30' : 'bg-white border border-gray-100 shadow-xl shadow-gray-200'}`}>
-                        <div className="w-12 h-12 mx-auto bg-green-500/10 rounded-2xl flex items-center justify-center mb-4 text-green-500"><m.icon className="w-6 h-6" /></div>
+                        {/* ICON MERAH */}
+                        <div className="w-12 h-12 mx-auto bg-primary/10 rounded-2xl flex items-center justify-center mb-4 text-primary"><m.icon className="w-6 h-6" /></div>
                         <h3 className={`text-3xl font-bold mb-1 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{m.value}</h3>
                         <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">{m.label}</p>
                     </div>
