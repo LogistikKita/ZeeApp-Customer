@@ -16,8 +16,9 @@ const ServicesSection = ({ darkMode, navigateTo }) => {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-20">
                     {services.map((s, i) => (
-                        <div key={i} onClick={() => navigateTo('maintenance')} className={`p-6 rounded-3xl border transition cursor-pointer group ${darkMode ? 'bg-slate-800/50 border-white/5 hover:border-green-500' : 'bg-white border-gray-100 hover:border-green-500 hover:shadow-lg'}`}>
-                            <s.icon className="w-10 h-10 text-green-500 mb-4 group-hover:scale-110 transition" />
+                        <div key={i} onClick={() => navigateTo('maintenance')} className={`p-6 rounded-3xl border transition cursor-pointer group ${darkMode ? 'bg-slate-800/50 border-white/5 hover:border-primary' : 'bg-white border-gray-100 hover:border-primary hover:shadow-lg'}`}>
+                            {/* ICON MERAH */}
+                            <s.icon className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition" />
                             <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{s.title}</h3>
                             <p className="text-sm opacity-60">{s.desc}</p>
                         </div>
