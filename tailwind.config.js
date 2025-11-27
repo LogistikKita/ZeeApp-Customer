@@ -4,12 +4,12 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class', // Mengaktifkan dark mode via class
+  darkMode: 'class', 
   theme: {
     extend: {
       colors: {
-        primary: '#10b981', // Emerald-500
-        dark: '#0f172a',    // Slate-900
+        primary: '#fd001f', // WARNA BARU: Merah Neon
+        dark: '#0f172a',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
