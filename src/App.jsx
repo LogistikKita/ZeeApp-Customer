@@ -13,6 +13,7 @@ import TrackingSection from './components/TrackingSection';
 import Carousel from './components/Carousel';
 import Preloader from './components/Preloader';
 import FirebaseStatus from './components/FirebaseStatus';
+import AdminSeeder from './components/AdminSeeder'; // KOMPONEN BARU UNTUK UPLOAD DATA
 
 // FIREBASE
 import { initializeApp } from 'firebase/app';
@@ -58,11 +59,13 @@ const App = () => {
                         setCurrentUser(cred.user.uid);
                     }
                     setIsFirebaseReady(true);
-                    setTimeout(() => setLoading(false), 2000);
+                    
+                    // Delay loading agar animasi logo terlihat
+                    setTimeout(() => setLoading(false), 2500);
                 });
                 return unsubscribe;
             } catch (e) {
-                console.error(e);
+                console.error("Firebase Init Error:", e);
                 setFirebaseError(e.message);
                 setLoading(false);
             }
@@ -121,7 +124,9 @@ const App = () => {
         // DEFAULT: HOME PAGE
         return (
             <div className="animate-fade-in">
+                {/* Hero Section Baru dengan Hybrid Logic */}
                 <HeroSection onSearch={handleSearch} darkMode={darkMode} />
+                
                 <TrustMetrics darkMode={darkMode} />
                 <Carousel darkMode={darkMode} />
                 <ServicesSection darkMode={darkMode} navigateTo={navigateTo} />
@@ -158,10 +163,11 @@ const App = () => {
             </div>
 
             <FirebaseStatus isReady={isFirebaseReady} error={firebaseError} />
+            
+            {/* ADMIN SEEDER BUTTON: Muncul jika Firebase connect */}
+            {isFirebaseReady && <AdminSeeder db={db} />}
         </div>
     );
 };
 
 export default App;
-
-
