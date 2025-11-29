@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Users, Truck, UserCheck, CheckSquare, getFirestore, getDocs, collection } from 'lucide-react';
+// IMPORT ICON (Dipisah)
+import { Users, Truck, UserCheck, CheckSquare } from 'lucide-react';
+// IMPORT FIREBASE (Dipisah)
+import { getFirestore, getDocs, collection } from 'firebase/firestore';
 
 const iconMap = { "Users": Users, "Truck": Truck, "UserCheck": UserCheck, "CheckSquare": CheckSquare };
 
@@ -9,8 +12,7 @@ const TrustMetrics = ({ darkMode }) => {
     useEffect(() => {
         const fetchMetrics = async () => {
             const db = getFirestore();
-            // Nanti kita akan pakai data ini, tapi untuk sementara pakai array statis jika DB kosong
-            // Kita gunakan data statis yang sudah ada, karena fetch data ini belum kita implementasikan
+            // Data statis sebagai fallback
             const staticMetrics = [
                 { icon: 'Users', label: "Pengunjung Website", value: "15.4K" },
                 { icon: 'Truck', label: "Jumlah Armada", value: "120+" },
@@ -47,3 +49,4 @@ const TrustMetrics = ({ darkMode }) => {
     );
 };
 export default TrustMetrics;
+
