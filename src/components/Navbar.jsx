@@ -16,13 +16,15 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
         { label: 'Layanan', action: () => navigateTo('maintenance') },
         { label: 'Galeri', action: () => navigateTo('maintenance') },
         { label: 'Blog', action: () => navigateTo('maintenance') },
-        { label: 'Mitra', action: () => navigateTo('maintenance') },
+        { label: 'Mitra', action: () => navigateTo('mitra') }, // LINK BARU
         { label: 'Lapak Kita', action: () => navigateTo('maintenance') },
-        { label: 'Kontak', action: () => navigateTo('maintenance') },
+        { label: 'Kontak', action: () => navigateTo('contact') },
     ];
 
+    const isGlassmorphism = scrolled || isOpen;
+
     return (
-        <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'glass shadow-lg' : 'bg-transparent'}`}>
+        <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ${isGlassmorphism ? 'glass shadow-lg' : 'bg-transparent'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     
@@ -30,7 +32,6 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigateTo('home')}>
                         <img src="/Logistik-Kita.png" alt="Logo" className="h-10 w-auto object-contain" onError={(e) => e.target.style.display='none'} />
                         <div>
-                            {/* REVISI LOGO: Logistik (Merah) Kita (Putih/Hitam) */}
                             <span className={`font-extrabold text-xl tracking-tighter leading-none block ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                                 <span className="text-primary">LOGISTIK</span> KITA
                             </span>
@@ -53,7 +54,6 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
 
                     {/* ACTIONS */}
                     <div className="hidden lg:flex items-center gap-3">
-                        {/* ICON PENCARIAN (Sudah ada di sini) */}
                         <div className={`p-2 rounded-full cursor-pointer transition ${darkMode ? 'hover:bg-white/10 text-gray-300 hover:text-primary' : 'hover:bg-gray-100 text-gray-600 hover:text-primary'}`}>
                             <Search className="w-5 h-5" />
                         </div>
@@ -62,7 +62,6 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
                             {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                         </button>
                         
-                        {/* TOMBOL MERAH */}
                         <button onClick={() => navigateTo('maintenance')} className="px-5 py-2.5 bg-primary hover:bg-red-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-primary/30 transition transform hover:scale-105">
                             DAFTAR / LOGIN
                         </button>
@@ -89,7 +88,4 @@ const Navbar = ({ navigateTo, darkMode, toggleTheme }) => {
         </nav>
     );
 };
-
 export default Navbar;
-
-
