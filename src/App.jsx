@@ -13,7 +13,7 @@ import TrackingSection from './components/TrackingSection';
 import Carousel from './components/Carousel';
 import Preloader from './components/Preloader';
 import FirebaseStatus from './components/FirebaseStatus';
-import AdminSeeder from './components/AdminSeeder'; // KOMPONEN BARU UNTUK UPLOAD DATA
+import ScrollNav from './components/ScrollNav'; // KOMPONEN BARU
 
 // FIREBASE
 import { initializeApp } from 'firebase/app';
@@ -124,13 +124,11 @@ const App = () => {
         // DEFAULT: HOME PAGE
         return (
             <div className="animate-fade-in">
-                {/* Hero Section Baru dengan Hybrid Logic */}
                 <HeroSection onSearch={handleSearch} darkMode={darkMode} />
-                
                 <TrustMetrics darkMode={darkMode} />
                 <Carousel darkMode={darkMode} />
                 <ServicesSection darkMode={darkMode} navigateTo={navigateTo} />
-                <FleetSection darkMode={darkMode} />
+                <FleetSection darkMode={darkMode} navigateTo={navigateTo} />
                 <TestimonialsSection darkMode={darkMode} />
                 <ContactUs db={db} appId={FIREBASE_CONFIG.projectId} darkMode={darkMode} />
             </div>
@@ -162,10 +160,12 @@ const App = () => {
                 <Footer navigateTo={navigateTo} darkMode={darkMode} />
             </div>
 
+            {/* Indikator Status Firebase */}
             <FirebaseStatus isReady={isFirebaseReady} error={firebaseError} />
             
-            {/* ADMIN SEEDER BUTTON: Muncul jika Firebase connect */}
-            {isFirebaseReady && <AdminSeeder db={db} />}
+            {/* Navigasi Cepat (Scroll Top/Bottom) */}
+            <ScrollNav darkMode={darkMode} />
+
         </div>
     );
 };
