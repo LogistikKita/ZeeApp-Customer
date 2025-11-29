@@ -41,3 +41,33 @@ html {
 }
 
 
+/* ANIMASI PRELOADER CANGGIH */
+@keyframes spin-slow {
+    to { transform: rotate(360deg); }
+}
+@keyframes spin-reverse-fast {
+    to { transform: rotate(-360deg); }
+}
+@keyframes pulse-glow-red {
+    0%, 100% { 
+        opacity: 1; 
+        filter: drop-shadow(0 0 15px rgba(253, 0, 31, 0.6)); 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.8; 
+        filter: drop-shadow(0 0 30px rgba(253, 0, 31, 1)); 
+        transform: scale(1.08);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 8s linear infinite;
+}
+.animate-spin-reverse-fast {
+    animation: spin-reverse-fast 3s linear infinite;
+}
+.animate-pulse-glow-red {
+    animation: pulse-glow-red 2s ease-in-out infinite;
+}
+
