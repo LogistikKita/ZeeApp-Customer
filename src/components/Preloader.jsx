@@ -6,7 +6,6 @@ const Preloader = ({ loading }) => {
 
     React.useEffect(() => {
         if (!loading) {
-            // Beri waktu 600ms untuk animasi fade-out sebelum komponen di-unmount
             const timer = setTimeout(() => setIsVisible(false), 600); 
             return () => clearTimeout(timer);
         }
@@ -23,13 +22,11 @@ const Preloader = ({ loading }) => {
                 {/* Cincin Dalam Putih (Cepat Berlawanan Arah) */}
                 <div className="absolute w-36 h-36 border-2 border-transparent border-l-white/40 border-r-white/10 rounded-full animate-spin-reverse-fast"></div>
                 
-                {/* GAMBAR TENGAH (REVISI: background-lk.jpg BULAT PENUH) */}
-                {/* Hapus 'p-4' agar gambar full mentok ke pinggir */}
+                {/* GAMBAR TENGAH (background-lk.jpg BULAT PENUH) */}
                 <div className="relative z-10 w-32 h-32 bg-slate-900 rounded-full border-2 border-primary/50 shadow-2xl animate-pulse-glow-red flex items-center justify-center overflow-hidden">
                     <img 
-                        src="/background-lk.jpg" // GANTI JADI INI
+                        src="/background-lk.jpg" 
                         alt="Loading..." 
-                        // GANTI JADI object-cover DAN TAMBAH rounded-full
                         className="w-full h-full object-cover rounded-full" 
                         onError={(e) => e.target.style.display = 'none'} 
                     />
