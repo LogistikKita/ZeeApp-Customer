@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-import { getFirestore } from 'firebase/firestore';
-import { Scale, Box, Info } from 'lucide-react';
+import { collection, getDocs, query, orderBy, getFirestore } from 'firebase/firestore';
+import { Scale, Box, Info, ArrowRight } from 'lucide-react';
 
-const FleetSection = ({ darkMode }) => {
+const FleetSection = ({ darkMode, navigateTo }) => { // Tambah prop navigateTo
     const [fleets, setFleets] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -25,23 +24,30 @@ const FleetSection = ({ darkMode }) => {
         fetchFleets();
     }, []);
 
-    if (loading) return null; // Atau tampilkan skeleton loading kecil
+    if (loading) return null; 
 
     return (
         <div className="py-20 overflow-hidden relative">
-            <div className="max-w-7xl mx-auto px-4 mb-10 flex justify-between items-end">
+            <div className="max-w-7xl mx-auto px-4 mb-8 flex flex-col md:flex-row justify-between items-end gap-4">
                 <div>
-                    <h2 className={`text-3xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Pilihan Armada</h2>
-                    <p className="opacity-60">Unit terawat dengan spesifikasi lengkap.</p>
+                    <h2 className={`text-3xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Pilihan Armada Populer</h2>
+                    <p className="opacity-60">Unit paling sering disewa bulan ini.</p>
                 </div>
+                {/* Tombol Lihat Semua (Desktop) */}
+                <button 
+                    onClick={() => navigateTo && navigateTo('maintenance')} // Ganti ke halaman armada jika sudah ada
+                    className="hidden md:flex items-center gap-2 text-primary font-bold hover:gap-3 transition"
+                >
+                    Lihat Semua Armada <ArrowRight className="w-4 h-4"/>
+                </button>
             </div>
 
             {/* SCROLL CONTAINER */}
             <div className="flex gap-6 overflow-x-auto pb-10 px-4 md:px-0 snap-x no-scrollbar md:pl-[calc((100vw-1280px)/2)] pl-4">
-                {fleets.map((fleet) => (
+                {/* HANYA TAMPILKAN 4 TERATAS */}
+                {fleets.slice(0, 4).map((fleet) => (
                     <div key={fleet.id} className={`flex-shrink-0 snap-center w-80 rounded-3xl overflow-hidden relative group transition duration-300 border ${darkMode ? 'bg-slate-800 border-white/5' : 'bg-white border-gray-100 shadow-xl'}`}>
                         
-                        {/* IMAGE HEADER */}
                         <div className="h-48 overflow-hidden relative">
                             <img src={fleet.imageUrl} alt={fleet.name} className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700" />
                             <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full">
@@ -49,11 +55,9 @@ const FleetSection = ({ darkMode }) => {
                             </div>
                         </div>
 
-                        {/* CONTENT BODY */}
                         <div className="p-6">
                             <h3 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>{fleet.name}</h3>
                             
-                            {/* SPECS GRID */}
                             <div className="grid grid-cols-2 gap-3 mb-6">
                                 <div className={`p-3 rounded-xl ${darkMode ? 'bg-slate-700/50' : 'bg-gray-50'}`}>
                                     <div className="flex items-center gap-2 mb-1 opacity-60">
@@ -69,8 +73,10 @@ const FleetSection = ({ darkMode }) => {
                                 </div>
                             </div>
 
-                            {/* DESCRIPTION */}
-                            <p className="text-xs opacity-60 line-clamp-2 mb-4 h-8">{fleet.description}</p>
+                            {/* REVISI WARNA TEXT DESKRIPSI: Putih Terang di Dark Mode */}
+                            <p className={`text-xs mb-4 h-8 line-clamp-2 ${darkMode ? 'text-white opacity-90' : 'text-gray-600 opacity-70'}`}>
+                                {fleet.description}
+                            </p>
 
                             <button className="w-full py-3 rounded-xl border border-primary text-primary font-bold text-sm hover:bg-primary hover:text-white transition flex items-center justify-center gap-2 group-hover:shadow-lg group-hover:shadow-primary/20">
                                 Detail & Dimensi <Info className="w-4 h-4" />
@@ -78,6 +84,16 @@ const FleetSection = ({ darkMode }) => {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Tombol Lihat Semua (Mobile) */}
+            <div className="md:hidden px-4">
+                <button 
+                    onClick={() => navigateTo && navigateTo('maintenance')} 
+                    className="w-full py-4 bg-gray-100 dark:bg-slate-800 rounded-xl font-bold text-sm flex items-center justify-center gap-2"
+                >
+                    Lihat Selengkapnya <ArrowRight className="w-4 h-4"/>
+                </button>
             </div>
         </div>
     );
