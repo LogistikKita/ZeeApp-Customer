@@ -13,7 +13,7 @@ const FleetUploadForm = ({ db, darkMode }) => {
         const file = e.target.files[0];
         if (file) {
             alert(`File ${file.name} terpilih. Implementasi upload ke Firebase Storage dan mendapatkan URL gambar akan dilakukan di tahap Backend.`);
-            // Untuk sementara, kita pakai URL dummy atau URL placeholder
+            // Sementara, kita pakai URL placeholder
             setForm({ ...form, imageUrl: 'https://placehold.co/600x400' });
         }
     };
@@ -25,8 +25,9 @@ const FleetUploadForm = ({ db, darkMode }) => {
 
         setStatus('uploading');
         try {
-            const dataToSave = { ...form, order: Number(form.order) };
-            await addDoc(collection(firestore, 'public_fleets'), dataToSave);
+            const dataToSave = { ...form, order: Number(form.order), submittedAt: new Date() };
+            // Menyimpan data ke koleksi public_fleets (yang juga digunakan di home page)
+            await addDoc(collection(firestore, 'public_fleets'), dataToSave); 
             setStatus('success');
             setForm({ name: '', type: 'Small', capacity: '', dimension: '', volume: '', description: '', imageUrl: '', order: 1 });
             setTimeout(() => setStatus(''), 5000); 
@@ -38,10 +39,7 @@ const FleetUploadForm = ({ db, darkMode }) => {
 
     return (
         <div className={`p-8 rounded-2xl ${darkMode ? 'bg-slate-800' : 'bg-white'}`}>
-            <h2 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-                Tambah Armada Baru
-            </h2>
-            <p className="text-sm text-gray-500 mb-8">Data yang diinput akan langsung tampil di halaman Pilihan Armada Populer.</p>
+            <p className="text-sm text-gray-500 mb-8">Isi data lengkap armada Anda. Tim kami akan segera memproses pendaftaran.</p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* General Info */}
