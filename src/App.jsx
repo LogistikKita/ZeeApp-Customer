@@ -13,7 +13,7 @@ import TrackingSection from './components/TrackingSection';
 import Carousel from './components/Carousel';
 import Preloader from './components/Preloader';
 import FirebaseStatus from './components/FirebaseStatus';
-import ScrollNav from './components/ScrollNav'; // KOMPONEN BARU
+import ScrollNav from './components/ScrollNav';
 
 // FIREBASE
 import { initializeApp } from 'firebase/app';
@@ -33,7 +33,7 @@ const App = () => {
     // STATE
     const [loading, setLoading] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
-    const [activePage, setActivePage] = useState('home'); // home, tracking, maintenance
+    const [activePage, setActivePage] = useState('home');
     const [trackingId, setTrackingId] = useState('');
     
     // FIREBASE STATE
@@ -60,7 +60,7 @@ const App = () => {
                     }
                     setIsFirebaseReady(true);
                     
-                    // Delay loading agar animasi logo terlihat
+                    // Delay loading
                     setTimeout(() => setLoading(false), 2500);
                 });
                 return unsubscribe;
@@ -160,10 +160,8 @@ const App = () => {
                 <Footer navigateTo={navigateTo} darkMode={darkMode} />
             </div>
 
-            {/* Indikator Status Firebase */}
             <FirebaseStatus isReady={isFirebaseReady} error={firebaseError} />
             
-            {/* Navigasi Cepat (Scroll Top/Bottom) */}
             <ScrollNav darkMode={darkMode} />
 
         </div>
