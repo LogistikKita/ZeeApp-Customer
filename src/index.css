@@ -4,6 +4,13 @@
 
 html {
     scroll-behavior: smooth;
+    /* --- FIX FLICKER: Tambahkan ini agar semua perubahan warna halus --- */
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* FIX FLICKER: Aturan Universal untuk semua elemen */
+* {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* Sembunyikan Scrollbar tapi tetap bisa scroll */
@@ -69,3 +76,4 @@ html {
 .animate-pulse-glow-red {
     animation: pulse-glow-red 2s ease-in-out infinite;
 }
+
