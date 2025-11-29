@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Truck, Ship, Clock, Shield, User, Map, Box } from 'lucide-react';
+import { Truck, Ship, Clock, Shield, User, Map, Box, ArrowRight } from 'lucide-react';
 import { collection, getDocs, query, orderBy, getFirestore } from 'firebase/firestore';
 
-// MAPPING STRING DATABASE KE ICON COMPONENT
-const iconMap = {
-    "Truck": Truck,
-    "Ship": Ship,
-    "Clock": Clock,
-    "Shield": Shield,
-    "User": User,
-    "Map": Map,
-    "Box": Box
-};
+const iconMap = { "Truck": Truck, "Ship": Ship, "Clock": Clock, "Shield": Shield, "User": User, "Map": Map, "Box": Box };
 
 const ServicesSection = ({ darkMode, navigateTo }) => {
     const [services, setServices] = useState([]);
@@ -30,14 +21,14 @@ const ServicesSection = ({ darkMode, navigateTo }) => {
         <div className="py-10 px-4">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16">
-                    <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan Kami</h2>
-                    <p className="opacity-60 max-w-2xl mx-auto">Solusi logistik terintegrasi untuk segala kebutuhan.</p>
+                    <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Layanan Unggulan</h2>
+                    <p className="opacity-60 max-w-2xl mx-auto">Solusi logistik terintegrasi yang paling diminati.</p>
                 </div>
                 
-                {/* DYNAMIC GRID */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-20">
-                    {services.map((s, i) => {
-                        const IconComponent = iconMap[s.icon] || Box; // Default ke Box jika icon tidak ketemu
+                {/* HANYA TAMPILKAN 3 LAYANAN */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+                    {services.slice(0, 3).map((s, i) => {
+                        const IconComponent = iconMap[s.icon] || Box;
                         return (
                             <div key={i} onClick={() => navigateTo('maintenance')} className={`p-6 rounded-3xl border transition cursor-pointer group ${darkMode ? 'bg-slate-800/50 border-white/5 hover:border-primary' : 'bg-white border-gray-100 hover:border-primary hover:shadow-lg'}`}>
                                 <IconComponent className="w-10 h-10 text-primary mb-4 group-hover:scale-110 transition" />
@@ -46,6 +37,15 @@ const ServicesSection = ({ darkMode, navigateTo }) => {
                             </div>
                         );
                     })}
+                </div>
+
+                <div className="text-center mb-16">
+                    <button 
+                        onClick={() => navigateTo('maintenance')}
+                        className={`px-8 py-3 rounded-full font-bold text-sm transition border ${darkMode ? 'border-white/20 hover:bg-white/10 text-white' : 'border-gray-200 hover:bg-gray-100 text-slate-900'}`}
+                    >
+                        Lihat Semua Layanan
+                    </button>
                 </div>
 
                 <div className={`pt-10 border-t ${darkMode ? 'border-white/5' : 'border-gray-200'}`}>
