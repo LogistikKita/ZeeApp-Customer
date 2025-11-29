@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageSquare } from 'lucide-react';
 import { collection, addDoc, serverTimestamp, getFirestore } from 'firebase/firestore';
 
 const ContactUs = ({ db, appId, darkMode }) => {
@@ -8,25 +8,17 @@ const ContactUs = ({ db, appId, darkMode }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const firestore = db || getFirestore(); // Pastikan dapat instance DB
-        if (!firestore) {
-            console.error("Firestore not initialized");
-            return;
-        }
+        const firestore = db || getFirestore();
+        if (!firestore) return;
         
         setStatus('sending');
         try {
-            // Menggunakan path koleksi yang sudah diizinkan di rules: /artifacts/{appId}/public/data/messages
             const messagesRef = collection(firestore, 'artifacts', appId, 'public', 'data', 'messages');
-            await addDoc(messagesRef, {
-                ...form,
-                createdAt: serverTimestamp()
-            });
+            await addDoc(messagesRef, { ...form, createdAt: serverTimestamp() });
             setStatus('success'); 
             setForm({ name: '', phone: '', message: '' });
-            setTimeout(() => setStatus(''), 5000); // Reset status setelah 5 detik
+            setTimeout(() => setStatus(''), 5000); 
         } catch (error) {
-            console.error("Error submitting form:", error);
             setStatus('error');
         }
     };
@@ -38,7 +30,6 @@ const ContactUs = ({ db, appId, darkMode }) => {
                     
                     {/* BAGIAN KIRI: INFO KONTAK (MERAH) */}
                     <div className="p-12 md:w-2/5 bg-primary text-white flex flex-col justify-between relative overflow-hidden">
-                        {/* Pattern Background */}
                         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
                         
                         <div className="relative z-10">
@@ -48,12 +39,12 @@ const ContactUs = ({ db, appId, darkMode }) => {
                             <div className="space-y-8">
                                 <div className="flex items-start gap-4">
                                     <MapPin className="w-6 h-6 flex-shrink-0 mt-1 opacity-80"/>
-                                    {/* ALAMAT BARU */}
+                                    {/* ALAMAT FINAL */}
                                     <p className="leading-relaxed">Jl. Terusan Irian Jaya No.8, Gedangklutuk RT 004 RW 009, Banjaragung, Puri, Kab Mojokerto</p>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <Phone className="w-6 h-6 flex-shrink-0 opacity-80"/>
-                                    {/* NOMOR WA BARU */}
+                                    {/* NOMOR WA FINAL */}
                                     <p className="font-bold">+62 858-1348-7753</p>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -63,7 +54,6 @@ const ContactUs = ({ db, appId, darkMode }) => {
                             </div>
                         </div>
 
-                        {/* Hiasan Bawah */}
                         <div className="mt-12 pt-8 border-t border-white/20 relative z-10">
                              <p className="text-sm opacity-70">Respon cepat via WhatsApp atau Telepon.</p>
                         </div>
@@ -75,33 +65,10 @@ const ContactUs = ({ db, appId, darkMode }) => {
                         <p className={`mb-8 text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Silakan isi formulir di bawah, kami akan segera menghubungi Anda.</p>
                         
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <input 
-                                    className={`w-full p-4 rounded-xl border-2 outline-none transition font-medium ${darkMode ? 'bg-slate-900 border-slate-700 text-white focus:border-primary' : 'bg-gray-50 border-gray-100 text-slate-900 focus:border-primary focus:bg-white'}`} 
-                                    placeholder="Nama Lengkap Anda" 
-                                    value={form.name} 
-                                    onChange={e => setForm({...form, name: e.target.value})} 
-                                    required 
-                                />
-                            </div>
-                            <div>
-                                <input 
-                                    className={`w-full p-4 rounded-xl border-2 outline-none transition font-medium ${darkMode ? 'bg-slate-900 border-slate-700 text-white focus:border-primary' : 'bg-gray-50 border-gray-100 text-slate-900 focus:border-primary focus:bg-white'}`} 
-                                    placeholder="Nomor WhatsApp / Telepon" 
-                                    value={form.phone} 
-                                    onChange={e => setForm({...form, phone: e.target.value})} 
-                                    required 
-                                />
-                            </div>
-                            <div>
-                                <textarea 
-                                    className={`w-full p-4 rounded-xl border-2 outline-none transition font-medium h-36 resize-none ${darkMode ? 'bg-slate-900 border-slate-700 text-white focus:border-primary' : 'bg-gray-50 border-gray-100 text-slate-900 focus:border-primary focus:bg-white'}`} 
-                                    placeholder="Tulis pesan atau detail kebutuhan pengiriman Anda..." 
-                                    value={form.message} 
-                                    onChange={e => setForm({...form, message: e.target.value})} 
-                                    required
-                                ></textarea>
-                            </div>
+                            {/* Input fields... (sama seperti sebelumnya) */}
+                            <input className={`w-full p-4 rounded-xl border-2 outline-none transition font-medium ${darkMode ? 'bg-slate-900 border-slate-700 text-white focus:border-primary' : 'bg-gray-50 border-gray-100 text-slate-900 focus:border-primary focus:bg-white'}`} placeholder="Nama Lengkap Anda" value={form.name} onChange={e => setForm({...form, name: e.target.value})} required />
+                            <input className={`w-full p-4 rounded-xl border-2 outline-none transition font-medium ${darkMode ? 'bg-slate-900 border-slate-700 text-white focus:border-primary' : 'bg-gray-50 border-gray-100 text-slate-900 focus:border-primary focus:bg-white'}`} placeholder="Nomor WhatsApp / Telepon" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} required />
+                            <textarea className={`w-full p-4 rounded-xl border-2 outline-none transition font-medium h-36 resize-none ${darkMode ? 'bg-slate-900 border-slate-700 text-white focus:border-primary' : 'bg-gray-50 border-gray-100 text-slate-900 focus:border-primary focus:bg-white'}`} placeholder="Tulis pesan atau detail kebutuhan pengiriman Anda..." value={form.message} onChange={e => setForm({...form, message: e.target.value})} required></textarea>
                             
                             <button disabled={status === 'sending' || status === 'success'} className={`w-full py-4 rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-lg ${status === 'success' ? 'bg-green-500 text-white cursor-default' : 'bg-primary hover:bg-red-600 text-white shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1'}`}>
                                 {status === 'sending' ? 'Mengirim...' : (status === 'success' ? 'Pesan Terkirim! Terima Kasih.' : <>Kirim Pesan Sekarang <Send className="w-5 h-5" /></>)}
