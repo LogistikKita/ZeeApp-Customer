@@ -9,6 +9,7 @@ const HeroSection = ({ onSearch, darkMode }) => {
     const handleCheckOngkir = (e) => {
         e.preventDefault();
         const text = `Halo Logistik Kita, mohon info estimasi harga:\n📍 Dari: ${checkForm.from}\n🏁 Ke: ${checkForm.to}\n🚚 Armada: ${checkForm.fleet.toUpperCase()}`;
+        // NOMOR WA FINAL DARI USER: 085813487753
         window.open(`https://wa.me/6285813487753?text=${encodeURIComponent(text)}`, '_blank');
     };
 
@@ -18,18 +19,20 @@ const HeroSection = ({ onSearch, darkMode }) => {
                 
                 <div className="md:w-1/2 text-center md:text-left animate-fade-in">
                     
-                    {/* PERBAIKAN BADGE COLOR DI DARK MODE */}
+                    {/* BADGE (REVISI KONTRAST) */}
                     <div className={`inline-flex items-center px-4 py-1.5 rounded-full border text-xs font-bold uppercase tracking-widest mb-6 animate-pulse ${darkMode ? 'border-white/30 bg-white/10 text-white' : 'border-primary/30 bg-primary/10 text-primary'}`}>
                         <ShieldCheck className="w-3 h-3 mr-2" /> Partner Logistik Terpercaya
                     </div>
                     
+                    {/* JUDUL H1 (REVISI SEO) */}
                     <h1 className={`text-5xl md:text-7xl font-extrabold leading-tight mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-                        Kirim Paket <br/>
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-600">Tanpa Batas</span>
+                        Sewa Truk & Kargo <br/>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-600">Jawa Timur</span>
                     </h1>
                     
+                    {/* DESKRIPSI (REVISI SEO & KONTRAST) */}
                     <p className={`text-lg mb-8 max-w-lg mx-auto md:mx-0 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                        Solusi ekspedisi modern. Cek tarif sewa armada (Charter) atau lacak posisi barang Anda secara real-time.
+                        Layanan **ekspedisi carter** tercepat dari Mojokerto. Cek estimasi harga dan negosiasi langsung ke tim kami via WhatsApp untuk harga terbaik.
                     </p>
 
                     {/* SWITCHER BUTTONS */}
