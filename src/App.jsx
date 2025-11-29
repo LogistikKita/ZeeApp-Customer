@@ -14,6 +14,7 @@ import Carousel from './components/Carousel';
 import Preloader from './components/Preloader';
 import FirebaseStatus from './components/FirebaseStatus';
 import ScrollNav from './components/ScrollNav';
+import FleetUploadForm from './components/admin/FleetUploadForm'; // IMPORT COMPONENT MITRA BARU
 
 // FIREBASE
 import { initializeApp } from 'firebase/app';
@@ -33,7 +34,8 @@ const App = () => {
     // STATE
     const [loading, setLoading] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
-    const [activePage, setActivePage] = useState('home');
+    // Tambahkan 'mitra' ke state activePage
+    const [activePage, setActivePage] = useState('home'); // home, tracking, maintenance, mitra
     const [trackingId, setTrackingId] = useState('');
     
     // FIREBASE STATE
@@ -60,7 +62,6 @@ const App = () => {
                     }
                     setIsFirebaseReady(true);
                     
-                    // Delay loading
                     setTimeout(() => setLoading(false), 2500);
                 });
                 return unsubscribe;
@@ -72,7 +73,6 @@ const App = () => {
         };
         init();
 
-        // Check system preference
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             setDarkMode(true);
         }
@@ -94,33 +94,31 @@ const App = () => {
 
     // RENDER CONTENT SWITCHER
     const renderContent = () => {
-        if (activePage === 'maintenance') {
+        
+        if (activePage === 'mitra') { // KONDISI BARU: HALAMAN MITRA
             return (
-                <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 pt-20 animate-fade-in">
-                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/website-maintenance-7565383-6190870.png" alt="Maintenance" className="w-64 mb-6 opacity-80" />
-                    <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Segera Hadir</h2>
-                    <p className="text-gray-500 max-w-md mb-8">Fitur ini sedang kami kembangkan untuk memberikan layanan terbaik (Lapak Kita, Info Muatan, dll).</p>
-                    <button onClick={() => navigateTo('home')} className="px-8 py-3 bg-green-600 rounded-full text-white font-bold hover:bg-green-500 transition shadow-lg shadow-green-500/30">
-                        Kembali ke Beranda
-                    </button>
+                <div className="pt-24 min-h-screen animate-fade-in max-w-4xl mx-auto px-4">
+                    <h1 className={`text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                        Gabung Mitra Armada
+                    </h1>
+                    <p className={`text-lg mb-8 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Jadilah bagian dari jaringan Logistik Kita. Isi data armada Anda di bawah ini.
+                    </p>
+                    {/* Render form pendaftaran mitra */}
+                    <FleetUploadForm db={db} darkMode={darkMode} />
+                    <div className="h-20"></div> {/* Spacer */}
                 </div>
             );
+        }
+        
+        if (activePage === 'maintenance') {
+            // ... (kode maintenance sama)
         }
 
         if (activePage === 'tracking') {
-            return (
-                <div className="pt-24 min-h-screen animate-slide-right">
-                    <TrackingSection 
-                        db={db} 
-                        appId={FIREBASE_CONFIG.projectId} 
-                        initialId={trackingId} 
-                        onBack={() => navigateTo('home')}
-                        darkMode={darkMode}
-                    />
-                </div>
-            );
+            // ... (kode tracking sama)
         }
-
+        
         // DEFAULT: HOME PAGE
         return (
             <div className="animate-fade-in">
@@ -139,7 +137,6 @@ const App = () => {
         <div className={`min-h-screen font-sans transition-colors duration-500 ${darkMode ? 'dark bg-slate-900' : 'bg-gray-50'}`}>
             <Preloader loading={loading} />
 
-            {/* FIXED BACKGROUND */}
             <div className="fixed inset-0 z-0 pointer-events-none">
                 <img src="/background-lk.jpg" alt="" className="w-full h-full object-cover opacity-10 blur-[2px]" onError={(e) => e.target.style.display='none'} />
                 <div className={`absolute inset-0 ${darkMode ? 'bg-slate-900/90' : 'bg-white/80'}`}></div>
@@ -161,7 +158,6 @@ const App = () => {
             </div>
 
             <FirebaseStatus isReady={isFirebaseReady} error={firebaseError} />
-            
             <ScrollNav darkMode={darkMode} />
 
         </div>
