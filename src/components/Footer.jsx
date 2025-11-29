@@ -26,6 +26,7 @@ const Footer = ({ navigateTo, darkMode }) => {
                         <a href="https://www.linkedin.com/in/puput-wicaksana" target="_blank" rel="noreferrer" className={`w-10 h-10 rounded-full flex items-center justify-center transition ${darkMode ? 'bg-white/5 hover:bg-primary hover:text-white' : 'bg-gray-100 hover:bg-primary hover:text-white'}`}>
                             <Linkedin className="w-5 h-5" />
                         </a>
+                        {/* Twitter Dihapus */}
                     </div>
                 </div>
 
@@ -49,7 +50,7 @@ const Footer = ({ navigateTo, darkMode }) => {
                     </ul>
                 </div>
 
-                {/* KONTAK DETAIL */}
+                {/* KONTAK DETAIL FINAL */}
                 <div>
                     <h4 className={`font-bold mb-6 ${darkMode ? 'text-white' : 'text-slate-900'}`}>Kontak</h4>
                     
@@ -71,7 +72,7 @@ const Footer = ({ navigateTo, darkMode }) => {
             
             {/* COPYRIGHT */}
             <div className={`pt-8 border-t text-center text-xs flex flex-col md:flex-row justify-between items-center ${darkMode ? 'border-white/5' : 'border-gray-100'}`}>
-                <p>&copy; 2025 Logistik Kita. All rights reserved.</p>
+                <p>© 2025 Logistik Kita. All rights reserved.</p>
                 <p className="flex items-center gap-1 mt-2 md:mt-0">Made with <Heart className="w-3 h-3 text-primary fill-primary" /> in Mojokerto</p>
             </div>
         </footer>
